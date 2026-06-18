@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Catalogue — Cosy Prints</title>
+<meta name="description" content="Le catalogue Cosy Prints : déco cosy, lampes, cable management et gadgets imprimés en 3D à Lyon. Filtre par univers." />
+<meta name="theme-color" content="#1a1310" />
+
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="fr_FR" />
+<meta property="og:title" content="Catalogue — Cosy Prints" />
+<meta property="og:description" content="Déco cosy et objets utiles imprimés en 3D. Filtre par univers." />
+<meta property="og:url" content="https://cosyprintsshop-dotcom.github.io/boutique.html" />
+<meta name="twitter:card" content="summary" />
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%231a1310'/%3E%3Ccircle cx='16' cy='13' r='7' fill='%23ffce86'/%3E%3Crect x='7' y='22' width='18' height='3.5' rx='1.75' fill='%23d98c5f'/%3E%3C/svg%3E" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    --night:      #15100b;
+    --espresso:   #1a1310;
+    --cocoa:      #251c15;
+    --cocoa-soft: #2f2419;
+    --line:       #463528;
+    --line-warm:  rgba(243, 177, 92, 0.28);
+
+    --cream:      #f4ece2;
+    --cream-dim:  #cab8a6;
+
+    --honey:      #f3b15c;
+    --honey-lit:  #ffd089;
+    --amber:      #ff9f57;
+    --clay:       #d98c5f;
+    --rose:       #e6a98f;
+
+    --vinted-1:   #12b6bf;
+    --vinted-2:   #007782;
+    --lbc-1:      #ff8a3d;
+    --lbc-2:      #ec5a13;
+
+    --display: "Bricolage Grotesque", system-ui, sans-serif;
+    --body: "Hanken Grotesk", system-ui, sans-serif;
+
+    --maxw: 1100px;
+    --radius: 20px;
+    --glow: 0 0 50px -12px rgba(243, 177, 92, 0.28);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--body);
+    color: var(--cream);
+    background:
+      radial-gradient(110% 60% at 50% -8%, rgba(255, 175, 95, 0.13), transparent 55%),
+      linear-gradient(180deg, var(--espresso) 0%, var(--night) 100%);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+  a { color: inherit; text-decoration: none; }
+  .wrap { width: 100%; max-width: var(--maxw); margin-inline: auto; padding-inline: 24px; }
+
+  .layers {
+    background-image: repeating-linear-gradient(to bottom,
+      rgba(243, 177, 92, 0.06) 0px, rgba(243, 177, 92, 0.06) 1px,
+      transparent 1px, transparent 7px);
+  }
+  .eyebrow { font-size: 0.72rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--honey); font-weight: 600; }
+
+  /* ===== Boutons ===== */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+    font-family: var(--body); font-weight: 600; font-size: 1rem;
+    min-height: 50px; padding: 13px 24px; border-radius: 100px;
+    border: 1px solid transparent; cursor: pointer; white-space: nowrap;
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--honey-lit), var(--amber));
+    color: #2a1a0c; font-weight: 700;
+    box-shadow: 0 12px 34px -10px rgba(255, 159, 87, 0.6);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 18px 44px -10px rgba(255, 208, 137, 0.75); }
+  .btn-ghost { background: rgba(255,255,255,0.02); color: var(--cream); border-color: var(--line); }
+  .btn-ghost:hover { transform: translateY(-2px); border-color: var(--honey); box-shadow: var(--glow); }
+
+  /* ===== En-tête ===== */
+  .cat-hero { position: relative; overflow: hidden; padding-block: clamp(28px, 6vw, 48px) clamp(28px, 6vw, 44px); }
+  .cat-hero::before {
+    content: ""; position: absolute; top: -40%; left: 50%; transform: translateX(-50%);
+    width: min(760px, 120vw); height: 420px;
+    background: radial-gradient(ellipse at center, rgba(255, 208, 137, 0.18), rgba(243, 177, 92, 0.05) 45%, transparent 70%);
+    pointer-events: none;
+  }
+  .topbar { position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: clamp(34px, 6vw, 56px); }
+  .brandmark { font-family: var(--display); font-weight: 800; font-size: 1.3rem; letter-spacing: -0.01em; }
+  .brandmark span { color: var(--honey); }
+  .topbar nav { display: flex; gap: 24px; font-size: 0.92rem; color: var(--cream-dim); }
+  .topbar nav a { transition: color .18s ease; }
+  .topbar nav a:hover { color: var(--cream); }
+
+  .cat-intro { position: relative; z-index: 2; max-width: 680px; }
+  .cat-intro h1 { font-family: var(--display); font-weight: 800; font-size: clamp(2rem, 5.5vw, 3.2rem); letter-spacing: -0.025em; line-height: 1.05; margin-block: 12px 14px; }
+  .cat-sub { color: var(--cream-dim); max-width: 56ch; }
+
+  /* ===== Barre filtres + tri ===== */
+  .catalogue-bar {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+    gap: 16px; padding-block: 8px 24px;
+    position: sticky; top: 0; z-index: 5;
+    background: linear-gradient(180deg, var(--espresso) 70%, transparent);
+    backdrop-filter: blur(2px);
+  }
+  .filters { display: flex; flex-wrap: wrap; gap: 10px; }
+  .chip {
+    padding: 9px 17px; border-radius: 100px;
+    border: 1px solid var(--line); background: rgba(255,255,255,0.02);
+    color: var(--cream-dim); font-weight: 600; font-size: 0.9rem; cursor: pointer;
+    transition: color .16s ease, border-color .16s ease, background .16s ease, transform .16s ease;
+  }
+  .chip:hover { color: var(--cream); border-color: var(--honey); transform: translateY(-1px); }
+  .chip.is-active {
+    background: linear-gradient(135deg, var(--honey-lit), var(--amber));
+    color: #2a1a0c; border-color: transparent;
+    box-shadow: 0 8px 22px -10px rgba(255, 159, 87, 0.6);
+  }
+  .cat-meta { display: flex; align-items: center; gap: 18px; color: var(--cream-dim); font-size: 0.9rem; }
+  .count { white-space: nowrap; }
+  .sort { display: inline-flex; align-items: center; gap: 8px; }
+  .sort select {
+    font-family: var(--body); font-size: 0.88rem; color: var(--cream);
+    background: var(--cocoa); border: 1px solid var(--line); border-radius: 100px;
+    padding: 8px 14px; cursor: pointer;
+  }
+  .sort select:focus-visible { outline: 2px solid var(--honey-lit); outline-offset: 2px; }
+
+  /* ===== Grille produits ===== */
+  .product-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 18px; padding-bottom: clamp(48px, 9vw, 90px);
+  }
+
+  .product-card {
+    background: var(--cocoa); border: 1px solid var(--line); border-radius: var(--radius);
+    overflow: hidden; display: flex; flex-direction: column;
+    animation: rise .5s ease both;
+    transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+  }
+  .product-card:hover {
+    transform: translateY(-5px); border-color: rgba(243, 177, 92, 0.55);
+    box-shadow: 0 26px 50px -28px rgba(0,0,0,0.85), 0 0 40px -14px rgba(243, 177, 92, 0.25);
+  }
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+  .product-media {
+    aspect-ratio: 1 / 1; position: relative;
+    background: radial-gradient(circle at 32% 28%, rgba(255, 208, 137, 0.14), transparent 60%), var(--cocoa-soft);
+    display: grid; place-items: center; border-bottom: 1px solid var(--line);
+  }
+  .pm-img { width: 100%; height: 100%; object-fit: cover; }
+  .pm-ph { font-size: 1.6rem; opacity: 0.5; }
+
+  .product-info { padding: 16px 16px 18px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+  .product-info h3 { font-family: var(--display); font-weight: 600; font-size: 1.08rem; letter-spacing: -.01em; }
+  .product-info p { color: var(--cream-dim); font-size: 0.88rem; flex: 1; }
+  .product-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; }
+  .price { font-weight: 700; color: var(--honey); }
+  .product-buy { font-weight: 600; font-size: 0.9rem; color: var(--cream); border-bottom: 1px solid var(--line-warm); padding-bottom: 1px; transition: color .16s ease; }
+  .product-buy:hover { color: var(--honey); }
+
+  .badge { position: absolute; top: 12px; left: 12px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.03em; padding: 5px 11px; border-radius: 100px; }
+  .badge--soon { position: static; align-self: flex-start; margin-top: 4px; color: var(--honey); background: rgba(243, 177, 92, 0.12); border: 1px solid var(--line-warm); }
+  .badge--sold { color: var(--cream); background: rgba(0,0,0,0.55); border: 1px solid var(--line); }
+
+  /* ===== Tuiles « Bientôt » (catalogue en cours de remplissage) ===== */
+  .product-card.ghost { opacity: 0.72; }
+  .product-card.ghost .product-media { background: var(--cocoa-soft); }
+  .product-card.ghost .pm-ph { opacity: 0.35; }
+  .ghost-line { height: 11px; border-radius: 6px; background: linear-gradient(90deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03)); }
+  .ghost-line--lg { width: 72%; }
+  .ghost-line--sm { width: 42%; }
+
+  /* ===== Bandeau « aucun produit » ===== */
+  .notice {
+    grid-column: 1 / -1;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 18px;
+    background: var(--cocoa); border: 1px solid var(--line-warm); border-radius: var(--radius);
+    padding: 22px 24px; margin-bottom: 6px; box-shadow: var(--glow);
+  }
+  .notice-ico { font-size: 1.7rem; line-height: 1; }
+  .notice-txt { flex: 1; min-width: 220px; }
+  .notice-txt strong { font-family: var(--display); font-weight: 600; font-size: 1.15rem; }
+  .notice-txt p { color: var(--cream-dim); font-size: 0.94rem; margin-top: 4px; }
+  .notice .btn { flex: none; }
+
+  /* ===== Footer ===== */
+  footer { border-top: 1px solid var(--line); padding-block: 44px; }
+  .foot-grid { display: flex; flex-wrap: wrap; gap: 28px 40px; align-items: flex-start; justify-content: space-between; }
+  .foot-brand { max-width: 320px; }
+  .foot-brand .brandmark { font-size: 1.15rem; }
+  .foot-brand p { color: var(--cream-dim); font-size: 0.92rem; margin-top: 10px; }
+  .foot-col h4 { font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cream-dim); margin-bottom: 14px; }
+  .foot-stack { display: flex; flex-direction: column; gap: 10px; }
+  .foot-pill {
+    display: inline-flex; align-items: center; gap: 9px; padding: 10px 16px; border-radius: 100px;
+    border: 1px solid var(--line); background: rgba(255,255,255,0.02); font-weight: 600; font-size: 0.92rem;
+    transition: border-color .18s ease, transform .18s ease;
+  }
+  .foot-pill:hover { transform: translateY(-2px); border-color: var(--honey); }
+  .foot-pill .dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+  .foot-pill .dot--vinted { background: var(--vinted-1); }
+  .foot-pill .dot--lbc { background: var(--lbc-1); }
+  .foot-pill .dot--mail { background: var(--rose); }
+  .copyright { width: 100%; font-size: .82rem; color: var(--cream-dim); opacity: .6; margin-top: 30px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+    html { scroll-behavior: auto; }
+  }
+  @media (max-width: 600px) {
+    .topbar nav { display: none; }
+    .catalogue-bar { position: static; }
+    .notice .btn { width: 100%; }
+    .foot-grid { flex-direction: column; }
+  }
+  :focus-visible { outline: 2px solid var(--honey-lit); outline-offset: 3px; border-radius: 6px; }
+</style>
+</head>
+<body>
+
+<header class="cat-hero layers">
+  <div class="wrap">
+    <div class="topbar">
+      <a class="brandmark" href="index.html">Cosy<span>·</span>Prints</a>
+      <nav>
+        <a href="index.html">Accueil</a>
+        <a href="index.html#shop">Où acheter</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+    </div>
+    <div class="cat-intro">
+      <p class="eyebrow">Catalogue · impression 3D à Lyon</p>
+      <h1 id="cat-title">Toutes nos créations</h1>
+      <p class="cat-sub">Parcours nos univers. Chaque pièce est imprimée à la main, couche après couche — livraison et paiement gérés via Vinted ou Leboncoin.</p>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="catalogue-bar">
+      <div class="filters" id="filters" role="tablist" aria-label="Filtrer par univers"></div>
+      <div class="cat-meta">
+        <span class="count" id="count">0 produit</span>
+        <label class="sort">
+          <span>Tri</span>
+          <select id="sort" aria-label="Trier les produits">
+            <option value="new">Nouveautés</option>
+            <option value="price-asc">Prix croissant</option>
+            <option value="price-desc">Prix décroissant</option>
+          </select>
+        </label>
+      </div>
+    </div>
+
+    <noscript>
+      <div class="notice" style="margin-top:24px">
+        <span class="notice-ico">🧡</span>
+        <div class="notice-txt">
+          <strong>Active JavaScript pour voir le catalogue.</strong>
+          <p>Ou retrouve-nous directement sur notre boutique Vinted.</p>
+        </div>
+        <a class="btn btn-primary" href="https://www.vinted.fr/member/60879390-cosyprints" target="_blank" rel="noopener">Voir sur Vinted</a>
+      </div>
+    </noscript>
+
+    <div class="product-grid" id="grid" aria-live="polite"></div>
+  </div>
+</main>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="brandmark" href="index.html">Cosy<span style="color:var(--honey)">·</span>Prints</a>
+        <p>Impression 3D faite main à Lyon. Site vitrine — toutes les ventes se font sur Vinted &amp; Leboncoin.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Acheter</h4>
+        <div class="foot-stack">
+          <a class="foot-pill" href="https://www.vinted.fr/member/60879390-cosyprints" target="_blank" rel="noopener"><span class="dot dot--vinted"></span>Boutique Vinted</a>
+          <a class="foot-pill" href="https://www.leboncoin.fr/profil/0408d333-46e3-4487-b2f3-4743fd34c872" target="_blank" rel="noopener"><span class="dot dot--lbc"></span>Profil Leboncoin</a>
+        </div>
+      </div>
+      <div class="foot-col">
+        <h4>Contact</h4>
+        <div class="foot-stack">
+          <a class="foot-pill" href="mailto:cosyprints.shop@gmail.com"><span class="dot dot--mail"></span>cosyprints.shop@gmail.com</a>
+        </div>
+      </div>
+    </div>
+    <p class="copyright">© 2026 Cosy Prints — Impression 3D, Lyon. Ventes via Vinted &amp; Leboncoin.</p>
+  </div>
+</footer>
+
+<script>
+  /* Les univers (doivent correspondre aux liens des cartes de la page d'accueil) */
+  const CATEGORIES = [
+    { slug: 'all',              label: 'Tout' },
+    { slug: 'homie-vibe',       label: 'Homie Vibe' },
+    { slug: 'cable-management', label: 'Cable Management' },
+    { slug: 'lampes',           label: 'Lumière & Lampes' },
+    { slug: 'bureau',           label: 'Bureau & Rangement' },
+    { slug: 'gadgets',          label: 'Gadgets Utiles' }
+  ];
+
+  /* =================================================================
+     AJOUTE TES PRODUITS ICI quand tu les as. Exemple :
+       {
+         name: 'Lampe Champignon',
+         price: 18,                         // en euros (nombre)
+         category: 'lampes',                // un slug ci-dessus
+         desc: 'Petite lampe ambiance imprimee en 3D.',
+         img: 'img/lampe-champignon.webp',  // photo (WebP de preference)
+         url: 'https://www.vinted.fr/...'   // lien de l'annonce
+       }
+     Tant que la liste est vide, le catalogue affiche un message
+     + des tuiles « Bientot ». Aucune photo a heberger pour l'instant.
+     ================================================================= */
+  const PRODUCTS = [
+    // (vide pour le moment)
+  ];
+
+  const grid = document.getElementById('grid');
+  const filtersEl = document.getElementById('filters');
+  const countEl = document.getElementById('count');
+  const titleEl = document.getElementById('cat-title');
+  const sortEl = document.getElementById('sort');
+  const slugs = CATEGORIES.map(c => c.slug);
+
+  function currentCat() {
+    const p = new URLSearchParams(location.search).get('cat');
+    return slugs.includes(p) ? p : 'all';
+  }
+  let active = currentCat();
+
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]));
+  const fmtPrice = n => n.toLocaleString('fr-FR') + ' €';
+
+  function productCard(p) {
+    const media = p.img
+      ? `<img class="pm-img" src="${esc(p.img)}" alt="${esc(p.name)}" loading="lazy">`
+      : `<span class="pm-ph">📷</span>`;
+    return `<article class="product-card">
+      <div class="product-media">${media}${p.sold ? '<span class="badge badge--sold">Vendu</span>' : ''}</div>
+      <div class="product-info">
+        <h3>${esc(p.name)}</h3>
+        ${p.desc ? `<p>${esc(p.desc)}</p>` : ''}
+        <div class="product-foot">
+          <span class="price">${p.price != null ? fmtPrice(p.price) : ''}</span>
+          ${p.url ? `<a class="product-buy" href="${esc(p.url)}" target="_blank" rel="noopener">Voir →</a>` : ''}
+        </div>
+      </div>
+    </article>`;
+  }
+
+  const ghostCard = () => `<div class="product-card ghost" aria-hidden="true">
+      <div class="product-media"><span class="pm-ph">🪄</span></div>
+      <div class="product-info">
+        <span class="ghost-line ghost-line--lg"></span>
+        <span class="ghost-line ghost-line--sm"></span>
+        <span class="badge badge--soon">Bientôt</span>
+      </div>
+    </div>`;
+
+  function sortItems(items) {
+    const v = sortEl ? sortEl.value : 'new';
+    const a = items.slice();
+    if (v === 'price-asc') a.sort((x, y) => (x.price || 0) - (y.price || 0));
+    else if (v === 'price-desc') a.sort((x, y) => (y.price || 0) - (x.price || 0));
+    return a;
+  }
+
+  function render() {
+    filtersEl.innerHTML = CATEGORIES.map(c => {
+      const href = c.slug === 'all' ? 'boutique.html' : 'boutique.html?cat=' + c.slug;
+      const on = c.slug === active;
+      return `<a class="chip${on ? ' is-active' : ''}" href="${href}" data-cat="${c.slug}" role="tab" aria-selected="${on}">${esc(c.label)}</a>`;
+    }).join('');
+
+    const label = CATEGORIES.find(c => c.slug === active).label;
+    titleEl.textContent = active === 'all' ? 'Toutes nos créations' : label;
+    document.title = (active === 'all' ? 'Catalogue' : label) + ' — Cosy Prints';
+
+    let items = active === 'all' ? PRODUCTS : PRODUCTS.filter(p => p.category === active);
+    items = sortItems(items);
+    countEl.textContent = items.length + (items.length > 1 ? ' produits' : ' produit');
+
+    if (items.length === 0) {
+      grid.innerHTML =
+        `<div class="notice">
+          <span class="notice-ico">🧡</span>
+          <div class="notice-txt">
+            <strong>Aucun produit en ligne pour le moment.</strong>
+            <p>On imprime de nouvelles pièces — reviens très vite ! En attendant, tu peux jeter un œil à notre boutique Vinted.</p>
+          </div>
+          <a class="btn btn-primary" href="https://www.vinted.fr/member/60879390-cosyprints" target="_blank" rel="noopener">Voir sur Vinted</a>
+        </div>` +
+        Array.from({ length: 6 }, ghostCard).join('');
+    } else {
+      grid.innerHTML = items.map(productCard).join('');
+    }
+  }
+
+  /* Filtrage instantané — même onglet, sans rechargement */
+  filtersEl.addEventListener('click', e => {
+    const a = e.target.closest('.chip');
+    if (!a) return;
+    e.preventDefault();
+    active = a.dataset.cat;
+    history.pushState({ cat: active }, '', a.getAttribute('href'));
+    render();
+  });
+  window.addEventListener('popstate', () => { active = currentCat(); render(); });
+  if (sortEl) sortEl.addEventListener('change', render);
+
+  render();
+</script>
+
+</body>
+</html>
