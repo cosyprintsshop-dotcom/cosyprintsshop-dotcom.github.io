@@ -275,22 +275,114 @@
     .foot-grid { flex-direction: column; }
   }
   :focus-visible { outline: 2px solid var(--honey-lit); outline-offset: 3px; border-radius: 6px; }
+
+  /* ============ Tubelight floating nav ============ */
+  .tubelight {
+    position: fixed;
+    left: 50%;
+    bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+    transform: translateX(-50%);
+    z-index: 300;
+  }
+  @media (min-width: 640px) {
+    .tubelight { bottom: auto; top: 16px; }
+  }
+  .tubelight__pill {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px;
+    border-radius: 100px;
+    background: rgba(37, 28, 21, 0.72);
+    border: 1px solid var(--line-warm);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 12px 34px -14px rgba(0, 0, 0, 0.8), 0 0 40px -14px rgba(243, 177, 92, 0.4);
+  }
+  .tubelight__item {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0 20px;
+    border-radius: 100px;
+    font-family: var(--body);
+    font-weight: 600;
+    font-size: 0.92rem;
+    line-height: 1;
+    color: var(--cream-dim);
+    white-space: nowrap;
+    transition: color .2s ease;
+    touch-action: manipulation;
+  }
+  .tubelight__item:hover { color: var(--cream); }
+  .tubelight__item.is-active { color: var(--honey-lit); }
+  .tubelight__item .icon { width: 20px; height: 20px; display: none; }
+  @media (max-width: 767px) {
+    .tubelight__item { padding: 0; width: 52px; }
+    .tubelight__item .label { display: none; }
+    .tubelight__item .icon { display: block; }
+  }
+  .tubelight__lamp {
+    position: absolute;
+    top: 0; left: 0;
+    width: 0; height: 100%;
+    border-radius: 100px;
+    background: rgba(243, 177, 92, 0.14);
+    transform: translateX(0);
+    transition: transform .35s cubic-bezier(0.34, 1.45, 0.6, 1), width .35s cubic-bezier(0.34, 1.45, 0.6, 1);
+    pointer-events: none;
+  }
+  .tubelight__lamp::before {
+    content: "";
+    position: absolute;
+    top: -7px; left: 50%;
+    transform: translateX(-50%);
+    width: 36px; height: 4px;
+    background: var(--honey-lit);
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 -7px 18px 2px rgba(255, 208, 137, 0.5), 0 0 12px 1px rgba(243, 177, 92, 0.8);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tubelight__lamp { transition: none; }
+  }
+  @media (max-width: 639px) {
+    body { padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
+  }
 </style>
 </head>
 <body>
+
+<!-- ============ Tubelight floating nav ============ -->
+<nav class="tubelight" aria-label="Navigation principale">
+  <div class="tubelight__pill" id="navPill">
+    <span class="tubelight__lamp" aria-hidden="true"></span>
+    <a class="tubelight__item" href="index.html#accueil" data-section="accueil" aria-label="Accueil">
+      <span class="label">Accueil</span>
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    </a>
+    <a class="tubelight__item" href="index.html#categories" data-section="categories" aria-label="Catégories">
+      <span class="label">Catégories</span>
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+    </a>
+    <a class="tubelight__item is-active" href="boutique.html" data-section="boutique" aria-label="Boutique">
+      <span class="label">Boutique</span>
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+    </a>
+    <a class="tubelight__item" href="index.html#contact" data-section="contact" aria-label="Contact">
+      <span class="label">Contact</span>
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+    </a>
+  </div>
+</nav>
 
 <header class="cat-hero layers">
   <div class="wrap">
     <div class="topbar">
       <a class="brandmark" href="index.html">Cosy<span>·</span>Prints</a>
-      <nav>
-        <a href="index.html">Accueil</a>
-        <a href="index.html#shop">Où acheter</a>
-        <a href="index.html#contact">Contact</a>
-      </nav>
-      <button class="menu-btn" id="menuBtn" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mobileNav">
-        <span></span><span></span><span></span>
-      </button>
     </div>
     <div class="cat-intro">
       <p class="eyebrow">Catalogue · impression 3D à Lyon</p>
@@ -299,15 +391,6 @@
     </div>
   </div>
 </header>
-
-<div class="mobile-nav" id="mobileNav" role="dialog" aria-modal="true" aria-label="Menu de navigation">
-  <div class="mobile-nav__scrim" id="navScrim"></div>
-  <nav class="mobile-nav__panel">
-    <a href="index.html">Accueil</a>
-    <a href="index.html#shop">Où acheter</a>
-    <a href="index.html#contact">Contact</a>
-  </nav>
-</div>
 
 <main>
   <div class="wrap">
@@ -481,24 +564,42 @@
 
   render();
 
-  // Menu mobile
-  const menuBtn = document.getElementById('menuBtn');
-  const mobileNav = document.getElementById('mobileNav');
-  const navScrim = document.getElementById('navScrim');
-  const openNav = () => {
-    mobileNav.classList.add('is-open');
-    menuBtn.setAttribute('aria-expanded', 'true');
-    document.body.style.overflow = 'hidden';
-  };
-  const closeNav = () => {
-    mobileNav.classList.remove('is-open');
-    menuBtn.setAttribute('aria-expanded', 'false');
-    document.body.style.overflow = '';
-  };
-  menuBtn.addEventListener('click', () => mobileNav.classList.contains('is-open') ? closeNav() : openNav());
-  navScrim.addEventListener('click', closeNav);
-  mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeNav));
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeNav(); });
+  // ---- Tubelight floating nav: sliding lamp (active = current page) ----
+  (function () {
+    const pill = document.getElementById('navPill');
+    if (!pill) return;
+    const items = Array.prototype.slice.call(pill.querySelectorAll('.tubelight__item'));
+    const lamp = pill.querySelector('.tubelight__lamp');
+
+    const moveLamp = (item, animate) => {
+      if (!item) return;
+      if (!animate) lamp.style.transition = 'none';
+      lamp.style.width = item.offsetWidth + 'px';
+      lamp.style.transform = 'translateX(' + item.offsetLeft + 'px)';
+      if (!animate) { void lamp.offsetWidth; lamp.style.transition = ''; }
+    };
+    const setActive = (item, animate) => {
+      if (!item) return;
+      items.forEach((it) => {
+        const on = it === item;
+        it.classList.toggle('is-active', on);
+        if (on) it.setAttribute('aria-current', 'page'); else it.removeAttribute('aria-current');
+      });
+      moveLamp(item, animate);
+    };
+
+    const current = pill.querySelector('.tubelight__item.is-active') || items[0];
+    setActive(current, false);
+
+    let rt;
+    window.addEventListener('resize', () => {
+      clearTimeout(rt);
+      rt = setTimeout(() => setActive(pill.querySelector('.tubelight__item.is-active') || current, false), 90);
+    });
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => setActive(pill.querySelector('.tubelight__item.is-active') || current, false));
+    }
+  })();
 </script>
 
 </body>
