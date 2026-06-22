@@ -268,10 +268,7 @@
     letter-spacing: -0.025em;
     margin-block: 16px 22px;
   }
-  .hero-inner h1 em {
-    font-style: normal; color: var(--accent-text);
-    text-shadow: 0 0 34px rgb(var(--primary-rgb) / 0.35);
-  }
+  .hero-inner h1 em { font-style: normal; }   /* highlight handled by .hl */
   .hero-inner .lede {
     font-size: clamp(1.05rem, 2.2vw, 1.28rem);
     color: var(--muted-foreground);
@@ -539,6 +536,75 @@
 
   :focus-visible { outline: 2px solid var(--ring); outline-offset: 3px; border-radius: 6px; }
 
+  /* ============ 21st.dev-style flourishes ============ */
+
+  /* 1 · Infinite marquee band */
+  .marquee {
+    position: relative; overflow: hidden;
+    border-block: 1px solid var(--border);
+    background: var(--card);
+    padding-block: 14px;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+            mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+  .marquee__track {
+    display: inline-flex; align-items: center; white-space: nowrap;
+    animation: marquee 42s linear infinite; will-change: transform;
+  }
+  .marquee:hover .marquee__track { animation-play-state: paused; }
+  .marquee__item {
+    display: inline-flex; align-items: center; gap: 22px; padding-inline: 22px;
+    font-family: var(--display); font-weight: 700;
+    font-size: clamp(0.95rem, 2.2vw, 1.4rem); letter-spacing: -0.01em;
+    color: var(--foreground);
+  }
+  .marquee__item::before {
+    content: ""; width: 7px; height: 7px; border-radius: 50%; flex: none;
+    background: var(--primary); box-shadow: 0 0 10px rgb(var(--primary-rgb) / 0.8);
+  }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* 2 · Shimmer sweep on primary CTAs */
+  .btn-primary { position: relative; overflow: hidden; isolation: isolate; }
+  .btn-primary::after {
+    content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+    background: linear-gradient(110deg, transparent 35%, rgba(255, 255, 255, 0.4) 50%, transparent 65%);
+    transform: translateX(-130%);
+    animation: shimmer 5s ease-in-out infinite;
+  }
+  .btn-primary:hover::after { animation-duration: 1.3s; }
+  @keyframes shimmer { 0% { transform: translateX(-130%); } 55%, 100% { transform: translateX(130%); } }
+
+  /* 3 · Cursor spotlight on cards */
+  .card { position: relative; }
+  .card::before, .platform::before {
+    content: ""; position: absolute; inset: 0; z-index: 3;
+    border-radius: inherit; pointer-events: none;
+    opacity: 0; transition: opacity .3s ease;
+    background: radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), rgb(var(--primary-rgb) / 0.16), transparent 70%);
+  }
+  @media (hover: hover) {
+    .card:hover::before, .platform:hover::before { opacity: 1; }
+  }
+
+  /* 4 · Headline highlight reveal */
+  .hl {
+    position: relative; isolation: isolate; white-space: nowrap;
+    color: var(--cta-fg); padding-inline: 0.08em;
+  }
+  .hl::before {
+    content: ""; position: absolute; inset: 0.02em -0.06em; z-index: -1;
+    border-radius: 0.12em; background: var(--primary);
+    transform: scaleX(0); transform-origin: left center;
+    transition: transform .55s cubic-bezier(0.6, 0, 0.2, 1);
+  }
+  .hl.is-lit::before { transform: scaleX(1); }
+  @media (prefers-reduced-motion: reduce) {
+    .marquee__track { animation: none; }
+    .btn-primary::after { display: none; }
+    .hl::before { transform: scaleX(1); transition: none; }
+  }
+
   /* ============ Tubelight floating nav ============ */
   .tubelight {
     position: fixed;
@@ -651,7 +717,7 @@
     <div class="hero-grid">
       <div class="hero-inner">
         <p class="eyebrow">Impression 3D · fait main à Lyon</p>
-        <h1>Des objets qui rendent ton <em>chez-toi</em> plus chaleureux.</h1>
+        <h1>Des objets qui rendent ton <em class="hl">chez-toi</em> plus chaleureux.</h1>
         <p class="lede">Déco cosy, rangements malins et petits gadgets imprimés en 3D, couche après couche. À retrouver sur nos boutiques Vinted et Leboncoin.</p>
         <div class="cta-row">
           <a class="btn btn-primary" href="https://www.vinted.fr/member/60879390-cosyprints" target="_blank" rel="noopener">
@@ -716,12 +782,34 @@
   </div>
 </div>
 
+<!-- Marquee band -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track">
+    <span class="marquee__item">Homie Vibe</span>
+    <span class="marquee__item">Cable Management</span>
+    <span class="marquee__item">Lumière &amp; Lampes</span>
+    <span class="marquee__item">Bureau &amp; Rangement</span>
+    <span class="marquee__item">Gadgets Utiles</span>
+    <span class="marquee__item">Fait main à Lyon</span>
+    <span class="marquee__item">Impression 3D</span>
+    <span class="marquee__item">Couche par couche</span>
+    <span class="marquee__item">Homie Vibe</span>
+    <span class="marquee__item">Cable Management</span>
+    <span class="marquee__item">Lumière &amp; Lampes</span>
+    <span class="marquee__item">Bureau &amp; Rangement</span>
+    <span class="marquee__item">Gadgets Utiles</span>
+    <span class="marquee__item">Fait main à Lyon</span>
+    <span class="marquee__item">Impression 3D</span>
+    <span class="marquee__item">Couche par couche</span>
+  </div>
+</div>
+
 <main>
   <section id="categories">
     <div class="wrap">
       <div class="section-head reveal">
         <p class="eyebrow">Nos univers</p>
-        <h2>Choisis ton style, on s'occupe de l'impression.</h2>
+        <h2>Choisis ton <span class="hl">style</span>, on s'occupe de l'impression.</h2>
         <p>Clique sur un univers pour ouvrir le catalogue filtré. On imprime à la demande, puis on expédie via Vinted ou Leboncoin.</p>
       </div>
 
@@ -814,7 +902,7 @@
     <div class="wrap">
       <div class="section-head reveal">
         <p class="eyebrow">Comment ça marche</p>
-        <h2>Simple comme bonjour.</h2>
+        <h2>Simple comme <span class="hl">bonjour</span>.</h2>
         <p>Trois étapes, aucune prise de tête. Aucun compte à créer chez nous.</p>
       </div>
       <div class="steps">
@@ -850,7 +938,7 @@
     <div class="wrap">
       <div class="shop-head reveal">
         <p class="eyebrow">Où nous trouver</p>
-        <h2>On vend là où l'achat est simple et sécurisé.</h2>
+        <h2>On vend là où l'achat est simple et <span class="hl">sécurisé</span>.</h2>
         <p>Paiement et livraison sont gérés directement par les plateformes — tu commandes en toute confiance, comme d'habitude.</p>
       </div>
 
@@ -913,6 +1001,23 @@
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
   }, { threshold: 0.12 });
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Headline highlight reveal — lights the honey marker behind .hl words when seen
+  const hlIO = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-lit'); hlIO.unobserve(e.target); } });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.hl').forEach(el => hlIO.observe(el));
+
+  // Cursor spotlight on cards (desktop / fine-pointer only)
+  if (window.matchMedia('(hover: hover)').matches) {
+    document.addEventListener('pointermove', (e) => {
+      const el = e.target.closest('.card, .platform');
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      el.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
+      el.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100) + '%');
+    });
+  }
 
   // ---- Tubelight floating nav: sliding lamp + scroll-spy ----
   (function () {

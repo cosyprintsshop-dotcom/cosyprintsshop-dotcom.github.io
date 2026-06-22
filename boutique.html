@@ -333,6 +333,29 @@
   }
   :focus-visible { outline: 2px solid var(--ring); outline-offset: 3px; border-radius: 6px; }
 
+  /* ============ 21st.dev-style flourishes ============ */
+  /* Shimmer sweep on primary CTAs */
+  .btn-primary { position: relative; overflow: hidden; isolation: isolate; }
+  .btn-primary::after {
+    content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+    background: linear-gradient(110deg, transparent 35%, rgba(255, 255, 255, 0.4) 50%, transparent 65%);
+    transform: translateX(-130%);
+    animation: shimmer 5s ease-in-out infinite;
+  }
+  .btn-primary:hover::after { animation-duration: 1.3s; }
+  @keyframes shimmer { 0% { transform: translateX(-130%); } 55%, 100% { transform: translateX(130%); } }
+
+  /* Cursor spotlight on product cards */
+  .product-card { position: relative; }
+  .product-card::before {
+    content: ""; position: absolute; inset: 0; z-index: 3;
+    border-radius: inherit; pointer-events: none;
+    opacity: 0; transition: opacity .3s ease;
+    background: radial-gradient(200px circle at var(--mx, 50%) var(--my, 50%), rgb(var(--primary-rgb) / 0.16), transparent 70%);
+  }
+  @media (hover: hover) { .product-card:hover::before { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .btn-primary::after { display: none; } }
+
   /* ============ Tubelight floating nav ============ */
   .tubelight {
     position: fixed;
@@ -620,6 +643,17 @@
   if (sortEl) sortEl.addEventListener('change', render);
 
   render();
+
+  // Cursor spotlight on product cards (desktop / fine-pointer only; delegated for re-rendered cards)
+  if (window.matchMedia('(hover: hover)').matches) {
+    document.addEventListener('pointermove', (e) => {
+      const el = e.target.closest('.product-card');
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      el.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
+      el.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100) + '%');
+    });
+  }
 
   // ---- Tubelight floating nav: sliding lamp (active = current page) ----
   (function () {
