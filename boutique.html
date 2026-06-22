@@ -81,6 +81,7 @@
     min-height: 50px; padding: 13px 24px; border-radius: 100px;
     border: 1px solid transparent; cursor: pointer; white-space: nowrap;
     transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    touch-action: manipulation;
   }
   .btn-primary {
     background: linear-gradient(135deg, var(--honey-lit), var(--amber));
@@ -106,6 +107,35 @@
   .topbar nav a { transition: color .18s ease; }
   .topbar nav a:hover { color: var(--cream); }
 
+  /* Hamburger button */
+  .menu-btn {
+    display: none; flex-direction: column; justify-content: center; gap: 5px;
+    width: 44px; height: 44px; background: none; border: none; cursor: pointer;
+    padding: 8px; border-radius: 8px; color: var(--cream);
+    transition: background .18s ease; touch-action: manipulation; flex: none;
+  }
+  .menu-btn:hover { background: rgba(255,255,255,0.06); }
+  .menu-btn span { display: block; height: 2px; width: 20px; background: currentColor; border-radius: 2px; }
+
+  /* Mobile nav overlay */
+  .mobile-nav { display: none; position: fixed; inset: 0; z-index: 200; }
+  .mobile-nav.is-open { display: flex; flex-direction: column; }
+  .mobile-nav__scrim { position: absolute; inset: 0; background: rgba(0,0,0,0.55); backdrop-filter: blur(3px); }
+  .mobile-nav__panel {
+    position: relative; z-index: 1; margin-top: auto;
+    background: var(--cocoa-soft); border-top: 1px solid var(--line);
+    padding: 20px 20px 36px; display: flex; flex-direction: column; gap: 4px;
+    border-radius: 20px 20px 0 0;
+  }
+  .mobile-nav__panel a {
+    display: flex; align-items: center; padding: 13px 16px;
+    border-radius: 12px; font-size: 1rem; font-weight: 600;
+    color: var(--cream-dim); transition: background .16s ease, color .16s ease;
+    touch-action: manipulation;
+  }
+  .mobile-nav__panel a:hover,
+  .mobile-nav__panel a:focus { background: rgba(255,255,255,0.06); color: var(--cream); }
+
   .cat-intro { position: relative; z-index: 2; max-width: 680px; }
   .cat-intro h1 { font-family: var(--display); font-weight: 800; font-size: clamp(2rem, 5.5vw, 3.2rem); letter-spacing: -0.025em; line-height: 1.05; margin-block: 12px 14px; }
   .cat-sub { color: var(--cream-dim); max-width: 56ch; }
@@ -122,7 +152,8 @@
   .chip {
     padding: 9px 17px; border-radius: 100px;
     border: 1px solid var(--line); background: rgba(255,255,255,0.02);
-    color: var(--cream-dim); font-weight: 600; font-size: 0.9rem; cursor: pointer;
+    color: var(--cream-dim); font-weight: 600; font-size: 0.9rem;
+    cursor: pointer; touch-action: manipulation;
     transition: color .16s ease, border-color .16s ease, background .16s ease, transform .16s ease;
   }
   .chip:hover { color: var(--cream); border-color: var(--honey); transform: translateY(-1px); }
@@ -150,6 +181,7 @@
   .product-card {
     background: var(--cocoa); border: 1px solid var(--line); border-radius: var(--radius);
     overflow: hidden; display: flex; flex-direction: column;
+    cursor: pointer; touch-action: manipulation;
     animation: rise .5s ease both;
     transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
   }
@@ -165,7 +197,7 @@
     display: grid; place-items: center; border-bottom: 1px solid var(--line);
   }
   .pm-img { width: 100%; height: 100%; object-fit: cover; }
-  .pm-ph { font-size: 1.6rem; opacity: 0.5; }
+  .pm-ph { width: 40px; height: 40px; opacity: 0.45; }
 
   .product-info { padding: 16px 16px 18px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
   .product-info h3 { font-family: var(--display); font-weight: 600; font-size: 1.08rem; letter-spacing: -.01em; }
@@ -179,10 +211,10 @@
   .badge--soon { position: static; align-self: flex-start; margin-top: 4px; color: var(--honey); background: rgba(243, 177, 92, 0.12); border: 1px solid var(--line-warm); }
   .badge--sold { color: var(--cream); background: rgba(0,0,0,0.55); border: 1px solid var(--line); }
 
-  /* ===== Tuiles « Bientôt » (catalogue en cours de remplissage) ===== */
+  /* ===== Tuiles « Bientôt » ===== */
   .product-card.ghost { opacity: 0.72; }
   .product-card.ghost .product-media { background: var(--cocoa-soft); }
-  .product-card.ghost .pm-ph { opacity: 0.35; }
+  .product-card.ghost .pm-ph { opacity: 0.3; }
   .ghost-line { height: 11px; border-radius: 6px; background: linear-gradient(90deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03)); }
   .ghost-line--lg { width: 72%; }
   .ghost-line--sm { width: 42%; }
@@ -194,7 +226,7 @@
     background: var(--cocoa); border: 1px solid var(--line-warm); border-radius: var(--radius);
     padding: 22px 24px; margin-bottom: 6px; box-shadow: var(--glow);
   }
-  .notice-ico { font-size: 1.7rem; line-height: 1; }
+  .notice-ico { display: flex; align-items: center; flex: none; }
   .notice-txt { flex: 1; min-width: 220px; }
   .notice-txt strong { font-family: var(--display); font-weight: 600; font-size: 1.15rem; }
   .notice-txt p { color: var(--cream-dim); font-size: 0.94rem; margin-top: 4px; }
@@ -212,6 +244,7 @@
     display: inline-flex; align-items: center; gap: 9px; padding: 10px 16px; border-radius: 100px;
     border: 1px solid var(--line); background: rgba(255,255,255,0.02); font-weight: 600; font-size: 0.92rem;
     transition: border-color .18s ease, transform .18s ease;
+    touch-action: manipulation;
   }
   .foot-pill:hover { transform: translateY(-2px); border-color: var(--honey); }
   .foot-pill .dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
@@ -226,6 +259,7 @@
   }
   @media (max-width: 600px) {
     .topbar nav { display: none; }
+    .menu-btn { display: flex; }
     .catalogue-bar { position: static; }
     .notice .btn { width: 100%; }
     .foot-grid { flex-direction: column; }
@@ -244,6 +278,9 @@
         <a href="index.html#shop">Où acheter</a>
         <a href="index.html#contact">Contact</a>
       </nav>
+      <button class="menu-btn" id="menuBtn" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mobileNav">
+        <span></span><span></span><span></span>
+      </button>
     </div>
     <div class="cat-intro">
       <p class="eyebrow">Catalogue · impression 3D à Lyon</p>
@@ -252,6 +289,15 @@
     </div>
   </div>
 </header>
+
+<div class="mobile-nav" id="mobileNav" role="dialog" aria-modal="true" aria-label="Menu de navigation">
+  <div class="mobile-nav__scrim" id="navScrim"></div>
+  <nav class="mobile-nav__panel">
+    <a href="index.html">Accueil</a>
+    <a href="index.html#shop">Où acheter</a>
+    <a href="index.html#contact">Contact</a>
+  </nav>
+</div>
 
 <main>
   <div class="wrap">
@@ -272,7 +318,7 @@
 
     <noscript>
       <div class="notice" style="margin-top:24px">
-        <span class="notice-ico">🧡</span>
+        <span class="notice-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:26px;height:26px;color:var(--honey)"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span>
         <div class="notice-txt">
           <strong>Active JavaScript pour voir le catalogue.</strong>
           <p>Ou retrouve-nous directement sur notre boutique Vinted.</p>
@@ -311,7 +357,6 @@
 </footer>
 
 <script>
-  /* Les univers (doivent correspondre aux liens des cartes de la page d'accueil) */
   const CATEGORIES = [
     { slug: 'all',              label: 'Tout' },
     { slug: 'homie-vibe',       label: 'Homie Vibe' },
@@ -321,19 +366,9 @@
     { slug: 'gadgets',          label: 'Gadgets Utiles' }
   ];
 
-  /* =================================================================
-     AJOUTE TES PRODUITS ICI quand tu les as. Exemple :
-       {
-         name: 'Lampe Champignon',
-         price: 18,                         // en euros (nombre)
-         category: 'lampes',                // un slug ci-dessus
-         desc: 'Petite lampe ambiance imprimee en 3D.',
-         img: 'img/lampe-champignon.webp',  // photo (WebP de preference)
-         url: 'https://www.vinted.fr/...'   // lien de l'annonce
-       }
-     Tant que la liste est vide, le catalogue affiche un message
-     + des tuiles « Bientot ». Aucune photo a heberger pour l'instant.
-     ================================================================= */
+  /* Ajoute tes produits ici :
+     { name, price, category, desc, img, url }
+  */
   const PRODUCTS = [
     // (vide pour le moment)
   ];
@@ -345,6 +380,10 @@
   const sortEl = document.getElementById('sort');
   const slugs = CATEGORIES.map(c => c.slug);
 
+  const camSvg = `<svg class="pm-ph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>`;
+  const wandSvg = `<svg class="pm-ph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4V2M15 16v-2M8 9h2M20 9h2M17.8 11.8 19 13M17.8 6.2 19 5M3 21l9-9M12.2 6.2 11 5"/></svg>`;
+  const heartSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:26px;height:26px;color:var(--honey)"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`;
+
   function currentCat() {
     const p = new URLSearchParams(location.search).get('cat');
     return slugs.includes(p) ? p : 'all';
@@ -352,12 +391,12 @@
   let active = currentCat();
 
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]));
-  const fmtPrice = n => n.toLocaleString('fr-FR') + ' €';
+  const fmtPrice = n => n.toLocaleString('fr-FR') + ' €';
 
   function productCard(p) {
     const media = p.img
       ? `<img class="pm-img" src="${esc(p.img)}" alt="${esc(p.name)}" loading="lazy">`
-      : `<span class="pm-ph">📷</span>`;
+      : camSvg;
     return `<article class="product-card">
       <div class="product-media">${media}${p.sold ? '<span class="badge badge--sold">Vendu</span>' : ''}</div>
       <div class="product-info">
@@ -372,7 +411,7 @@
   }
 
   const ghostCard = () => `<div class="product-card ghost" aria-hidden="true">
-      <div class="product-media"><span class="pm-ph">🪄</span></div>
+      <div class="product-media">${wandSvg}</div>
       <div class="product-info">
         <span class="ghost-line ghost-line--lg"></span>
         <span class="ghost-line ghost-line--sm"></span>
@@ -406,7 +445,7 @@
     if (items.length === 0) {
       grid.innerHTML =
         `<div class="notice">
-          <span class="notice-ico">🧡</span>
+          <span class="notice-ico">${heartSvg}</span>
           <div class="notice-txt">
             <strong>Aucun produit en ligne pour le moment.</strong>
             <p>On imprime de nouvelles pièces — reviens très vite ! En attendant, tu peux jeter un œil à notre boutique Vinted.</p>
@@ -419,7 +458,6 @@
     }
   }
 
-  /* Filtrage instantané — même onglet, sans rechargement */
   filtersEl.addEventListener('click', e => {
     const a = e.target.closest('.chip');
     if (!a) return;
@@ -432,6 +470,25 @@
   if (sortEl) sortEl.addEventListener('change', render);
 
   render();
+
+  // Menu mobile
+  const menuBtn = document.getElementById('menuBtn');
+  const mobileNav = document.getElementById('mobileNav');
+  const navScrim = document.getElementById('navScrim');
+  const openNav = () => {
+    mobileNav.classList.add('is-open');
+    menuBtn.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  };
+  const closeNav = () => {
+    mobileNav.classList.remove('is-open');
+    menuBtn.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  };
+  menuBtn.addEventListener('click', () => mobileNav.classList.contains('is-open') ? closeNav() : openNav());
+  navScrim.addEventListener('click', closeNav);
+  mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeNav));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeNav(); });
 </script>
 
 </body>
