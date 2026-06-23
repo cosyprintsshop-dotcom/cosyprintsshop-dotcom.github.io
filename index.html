@@ -32,6 +32,7 @@
 <meta property="og:description" content="Déco cosy et objets utiles imprimés en 3D. En vente sur Vinted et Leboncoin." />
 <meta property="og:url" content="https://cosyprintsshop-dotcom.github.io" />
 <meta name="twitter:card" content="summary" />
+<link rel="canonical" href="https://cosyprintsshop-dotcom.github.io/" />
 
 <link rel="icon" media="(prefers-color-scheme: light)" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23f5f1e6'/%3E%3Ccircle cx='16' cy='13' r='7' fill='%23a67c52'/%3E%3Crect x='7' y='22' width='18' height='3.5' rx='1.75' fill='%23b3906f'/%3E%3C/svg%3E" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%232d2621'/%3E%3Ccircle cx='16' cy='13' r='7' fill='%23c0a080'/%3E%3Crect x='7' y='22' width='18' height='3.5' rx='1.75' fill='%238d6e4c'/%3E%3C/svg%3E" />
@@ -243,6 +244,19 @@
     from { transform: translateX(-6%) scale(0.95); opacity: 0.28; }
     to   { transform: translateX(12%) scale(1.16); opacity: 0.5; }
   }
+
+  /* Scroll-scrubbed "blinds" shader (dark + desktop + motion only; loaded lazily by JS) */
+  .hero-shader {
+    position: absolute; inset: 0; z-index: 0;
+    width: 100%; height: 100%; display: block;
+    pointer-events: none; opacity: 0.5;
+    mix-blend-mode: screen;
+    -webkit-mask-image: radial-gradient(115% 95% at 50% 6%, #000 30%, rgba(0,0,0,0.5) 60%, transparent 92%);
+            mask-image: radial-gradient(115% 95% at 50% 6%, #000 30%, rgba(0,0,0,0.5) 60%, transparent 92%);
+  }
+  :root[data-theme="light"] .hero-shader { display: none; }   /* screen-blend only works on dark */
+  @media (max-width: 899px) { .hero-shader { display: none; } }
+  @media (prefers-reduced-motion: reduce) { .hero-shader { display: none; } }
 
   .topbar {
     display: flex; align-items: center; justify-content: space-between; gap: 16px;
@@ -605,6 +619,51 @@
     .hl::before { transform: scaleX(1); transition: none; }
   }
 
+  /* ============ Skip link ============ */
+  .skip-link {
+    position: fixed; top: 10px; left: 10px; z-index: 400;
+    background: var(--card); color: var(--foreground);
+    border: 1px solid var(--ring); border-radius: 9999px;
+    padding: 10px 18px; font-weight: 600;
+    transform: translateY(-160%); transition: transform .18s ease;
+  }
+  .skip-link:focus-visible { transform: translateY(0); }
+
+  /* ============ Theme toggle ============ */
+  .theme-toggle {
+    position: fixed; top: 16px; right: 16px; z-index: 320;
+    width: 44px; height: 44px; border-radius: 9999px;
+    display: grid; place-items: center;
+    background: var(--tube-bg); border: 1px solid var(--border);
+    color: var(--foreground); cursor: pointer;
+    -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+    box-shadow: 0 8px 24px -14px rgb(var(--shadow-rgb) / var(--shadow-op));
+    transition: transform .18s ease, border-color .18s ease;
+    touch-action: manipulation;
+  }
+  .theme-toggle:hover { transform: translateY(-2px); border-color: var(--ring); }
+  .theme-toggle svg { width: 20px; height: 20px; }
+  .theme-toggle .i-moon { display: none; }
+  :root[data-theme="light"] .theme-toggle .i-sun { display: none; }
+  :root[data-theme="light"] .theme-toggle .i-moon { display: block; }
+  .no-js .theme-toggle { display: none; }
+
+  /* ============ FAQ ============ */
+  #faq { padding-block: clamp(56px, 9vw, 100px); border-top: 1px solid var(--border); }
+  .faq { display: grid; gap: 12px; max-width: 760px; }
+  .faq-item { border: 1px solid var(--border); border-radius: var(--radius); background: var(--card); overflow: hidden; }
+  .faq-item summary {
+    list-style: none; cursor: pointer; padding: 18px 20px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    font-family: var(--display); font-weight: 600; font-size: 1.05rem; color: var(--foreground);
+    transition: color .16s ease;
+  }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary:hover { color: var(--accent-text); }
+  .faq-chevron { width: 18px; height: 18px; flex: none; color: var(--accent-text); transition: transform .25s ease; }
+  .faq-item[open] .faq-chevron { transform: rotate(180deg); }
+  .faq-a { padding: 0 20px 18px; color: var(--muted-foreground); }
+
   /* ============ Tubelight floating nav ============ */
   .tubelight {
     position: fixed;
@@ -682,8 +741,47 @@
     body { padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
   }
 </style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Store",
+      "@id": "https://cosyprintsshop-dotcom.github.io/#store",
+      "name": "Cosy Prints",
+      "description": "Déco cosy et objets utiles imprimés en 3D à Lyon, faits main. En vente sur Vinted et Leboncoin.",
+      "url": "https://cosyprintsshop-dotcom.github.io",
+      "email": "cosyprints.shop@gmail.com",
+      "areaServed": "Lyon, France",
+      "knowsLanguage": "fr",
+      "sameAs": [
+        "https://www.vinted.fr/member/60879390-cosyprints",
+        "https://www.leboncoin.fr/profil/0408d333-46e3-4487-b2f3-4743fd34c872"
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        { "@type": "Question", "name": "Combien de temps pour recevoir ma commande ?", "acceptedAnswer": { "@type": "Answer", "text": "Chaque pièce est imprimée à la demande à Lyon, puis expédiée via Vinted ou Leboncoin. Le délai dépend de la pièce et de la plateforme — on te tient au courant à chaque étape." } },
+        { "@type": "Question", "name": "En quelle matière imprimez-vous ?", "acceptedAnswer": { "@type": "Answer", "text": "On imprime en filament de qualité, couche après couche, pour des pièces solides et durables. Pour une matière ou une finition particulière, écris-nous avant de commander." } },
+        { "@type": "Question", "name": "Puis-je commander une pièce sur-mesure ?", "acceptedAnswer": { "@type": "Answer", "text": "Oui. Écris-nous à cosyprints.shop@gmail.com avec ton idée et on étudie l'impression à la demande." } },
+        { "@type": "Question", "name": "Comment se passent le paiement et la livraison ?", "acceptedAnswer": { "@type": "Answer", "text": "Tout passe par Vinted ou Leboncoin : paiement et livraison sont gérés et protégés par les plateformes. À Lyon, la remise en main propre est possible via Leboncoin." } },
+        { "@type": "Question", "name": "Pourquoi acheter sur Vinted ou Leboncoin et pas sur le site ?", "acceptedAnswer": { "@type": "Answer", "text": "Cosy Prints est une vitrine. On vend sur Vinted et Leboncoin pour un paiement et une livraison sécurisés, sans créer de compte chez nous." } }
+      ]
+    }
+  ]
+}
+</script>
 </head>
 <body>
+
+<a class="skip-link" href="#contenu">Aller au contenu</a>
+
+<button class="theme-toggle" id="themeToggle" type="button" aria-label="Changer de thème">
+  <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+  <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+</button>
 
 <!-- ============ Tubelight floating nav ============ -->
 <nav class="tubelight" aria-label="Navigation principale">
@@ -697,10 +795,6 @@
       <span class="label">Catégories</span>
       <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
     </a>
-    <a class="tubelight__item" href="boutique.html" data-section="boutique" aria-label="Boutique">
-      <span class="label">Boutique</span>
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-    </a>
     <a class="tubelight__item" href="#contact" data-section="contact" data-spy="true" aria-label="Contact">
       <span class="label">Contact</span>
       <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
@@ -709,6 +803,7 @@
 </nav>
 
 <header id="accueil">
+  <canvas class="hero-shader" id="heroShader" aria-hidden="true"></canvas>
   <div class="wrap">
     <div class="topbar">
       <div class="brandmark">Cosy<span>·</span>Prints</div>
@@ -804,7 +899,7 @@
   </div>
 </div>
 
-<main>
+<main id="contenu" tabindex="-1">
   <section id="categories">
     <div class="wrap">
       <div class="section-head reveal">
@@ -930,6 +1025,48 @@
           <h3>Tu reçois</h3>
           <p>Livraison et paiement gérés en toute sécurité via Vinted ou Leboncoin, comme d'habitude.</p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Questions fréquentes</p>
+        <h2>Tout ce qu'il faut <span class="hl">savoir</span>.</h2>
+      </div>
+      <div class="faq">
+        <details class="faq-item">
+          <summary>Combien de temps pour recevoir ma commande ?
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </summary>
+          <div class="faq-a"><p>Chaque pièce est imprimée à la demande à Lyon, couche après couche, puis expédiée via Vinted ou Leboncoin. Le délai dépend de la pièce et de la plateforme — on te tient au courant à chaque étape.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>En quelle matière imprimez-vous ?
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </summary>
+          <div class="faq-a"><p>On imprime en filament de qualité, couche après couche, pour des pièces solides et durables. Pour une matière, une couleur ou une finition particulière, écris-nous avant de commander.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Puis-je commander une pièce sur-mesure ?
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </summary>
+          <div class="faq-a"><p>Oui ! Si tu as une idée précise, écris-nous à cosyprints.shop@gmail.com. On étudie l'impression à la demande et on te dit ce qu'on peut faire.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Comment se passent le paiement et la livraison ?
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </summary>
+          <div class="faq-a"><p>Tout passe par Vinted ou Leboncoin : paiement et livraison sont gérés et protégés directement par les plateformes. À Lyon, la remise en main propre est aussi possible via Leboncoin.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Pourquoi acheter sur Vinted ou Leboncoin et pas sur le site ?
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </summary>
+          <div class="faq-a"><p>Cosy Prints est une vitrine. On vend sur Vinted &amp; Leboncoin pour t'offrir un paiement et une livraison sécurisés, sans avoir à créer de compte chez nous.</p></div>
+        </details>
       </div>
     </div>
   </section>
@@ -1069,6 +1206,85 @@
         entries.forEach((e) => { if (e.isIntersecting) setActive(byId[e.target.id], true); });
       }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
       spy.forEach((it) => io2.observe(document.getElementById(it.dataset.section)));
+    }
+  })();
+
+  // ---- Theme toggle ----
+  (function () {
+    const btn = document.getElementById('themeToggle');
+    if (!btn) return;
+    const label = (t) => btn.setAttribute('aria-label', t === 'light' ? 'Activer le thème sombre' : 'Activer le thème clair');
+    label(document.documentElement.getAttribute('data-theme'));
+    btn.addEventListener('click', () => {
+      const next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      label(next);
+    });
+  })();
+
+  // ---- Hero "blinds" scroll animation: scroll-scrubbed WebGL shader ----
+  // Lazy-loaded; desktop + motion only; renders only in dark theme (screen-blend needs a dark bg).
+  (function () {
+    const canvas = document.getElementById('heroShader');
+    if (!canvas) return;
+    if (!window.matchMedia('(min-width: 900px)').matches) return;
+    if (!window.matchMedia('(prefers-reduced-motion: no-preference)').matches) return;
+
+    const isDark = () => document.documentElement.getAttribute('data-theme') !== 'light';
+    const s = document.createElement('script');
+    s.src = 'https://unpkg.com/three@0.149.0/build/three.min.js';
+    s.async = true;
+    s.onload = init;
+    document.head.appendChild(s);
+
+    function init() {
+      if (typeof THREE === 'undefined') return;
+      const header = canvas.closest('header');
+      if (!header) return;
+
+      const camera = new THREE.Camera(); camera.position.z = 1;
+      const scene = new THREE.Scene();
+      const geometry = new THREE.PlaneGeometry(2, 2);
+      const uniforms = { time: { value: 0 }, resolution: { value: new THREE.Vector2() } };
+      const vertexShader = 'void main(){ gl_Position = vec4(position,1.0); }';
+      const fragmentShader = [
+        'precision highp float;',
+        'uniform vec2 resolution; uniform float time;',
+        'void main(void){',
+        '  vec2 uv = (gl_FragCoord.xy*2.0 - resolution.xy)/min(resolution.x,resolution.y);',
+        '  float t = time*0.05; float lineWidth = 0.0017;',
+        '  vec3 pal[3]; pal[0]=vec3(1.00,0.80,0.42); pal[1]=vec3(1.00,0.62,0.34); pal[2]=vec3(0.86,0.55,0.37);',
+        '  vec3 color = vec3(0.0);',
+        '  for(int j=0;j<3;j++){ float a=0.0;',
+        '    for(int i=0;i<5;i++){ a += lineWidth*float(i*i)/abs(fract(t-0.01*float(j)+float(i)*0.01)*5.0 - length(uv) + mod(uv.x+uv.y,0.2)); }',
+        '    color += pal[j]*a; }',
+        '  gl_FragColor = vec4(color,1.0);',
+        '}'
+      ].join('\n');
+      const material = new THREE.ShaderMaterial({ uniforms, vertexShader, fragmentShader });
+      scene.add(new THREE.Mesh(geometry, material));
+
+      let renderer;
+      try { renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true }); } catch (e) { return; }
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+
+      const maxTime = 12; let targetTime = 0;
+      const clamp = (n, lo, hi) => Math.min(Math.max(n, lo), hi);
+      const updateTarget = () => { const r = header.getBoundingClientRect(); const p = r.height > 0 ? clamp(-r.top / r.height, 0, 1) : 0; targetTime = p * maxTime; };
+      const resize = () => { renderer.setSize(header.clientWidth, header.clientHeight, false); uniforms.resolution.value.set(canvas.width, canvas.height); updateTarget(); };
+      resize();
+      if ('ResizeObserver' in window) { new ResizeObserver(resize).observe(header); } else { window.addEventListener('resize', resize); }
+      window.addEventListener('scroll', updateTarget, { passive: true });
+
+      let visible = true;
+      if ('IntersectionObserver' in window) { new IntersectionObserver((e) => { visible = e[0].isIntersecting; }, { threshold: 0 }).observe(header); }
+      (function loop() {
+        requestAnimationFrame(loop);
+        if (!visible || document.hidden || !isDark()) return;
+        uniforms.time.value += (targetTime - uniforms.time.value) * 0.08;   // LERP scrub
+        renderer.render(scene, camera);
+      })();
     }
   })();
 </script>
