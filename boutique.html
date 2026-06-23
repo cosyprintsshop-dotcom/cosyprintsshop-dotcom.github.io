@@ -356,16 +356,7 @@
   :focus-visible { outline: 2px solid var(--ring); outline-offset: 3px; border-radius: 6px; }
 
   /* ============ 21st.dev-style flourishes ============ */
-  /* Shimmer sweep on primary CTAs */
-  .btn-primary { position: relative; overflow: hidden; isolation: isolate; }
-  .btn-primary::after {
-    content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
-    background: linear-gradient(110deg, transparent 35%, rgba(255, 255, 255, 0.4) 50%, transparent 65%);
-    transform: translateX(-130%);
-    animation: shimmer 5s ease-in-out infinite;
-  }
-  .btn-primary:hover::after { animation-duration: 1.3s; }
-  @keyframes shimmer { 0% { transform: translateX(-130%); } 55%, 100% { transform: translateX(130%); } }
+  /* (CTA shimmer removed — buttons stay clean) */
 
   /* Cursor spotlight on product cards */
   .product-card { position: relative; }
@@ -376,7 +367,6 @@
     background: radial-gradient(200px circle at var(--mx, 50%) var(--my, 50%), rgb(var(--primary-rgb) / 0.16), transparent 70%);
   }
   @media (hover: hover) { .product-card:hover::before { opacity: 1; } }
-  @media (prefers-reduced-motion: reduce) { .btn-primary::after { display: none; } }
 
   /* ============ Skip link ============ */
   .skip-link {
@@ -406,6 +396,20 @@
   :root[data-theme="light"] .theme-toggle .i-sun { display: none; }
   :root[data-theme="light"] .theme-toggle .i-moon { display: block; }
   .no-js .theme-toggle { display: none; }
+
+  /* Scroll-progress "filament line" — fills as you scroll */
+  .scroll-line {
+    position: fixed; top: 0; left: 0; height: 3px; width: 100%;
+    transform-origin: 0 50%; transform: scaleX(0);
+    background: linear-gradient(90deg, var(--accent-text), var(--primary));
+    box-shadow: 0 0 12px rgb(var(--primary-rgb) / 0.55);
+    z-index: 350; pointer-events: none;
+  }
+  @supports (animation-timeline: scroll()) {
+    .scroll-line { animation: scroll-fill linear both; animation-timeline: scroll(root); }
+    @keyframes scroll-fill { to { transform: scaleX(1); } }
+  }
+  @media (prefers-reduced-motion: reduce) { .scroll-line { display: none; } }
 
   /* ============ Tubelight floating nav ============ */
   .tubelight {
@@ -506,6 +510,8 @@
 <body>
 
 <a class="skip-link" href="#contenu">Aller au contenu</a>
+
+<div class="scroll-line" aria-hidden="true"></div>
 
 <button class="theme-toggle" id="themeToggle" type="button" aria-label="Changer de thème">
   <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>

@@ -297,9 +297,9 @@
   .hero-inner h1 {
     font-family: var(--display);
     font-weight: 800;
-    font-size: clamp(2.5rem, 7vw, 4.8rem);
-    line-height: 1.03;
-    letter-spacing: -0.025em;
+    font-size: clamp(2.6rem, 7.4vw, 5.3rem);
+    line-height: 1.0;
+    letter-spacing: -0.035em;
     margin-block: 16px 22px;
   }
   .hero-inner h1 em { font-style: normal; }   /* highlight handled by .hl */
@@ -576,38 +576,29 @@
   .marquee {
     position: relative; overflow: hidden;
     border-block: 1px solid var(--border);
-    background: var(--card);
-    padding-block: 14px;
-    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-            mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    background: transparent;
+    padding-block: 13px;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+            mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
   }
   .marquee__track {
     display: inline-flex; align-items: center; white-space: nowrap;
-    animation: marquee 42s linear infinite; will-change: transform;
+    animation: marquee 60s linear infinite; will-change: transform;
   }
   .marquee:hover .marquee__track { animation-play-state: paused; }
   .marquee__item {
-    display: inline-flex; align-items: center; gap: 22px; padding-inline: 22px;
-    font-family: var(--display); font-weight: 700;
-    font-size: clamp(0.95rem, 2.2vw, 1.4rem); letter-spacing: -0.01em;
-    color: var(--foreground);
+    display: inline-flex; align-items: center; gap: 16px; padding-inline: 16px;
+    font-family: var(--body); font-weight: 600;
+    font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--muted-foreground);
   }
   .marquee__item::before {
-    content: ""; width: 7px; height: 7px; border-radius: 50%; flex: none;
-    background: var(--primary); box-shadow: 0 0 10px rgb(var(--primary-rgb) / 0.8);
+    content: ""; width: 5px; height: 5px; border-radius: 50%; flex: none;
+    background: var(--primary);
   }
   @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-  /* 2 · Shimmer sweep on primary CTAs */
-  .btn-primary { position: relative; overflow: hidden; isolation: isolate; }
-  .btn-primary::after {
-    content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
-    background: linear-gradient(110deg, transparent 35%, rgba(255, 255, 255, 0.4) 50%, transparent 65%);
-    transform: translateX(-130%);
-    animation: shimmer 5s ease-in-out infinite;
-  }
-  .btn-primary:hover::after { animation-duration: 1.3s; }
-  @keyframes shimmer { 0% { transform: translateX(-130%); } 55%, 100% { transform: translateX(130%); } }
+  /* (CTA shimmer removed — buttons stay clean; the lift on hover is enough) */
 
   /* 3 · Cursor spotlight on cards */
   .card { position: relative; }
@@ -635,7 +626,6 @@
   .hl.is-lit::before { transform: scaleX(1); }
   @media (prefers-reduced-motion: reduce) {
     .marquee__track { animation: none; }
-    .btn-primary::after { display: none; }
     .hl::before { transform: scaleX(1); transition: none; }
   }
 
@@ -667,6 +657,20 @@
   :root[data-theme="light"] .theme-toggle .i-sun { display: none; }
   :root[data-theme="light"] .theme-toggle .i-moon { display: block; }
   .no-js .theme-toggle { display: none; }
+
+  /* Scroll-progress "filament line" — fills as you scroll (the print completing) */
+  .scroll-line {
+    position: fixed; top: 0; left: 0; height: 3px; width: 100%;
+    transform-origin: 0 50%; transform: scaleX(0);
+    background: linear-gradient(90deg, var(--accent-text), var(--primary));
+    box-shadow: 0 0 12px rgb(var(--primary-rgb) / 0.55);
+    z-index: 350; pointer-events: none;
+  }
+  @supports (animation-timeline: scroll()) {
+    .scroll-line { animation: scroll-fill linear both; animation-timeline: scroll(root); }
+    @keyframes scroll-fill { to { transform: scaleX(1); } }
+  }
+  @media (prefers-reduced-motion: reduce) { .scroll-line { display: none; } }
 
   /* ============ FAQ ============ */
   #faq { padding-block: clamp(56px, 9vw, 100px); border-top: 1px solid var(--border); }
@@ -840,6 +844,8 @@
 <body>
 
 <a class="skip-link" href="#contenu">Aller au contenu</a>
+
+<div class="scroll-line" aria-hidden="true"></div>
 
 <button class="theme-toggle" id="themeToggle" type="button" aria-label="Changer de thème">
   <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
@@ -1230,8 +1236,17 @@
 </footer>
 
 <script>
+  // Reveal on scroll — grid siblings "print in" with a short stagger.
   const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target;
+      const sibs = Array.prototype.slice.call(el.parentElement.querySelectorAll(':scope > .reveal'));
+      const i = sibs.indexOf(el);
+      if (i > 0) el.style.transitionDelay = Math.min(i, 6) * 70 + 'ms';
+      el.classList.add('in');
+      io.unobserve(el);
+    });
   }, { threshold: 0.12 });
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
