@@ -145,6 +145,19 @@
     --veil: rgba(255, 255, 255, 0.03);
   }
 
+  /* Native form controls follow the theme (fixes the dark-mode <select> dropdown) */
+  :root { color-scheme: light; }
+  :root[data-theme="dark"] { color-scheme: dark; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { color-scheme: dark; } }
+
+  /* Smooth cross-page transitions (Chrome); brand + nav persist across the navigation */
+  @view-transition { navigation: auto; }
+  .topbar .brandmark { view-transition-name: brand; }
+  .tubelight { view-transition-name: nav; }
+  @media (prefers-reduced-motion: reduce) {
+    ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+  }
+
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   html { scroll-behavior: smooth; }
@@ -806,7 +819,7 @@
   <canvas class="hero-shader" id="heroShader" aria-hidden="true"></canvas>
   <div class="wrap">
     <div class="topbar">
-      <div class="brandmark">Cosy<span>·</span>Prints</div>
+      <div class="brandmark" translate="no">Cosy<span>·</span>Prints</div>
     </div>
 
     <div class="hero-grid">
@@ -1145,14 +1158,15 @@
   }, { threshold: 0.5 });
   document.querySelectorAll('.hl').forEach(el => hlIO.observe(el));
 
-  // Cursor spotlight on cards (desktop / fine-pointer only)
+  // Cursor spotlight on cards (desktop / fine-pointer only; rect cached per card, not read every move)
   if (window.matchMedia('(hover: hover)').matches) {
+    let cur = null, rect = null;
     document.addEventListener('pointermove', (e) => {
       const el = e.target.closest('.card, .platform');
-      if (!el) return;
-      const r = el.getBoundingClientRect();
-      el.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
-      el.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100) + '%');
+      if (!el) { cur = null; return; }
+      if (el !== cur) { cur = el; rect = el.getBoundingClientRect(); }
+      el.style.setProperty('--mx', ((e.clientX - rect.left) / rect.width * 100) + '%');
+      el.style.setProperty('--my', ((e.clientY - rect.top) / rect.height * 100) + '%');
     });
   }
 

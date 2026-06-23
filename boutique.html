@@ -141,6 +141,19 @@
     --veil: rgba(255, 255, 255, 0.03);
   }
 
+  /* Native form controls follow the theme (fixes the dark-mode <select> dropdown) */
+  :root { color-scheme: light; }
+  :root[data-theme="dark"] { color-scheme: dark; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { color-scheme: dark; } }
+
+  /* Smooth cross-page transitions (Chrome); brand + nav persist across the navigation */
+  @view-transition { navigation: auto; }
+  .topbar .brandmark { view-transition-name: brand; }
+  .tubelight { view-transition-name: nav; }
+  @media (prefers-reduced-motion: reduce) {
+    ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+  }
+
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   @media (min-width: 640px) { html { scroll-padding-top: 96px; } }
@@ -224,7 +237,7 @@
     box-shadow: 0 8px 22px -10px rgb(var(--primary-rgb) / 0.55);
   }
   .cat-meta { display: flex; align-items: center; gap: 18px; color: var(--muted-foreground); font-size: 0.9rem; }
-  .count { white-space: nowrap; }
+  .count { white-space: nowrap; font-variant-numeric: tabular-nums; }
   .sort { display: inline-flex; align-items: center; gap: 8px; }
   .sort select {
     font-family: var(--body); font-size: 0.88rem; color: var(--foreground);
@@ -264,7 +277,7 @@
   .product-info h3 { font-family: var(--display); font-weight: 600; font-size: 1.08rem; letter-spacing: -.01em; }
   .product-info p { color: var(--muted-foreground); font-size: 0.88rem; flex: 1; }
   .product-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; }
-  .price { font-weight: 700; color: var(--accent-text); }
+  .price { font-weight: 700; color: var(--accent-text); font-variant-numeric: tabular-nums; }
   .product-buy {
     font-weight: 600; font-size: 0.9rem; color: var(--foreground);
     border-bottom: 1px solid var(--ring); padding-bottom: 1px;
@@ -513,7 +526,7 @@
 <header class="cat-hero layers">
   <div class="wrap">
     <div class="topbar">
-      <a class="brandmark" href="index.html">Cosy<span>·</span>Prints</a>
+      <a class="brandmark" href="index.html" translate="no">Cosy<span>·</span>Prints</a>
     </div>
     <div class="cat-intro">
       <p class="eyebrow">Catalogue · impression 3D à Lyon</p>
@@ -615,7 +628,7 @@
   let active = currentCat();
 
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]));
-  const fmtPrice = n => n.toLocaleString('fr-FR') + ' €';
+  const fmtPrice = n => n.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR', minimumFractionDigits: 0, maximumFractionDigits: 0 });
 
   function productCard(p) {
     const media = p.img
@@ -695,14 +708,15 @@
 
   render();
 
-  // Cursor spotlight on product cards (desktop / fine-pointer only; delegated for re-rendered cards)
+  // Cursor spotlight on product cards (desktop / fine-pointer only; rect cached per card, not read every move)
   if (window.matchMedia('(hover: hover)').matches) {
+    let cur = null, rect = null;
     document.addEventListener('pointermove', (e) => {
       const el = e.target.closest('.product-card');
-      if (!el) return;
-      const r = el.getBoundingClientRect();
-      el.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
-      el.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100) + '%');
+      if (!el) { cur = null; return; }
+      if (el !== cur) { cur = el; rect = el.getBoundingClientRect(); }
+      el.style.setProperty('--mx', ((e.clientX - rect.left) / rect.width * 100) + '%');
+      el.style.setProperty('--my', ((e.clientY - rect.top) / rect.height * 100) + '%');
     });
   }
 
