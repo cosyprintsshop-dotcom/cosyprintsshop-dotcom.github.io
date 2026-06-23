@@ -21,14 +21,14 @@
   })();
 </script>
 
-<title>Cosy Prints — Impressions 3D faites main à Lyon</title>
-<meta name="description" content="Cosy Prints : déco cosy et objets utiles imprimés en 3D à Lyon. Homie vibe, cable management, lampes et gadgets. En vente sur Vinted et Leboncoin." />
+<title>Cosy Prints — Impressions 3D faites main à Grenoble</title>
+<meta name="description" content="Cosy Prints : déco cosy et objets utiles imprimés en 3D à Grenoble. Homie vibe, cable management, lampes et gadgets. En vente sur Vinted et Leboncoin." />
 <meta name="theme-color" content="#f5f1e6" media="(prefers-color-scheme: light)" />
 <meta name="theme-color" content="#2d2621" />
 
 <meta property="og:type" content="website" />
 <meta property="og:locale" content="fr_FR" />
-<meta property="og:title" content="Cosy Prints — Impressions 3D faites main à Lyon" />
+<meta property="og:title" content="Cosy Prints — Impressions 3D faites main à Grenoble" />
 <meta property="og:description" content="Déco cosy et objets utiles imprimés en 3D. En vente sur Vinted et Leboncoin." />
 <meta property="og:url" content="https://cosyprintsshop-dotcom.github.io" />
 <meta name="twitter:card" content="summary" />
@@ -154,6 +154,14 @@
   @view-transition { navigation: auto; }
   .topbar .brandmark { view-transition-name: brand; }
   .tubelight { view-transition-name: nav; }
+  /* Theme toggle: reveal the new theme in a circle growing from the button */
+  :root.theme-vt::view-transition-old(root),
+  :root.theme-vt::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+  :root.theme-vt::view-transition-new(root) { animation: theme-circle .45s ease-out; }
+  @keyframes theme-circle {
+    from { clip-path: circle(0 at var(--vt-x) var(--vt-y)); }
+    to   { clip-path: circle(var(--vt-r) at var(--vt-x) var(--vt-y)); }
+  }
   @media (prefers-reduced-motion: reduce) {
     ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
   }
@@ -268,7 +276,6 @@
             mask-image: radial-gradient(115% 95% at 50% 6%, #000 30%, rgba(0,0,0,0.5) 60%, transparent 92%);
   }
   :root[data-theme="light"] .hero-shader { display: none; }   /* screen-blend only works on dark */
-  @media (max-width: 899px) { .hero-shader { display: none; } }
   @media (prefers-reduced-motion: reduce) { .hero-shader { display: none; } }
 
   .topbar {
@@ -677,6 +684,49 @@
   .faq-item[open] .faq-chevron { transform: rotate(180deg); }
   .faq-a { padding: 0 20px 18px; color: var(--muted-foreground); }
 
+  /* ============ Atelier showcase (scroll-straightening frame) ============ */
+  #showcase { padding-block: clamp(36px, 7vw, 84px) clamp(56px, 10vw, 116px); overflow: clip; }
+  .showcase { max-width: 920px; margin: 36px auto 0; perspective: 1400px; }
+  .showcase-frame {
+    border-radius: clamp(18px, 3vw, 30px);
+    border: 4px solid var(--border);
+    background: var(--secondary);
+    padding: clamp(8px, 1.5vw, 18px);
+    box-shadow: 0 40px 90px -40px rgb(var(--shadow-rgb) / var(--shadow-op));
+    transform: rotateX(0deg) scale(1);
+    transform-style: preserve-3d;
+  }
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .showcase-frame {
+        transform: rotateX(24deg) scale(0.92);
+        animation: showcase-straighten linear both;
+        animation-timeline: view();
+        animation-range: entry 8% cover 42%;
+      }
+      @keyframes showcase-straighten { to { transform: rotateX(0deg) scale(1); } }
+    }
+  }
+  .showcase-screen {
+    position: relative;
+    border-radius: clamp(12px, 2vw, 22px); overflow: hidden;
+    border: 1px solid var(--border);
+    aspect-ratio: 16 / 10;
+    display: grid; place-items: center;
+    background:
+      radial-gradient(120% 90% at 50% 0%, rgb(var(--primary-rgb) / 0.18), transparent 60%),
+      var(--card);
+  }
+  .showcase-cap {
+    position: absolute; left: 16px; bottom: 14px;
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 0.78rem; color: var(--muted-foreground);
+    background: var(--card); border: 1px solid var(--border);
+    padding: 6px 12px; border-radius: 9999px;
+    -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+  }
+  .showcase-cap b { color: var(--accent-text); font-weight: 700; }
+
   /* ============ Tubelight floating nav ============ */
   .tubelight {
     position: fixed;
@@ -763,10 +813,10 @@
       "@type": "Store",
       "@id": "https://cosyprintsshop-dotcom.github.io/#store",
       "name": "Cosy Prints",
-      "description": "Déco cosy et objets utiles imprimés en 3D à Lyon, faits main. En vente sur Vinted et Leboncoin.",
+      "description": "Déco cosy et objets utiles imprimés en 3D à Grenoble, faits main. En vente sur Vinted et Leboncoin.",
       "url": "https://cosyprintsshop-dotcom.github.io",
       "email": "cosyprints.shop@gmail.com",
-      "areaServed": "Lyon, France",
+      "areaServed": "Grenoble, France",
       "knowsLanguage": "fr",
       "sameAs": [
         "https://www.vinted.fr/member/60879390-cosyprints",
@@ -776,10 +826,10 @@
     {
       "@type": "FAQPage",
       "mainEntity": [
-        { "@type": "Question", "name": "Combien de temps pour recevoir ma commande ?", "acceptedAnswer": { "@type": "Answer", "text": "Chaque pièce est imprimée à la demande à Lyon, puis expédiée via Vinted ou Leboncoin. Le délai dépend de la pièce et de la plateforme — on te tient au courant à chaque étape." } },
+        { "@type": "Question", "name": "Combien de temps pour recevoir ma commande ?", "acceptedAnswer": { "@type": "Answer", "text": "Chaque pièce est imprimée à la demande à Grenoble, puis expédiée via Vinted ou Leboncoin. Le délai dépend de la pièce et de la plateforme — on te tient au courant à chaque étape." } },
         { "@type": "Question", "name": "En quelle matière imprimez-vous ?", "acceptedAnswer": { "@type": "Answer", "text": "On imprime en filament de qualité, couche après couche, pour des pièces solides et durables. Pour une matière ou une finition particulière, écris-nous avant de commander." } },
         { "@type": "Question", "name": "Puis-je commander une pièce sur-mesure ?", "acceptedAnswer": { "@type": "Answer", "text": "Oui. Écris-nous à cosyprints.shop@gmail.com avec ton idée et on étudie l'impression à la demande." } },
-        { "@type": "Question", "name": "Comment se passent le paiement et la livraison ?", "acceptedAnswer": { "@type": "Answer", "text": "Tout passe par Vinted ou Leboncoin : paiement et livraison sont gérés et protégés par les plateformes. À Lyon, la remise en main propre est possible via Leboncoin." } },
+        { "@type": "Question", "name": "Comment se passent le paiement et la livraison ?", "acceptedAnswer": { "@type": "Answer", "text": "Tout passe par Vinted ou Leboncoin : paiement et livraison sont gérés et protégés par les plateformes. À Grenoble, la remise en main propre est possible via Leboncoin." } },
         { "@type": "Question", "name": "Pourquoi acheter sur Vinted ou Leboncoin et pas sur le site ?", "acceptedAnswer": { "@type": "Answer", "text": "Cosy Prints est une vitrine. On vend sur Vinted et Leboncoin pour un paiement et une livraison sécurisés, sans créer de compte chez nous." } }
       ]
     }
@@ -824,7 +874,7 @@
 
     <div class="hero-grid">
       <div class="hero-inner">
-        <p class="eyebrow">Impression 3D · fait main à Lyon</p>
+        <p class="eyebrow">Impression 3D · fait main à Grenoble</p>
         <h1>Des objets qui rendent ton <em class="hl">chez-toi</em> plus chaleureux.</h1>
         <p class="lede">Déco cosy, rangements malins et petits gadgets imprimés en 3D, couche après couche. À retrouver sur nos boutiques Vinted et Leboncoin.</p>
         <div class="cta-row">
@@ -872,7 +922,7 @@
     <ul class="trust-list" aria-label="Nos engagements">
       <li>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-        Fait main à Lyon
+        Fait main à Grenoble
       </li>
       <li>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="2" y1="9" x2="22" y2="9"/><line x1="2" y1="13" x2="22" y2="13"/></svg>
@@ -898,7 +948,7 @@
     <span class="marquee__item">Lumière &amp; Lampes</span>
     <span class="marquee__item">Bureau &amp; Rangement</span>
     <span class="marquee__item">Gadgets Utiles</span>
-    <span class="marquee__item">Fait main à Lyon</span>
+    <span class="marquee__item">Fait main à Grenoble</span>
     <span class="marquee__item">Impression 3D</span>
     <span class="marquee__item">Couche par couche</span>
     <span class="marquee__item">Homie Vibe</span>
@@ -906,13 +956,46 @@
     <span class="marquee__item">Lumière &amp; Lampes</span>
     <span class="marquee__item">Bureau &amp; Rangement</span>
     <span class="marquee__item">Gadgets Utiles</span>
-    <span class="marquee__item">Fait main à Lyon</span>
+    <span class="marquee__item">Fait main à Grenoble</span>
     <span class="marquee__item">Impression 3D</span>
     <span class="marquee__item">Couche par couche</span>
   </div>
 </div>
 
 <main id="contenu" tabindex="-1">
+  <!-- Atelier showcase -->
+  <section id="showcase" aria-labelledby="showcase-title">
+    <div class="wrap">
+      <div class="section-head reveal" style="margin-inline:auto; text-align:center;">
+        <p class="eyebrow">L'atelier</p>
+        <h2 id="showcase-title">Du fil à l'objet, <span class="hl">couche après couche</span>.</h2>
+      </div>
+      <div class="showcase">
+        <div class="showcase-frame">
+          <div class="showcase-screen">
+            <div class="print-preview" style="width:42%;">
+              <svg class="print-nozzle" viewBox="0 0 52 42" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="4" y="2" width="44" height="18" rx="5"/>
+                <path d="M16 20 12 34h28l-4-14"/>
+                <line x1="26" y1="34" x2="26" y2="40"/>
+                <circle cx="26" cy="40" r="2" fill="currentColor"/>
+              </svg>
+              <div class="print-layers">
+                <div class="print-layer" style="--w:70%"></div>
+                <div class="print-layer" style="--w:88%"></div>
+                <div class="print-layer" style="--w:96%"></div>
+                <div class="print-layer" style="--w:100%"></div>
+                <div class="print-layer" style="--w:90%"></div>
+                <div class="print-layer" style="--w:74%"></div>
+              </div>
+            </div>
+            <span class="showcase-cap"><b>Imprimé</b> à Grenoble · couche par couche</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section id="categories">
     <div class="wrap">
       <div class="section-head reveal">
@@ -1028,7 +1111,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="2" y1="9" x2="22" y2="9"/><line x1="2" y1="13" x2="22" y2="13"/></svg>
           </div>
           <h3>On imprime</h3>
-          <p>Ta commande est fabriquée couche par couche à Lyon, en filament de qualité, rien que pour toi.</p>
+          <p>Ta commande est fabriquée couche par couche à Grenoble, en filament de qualité, rien que pour toi.</p>
         </div>
         <div class="step reveal">
           <div class="step-num">03</div>
@@ -1054,7 +1137,7 @@
           <summary>Combien de temps pour recevoir ma commande ?
             <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
           </summary>
-          <div class="faq-a"><p>Chaque pièce est imprimée à la demande à Lyon, couche après couche, puis expédiée via Vinted ou Leboncoin. Le délai dépend de la pièce et de la plateforme — on te tient au courant à chaque étape.</p></div>
+          <div class="faq-a"><p>Chaque pièce est imprimée à la demande à Grenoble, couche après couche, puis expédiée via Vinted ou Leboncoin. Le délai dépend de la pièce et de la plateforme — on te tient au courant à chaque étape.</p></div>
         </details>
         <details class="faq-item">
           <summary>En quelle matière imprimez-vous ?
@@ -1072,7 +1155,7 @@
           <summary>Comment se passent le paiement et la livraison ?
             <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
           </summary>
-          <div class="faq-a"><p>Tout passe par Vinted ou Leboncoin : paiement et livraison sont gérés et protégés directement par les plateformes. À Lyon, la remise en main propre est aussi possible via Leboncoin.</p></div>
+          <div class="faq-a"><p>Tout passe par Vinted ou Leboncoin : paiement et livraison sont gérés et protégés directement par les plateformes. À Grenoble, la remise en main propre est aussi possible via Leboncoin.</p></div>
         </details>
         <details class="faq-item">
           <summary>Pourquoi acheter sur Vinted ou Leboncoin et pas sur le site ?
@@ -1124,7 +1207,7 @@
     <div class="foot-grid">
       <div class="foot-brand">
         <div class="brandmark">Cosy<span style="color:var(--accent-text)">·</span>Prints</div>
-        <p>Impression 3D faite main à Lyon. Site vitrine — toutes les ventes se font sur Vinted &amp; Leboncoin.</p>
+        <p>Impression 3D faite main à Grenoble. Site vitrine — toutes les ventes se font sur Vinted &amp; Leboncoin.</p>
       </div>
 
       <div class="foot-col">
@@ -1142,7 +1225,7 @@
         </div>
       </div>
     </div>
-    <p class="copyright">© 2026 Cosy Prints — Impression 3D, Lyon. Ventes via Vinted &amp; Leboncoin.</p>
+    <p class="copyright">© 2026 Cosy Prints — Impression 3D, Grenoble. Ventes via Vinted &amp; Leboncoin.</p>
   </div>
 </footer>
 
@@ -1210,39 +1293,60 @@
       document.fonts.ready.then(() => setActive(pill.querySelector('.tubelight__item.is-active') || current, false));
     }
 
+    // A click wins until the smooth-scroll settles, so jumping straight to
+    // Contact (the footer) isn't overridden by sections passing through the band.
+    let spyLock = false, settle;
+    const unlockSoon = () => { clearTimeout(settle); settle = setTimeout(() => { spyLock = false; }, 160); };
     items.forEach((it) => {
-      if (it.dataset.spy === 'true') it.addEventListener('click', () => setActive(it, true));
+      if (it.dataset.spy === 'true') it.addEventListener('click', () => { setActive(it, true); spyLock = true; unlockSoon(); });
     });
 
     const spy = items.filter((it) => it.dataset.spy === 'true' && document.getElementById(it.dataset.section));
     if ('IntersectionObserver' in window && spy.length) {
       const io2 = new IntersectionObserver((entries) => {
+        if (spyLock) return;
         entries.forEach((e) => { if (e.isIntersecting) setActive(byId[e.target.id], true); });
       }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
       spy.forEach((it) => io2.observe(document.getElementById(it.dataset.section)));
+
+      // The footer (#contact) may never cross the band — activate the last
+      // item at the very bottom, and keep the lock alive while scrolling.
+      const last = spy[spy.length - 1];
+      window.addEventListener('scroll', () => {
+        if (spyLock) { unlockSoon(); return; }
+        if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) setActive(last, true);
+      }, { passive: true });
     }
   })();
 
-  // ---- Theme toggle ----
+  // ---- Theme toggle: expanding-circle View Transition from the button ----
   (function () {
     const btn = document.getElementById('themeToggle');
     if (!btn) return;
+    const root = document.documentElement;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
     const label = (t) => btn.setAttribute('aria-label', t === 'light' ? 'Activer le thème sombre' : 'Activer le thème clair');
-    label(document.documentElement.getAttribute('data-theme'));
+    const apply = (t) => { root.setAttribute('data-theme', t); try { localStorage.setItem('theme', t); } catch (e) {} label(t); };
+    label(root.getAttribute('data-theme'));
+
     btn.addEventListener('click', () => {
-      const next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-      document.documentElement.setAttribute('data-theme', next);
-      try { localStorage.setItem('theme', next); } catch (e) {}
-      label(next);
+      const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      if (!document.startViewTransition || reduce.matches) { apply(next); return; }
+      const r = btn.getBoundingClientRect();
+      const x = r.left + r.width / 2, y = r.top + r.height / 2;
+      root.style.setProperty('--vt-x', x + 'px');
+      root.style.setProperty('--vt-y', y + 'px');
+      root.style.setProperty('--vt-r', Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y)) + 'px');
+      root.classList.add('theme-vt');
+      document.startViewTransition(() => apply(next)).finished.finally(() => root.classList.remove('theme-vt'));
     });
   })();
 
   // ---- Hero "blinds" scroll animation: scroll-scrubbed WebGL shader ----
-  // Lazy-loaded; desktop + motion only; renders only in dark theme (screen-blend needs a dark bg).
+  // Lazy-loaded; mobile + desktop, motion only; renders only in dark theme (screen-blend needs a dark bg).
   (function () {
     const canvas = document.getElementById('heroShader');
     if (!canvas) return;
-    if (!window.matchMedia('(min-width: 900px)').matches) return;
     if (!window.matchMedia('(prefers-reduced-motion: no-preference)').matches) return;
 
     const isDark = () => document.documentElement.getAttribute('data-theme') !== 'light';

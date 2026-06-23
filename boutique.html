@@ -22,7 +22,7 @@
 </script>
 
 <title>Catalogue — Cosy Prints</title>
-<meta name="description" content="Le catalogue Cosy Prints : déco cosy, lampes, cable management et gadgets imprimés en 3D à Lyon. Filtre par univers." />
+<meta name="description" content="Le catalogue Cosy Prints : déco cosy, lampes, cable management et gadgets imprimés en 3D à Grenoble. Filtre par univers." />
 <meta name="theme-color" content="#f5f1e6" media="(prefers-color-scheme: light)" />
 <meta name="theme-color" content="#2d2621" />
 
@@ -150,6 +150,14 @@
   @view-transition { navigation: auto; }
   .topbar .brandmark { view-transition-name: brand; }
   .tubelight { view-transition-name: nav; }
+  /* Theme toggle: reveal the new theme in a circle growing from the button */
+  :root.theme-vt::view-transition-old(root),
+  :root.theme-vt::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+  :root.theme-vt::view-transition-new(root) { animation: theme-circle .45s ease-out; }
+  @keyframes theme-circle {
+    from { clip-path: circle(0 at var(--vt-x) var(--vt-y)); }
+    to   { clip-path: circle(var(--vt-r) at var(--vt-x) var(--vt-y)); }
+  }
   @media (prefers-reduced-motion: reduce) {
     ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
   }
@@ -483,10 +491,10 @@
   "@type": "Store",
   "@id": "https://cosyprintsshop-dotcom.github.io/#store",
   "name": "Cosy Prints",
-  "description": "Catalogue Cosy Prints : déco cosy, lampes, cable management et gadgets imprimés en 3D à Lyon, faits main.",
+  "description": "Catalogue Cosy Prints : déco cosy, lampes, cable management et gadgets imprimés en 3D à Grenoble, faits main.",
   "url": "https://cosyprintsshop-dotcom.github.io/boutique.html",
   "email": "cosyprints.shop@gmail.com",
-  "areaServed": "Lyon, France",
+  "areaServed": "Grenoble, France",
   "knowsLanguage": "fr",
   "sameAs": [
     "https://www.vinted.fr/member/60879390-cosyprints",
@@ -529,7 +537,7 @@
       <a class="brandmark" href="index.html" translate="no">Cosy<span>·</span>Prints</a>
     </div>
     <div class="cat-intro">
-      <p class="eyebrow">Catalogue · impression 3D à Lyon</p>
+      <p class="eyebrow">Catalogue · impression 3D à Grenoble</p>
       <h1 id="cat-title">Toutes nos créations</h1>
       <p class="cat-sub">Parcours nos univers. Chaque pièce est imprimée à la main, couche après couche — livraison et paiement gérés via Vinted ou Leboncoin.</p>
     </div>
@@ -573,7 +581,7 @@
     <div class="foot-grid">
       <div class="foot-brand">
         <a class="brandmark" href="index.html">Cosy<span style="color:var(--accent-text)">·</span>Prints</a>
-        <p>Impression 3D faite main à Lyon. Site vitrine — toutes les ventes se font sur Vinted &amp; Leboncoin.</p>
+        <p>Impression 3D faite main à Grenoble. Site vitrine — toutes les ventes se font sur Vinted &amp; Leboncoin.</p>
       </div>
       <div class="foot-col">
         <h4>Acheter</h4>
@@ -589,7 +597,7 @@
         </div>
       </div>
     </div>
-    <p class="copyright">© 2026 Cosy Prints — Impression 3D, Lyon. Ventes via Vinted &amp; Leboncoin.</p>
+    <p class="copyright">© 2026 Cosy Prints — Impression 3D, Grenoble. Ventes via Vinted &amp; Leboncoin.</p>
   </div>
 </footer>
 
@@ -757,17 +765,26 @@
     }
   })();
 
-  // ---- Theme toggle ----
+  // ---- Theme toggle: expanding-circle View Transition from the button ----
   (function () {
     const btn = document.getElementById('themeToggle');
     if (!btn) return;
+    const root = document.documentElement;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
     const label = (t) => btn.setAttribute('aria-label', t === 'light' ? 'Activer le thème sombre' : 'Activer le thème clair');
-    label(document.documentElement.getAttribute('data-theme'));
+    const apply = (t) => { root.setAttribute('data-theme', t); try { localStorage.setItem('theme', t); } catch (e) {} label(t); };
+    label(root.getAttribute('data-theme'));
+
     btn.addEventListener('click', () => {
-      const next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-      document.documentElement.setAttribute('data-theme', next);
-      try { localStorage.setItem('theme', next); } catch (e) {}
-      label(next);
+      const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      if (!document.startViewTransition || reduce.matches) { apply(next); return; }
+      const r = btn.getBoundingClientRect();
+      const x = r.left + r.width / 2, y = r.top + r.height / 2;
+      root.style.setProperty('--vt-x', x + 'px');
+      root.style.setProperty('--vt-y', y + 'px');
+      root.style.setProperty('--vt-r', Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y)) + 'px');
+      root.classList.add('theme-vt');
+      document.startViewTransition(() => apply(next)).finished.finally(() => root.classList.remove('theme-vt'));
     });
   })();
 </script>
