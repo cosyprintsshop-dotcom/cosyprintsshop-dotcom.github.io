@@ -9,6 +9,8 @@
   (function () {
     var d = document.documentElement;
     d.classList.remove('no-js');
+    // Mobile fix: stop the browser reopening the page where you last scrolled (it was landing at the bottom).
+    try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {}
     var t = 'dark';
     try {
       var s = localStorage.getItem('theme');
