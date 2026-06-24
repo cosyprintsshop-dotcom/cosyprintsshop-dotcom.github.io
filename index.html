@@ -232,6 +232,8 @@
     position: relative;
     padding-block: clamp(64px, 12vw, 132px) clamp(56px, 10vw, 104px);
     overflow: hidden;
+    perspective: 1200px;                 /* depth for the scroll-recede + pointer tilt below */
+    perspective-origin: 50% 30%;
   }
   /* Pure-CSS ambient glow (replaces the ~600KB Three.js shader) — two slow drifting auras */
   header::before, header::after {
@@ -266,16 +268,17 @@
     to   { transform: translateX(12%) scale(1.16); opacity: 0.5; }
   }
 
-  /* Scroll-scrubbed "blinds" shader (dark + desktop + motion only; loaded lazily by JS) */
+  /* Scroll-scrubbed "blinds" shader (loaded lazily by JS; renders in both themes, motion only) */
   .hero-shader {
     position: absolute; inset: 0; z-index: 0;
     width: 100%; height: 100%; display: block;
     pointer-events: none; opacity: 0.5;
-    mix-blend-mode: screen;
+    mix-blend-mode: screen;                       /* dark: bright filament streaks glow on the espresso bg */
     -webkit-mask-image: radial-gradient(115% 95% at 50% 6%, #000 30%, rgba(0,0,0,0.5) 60%, transparent 92%);
             mask-image: radial-gradient(115% 95% at 50% 6%, #000 30%, rgba(0,0,0,0.5) 60%, transparent 92%);
   }
-  :root[data-theme="light"] .hero-shader { display: none; }   /* screen-blend only works on dark */
+  /* light: shader paints dark warm pigment on white, multiply keeps only the streaks (the cream stays cream) */
+  :root[data-theme="light"] .hero-shader { mix-blend-mode: multiply; opacity: 0.34; }
   @media (prefers-reduced-motion: reduce) { .hero-shader { display: none; } }
 
   .topbar {
@@ -309,6 +312,15 @@
     max-width: 48ch;
   }
   .cta-row { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 34px; }
+
+  /* Immersive scroll: JS drives these transforms (spring-eased). Hero lifts & tips back as you
+     scroll past; the print panel reacts to the pointer in 3D. Reduced-motion users get neither. */
+  .hero-grid { transform-style: preserve-3d; transform-origin: 50% 0%; will-change: transform, opacity; }
+  .hero-inner { will-change: transform; }
+  .stage__panel { transition: box-shadow .3s ease; will-change: transform; }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-grid, .hero-inner, .stage__panel { transform: none !important; opacity: 1 !important; }
+  }
 
   /* Stage with 3D-print layers visual */
   .stage { position: relative; aspect-ratio: 4 / 5; }
@@ -658,20 +670,6 @@
   :root[data-theme="light"] .theme-toggle .i-moon { display: block; }
   .no-js .theme-toggle { display: none; }
 
-  /* Scroll-progress "filament line" — fills as you scroll (the print completing) */
-  .scroll-line {
-    position: fixed; top: 0; left: 0; height: 3px; width: 100%;
-    transform-origin: 0 50%; transform: scaleX(0);
-    background: linear-gradient(90deg, var(--accent-text), var(--primary));
-    box-shadow: 0 0 12px rgb(var(--primary-rgb) / 0.55);
-    z-index: 350; pointer-events: none;
-  }
-  @supports (animation-timeline: scroll()) {
-    .scroll-line { animation: scroll-fill linear both; animation-timeline: scroll(root); }
-    @keyframes scroll-fill { to { transform: scaleX(1); } }
-  }
-  @media (prefers-reduced-motion: reduce) { .scroll-line { display: none; } }
-
   /* ============ FAQ ============ */
   #faq { padding-block: clamp(56px, 9vw, 100px); border-top: 1px solid var(--border); }
   .faq { display: grid; gap: 12px; max-width: 760px; }
@@ -844,8 +842,6 @@
 <body>
 
 <a class="skip-link" href="#contenu">Aller au contenu</a>
-
-<div class="scroll-line" aria-hidden="true"></div>
 
 <button class="theme-toggle" id="themeToggle" type="button" aria-label="Changer de thème">
   <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
@@ -1358,7 +1354,8 @@
   })();
 
   // ---- Hero "blinds" scroll animation: scroll-scrubbed WebGL shader ----
-  // Lazy-loaded; mobile + desktop, motion only; renders only in dark theme (screen-blend needs a dark bg).
+  // Lazy-loaded; mobile + desktop, motion only. Renders in BOTH themes: bright filament streaks
+  // on dark (screen blend), dark warm pigment on light (multiply blend) — switched by the `theme` uniform.
   (function () {
     const canvas = document.getElementById('heroShader');
     if (!canvas) return;
@@ -1379,11 +1376,11 @@
       const camera = new THREE.Camera(); camera.position.z = 1;
       const scene = new THREE.Scene();
       const geometry = new THREE.PlaneGeometry(2, 2);
-      const uniforms = { time: { value: 0 }, resolution: { value: new THREE.Vector2() } };
+      const uniforms = { time: { value: 0 }, resolution: { value: new THREE.Vector2() }, theme: { value: isDark() ? 0.0 : 1.0 } };
       const vertexShader = 'void main(){ gl_Position = vec4(position,1.0); }';
       const fragmentShader = [
         'precision highp float;',
-        'uniform vec2 resolution; uniform float time;',
+        'uniform vec2 resolution; uniform float time; uniform float theme;',
         'void main(void){',
         '  vec2 uv = (gl_FragCoord.xy*2.0 - resolution.xy)/min(resolution.x,resolution.y);',
         '  float t = time*0.05; float lineWidth = 0.0017;',
@@ -1392,7 +1389,13 @@
         '  for(int j=0;j<3;j++){ float a=0.0;',
         '    for(int i=0;i<5;i++){ a += lineWidth*float(i*i)/abs(fract(t-0.01*float(j)+float(i)*0.01)*5.0 - length(uv) + mod(uv.x+uv.y,0.2)); }',
         '    color += pal[j]*a; }',
-        '  gl_FragColor = vec4(color,1.0);',
+        '  if (theme > 0.5) {',                                    // light theme: invert for multiply blend
+        '    float lum = clamp(max(max(color.r,color.g),color.b), 0.0, 1.0);',
+        '    vec3 pigment = vec3(0.34, 0.25, 0.15);',              // deep cocoa-brown streaks
+        '    gl_FragColor = vec4(mix(vec3(1.0), pigment, lum), 1.0);',  // white stays = no change under multiply
+        '  } else {',                                              // dark theme: bright streaks for screen blend
+        '    gl_FragColor = vec4(color, 1.0);',
+        '  }',
         '}'
       ].join('\n');
       const material = new THREE.ShaderMaterial({ uniforms, vertexShader, fragmentShader });
@@ -1414,11 +1417,70 @@
       if ('IntersectionObserver' in window) { new IntersectionObserver((e) => { visible = e[0].isIntersecting; }, { threshold: 0 }).observe(header); }
       (function loop() {
         requestAnimationFrame(loop);
-        if (!visible || document.hidden || !isDark()) return;
+        if (!visible || document.hidden) return;
+        uniforms.theme.value = isDark() ? 0.0 : 1.0;                        // follow theme toggle / OS change
         uniforms.time.value += (targetTime - uniforms.time.value) * 0.08;   // LERP scrub
         renderer.render(scene, camera);
       })();
     }
+  })();
+
+  // ---- Immersive 3D hero: scroll-recede + pointer tilt, spring-eased ----
+  // As you scroll past the hero it lifts and tips back into depth; the print panel reacts to the
+  // pointer in 3D. Everything is lerped each frame so it glides — and eases back as you scroll up.
+  (function () {
+    if (!window.matchMedia('(prefers-reduced-motion: no-preference)').matches) return;
+    const header = document.getElementById('accueil');
+    if (!header) return;
+    const grid  = header.querySelector('.hero-grid');
+    const inner = header.querySelector('.hero-inner');
+    const panel = header.querySelector('.stage__panel');
+    if (!grid) return;
+
+    const clamp = (n, lo, hi) => Math.min(Math.max(n, lo), hi);
+    let pT = 0, pC = 0;                       // scroll progress  (target / eased-current)
+    let mxT = 0, mxC = 0, myT = 0, myC = 0;   // pointer offset -1..1 (target / eased-current)
+
+    const onScroll = () => {
+      const r = header.getBoundingClientRect();
+      pT = r.height > 0 ? clamp(-r.top / r.height, 0, 1) : 0;
+    };
+    const onMove = (e) => {
+      const r = header.getBoundingClientRect();
+      mxT = clamp(((e.clientX - r.left) / r.width  - 0.5) * 2, -1, 1);
+      myT = clamp(((e.clientY - r.top)  / r.height - 0.5) * 2, -1, 1);
+    };
+    const onLeave = () => { mxT = 0; myT = 0; };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    if (window.matchMedia('(hover: hover)').matches) {
+      header.addEventListener('pointermove', onMove, { passive: true });
+      header.addEventListener('pointerleave', onLeave, { passive: true });
+    }
+    onScroll();
+
+    (function loop() {
+      requestAnimationFrame(loop);
+      pC  += (pT  - pC ) * 0.10;              // spring toward the live targets
+      mxC += (mxT - mxC) * 0.07;
+      myC += (myT - myC) * 0.07;
+
+      const e = pC * pC * (3 - 2 * pC);       // smoothstep — subtle at first, recedes as it leaves
+      grid.style.transform =
+        'translate3d(0,' + (e * -54).toFixed(2) + 'px,0) rotateX(' + (e * 10).toFixed(2) + 'deg) scale(' + (1 - e * 0.08).toFixed(4) + ')';
+      grid.style.opacity = (1 - e * 0.5).toFixed(3);
+
+      if (inner) inner.style.transform = 'translateY(' + (e * -16).toFixed(2) + 'px)';
+
+      if (panel) {
+        const ry = mxC * 12;                  // look left / right with the pointer
+        const rx = -myC * 9 + e * 7;          // look up / down + tip back on scroll
+        panel.style.transform =
+          'rotateY(' + ry.toFixed(2) + 'deg) rotateX(' + rx.toFixed(2) + 'deg) translateZ(' + (e * 26).toFixed(2) + 'px)';
+        panel.style.boxShadow =
+          (-mxC * 20).toFixed(1) + 'px ' + (36 + myC * 12).toFixed(1) + 'px 80px -34px rgb(var(--shadow-rgb) / var(--shadow-op)), inset 0 0 60px -30px rgb(var(--primary-rgb) / 0.28)';
+      }
+    })();
   })();
 </script>
 
