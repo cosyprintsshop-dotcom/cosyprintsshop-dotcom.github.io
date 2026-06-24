@@ -287,13 +287,13 @@
   .hero-shader {
     position: absolute; inset: 0; z-index: 0;
     width: 100%; height: 100%; display: block;
-    pointer-events: none; opacity: 0.5;
+    pointer-events: none; opacity: 0.36;
     mix-blend-mode: screen;                       /* dark: bright filament streaks glow on the espresso bg */
     -webkit-mask-image: radial-gradient(115% 95% at 50% 6%, #000 30%, rgba(0,0,0,0.5) 60%, transparent 92%);
             mask-image: radial-gradient(115% 95% at 50% 6%, #000 30%, rgba(0,0,0,0.5) 60%, transparent 92%);
   }
   /* light: shader paints dark warm pigment on white, multiply keeps only the streaks (the cream stays cream) */
-  :root[data-theme="light"] .hero-shader { mix-blend-mode: multiply; opacity: 0.34; }
+  :root[data-theme="light"] .hero-shader { mix-blend-mode: multiply; opacity: 0.22; }
   @media (prefers-reduced-motion: reduce) { .hero-shader { display: none; } }
 
   .topbar {
@@ -406,7 +406,7 @@
   .trust-list svg { width: 15px; height: 15px; color: var(--accent-text); flex: none; }
 
   /* ============ SECTIONS ============ */
-  .section-head { margin-bottom: 44px; max-width: 640px; }
+  .section-head { margin-bottom: 60px; max-width: 600px; }
   .section-head h2 {
     font-family: var(--display); font-weight: 800;
     font-size: clamp(1.8rem, 4.5vw, 2.7rem);
@@ -414,7 +414,7 @@
   }
   .section-head p { color: var(--muted-foreground); margin-top: 14px; }
 
-  #categories { padding-block: clamp(60px, 10vw, 116px); }
+  #categories { padding-block: clamp(76px, 12vw, 140px); }
 
   .grid {
     display: grid;
@@ -463,7 +463,7 @@
 
   /* ============ COMMENT ÇA MARCHE ============ */
   #process {
-    padding-block: clamp(60px, 10vw, 110px);
+    padding-block: clamp(76px, 12vw, 136px);
     border-top: 1px solid var(--border);
   }
   .steps {
@@ -495,8 +495,8 @@
   .step p { color: var(--muted-foreground); font-size: 0.93rem; line-height: 1.55; }
 
   /* ============ OÙ ACHETER ============ */
-  #shop { padding-block: clamp(56px, 9vw, 100px); border-top: 1px solid var(--border); }
-  .shop-head { text-align: center; max-width: 620px; margin: 0 auto 44px; }
+  #shop { padding-block: clamp(76px, 11vw, 128px); border-top: 1px solid var(--border); }
+  .shop-head { text-align: center; max-width: 560px; margin: 0 auto 60px; }
   .shop-head h2 { font-family: var(--display); font-weight: 800; font-size: clamp(1.8rem, 4.5vw, 2.6rem); letter-spacing: -.02em; line-height: 1.1; margin-top: 12px; }
   .shop-head p { color: var(--muted-foreground); margin-top: 14px; }
 
@@ -741,7 +741,7 @@
   @media (prefers-reduced-motion: reduce) { .menu-btn__bar, .menu-pop { transition: none; } }
 
   /* ============ FAQ ============ */
-  #faq { padding-block: clamp(56px, 9vw, 100px); border-top: 1px solid var(--border); }
+  #faq { padding-block: clamp(76px, 11vw, 128px); border-top: 1px solid var(--border); }
   .faq { display: grid; gap: 12px; max-width: 760px; }
   .faq-item { border: 1px solid var(--border); border-radius: var(--radius); background: var(--card); overflow: hidden; }
   .faq-item summary {
@@ -1075,7 +1075,7 @@
     <div class="wrap">
       <div class="section-head reveal" style="margin-inline:auto; text-align:center;">
         <p class="eyebrow">L'atelier</p>
-        <h2 id="showcase-title">Du fil à l'objet, <span class="hl">couche après couche</span>.</h2>
+        <h2 id="showcase-title">Du fil à l'objet, couche après couche.</h2>
       </div>
       <div class="showcase">
         <div class="showcase-frame">
@@ -1107,8 +1107,8 @@
     <div class="wrap">
       <div class="section-head reveal">
         <p class="eyebrow">Nos univers</p>
-        <h2>Choisis ton <span class="hl">style</span>, on s'occupe de l'impression.</h2>
-        <p>Clique sur un univers pour ouvrir le catalogue filtré. On imprime à la demande, puis on expédie via Vinted ou Leboncoin.</p>
+        <h2>Choisis ton style, on s'occupe de l'impression.</h2>
+        <p>Clique sur un univers pour voir le catalogue.</p>
       </div>
 
       <div class="grid">
@@ -1200,8 +1200,7 @@
     <div class="wrap">
       <div class="section-head reveal">
         <p class="eyebrow">Comment ça marche</p>
-        <h2>Simple comme <span class="hl">bonjour</span>.</h2>
-        <p>Trois étapes, aucune prise de tête. Aucun compte à créer chez nous.</p>
+        <h2>Simple comme bonjour.</h2>
       </div>
       <div class="steps">
         <div class="step reveal">
@@ -1210,7 +1209,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 6v16l7-4 8 4 7-4V2l-7 4-8-4-7 4z"/><path d="M8 2v16M16 6v16"/></svg>
           </div>
           <h3>Tu choisis</h3>
-          <p>Parcours le catalogue, repère ce qui te plaît. Filtre par univers pour trouver vite ce qu'il te faut.</p>
+          <p>Parcours le catalogue et filtre par univers pour trouver vite.</p>
         </div>
         <div class="step reveal">
           <div class="step-num">02</div>
@@ -1218,7 +1217,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="2" y1="9" x2="22" y2="9"/><line x1="2" y1="13" x2="22" y2="13"/></svg>
           </div>
           <h3>On imprime</h3>
-          <p>Ta commande est fabriquée couche par couche à Grenoble, en filament de qualité, rien que pour toi.</p>
+          <p>Fabriquée couche par couche à Grenoble, rien que pour toi.</p>
         </div>
         <div class="step reveal">
           <div class="step-num">03</div>
@@ -1226,7 +1225,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </div>
           <h3>Tu reçois</h3>
-          <p>Livraison et paiement gérés en toute sécurité via Vinted ou Leboncoin, comme d'habitude.</p>
+          <p>Livraison et paiement sécurisés via Vinted ou Leboncoin.</p>
         </div>
       </div>
     </div>
@@ -1237,38 +1236,38 @@
     <div class="wrap">
       <div class="section-head reveal">
         <p class="eyebrow">Questions fréquentes</p>
-        <h2>Tout ce qu'il faut <span class="hl">savoir</span>.</h2>
+        <h2>Tout ce qu'il faut savoir.</h2>
       </div>
       <div class="faq">
         <details class="faq-item">
           <summary>Combien de temps pour recevoir ma commande ?
             <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
           </summary>
-          <div class="faq-a"><p>Chaque pièce est imprimée à la demande à Grenoble, couche après couche, puis expédiée via Vinted ou Leboncoin. Le délai dépend de la pièce et de la plateforme — on te tient au courant à chaque étape.</p></div>
+          <div class="faq-a"><p>Chaque pièce est imprimée à la demande à Grenoble, puis expédiée via Vinted ou Leboncoin. On te tient au courant à chaque étape.</p></div>
         </details>
         <details class="faq-item">
           <summary>En quelle matière imprimez-vous ?
             <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
           </summary>
-          <div class="faq-a"><p>On imprime en filament de qualité, couche après couche, pour des pièces solides et durables. Pour une matière, une couleur ou une finition particulière, écris-nous avant de commander.</p></div>
+          <div class="faq-a"><p>En filament de qualité, pour des pièces solides et durables. Pour une couleur ou une finition particulière, écris-nous avant de commander.</p></div>
         </details>
         <details class="faq-item">
           <summary>Puis-je commander une pièce sur-mesure ?
             <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
           </summary>
-          <div class="faq-a"><p>Oui ! Si tu as une idée précise, écris-nous à cosyprints.shop@gmail.com. On étudie l'impression à la demande et on te dit ce qu'on peut faire.</p></div>
+          <div class="faq-a"><p>Oui ! Écris-nous à cosyprints.shop@gmail.com avec ton idée, on te dit ce qu'on peut faire.</p></div>
         </details>
         <details class="faq-item">
           <summary>Comment se passent le paiement et la livraison ?
             <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
           </summary>
-          <div class="faq-a"><p>Tout passe par Vinted ou Leboncoin : paiement et livraison sont gérés et protégés directement par les plateformes. À Grenoble, la remise en main propre est aussi possible via Leboncoin.</p></div>
+          <div class="faq-a"><p>Tout passe par Vinted ou Leboncoin : paiement et livraison protégés par les plateformes. Remise en main propre possible à Grenoble via Leboncoin.</p></div>
         </details>
         <details class="faq-item">
           <summary>Pourquoi acheter sur Vinted ou Leboncoin et pas sur le site ?
             <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
           </summary>
-          <div class="faq-a"><p>Cosy Prints est une vitrine. On vend sur Vinted &amp; Leboncoin pour t'offrir un paiement et une livraison sécurisés, sans avoir à créer de compte chez nous.</p></div>
+          <div class="faq-a"><p>Cosy Prints est une vitrine : on vend sur Vinted &amp; Leboncoin pour un paiement et une livraison sécurisés, sans créer de compte.</p></div>
         </details>
       </div>
     </div>
@@ -1278,8 +1277,7 @@
     <div class="wrap">
       <div class="shop-head reveal">
         <p class="eyebrow">Où nous trouver</p>
-        <h2>On vend là où l'achat est simple et <span class="hl">sécurisé</span>.</h2>
-        <p>Paiement et livraison sont gérés directement par les plateformes — tu commandes en toute confiance, comme d'habitude.</p>
+        <h2>On vend là où l'achat est simple et sécurisé.</h2>
       </div>
 
       <div class="platforms">
@@ -1591,18 +1589,18 @@
 
       const e = pC * pC * (3 - 2 * pC);       // smoothstep — subtle at first, recedes as it leaves
       grid.style.transform =
-        'translate3d(0,' + (e * -54).toFixed(2) + 'px,0) rotateX(' + (e * 10).toFixed(2) + 'deg) scale(' + (1 - e * 0.08).toFixed(4) + ')';
-      grid.style.opacity = (1 - e * 0.5).toFixed(3);
+        'translate3d(0,' + (e * -32).toFixed(2) + 'px,0) rotateX(' + (e * 6).toFixed(2) + 'deg) scale(' + (1 - e * 0.05).toFixed(4) + ')';
+      grid.style.opacity = (1 - e * 0.32).toFixed(3);
 
-      if (inner) inner.style.transform = 'translateY(' + (e * -16).toFixed(2) + 'px)';
+      if (inner) inner.style.transform = 'translateY(' + (e * -10).toFixed(2) + 'px)';
 
       if (panel) {
-        const ry = mxC * 12;                  // look left / right with the pointer
-        const rx = -myC * 9 + e * 7;          // look up / down + tip back on scroll
+        const ry = mxC * 7;                   // look left / right with the pointer
+        const rx = -myC * 5 + e * 4;          // look up / down + tip back on scroll
         panel.style.transform =
-          'rotateY(' + ry.toFixed(2) + 'deg) rotateX(' + rx.toFixed(2) + 'deg) translateZ(' + (e * 26).toFixed(2) + 'px)';
+          'rotateY(' + ry.toFixed(2) + 'deg) rotateX(' + rx.toFixed(2) + 'deg) translateZ(' + (e * 16).toFixed(2) + 'px)';
         panel.style.boxShadow =
-          (-mxC * 20).toFixed(1) + 'px ' + (36 + myC * 12).toFixed(1) + 'px 80px -34px rgb(var(--shadow-rgb) / var(--shadow-op)), inset 0 0 60px -30px rgb(var(--primary-rgb) / 0.28)';
+          (-mxC * 12).toFixed(1) + 'px ' + (34 + myC * 8).toFixed(1) + 'px 80px -34px rgb(var(--shadow-rgb) / var(--shadow-op)), inset 0 0 60px -30px rgb(var(--primary-rgb) / 0.28)';
       }
     })();
   })();
