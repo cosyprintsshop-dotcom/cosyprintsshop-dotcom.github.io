@@ -154,13 +154,28 @@
   @view-transition { navigation: auto; }
   .topbar .brandmark { view-transition-name: brand; }
   .tubelight { view-transition-name: nav; }
-  /* Theme toggle: reveal the new theme in a circle growing from the button */
+  /* Theme toggle: reveal the new theme through an expanding GIF mask (shigure-ui dance).
+     Scoped to .theme-vt so page-to-page navigations keep the plain cross-fade above. */
+  :root {
+    --theme-vt-dur: 2.4s;
+    --expo-in: linear(
+      0 0%, 0.0085 31.26%, 0.0167 40.94%, 0.0289 48.86%, 0.0471 55.92%,
+      0.0717 61.99%, 0.1038 67.32%, 0.1443 72.07%, 0.1989 76.7%,
+      0.2659 80.89%, 0.3465 84.71%, 0.4419 88.22%, 0.554 91.48%,
+      0.6835 94.51%, 0.8316 97.34%, 1 100%);
+  }
+  :root.theme-vt::view-transition-group(root) { animation-timing-function: var(--expo-in); }
   :root.theme-vt::view-transition-old(root),
-  :root.theme-vt::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
-  :root.theme-vt::view-transition-new(root) { animation: theme-circle .45s ease-out; }
-  @keyframes theme-circle {
-    from { clip-path: circle(0 at var(--vt-x) var(--vt-y)); }
-    to   { clip-path: circle(var(--vt-r) at var(--vt-x) var(--vt-y)); }
+  :root.theme-vt::view-transition-new(root) { mix-blend-mode: normal; animation: theme-mask var(--theme-vt-dur) both; }
+  :root.theme-vt::view-transition-new(root) {
+    -webkit-mask: url("https://media.tenor.com/cyORI7kwShQAAAAi/shigure-ui-dance.gif") center / 0 no-repeat;
+            mask: url("https://media.tenor.com/cyORI7kwShQAAAAi/shigure-ui-dance.gif") center / 0 no-repeat;
+  }
+  @keyframes theme-mask {
+    0%   { -webkit-mask-size: 0;        mask-size: 0; }
+    10%  { -webkit-mask-size: 50vmax;   mask-size: 50vmax; }
+    90%  { -webkit-mask-size: 50vmax;   mask-size: 50vmax; }
+    100% { -webkit-mask-size: 2000vmax; mask-size: 2000vmax; }
   }
   @media (prefers-reduced-motion: reduce) {
     ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
@@ -1330,7 +1345,7 @@
     }
   })();
 
-  // ---- Theme toggle: expanding-circle View Transition from the button ----
+  // ---- Theme toggle: GIF-mask View Transition (expanding shigure-ui dance mask) ----
   (function () {
     const btn = document.getElementById('themeToggle');
     if (!btn) return;
