@@ -412,6 +412,61 @@
   :root[data-theme="light"] .theme-toggle .i-moon { display: block; }
   .no-js .theme-toggle { display: none; }
 
+  /* ============ Menu button (top-left twin of the theme toggle) ============ */
+  .menu-btn {
+    position: fixed; top: 16px; left: 16px; z-index: 320;
+    width: 44px; height: 44px; border-radius: 9999px;
+    display: grid; place-items: center;
+    background: var(--tube-bg); border: 1px solid var(--border);
+    color: var(--foreground); cursor: pointer;
+    -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+    box-shadow: 0 8px 24px -14px rgb(var(--shadow-rgb) / var(--shadow-op));
+    transition: transform .18s ease, border-color .18s ease;
+    touch-action: manipulation;
+  }
+  .menu-btn:hover { transform: translateY(-2px); border-color: var(--ring); }
+  .no-js .menu-btn { display: none; }
+
+  /* animated hamburger → X (three bars) */
+  .menu-btn__box { position: relative; width: 18px; height: 14px; }
+  .menu-btn__bar {
+    position: absolute; left: 0; width: 18px; height: 2px; border-radius: 2px;
+    background: currentColor; transition: transform .25s ease, opacity .2s ease;
+  }
+  .menu-btn__bar:nth-child(1) { top: 0; }
+  .menu-btn__bar:nth-child(2) { top: 6px; }
+  .menu-btn__bar:nth-child(3) { top: 12px; }
+  .menu-btn[aria-expanded="true"] .menu-btn__bar:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+  .menu-btn[aria-expanded="true"] .menu-btn__bar:nth-child(2) { opacity: 0; }
+  .menu-btn[aria-expanded="true"] .menu-btn__bar:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+  /* dropdown panel — same glassy surface as the nav/toggle, rounded */
+  .menu-pop {
+    position: fixed; top: 70px; left: 16px; z-index: 319;
+    min-width: 210px; padding: 8px;
+    background: var(--tube-bg); border: 1px solid var(--border); border-radius: 16px;
+    -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+    box-shadow: 0 18px 44px -22px rgb(var(--shadow-rgb) / var(--shadow-op));
+    display: flex; flex-direction: column; gap: 2px;
+    transform-origin: top left;
+    opacity: 0; transform: translateY(-8px) scale(.96); visibility: hidden; pointer-events: none;
+    transition: opacity .18s ease, transform .18s ease, visibility .18s;
+  }
+  .menu-pop.is-open { opacity: 1; transform: translateY(0) scale(1); visibility: visible; pointer-events: auto; }
+  .menu-pop a {
+    display: flex; align-items: center; gap: 11px;
+    padding: 10px 12px; border-radius: 10px;
+    color: var(--muted-foreground); text-decoration: none;
+    font-size: .95rem; font-weight: 500; line-height: 1.2;
+    transition: background .15s ease, color .15s ease;
+  }
+  .menu-pop a:hover { background: var(--accent); color: var(--foreground); }
+  .menu-pop a .ic  { width: 17px; height: 17px; flex: none; opacity: .85; }
+  .menu-pop a .ext { width: 13px; height: 13px; margin-left: auto; opacity: .5; }
+  .menu-pop__sep { height: 1px; background: var(--border); margin: 6px 4px; }
+  .menu-pop__label { font-size: .7rem; letter-spacing: .05em; text-transform: uppercase; color: var(--muted-foreground); padding: 4px 12px 2px; opacity: .7; }
+  @media (prefers-reduced-motion: reduce) { .menu-btn__bar, .menu-pop { transition: none; } }
+
   /* ============ Tubelight floating nav ============ */
   .tubelight {
     position: fixed;
@@ -516,6 +571,41 @@
   <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
   <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
 </button>
+
+<!-- Top-left menu: animated hamburger → X, opens a themed nav dropdown -->
+<button class="menu-btn" id="menuBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="menuPop" aria-label="Ouvrir le menu">
+  <span class="menu-btn__box" aria-hidden="true">
+    <span class="menu-btn__bar"></span>
+    <span class="menu-btn__bar"></span>
+    <span class="menu-btn__bar"></span>
+  </span>
+</button>
+<nav class="menu-pop" id="menuPop" aria-label="Menu de navigation">
+  <a href="index.html#accueil">
+    <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    Accueil
+  </a>
+  <a href="index.html#categories">
+    <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+    Catégories
+  </a>
+  <a href="index.html#contact">
+    <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+    Contact
+  </a>
+  <div class="menu-pop__sep"></div>
+  <div class="menu-pop__label">Nos boutiques</div>
+  <a href="https://www.vinted.fr/member/60879390-cosyprints" target="_blank" rel="noopener">
+    <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+    Vinted
+    <svg class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+  </a>
+  <a href="https://www.leboncoin.fr/profil/0408d333-46e3-4487-b2f3-4743fd34c872" target="_blank" rel="noopener">
+    <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+    Leboncoin
+    <svg class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+  </a>
+</nav>
 
 <!-- ============ Tubelight floating nav ============ -->
 <nav class="tubelight" aria-label="Navigation principale">
@@ -768,6 +858,25 @@
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(() => setActive(pill.querySelector('.tubelight__item.is-active') || current, false));
     }
+  })();
+
+  // ---- Top-left menu: animated hamburger → X + themed nav dropdown ----
+  (function () {
+    const btn = document.getElementById('menuBtn');
+    const pop = document.getElementById('menuPop');
+    if (!btn || !pop) return;
+    const isOpen = () => btn.getAttribute('aria-expanded') === 'true';
+    const setOpen = (open) => {
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      btn.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
+      pop.classList.toggle('is-open', open);
+    };
+    btn.addEventListener('click', (e) => { e.stopPropagation(); setOpen(!isOpen()); });
+    document.addEventListener('click', (e) => {
+      if (isOpen() && !pop.contains(e.target) && !btn.contains(e.target)) setOpen(false);
+    });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && isOpen()) { setOpen(false); btn.focus(); } });
+    pop.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
   })();
 
   // ---- Theme toggle: GIF-mask View Transition (expanding shigure-ui dance mask) ----
