@@ -23,8 +23,8 @@
   })();
 </script>
 
-<title>Catalogue — Cosy Prints</title>
-<meta name="description" content="Le catalogue Cosy Prints : déco cosy, lampes, cable management et gadgets imprimés en 3D à Grenoble. Filtre par univers." />
+<title>Notre engagement — Cosy Prints</title>
+<meta name="description" content="Chez Cosy Prints, une partie de nos bénéfices soutient la lutte contre le cancer et le nettoyage du plastique en mer. Un engagement qui nous tient à cœur." />
 <meta name="theme-color" content="#f5f1e6" media="(prefers-color-scheme: light)" />
 <meta name="theme-color" content="#2d2621" />
 
@@ -634,7 +634,7 @@
     <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
     Contact
   </a>
-  <a href="engagement.html">
+  <a href="engagement.html" aria-current="page">
     <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-4.35-9.5-8.5A5.2 5.2 0 0 1 12 6a5.2 5.2 0 0 1 9.5 6.5C19 16.65 12 21 12 21z"/></svg>
     Notre engagement
   </a>
@@ -677,42 +677,105 @@
       <a class="brandmark" href="index.html" translate="no">Cosy<span>·</span>Prints</a>
     </div>
     <div class="cat-intro">
-      <p class="eyebrow">Catalogue · impression 3D à Grenoble</p>
-      <h1 id="cat-title">Toutes nos créations</h1>
-      <p class="cat-sub">Parcours nos univers. Chaque pièce est imprimée à la main, couche après couche — livraison et paiement gérés via Vinted ou Leboncoin.</p>
+      <p class="eyebrow">Au-delà des objets</p>
+      <h1 id="cat-title">Notre engagement</h1>
+      <p class="cat-sub">Cosy Prints, ce n'est pas que des objets imprimés. C'est aussi une promesse : reverser une partie de ce qu'on gagne à des causes qui nous tiennent à cœur.</p>
     </div>
   </div>
 </header>
 
 <main id="contenu" tabindex="-1">
-  <div class="wrap">
-    <div class="catalogue-bar">
-      <div class="filters" id="filters" role="tablist" aria-label="Filtrer par univers"></div>
-      <div class="cat-meta">
-        <span class="count" id="count">0 produit</span>
-        <label class="sort">
-          <span>Tri</span>
-          <select id="sort" aria-label="Trier les produits">
-            <option value="new">Nouveautés</option>
-            <option value="price-asc">Prix croissant</option>
-            <option value="price-desc">Prix décroissant</option>
-          </select>
-        </label>
-      </div>
-    </div>
 
-    <noscript>
-      <div class="notice" style="margin-top:24px">
-        <div class="notice-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
-        <div class="notice-txt">
-          <strong>Active JavaScript pour voir le catalogue.</strong>
-          <p>Ou retrouve-nous directement sur notre boutique Vinted.</p>
+  <style>
+    .eng { max-width: 760px; margin-inline: auto; }
+    .eng-block { padding-block: clamp(40px, 7vw, 72px); }
+    .eng-block + .eng-block { border-top: 1px solid var(--border); }
+    .eng-hommage { text-align: center; }
+    .eng-hommage .eng-icon { color: var(--accent-text); margin-bottom: 16px; }
+    .eng-hommage .eng-icon svg { width: 34px; height: 34px; }
+    .eng-hommage h2 { font-family: var(--display); font-weight: 800; font-size: clamp(1.5rem, 4vw, 2.1rem); line-height: 1.15; letter-spacing: -.02em; }
+    .eng-hommage p { color: var(--muted-foreground); margin-top: 16px; font-size: 1.05rem; max-width: 56ch; margin-inline: auto; }
+    .eng-title { font-family: var(--display); font-weight: 800; font-size: clamp(1.5rem, 4vw, 2.1rem); letter-spacing: -.02em; }
+    .eng-lead { color: var(--muted-foreground); margin-top: 12px; }
+    .eng-causes { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 28px; }
+    @media (max-width: 640px) { .eng-causes { grid-template-columns: 1fr; } }
+    .eng-cause { border: 1px solid var(--border); border-radius: var(--radius); background: var(--card); padding: 22px; display: flex; flex-direction: column; gap: 10px; }
+    .eng-cause .ic { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: rgb(var(--primary-rgb) / .14); color: var(--accent-text); }
+    .eng-cause .ic svg { width: 23px; height: 23px; }
+    .eng-cause h3 { font-family: var(--display); font-weight: 700; font-size: 1.15rem; }
+    .eng-cause p { color: var(--muted-foreground); font-size: .96rem; }
+    .eng-cause .asso { margin-top: auto; font-size: .9rem; }
+    .eng-cause .asso b { color: var(--foreground); }
+    .eng-support { background: var(--secondary); border-radius: var(--radius); border: 1px solid var(--border); padding: clamp(24px, 4vw, 36px); text-align: center; }
+    .eng-support h2 { font-family: var(--display); font-weight: 800; font-size: clamp(1.4rem, 3.5vw, 1.9rem); }
+    .eng-support > p { color: var(--muted-foreground); margin-top: 12px; max-width: 52ch; margin-inline: auto; }
+    .eng-contact { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; align-items: center; margin-top: 22px; }
+    .eng-phone { display: inline-flex; align-items: center; gap: 10px; background: var(--card); border: 1px solid var(--border); border-radius: 9999px; padding: 12px 20px; font-weight: 600; font-size: 1.05rem; color: var(--foreground); text-decoration: none; transition: border-color .15s ease, transform .15s ease; }
+    .eng-phone:hover { border-color: var(--ring); transform: translateY(-1px); }
+    .eng-phone svg { width: 18px; height: 18px; color: var(--accent-text); }
+    .eng-note { margin-top: 14px; font-size: .82rem; color: var(--muted-foreground); opacity: .85; }
+    .eng-soon { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; justify-content: space-between; border: 1px dashed var(--border); border-radius: var(--radius); padding: 18px 22px; }
+    .eng-soon .txt { color: var(--muted-foreground); font-size: .95rem; flex: 1 1 240px; }
+    .eng-soon .txt b { color: var(--foreground); }
+    .eng-pill-soon { font-size: .8rem; font-weight: 600; padding: 7px 14px; border-radius: 9999px; background: rgb(var(--primary-rgb) / .14); color: var(--accent-text); white-space: nowrap; }
+  </style>
+
+  <div class="wrap eng">
+
+    <!-- Hommage (universel, sobre) -->
+    <section class="eng-block eng-hommage">
+      <p class="eyebrow">En mémoire</p>
+      <div class="eng-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+      </div>
+      <h2>À celles et ceux que le cancer nous a pris.</h2>
+      <p>Ce projet, on le porte aussi pour les êtres chers que la maladie a emportés trop tôt. Cette page, c'est notre façon de transformer un peu de peine en quelque chose d'utile — et de ne pas les oublier.</p>
+    </section>
+
+    <!-- Les deux causes -->
+    <section class="eng-block">
+      <h2 class="eng-title">Deux causes, à parts égales.</h2>
+      <p class="eng-lead">Une partie de nos bénéfices est reversée à deux associations qui nous tiennent à cœur.</p>
+      <div class="eng-causes">
+        <article class="eng-cause">
+          <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.35-9.5-8.5A5.2 5.2 0 0 1 12 6a5.2 5.2 0 0 1 9.5 6.5C19 16.65 12 21 12 21z"/></svg></span>
+          <h3>Lutte contre le cancer</h3>
+          <p>Pour la recherche, et l'accompagnement des malades et de leurs proches.</p>
+          <p class="asso">Nous soutenons <b>La Ligue contre le cancer</b>.</p>
+        </article>
+        <article class="eng-cause">
+          <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6c2-2.4 4-2.4 6 0s4 2.4 6 0 4-2.4 6 0"/><path d="M2 12c2-2.4 4-2.4 6 0s4 2.4 6 0 4-2.4 6 0"/><path d="M2 18c2-2.4 4-2.4 6 0s4 2.4 6 0 4-2.4 6 0"/></svg></span>
+          <h3>Nettoyage des océans</h3>
+          <p>Contre le plastique qui étouffe la mer — un combat qui rejoint notre envie d'imprimer plus responsable.</p>
+          <p class="asso">Nous soutenons <b>The SeaCleaners</b>.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Soutenir -->
+    <section class="eng-block">
+      <div class="eng-support">
+        <h2>Envie de soutenir avec nous ?</h2>
+        <p>Pas de bouton de paiement ici — on préfère le contact humain. Si vous voulez participer à un don, écrivez-nous : on s'organise ensemble.</p>
+        <div class="eng-contact">
+          <a class="eng-phone" href="tel:+33671194152" aria-label="Nous écrire ou nous appeler au 06 71 19 41 52">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            06 71 19 41 52
+          </a>
+          <a class="btn btn-ghost" href="mailto:cosyprints.shop@gmail.com">Ou par e-mail</a>
         </div>
-        <a class="btn btn-primary" href="https://www.vinted.fr/member/60879390-cosyprints" target="_blank" rel="noopener">Voir sur Vinted</a>
+        <p class="eng-note">Un simple SMS suffit — on vous recontacte pour organiser un don, à votre rythme.</p>
       </div>
-    </noscript>
+    </section>
 
-    <div class="product-grid" id="grid" aria-live="polite"></div>
+    <!-- Communauté Facebook (bientôt) -->
+    <section class="eng-block">
+      <div class="eng-soon">
+        <span class="txt"><b>Bientôt : notre communauté Facebook.</b> Pour suivre, en toute transparence, combien nous avons reversé à chaque cause.</span>
+        <span class="eng-pill-soon">Bientôt disponible</span>
+      </div>
+    </section>
+
   </div>
 </main>
 
@@ -742,132 +805,6 @@
 </footer>
 
 <script>
-  const CATEGORIES = [
-    { slug: 'all',              label: 'Tout' },
-    { slug: 'homie-vibe',       label: 'Homie Vibe' },
-    { slug: 'cable-management', label: 'Cable Management' },
-    { slug: 'lampes',           label: 'Lumière & Lampes' },
-    { slug: 'bureau',           label: 'Bureau & Rangement' },
-    { slug: 'gadgets',          label: 'Gadgets Utiles' }
-  ];
-
-  /* Ajoute tes produits ici :
-     { name, price, category, desc, img, url }
-  */
-  const PRODUCTS = [
-    // (vide pour le moment)
-  ];
-
-  const grid = document.getElementById('grid');
-  const filtersEl = document.getElementById('filters');
-  const countEl = document.getElementById('count');
-  const titleEl = document.getElementById('cat-title');
-  const sortEl = document.getElementById('sort');
-  const slugs = CATEGORIES.map(c => c.slug);
-
-  const camSvg = `<svg class="pm-ph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>`;
-  const wandSvg = `<svg class="pm-ph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4V2M15 16v-2M8 9h2M20 9h2M17.8 11.8 19 13M17.8 6.2 19 5M3 21l9-9M12.2 6.2 11 5"/></svg>`;
-  const heartSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`;
-
-  function currentCat() {
-    const p = new URLSearchParams(location.search).get('cat');
-    return slugs.includes(p) ? p : 'all';
-  }
-  let active = currentCat();
-
-  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]));
-  const fmtPrice = n => n.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR', minimumFractionDigits: 0, maximumFractionDigits: 0 });
-
-  function productCard(p) {
-    const media = p.img
-      ? `<img class="pm-img" src="${esc(p.img)}" alt="${esc(p.name)}" loading="lazy">`
-      : camSvg;
-    return `<article class="product-card">
-      <div class="product-media">${media}${p.sold ? '<span class="badge badge--sold">Vendu</span>' : ''}</div>
-      <div class="product-info">
-        <h3>${esc(p.name)}</h3>
-        ${p.desc ? `<p>${esc(p.desc)}</p>` : ''}
-        <div class="product-foot">
-          <span class="price">${p.price != null ? fmtPrice(p.price) : ''}</span>
-          ${p.url ? `<a class="product-buy" href="${esc(p.url)}" target="_blank" rel="noopener">Voir →</a>` : ''}
-        </div>
-      </div>
-    </article>`;
-  }
-
-  const ghostCard = () => `<div class="product-card ghost" aria-hidden="true">
-      <div class="product-media">${wandSvg}</div>
-      <div class="product-info">
-        <span class="ghost-line ghost-line--lg"></span>
-        <span class="ghost-line ghost-line--sm"></span>
-        <span class="badge badge--soon">Bientôt</span>
-      </div>
-    </div>`;
-
-  function sortItems(items) {
-    const v = sortEl ? sortEl.value : 'new';
-    const a = items.slice();
-    if (v === 'price-asc') a.sort((x, y) => (x.price || 0) - (y.price || 0));
-    else if (v === 'price-desc') a.sort((x, y) => (y.price || 0) - (x.price || 0));
-    return a;
-  }
-
-  function render() {
-    filtersEl.innerHTML = CATEGORIES.map(c => {
-      const href = c.slug === 'all' ? 'boutique.html' : 'boutique.html?cat=' + c.slug;
-      const on = c.slug === active;
-      return `<a class="chip${on ? ' is-active' : ''}" href="${href}" data-cat="${c.slug}" role="tab" aria-selected="${on}">${esc(c.label)}</a>`;
-    }).join('');
-
-    const label = CATEGORIES.find(c => c.slug === active).label;
-    titleEl.textContent = active === 'all' ? 'Toutes nos créations' : label;
-    document.title = (active === 'all' ? 'Catalogue' : label) + ' — Cosy Prints';
-
-    let items = active === 'all' ? PRODUCTS : PRODUCTS.filter(p => p.category === active);
-    items = sortItems(items);
-    countEl.textContent = items.length + (items.length > 1 ? ' produits' : ' produit');
-
-    if (items.length === 0) {
-      grid.innerHTML =
-        `<div class="notice">
-          <div class="notice-ico">${heartSvg}</div>
-          <div class="notice-txt">
-            <strong>Aucun produit en ligne pour le moment.</strong>
-            <p>On imprime de nouvelles pièces — reviens très vite ! En attendant, retrouve-nous sur Vinted.</p>
-          </div>
-          <a class="btn btn-primary" href="https://www.vinted.fr/member/60879390-cosyprints" target="_blank" rel="noopener">Voir sur Vinted</a>
-        </div>` +
-        Array.from({ length: 3 }, ghostCard).join('');
-    } else {
-      grid.innerHTML = items.map(productCard).join('');
-    }
-  }
-
-  filtersEl.addEventListener('click', e => {
-    const a = e.target.closest('.chip');
-    if (!a) return;
-    e.preventDefault();
-    active = a.dataset.cat;
-    history.pushState({ cat: active }, '', a.getAttribute('href'));
-    render();
-  });
-  window.addEventListener('popstate', () => { active = currentCat(); render(); });
-  if (sortEl) sortEl.addEventListener('change', render);
-
-  render();
-
-  // Cursor spotlight on product cards (desktop / fine-pointer only; rect cached per card, not read every move)
-  if (window.matchMedia('(hover: hover)').matches) {
-    let cur = null, rect = null;
-    document.addEventListener('pointermove', (e) => {
-      const el = e.target.closest('.product-card');
-      if (!el) { cur = null; return; }
-      if (el !== cur) { cur = el; rect = el.getBoundingClientRect(); }
-      el.style.setProperty('--mx', ((e.clientX - rect.left) / rect.width * 100) + '%');
-      el.style.setProperty('--my', ((e.clientY - rect.top) / rect.height * 100) + '%');
-    });
-  }
-
   // ---- Tubelight floating nav: sliding lamp (active = current page) ----
   (function () {
     const pill = document.getElementById('navPill');

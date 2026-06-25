@@ -156,29 +156,52 @@
   @view-transition { navigation: auto; }
   .topbar .brandmark { view-transition-name: brand; }
   .tubelight { view-transition-name: nav; }
-  /* Theme toggle: reveal the new theme through an expanding GIF mask (shigure-ui dance).
-     Scoped to .theme-vt so page-to-page navigations keep the plain cross-fade above. */
-  :root {
-    --theme-vt-dur: 2.4s;
-    --expo-in: linear(
-      0 0%, 0.0085 31.26%, 0.0167 40.94%, 0.0289 48.86%, 0.0471 55.92%,
-      0.0717 61.99%, 0.1038 67.32%, 0.1443 72.07%, 0.1989 76.7%,
-      0.2659 80.89%, 0.3465 84.71%, 0.4419 88.22%, 0.554 91.48%,
-      0.6835 94.51%, 0.8316 97.34%, 1 100%);
+  /* ===== Theme toggle: "high-speed 3D print" reveal (replaces the old GIF view-transition) =====
+     JS flips data-theme instantly, then plays this overlay: a cover painted in the OLD background
+     colour retracts top→bottom while a nozzle zig-zags across the build line, "printing" the new theme. */
+  #printFx {
+    position: fixed; inset: 0; z-index: 2147483000;
+    pointer-events: none; overflow: hidden; visibility: hidden;
+    --pfx-dur: 820ms; --pfx-zig: 130ms;
   }
-  :root.theme-vt::view-transition-group(root) { animation-timing-function: var(--expo-in); }
-  :root.theme-vt::view-transition-old(root),
-  :root.theme-vt::view-transition-new(root) { mix-blend-mode: normal; animation: theme-mask var(--theme-vt-dur) both; }
-  :root.theme-vt::view-transition-new(root) {
-    -webkit-mask: url("https://media.tenor.com/cyORI7kwShQAAAAi/shigure-ui-dance.gif") center / 0 no-repeat;
-            mask: url("https://media.tenor.com/cyORI7kwShQAAAAi/shigure-ui-dance.gif") center / 0 no-repeat;
+  #printFx.is-printing { visibility: visible; }
+  .pfx-cover { position: absolute; inset: 0; background: var(--pfx-oldbg, var(--background)); }
+  .pfx-cover::after {                 /* faint build-plate grid on the not-yet-printed area */
+    content: ""; position: absolute; inset: 0; opacity: .55;
+    background:
+      repeating-linear-gradient(0deg,  transparent 0 23px, rgb(var(--primary-rgb) / .10) 23px 24px),
+      repeating-linear-gradient(90deg, transparent 0 23px, rgb(var(--primary-rgb) / .10) 23px 24px);
   }
-  @keyframes theme-mask {
-    0%   { -webkit-mask-size: 0;        mask-size: 0; }
-    10%  { -webkit-mask-size: 50vmax;   mask-size: 50vmax; }
-    90%  { -webkit-mask-size: 50vmax;   mask-size: 50vmax; }
-    100% { -webkit-mask-size: 2000vmax; mask-size: 2000vmax; }
+  #printFx.is-printing .pfx-cover { animation: pfx-reveal var(--pfx-dur) cubic-bezier(.5,0,.5,1) forwards; }
+  @keyframes pfx-reveal { from { clip-path: inset(0 0 0 0); } to { clip-path: inset(100% 0 0 0); } }
+
+  .pfx-band { position: absolute; left: 0; top: 0; width: 100%; height: 0; will-change: transform; }
+  #printFx.is-printing .pfx-band { animation: pfx-descend var(--pfx-dur) cubic-bezier(.5,0,.5,1) forwards; }
+  @keyframes pfx-descend { from { transform: translateY(0); } to { transform: translateY(100vh); } }
+
+  .pfx-lines {                        /* freshly-printed layer lines, trailing just above the build line */
+    position: absolute; left: 0; right: 0; bottom: 0; height: 60px;
+    background: repeating-linear-gradient(0deg, rgb(var(--primary-rgb) / .30) 0 1px, transparent 1px 5px);
+    -webkit-mask-image: linear-gradient(to top, #000, transparent);
+            mask-image: linear-gradient(to top, #000, transparent);
   }
+  .pfx-beam {                         /* the hot laser build line */
+    position: absolute; left: -4%; right: -4%; top: -1px; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--primary) 16%, #fff 50%, var(--primary) 84%, transparent);
+    box-shadow: 0 0 10px 1px rgb(var(--primary-rgb) / .85), 0 0 28px 5px rgb(var(--primary-rgb) / .45);
+  }
+  .pfx-head {                         /* the print head — zig-zags fast across the build line */
+    position: absolute; left: 50%; top: -20px; width: 30px; height: 26px; margin-left: -15px;
+    color: var(--primary); will-change: transform;
+  }
+  #printFx.is-printing .pfx-head { animation: pfx-zig var(--pfx-zig) cubic-bezier(.65,0,.35,1) infinite alternate; }
+  @keyframes pfx-zig { from { transform: translateX(-43vw); } to { transform: translateX(43vw); } }
+  .pfx-head svg { display: block; width: 100%; height: 100%; filter: drop-shadow(0 0 6px rgb(var(--primary-rgb) / .8)); }
+  .pfx-head::after {                  /* molten glow at the nozzle tip */
+    content: ""; position: absolute; left: 50%; bottom: -4px; width: 12px; height: 12px; margin-left: -6px;
+    border-radius: 50%; background: radial-gradient(circle, #fff, rgb(var(--primary-rgb) / .7) 40%, transparent 70%);
+  }
+  @media (prefers-reduced-motion: reduce) { #printFx { display: none; } }
   @media (prefers-reduced-motion: reduce) {
     ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
   }
@@ -920,6 +943,22 @@
   <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
 </button>
 
+<!-- High-speed 3D-print theme reveal (driven by #themeToggle) -->
+<div id="printFx" aria-hidden="true">
+  <div class="pfx-cover"></div>
+  <div class="pfx-band">
+    <div class="pfx-lines"></div>
+    <div class="pfx-beam"></div>
+    <div class="pfx-head">
+      <svg viewBox="0 0 52 42" aria-hidden="true">
+        <rect x="6" y="2" width="40" height="15" rx="4" fill="currentColor"/>
+        <path d="M16 17 L23 31 H29 L36 17 Z" fill="currentColor"/>
+        <rect x="24" y="31" width="4" height="8" rx="1.5" fill="currentColor"/>
+      </svg>
+    </div>
+  </div>
+</div>
+
 <!-- Top-left menu: animated hamburger → X, opens a themed nav dropdown -->
 <button class="menu-btn" id="menuBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="menuPop" aria-label="Ouvrir le menu">
   <span class="menu-btn__box" aria-hidden="true">
@@ -940,6 +979,10 @@
   <a href="#contact">
     <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
     Contact
+  </a>
+  <a href="engagement.html">
+    <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-4.35-9.5-8.5A5.2 5.2 0 0 1 12 6a5.2 5.2 0 0 1 9.5 6.5C19 16.65 12 21 12 21z"/></svg>
+    Notre engagement
   </a>
   <div class="menu-pop__sep"></div>
   <div class="menu-pop__label">Nos boutiques</div>
@@ -1477,26 +1520,34 @@
     })();
   })();
 
-  // ---- Theme toggle: GIF-mask View Transition (expanding shigure-ui dance mask) ----
+  // ---- Theme toggle: high-speed 3D-print reveal ----
+  // Flip the theme instantly, then play a print-head sweep that "prints" the new theme over the old.
   (function () {
     const btn = document.getElementById('themeToggle');
     if (!btn) return;
     const root = document.documentElement;
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const fx = document.getElementById('printFx');
+    const cover = fx && fx.querySelector('.pfx-cover');
     const label = (t) => btn.setAttribute('aria-label', t === 'light' ? 'Activer le thème sombre' : 'Activer le thème clair');
     const apply = (t) => { root.setAttribute('data-theme', t); try { localStorage.setItem('theme', t); } catch (e) {} label(t); };
     label(root.getAttribute('data-theme'));
 
+    let printing = false;
     btn.addEventListener('click', () => {
       const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-      if (!document.startViewTransition || reduce.matches) { apply(next); return; }
-      const r = btn.getBoundingClientRect();
-      const x = r.left + r.width / 2, y = r.top + r.height / 2;
-      root.style.setProperty('--vt-x', x + 'px');
-      root.style.setProperty('--vt-y', y + 'px');
-      root.style.setProperty('--vt-r', Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y)) + 'px');
-      root.classList.add('theme-vt');
-      document.startViewTransition(() => apply(next)).finished.finally(() => root.classList.remove('theme-vt'));
+      if (!fx || reduce.matches) { apply(next); return; }            // no overlay → just switch
+      if (printing) return;                                          // ignore clicks mid-print
+      printing = true;
+      const oldBg = getComputedStyle(root).getPropertyValue('--background').trim();
+      fx.style.setProperty('--pfx-oldbg', oldBg);                    // cover = the colour we're leaving
+      apply(next);                                                   // page underneath is now the new theme
+      fx.classList.remove('is-printing'); void fx.offsetWidth;        // restart the print animation
+      fx.classList.add('is-printing');
+      let cleaned = false;
+      const done = () => { if (cleaned) return; cleaned = true; clearTimeout(t); fx.classList.remove('is-printing'); printing = false; };
+      const t = setTimeout(done, 1100);                              // guaranteed cleanup if animationend never fires
+      if (cover) cover.addEventListener('animationend', done, { once: true });
     });
   })();
 
