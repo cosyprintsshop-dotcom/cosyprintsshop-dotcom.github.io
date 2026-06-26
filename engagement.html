@@ -152,51 +152,54 @@
   @view-transition { navigation: auto; }
   .topbar .brandmark { view-transition-name: brand; }
   .tubelight { view-transition-name: nav; }
-  /* ===== Theme toggle: "high-speed 3D print" reveal (replaces the old GIF view-transition) =====
-     JS flips data-theme instantly, then plays this overlay: a cover painted in the OLD background
-     colour retracts top→bottom while a nozzle zig-zags across the build line, "printing" the new theme. */
+  /* ===== Theme toggle: 3D-print reveal — a printer gantry descends and "prints" the new theme =====
+     JS flips data-theme instantly, then plays this overlay: a cover in the OLD background colour
+     retracts top→bottom while a full-width gantry rail + nozzle carriage zig-zag down, laying layers. */
   #printFx {
     position: fixed; inset: 0; z-index: 2147483000;
     pointer-events: none; overflow: hidden; visibility: hidden;
-    --pfx-dur: 820ms; --pfx-zig: 130ms;
+    --pfx-dur: 1500ms; --pfx-zig: 330ms;     /* slow enough to read the head travelling */
   }
   #printFx.is-printing { visibility: visible; }
   .pfx-cover { position: absolute; inset: 0; background: var(--pfx-oldbg, var(--background)); }
-  .pfx-cover::after {                 /* faint build-plate grid on the not-yet-printed area */
-    content: ""; position: absolute; inset: 0; opacity: .55;
+  .pfx-cover::after {                 /* build-plate grid on the not-yet-printed area */
+    content: ""; position: absolute; inset: 0; opacity: .5;
     background:
-      repeating-linear-gradient(0deg,  transparent 0 23px, rgb(var(--primary-rgb) / .10) 23px 24px),
-      repeating-linear-gradient(90deg, transparent 0 23px, rgb(var(--primary-rgb) / .10) 23px 24px);
+      repeating-linear-gradient(0deg,  transparent 0 27px, rgb(var(--primary-rgb) / .10) 27px 28px),
+      repeating-linear-gradient(90deg, transparent 0 27px, rgb(var(--primary-rgb) / .10) 27px 28px);
   }
-  #printFx.is-printing .pfx-cover { animation: pfx-reveal var(--pfx-dur) cubic-bezier(.5,0,.5,1) forwards; }
+  #printFx.is-printing .pfx-cover { animation: pfx-reveal var(--pfx-dur) cubic-bezier(.45,.05,.55,.95) forwards; }
   @keyframes pfx-reveal { from { clip-path: inset(0 0 0 0); } to { clip-path: inset(100% 0 0 0); } }
 
   .pfx-band { position: absolute; left: 0; top: 0; width: 100%; height: 0; will-change: transform; }
-  #printFx.is-printing .pfx-band { animation: pfx-descend var(--pfx-dur) cubic-bezier(.5,0,.5,1) forwards; }
+  #printFx.is-printing .pfx-band { animation: pfx-descend var(--pfx-dur) cubic-bezier(.45,.05,.55,.95) forwards; }
   @keyframes pfx-descend { from { transform: translateY(0); } to { transform: translateY(100vh); } }
 
-  .pfx-lines {                        /* freshly-printed layer lines, trailing just above the build line */
-    position: absolute; left: 0; right: 0; bottom: 0; height: 60px;
-    background: repeating-linear-gradient(0deg, rgb(var(--primary-rgb) / .30) 0 1px, transparent 1px 5px);
+  .pfx-lines {                        /* freshly-printed layer lines, stacking above the gantry */
+    position: absolute; left: 0; right: 0; bottom: 2px; height: 86px;
+    background: repeating-linear-gradient(0deg, rgb(var(--primary-rgb) / .5) 0 1px, transparent 1px 4px);
     -webkit-mask-image: linear-gradient(to top, #000, transparent);
             mask-image: linear-gradient(to top, #000, transparent);
   }
-  .pfx-beam {                         /* the hot laser build line */
-    position: absolute; left: -4%; right: -4%; top: -1px; height: 2px;
-    background: linear-gradient(90deg, transparent, var(--primary) 16%, #fff 50%, var(--primary) 84%, transparent);
-    box-shadow: 0 0 10px 1px rgb(var(--primary-rgb) / .85), 0 0 28px 5px rgb(var(--primary-rgb) / .45);
+  .pfx-rail {                         /* the gantry rail (X-axis) — spans the screen, reads as a 3D printer */
+    position: absolute; left: -2%; right: -2%; top: -3px; height: 6px; border-radius: 3px;
+    background: linear-gradient(180deg, #ded7c8, #9a9080 52%, #6a6354);
+    box-shadow: 0 1px 3px rgb(0 0 0 / .3), 0 0 16px rgb(var(--primary-rgb) / .35);
   }
-  .pfx-head {                         /* the print head — zig-zags fast across the build line */
-    position: absolute; left: 50%; top: -20px; width: 30px; height: 26px; margin-left: -15px;
+  :root[data-theme="dark"] .pfx-rail { background: linear-gradient(180deg, #6f6757, #45403a 52%, #2c2824); }
+  .pfx-head {                         /* the print head: carriage mounted on the rail + hot nozzle */
+    position: absolute; left: 50%; top: -11px; width: 32px; height: 36px; margin-left: -16px;
     color: var(--primary); will-change: transform;
   }
-  #printFx.is-printing .pfx-head { animation: pfx-zig var(--pfx-zig) cubic-bezier(.65,0,.35,1) infinite alternate; }
-  @keyframes pfx-zig { from { transform: translateX(-43vw); } to { transform: translateX(43vw); } }
-  .pfx-head svg { display: block; width: 100%; height: 100%; filter: drop-shadow(0 0 6px rgb(var(--primary-rgb) / .8)); }
-  .pfx-head::after {                  /* molten glow at the nozzle tip */
-    content: ""; position: absolute; left: 50%; bottom: -4px; width: 12px; height: 12px; margin-left: -6px;
-    border-radius: 50%; background: radial-gradient(circle, #fff, rgb(var(--primary-rgb) / .7) 40%, transparent 70%);
+  #printFx.is-printing .pfx-head { animation: pfx-zig var(--pfx-zig) cubic-bezier(.5,0,.5,1) infinite alternate; }
+  @keyframes pfx-zig { from { transform: translateX(-42vw); } to { transform: translateX(42vw); } }
+  .pfx-head svg { display: block; width: 100%; height: 100%; filter: drop-shadow(0 2px 4px rgb(0 0 0 / .35)); }
+  .pfx-head::after {                  /* molten extrusion glow at the nozzle tip */
+    content: ""; position: absolute; left: 50%; bottom: -3px; width: 15px; height: 15px; margin-left: -7.5px;
+    border-radius: 50%; background: radial-gradient(circle, #fff, rgb(var(--primary-rgb) / .8) 35%, transparent 70%);
+    animation: pfx-pulse .42s ease-in-out infinite alternate;
   }
+  @keyframes pfx-pulse { from { opacity: .65; transform: scale(.82); } to { opacity: 1; transform: scale(1.12); } }
   @media (prefers-reduced-motion: reduce) { #printFx { display: none; } }
   @media (prefers-reduced-motion: reduce) {
     ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
@@ -597,17 +600,17 @@
   <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
 </button>
 
-<!-- High-speed 3D-print theme reveal (driven by #themeToggle) -->
+<!-- 3D-print theme reveal: printer gantry that "prints" the new theme (driven by #themeToggle) -->
 <div id="printFx" aria-hidden="true">
   <div class="pfx-cover"></div>
   <div class="pfx-band">
     <div class="pfx-lines"></div>
-    <div class="pfx-beam"></div>
+    <div class="pfx-rail"></div>
     <div class="pfx-head">
-      <svg viewBox="0 0 52 42" aria-hidden="true">
-        <rect x="6" y="2" width="40" height="15" rx="4" fill="currentColor"/>
-        <path d="M16 17 L23 31 H29 L36 17 Z" fill="currentColor"/>
-        <rect x="24" y="31" width="4" height="8" rx="1.5" fill="currentColor"/>
+      <svg viewBox="0 0 32 44" aria-hidden="true">
+        <rect x="2" y="0" width="28" height="11" rx="2.5" fill="currentColor"/>
+        <path d="M7 11 H25 L20 30 H12 Z" fill="currentColor"/>
+        <path d="M12 30 H20 L16.5 40 H15.5 Z" fill="currentColor"/>
       </svg>
     </div>
   </div>
@@ -679,7 +682,7 @@
     <div class="cat-intro">
       <p class="eyebrow">Au-delà des objets</p>
       <h1 id="cat-title">Notre engagement</h1>
-      <p class="cat-sub">Cosy Prints, ce n'est pas que des objets imprimés. C'est aussi une promesse : reverser une partie de ce qu'on gagne à des causes qui nous tiennent à cœur.</p>
+      <p class="cat-sub">On reverse une partie de chaque vente à deux causes qui comptent pour nous.</p>
     </div>
   </div>
 </header>
@@ -704,8 +707,8 @@
     .eng-cause .ic svg { width: 23px; height: 23px; }
     .eng-cause h3 { font-family: var(--display); font-weight: 700; font-size: 1.15rem; }
     .eng-cause p { color: var(--muted-foreground); font-size: .96rem; }
-    .eng-cause .asso { margin-top: auto; font-size: .9rem; }
-    .eng-cause .asso b { color: var(--foreground); }
+    .eng-cause-link { margin-top: auto; align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; font-size: .92rem; font-weight: 600; color: var(--accent-text); text-decoration: none; }
+    .eng-cause-link:hover { text-decoration: underline; }
     .eng-support { background: var(--secondary); border-radius: var(--radius); border: 1px solid var(--border); padding: clamp(24px, 4vw, 36px); text-align: center; }
     .eng-support h2 { font-family: var(--display); font-weight: 800; font-size: clamp(1.4rem, 3.5vw, 1.9rem); }
     .eng-support > p { color: var(--muted-foreground); margin-top: 12px; max-width: 52ch; margin-inline: auto; }
@@ -728,51 +731,50 @@
       <div class="eng-icon" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
       </div>
-      <h2>À celles et ceux que le cancer nous a pris.</h2>
-      <p>Ce projet, on le porte aussi pour les êtres chers que la maladie a emportés trop tôt. Cette page, c'est notre façon de transformer un peu de peine en quelque chose d'utile — et de ne pas les oublier.</p>
+      <h2>Le cancer a touché nos proches.</h2>
+      <p>On a perdu des gens qu'on aime. S'engager contre cette maladie, c'est aussi notre façon de leur rendre hommage.</p>
     </section>
 
-    <!-- Les deux causes -->
+    <!-- Où va l'argent -->
     <section class="eng-block">
-      <h2 class="eng-title">Deux causes, à parts égales.</h2>
-      <p class="eng-lead">Une partie de nos bénéfices est reversée à deux associations qui nous tiennent à cœur.</p>
+      <h2 class="eng-title">Où va l'argent.</h2>
       <div class="eng-causes">
         <article class="eng-cause">
           <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.35-9.5-8.5A5.2 5.2 0 0 1 12 6a5.2 5.2 0 0 1 9.5 6.5C19 16.65 12 21 12 21z"/></svg></span>
           <h3>Lutte contre le cancer</h3>
-          <p>Pour la recherche, et l'accompagnement des malades et de leurs proches.</p>
-          <p class="asso">Nous soutenons <b>La Ligue contre le cancer</b>.</p>
+          <p>Recherche et soutien aux malades et à leurs proches.</p>
+          <a class="eng-cause-link" href="https://www.ligue-cancer.net" target="_blank" rel="noopener">La Ligue contre le cancer →</a>
         </article>
         <article class="eng-cause">
           <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6c2-2.4 4-2.4 6 0s4 2.4 6 0 4-2.4 6 0"/><path d="M2 12c2-2.4 4-2.4 6 0s4 2.4 6 0 4-2.4 6 0"/><path d="M2 18c2-2.4 4-2.4 6 0s4 2.4 6 0 4-2.4 6 0"/></svg></span>
           <h3>Nettoyage des océans</h3>
-          <p>Contre le plastique qui étouffe la mer — un combat qui rejoint notre envie d'imprimer plus responsable.</p>
-          <p class="asso">Nous soutenons <b>The SeaCleaners</b>.</p>
+          <p>Dépollution du plastique en mer.</p>
+          <a class="eng-cause-link" href="https://www.theseacleaners.org" target="_blank" rel="noopener">The SeaCleaners →</a>
         </article>
       </div>
     </section>
 
-    <!-- Soutenir -->
+    <!-- Aider -->
     <section class="eng-block">
       <div class="eng-support">
-        <h2>Envie de soutenir avec nous ?</h2>
-        <p>Pas de bouton de paiement ici — on préfère le contact humain. Si vous voulez participer à un don, écrivez-nous : on s'organise ensemble.</p>
+        <h2>Envie d'aider ?</h2>
+        <p>Pas de paiement en ligne ici. Un message, et on s'organise ensemble.</p>
         <div class="eng-contact">
-          <a class="eng-phone" href="tel:+33671194152" aria-label="Nous écrire ou nous appeler au 06 71 19 41 52">
+          <a class="eng-phone" href="tel:+33671194152" aria-label="Nous écrire au 06 71 19 41 52">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
             06 71 19 41 52
           </a>
-          <a class="btn btn-ghost" href="mailto:cosyprints.shop@gmail.com">Ou par e-mail</a>
+          <a class="btn btn-ghost" href="mailto:cosyprints.shop@gmail.com">Par e-mail</a>
         </div>
-        <p class="eng-note">Un simple SMS suffit — on vous recontacte pour organiser un don, à votre rythme.</p>
+        <p class="eng-note">Un SMS suffit.</p>
       </div>
     </section>
 
-    <!-- Communauté Facebook (bientôt) -->
+    <!-- Facebook (bientôt) -->
     <section class="eng-block">
       <div class="eng-soon">
-        <span class="txt"><b>Bientôt : notre communauté Facebook.</b> Pour suivre, en toute transparence, combien nous avons reversé à chaque cause.</span>
-        <span class="eng-pill-soon">Bientôt disponible</span>
+        <span class="txt"><b>Bientôt sur Facebook.</b> Pour voir, en clair, combien on a reversé.</span>
+        <span class="eng-pill-soon">Bientôt</span>
       </div>
     </section>
 
@@ -887,7 +889,7 @@
       fx.classList.add('is-printing');
       let cleaned = false;
       const done = () => { if (cleaned) return; cleaned = true; clearTimeout(t); fx.classList.remove('is-printing'); printing = false; };
-      const t = setTimeout(done, 1100);                              // guaranteed cleanup if animationend never fires
+      const t = setTimeout(done, 2000);                              // guaranteed cleanup if animationend never fires (> --pfx-dur)
       if (cover) cover.addEventListener('animationend', done, { once: true });
     });
   })();

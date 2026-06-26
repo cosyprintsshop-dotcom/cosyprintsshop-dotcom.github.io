@@ -152,51 +152,54 @@
   @view-transition { navigation: auto; }
   .topbar .brandmark { view-transition-name: brand; }
   .tubelight { view-transition-name: nav; }
-  /* ===== Theme toggle: "high-speed 3D print" reveal (replaces the old GIF view-transition) =====
-     JS flips data-theme instantly, then plays this overlay: a cover painted in the OLD background
-     colour retracts top→bottom while a nozzle zig-zags across the build line, "printing" the new theme. */
+  /* ===== Theme toggle: 3D-print reveal — a printer gantry descends and "prints" the new theme =====
+     JS flips data-theme instantly, then plays this overlay: a cover in the OLD background colour
+     retracts top→bottom while a full-width gantry rail + nozzle carriage zig-zag down, laying layers. */
   #printFx {
     position: fixed; inset: 0; z-index: 2147483000;
     pointer-events: none; overflow: hidden; visibility: hidden;
-    --pfx-dur: 820ms; --pfx-zig: 130ms;
+    --pfx-dur: 1500ms; --pfx-zig: 330ms;     /* slow enough to read the head travelling */
   }
   #printFx.is-printing { visibility: visible; }
   .pfx-cover { position: absolute; inset: 0; background: var(--pfx-oldbg, var(--background)); }
-  .pfx-cover::after {                 /* faint build-plate grid on the not-yet-printed area */
-    content: ""; position: absolute; inset: 0; opacity: .55;
+  .pfx-cover::after {                 /* build-plate grid on the not-yet-printed area */
+    content: ""; position: absolute; inset: 0; opacity: .5;
     background:
-      repeating-linear-gradient(0deg,  transparent 0 23px, rgb(var(--primary-rgb) / .10) 23px 24px),
-      repeating-linear-gradient(90deg, transparent 0 23px, rgb(var(--primary-rgb) / .10) 23px 24px);
+      repeating-linear-gradient(0deg,  transparent 0 27px, rgb(var(--primary-rgb) / .10) 27px 28px),
+      repeating-linear-gradient(90deg, transparent 0 27px, rgb(var(--primary-rgb) / .10) 27px 28px);
   }
-  #printFx.is-printing .pfx-cover { animation: pfx-reveal var(--pfx-dur) cubic-bezier(.5,0,.5,1) forwards; }
+  #printFx.is-printing .pfx-cover { animation: pfx-reveal var(--pfx-dur) cubic-bezier(.45,.05,.55,.95) forwards; }
   @keyframes pfx-reveal { from { clip-path: inset(0 0 0 0); } to { clip-path: inset(100% 0 0 0); } }
 
   .pfx-band { position: absolute; left: 0; top: 0; width: 100%; height: 0; will-change: transform; }
-  #printFx.is-printing .pfx-band { animation: pfx-descend var(--pfx-dur) cubic-bezier(.5,0,.5,1) forwards; }
+  #printFx.is-printing .pfx-band { animation: pfx-descend var(--pfx-dur) cubic-bezier(.45,.05,.55,.95) forwards; }
   @keyframes pfx-descend { from { transform: translateY(0); } to { transform: translateY(100vh); } }
 
-  .pfx-lines {                        /* freshly-printed layer lines, trailing just above the build line */
-    position: absolute; left: 0; right: 0; bottom: 0; height: 60px;
-    background: repeating-linear-gradient(0deg, rgb(var(--primary-rgb) / .30) 0 1px, transparent 1px 5px);
+  .pfx-lines {                        /* freshly-printed layer lines, stacking above the gantry */
+    position: absolute; left: 0; right: 0; bottom: 2px; height: 86px;
+    background: repeating-linear-gradient(0deg, rgb(var(--primary-rgb) / .5) 0 1px, transparent 1px 4px);
     -webkit-mask-image: linear-gradient(to top, #000, transparent);
             mask-image: linear-gradient(to top, #000, transparent);
   }
-  .pfx-beam {                         /* the hot laser build line */
-    position: absolute; left: -4%; right: -4%; top: -1px; height: 2px;
-    background: linear-gradient(90deg, transparent, var(--primary) 16%, #fff 50%, var(--primary) 84%, transparent);
-    box-shadow: 0 0 10px 1px rgb(var(--primary-rgb) / .85), 0 0 28px 5px rgb(var(--primary-rgb) / .45);
+  .pfx-rail {                         /* the gantry rail (X-axis) — spans the screen, reads as a 3D printer */
+    position: absolute; left: -2%; right: -2%; top: -3px; height: 6px; border-radius: 3px;
+    background: linear-gradient(180deg, #ded7c8, #9a9080 52%, #6a6354);
+    box-shadow: 0 1px 3px rgb(0 0 0 / .3), 0 0 16px rgb(var(--primary-rgb) / .35);
   }
-  .pfx-head {                         /* the print head — zig-zags fast across the build line */
-    position: absolute; left: 50%; top: -20px; width: 30px; height: 26px; margin-left: -15px;
+  :root[data-theme="dark"] .pfx-rail { background: linear-gradient(180deg, #6f6757, #45403a 52%, #2c2824); }
+  .pfx-head {                         /* the print head: carriage mounted on the rail + hot nozzle */
+    position: absolute; left: 50%; top: -11px; width: 32px; height: 36px; margin-left: -16px;
     color: var(--primary); will-change: transform;
   }
-  #printFx.is-printing .pfx-head { animation: pfx-zig var(--pfx-zig) cubic-bezier(.65,0,.35,1) infinite alternate; }
-  @keyframes pfx-zig { from { transform: translateX(-43vw); } to { transform: translateX(43vw); } }
-  .pfx-head svg { display: block; width: 100%; height: 100%; filter: drop-shadow(0 0 6px rgb(var(--primary-rgb) / .8)); }
-  .pfx-head::after {                  /* molten glow at the nozzle tip */
-    content: ""; position: absolute; left: 50%; bottom: -4px; width: 12px; height: 12px; margin-left: -6px;
-    border-radius: 50%; background: radial-gradient(circle, #fff, rgb(var(--primary-rgb) / .7) 40%, transparent 70%);
+  #printFx.is-printing .pfx-head { animation: pfx-zig var(--pfx-zig) cubic-bezier(.5,0,.5,1) infinite alternate; }
+  @keyframes pfx-zig { from { transform: translateX(-42vw); } to { transform: translateX(42vw); } }
+  .pfx-head svg { display: block; width: 100%; height: 100%; filter: drop-shadow(0 2px 4px rgb(0 0 0 / .35)); }
+  .pfx-head::after {                  /* molten extrusion glow at the nozzle tip */
+    content: ""; position: absolute; left: 50%; bottom: -3px; width: 15px; height: 15px; margin-left: -7.5px;
+    border-radius: 50%; background: radial-gradient(circle, #fff, rgb(var(--primary-rgb) / .8) 35%, transparent 70%);
+    animation: pfx-pulse .42s ease-in-out infinite alternate;
   }
+  @keyframes pfx-pulse { from { opacity: .65; transform: scale(.82); } to { opacity: 1; transform: scale(1.12); } }
   @media (prefers-reduced-motion: reduce) { #printFx { display: none; } }
   @media (prefers-reduced-motion: reduce) {
     ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
@@ -597,17 +600,17 @@
   <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
 </button>
 
-<!-- High-speed 3D-print theme reveal (driven by #themeToggle) -->
+<!-- 3D-print theme reveal: printer gantry that "prints" the new theme (driven by #themeToggle) -->
 <div id="printFx" aria-hidden="true">
   <div class="pfx-cover"></div>
   <div class="pfx-band">
     <div class="pfx-lines"></div>
-    <div class="pfx-beam"></div>
+    <div class="pfx-rail"></div>
     <div class="pfx-head">
-      <svg viewBox="0 0 52 42" aria-hidden="true">
-        <rect x="6" y="2" width="40" height="15" rx="4" fill="currentColor"/>
-        <path d="M16 17 L23 31 H29 L36 17 Z" fill="currentColor"/>
-        <rect x="24" y="31" width="4" height="8" rx="1.5" fill="currentColor"/>
+      <svg viewBox="0 0 32 44" aria-hidden="true">
+        <rect x="2" y="0" width="28" height="11" rx="2.5" fill="currentColor"/>
+        <path d="M7 11 H25 L20 30 H12 Z" fill="currentColor"/>
+        <path d="M12 30 H20 L16.5 40 H15.5 Z" fill="currentColor"/>
       </svg>
     </div>
   </div>
@@ -950,7 +953,7 @@
       fx.classList.add('is-printing');
       let cleaned = false;
       const done = () => { if (cleaned) return; cleaned = true; clearTimeout(t); fx.classList.remove('is-printing'); printing = false; };
-      const t = setTimeout(done, 1100);                              // guaranteed cleanup if animationend never fires
+      const t = setTimeout(done, 2000);                              // guaranteed cleanup if animationend never fires (> --pfx-dur)
       if (cover) cover.addEventListener('animationend', done, { once: true });
     });
   })();
