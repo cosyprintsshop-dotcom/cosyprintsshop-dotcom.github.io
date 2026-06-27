@@ -25,8 +25,8 @@
 
 <title>Cosy Prints — Impressions 3D faites main à Grenoble</title>
 <meta name="description" content="Cosy Prints : déco cosy et objets utiles imprimés en 3D à Grenoble. Homie vibe, cable management, lampes et gadgets. En vente sur Vinted et Leboncoin." />
-<meta name="theme-color" content="#f5f1e6" media="(prefers-color-scheme: light)" />
-<meta name="theme-color" content="#2d2621" />
+<meta name="theme-color" content="#f6f3ec" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#221f1b" />
 
 <meta property="og:type" content="website" />
 <meta property="og:locale" content="fr_FR" />
@@ -46,38 +46,40 @@
 <style>
   :root {
     /* ===== Palette tokens — LIGHT (also the no-preference / no-JS fallback) ===== */
-    --background: #f5f1e6;
-    --foreground: #4a3f35;
-    --card: #fffcf5;
-    --card-foreground: #4a3f35;
-    --popover: #fffcf5;
-    --popover-foreground: #4a3f35;
-    --primary: #a67c52;
+    --background: #f6f3ec;
+    --foreground: #2b2722;
+    --card: #fffdf8;
+    --card-foreground: #2b2722;
+    --popover: #fffdf8;
+    --popover-foreground: #2b2722;
+    --primary: #bf5a38;                     /* terracotta — brand accent */
     --primary-foreground: #ffffff;
-    --secondary: #e2d8c3;
-    --secondary-foreground: #5c4d3f;
-    --muted: #ece5d8;
-    --muted-foreground: #6f5d49;          /* nudged darker than #7d6b56 for AA on cream */
-    --accent: #d4c8aa;
-    --accent-foreground: #4a3f35;
+    --secondary: #e8e7d8;                   /* soft sage-tinted surface */
+    --secondary-foreground: #3c4035;
+    --muted: #efebe0;
+    --muted-foreground: #6a6253;           /* warm grey, AA on cream */
+    --accent: #cfd8c4;                      /* sage hover surface */
+    --accent-foreground: #2b2722;
     --destructive: #b54a35;
     --destructive-foreground: #ffffff;
-    --border: #dbd0ba;
-    --input: #dbd0ba;
-    --ring: #a67c52;
-    --chart-4: #b3906f;
-    --chart-5: #c0a080;
+    --border: #e4ded0;
+    --input: #e4ded0;
+    --ring: #bf5a38;
+    --chart-4: #87987b;
+    --chart-5: #c08a6a;
     --radius: 0.25rem;
 
     /* theme-tuned helpers (re-derived per theme below) */
-    --primary-rgb: 166 124 82;             /* --primary channels, for glows */
-    --shadow-rgb: 60 48 38;
-    --shadow-op: 0.16;
-    --accent-text: #735a3a;                /* AA-safe accent text on light surfaces */
-    --cta-bg: #8d6e4c;                      /* darker primary so white CTA text hits AA */
+    --primary-rgb: 191 90 56;              /* terracotta channels, for glows */
+    --shadow-rgb: 43 39 34;
+    --shadow-op: 0.14;
+    --accent-text: #a3471f;                /* deep terracotta — links/CTAs, AA on cream */
+    --cta-bg: #b3502f;                      /* slightly darker so white CTA text hits AA */
     --cta-fg: #ffffff;
-    --tube-bg: rgba(255, 252, 245, 0.72);  /* glass nav surface */
-    --veil: rgba(74, 63, 53, 0.04);        /* faint surface tint */
+    --sage: #5f6e51;                        /* second accent — decorative only (eyebrows, icons) */
+    --sage-rgb: 95 110 81;
+    --tube-bg: rgba(255, 253, 248, 0.72);  /* glass nav surface */
+    --veil: rgba(43, 39, 34, 0.04);        /* faint surface tint */
 
     /* platform brand colors (constant across themes) */
     --vinted-1: #12b6bf;
@@ -110,40 +112,42 @@
      theme via [data-theme="dark"] which the head script sets (default dark). ===== */
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --background: #2d2621; --foreground: #ece5d8;
-      --card: #3a322c; --card-foreground: #ece5d8;
-      --popover: #3a322c; --popover-foreground: #ece5d8;
-      --primary: #c0a080; --primary-foreground: #2d2621;
-      --secondary: #4a4039; --secondary-foreground: #ece5d8;
-      --muted: #3a322c; --muted-foreground: #c5bcac;
-      --accent: #59493e; --accent-foreground: #ece5d8;
-      --destructive: #b54a35; --destructive-foreground: #ffffff;
-      --border: #4a4039; --input: #4a4039; --ring: #c0a080;
-      --chart-4: #8d6e4c; --chart-5: #735a3a;
-      --primary-rgb: 192 160 128;
+      --background: #221f1b; --foreground: #ece7dd;
+      --card: #2c2823; --card-foreground: #ece7dd;
+      --popover: #2c2823; --popover-foreground: #ece7dd;
+      --primary: #d2774f; --primary-foreground: #221f1b;
+      --secondary: #3a3a33; --secondary-foreground: #ece7dd;
+      --muted: #2c2823; --muted-foreground: #b8b0a2;
+      --accent: #3e4a39; --accent-foreground: #ece7dd;
+      --destructive: #d05a44; --destructive-foreground: #ffffff;
+      --border: #3c382f; --input: #3c382f; --ring: #d2774f;
+      --chart-4: #9fae89; --chart-5: #d2774f;
+      --primary-rgb: 210 119 79;
       --shadow-rgb: 0 0 0; --shadow-op: 0.8;
-      --accent-text: #c0a080;
-      --cta-bg: #c0a080; --cta-fg: #2d2621;
-      --tube-bg: rgba(45, 38, 33, 0.72);
+      --accent-text: #e58a5f;
+      --cta-bg: #d2774f; --cta-fg: #221f1b;
+      --sage: #9fae89; --sage-rgb: 159 174 137;
+      --tube-bg: rgba(34, 31, 27, 0.72);
       --veil: rgba(255, 255, 255, 0.03);
     }
   }
   :root[data-theme="dark"] {
-    --background: #2d2621; --foreground: #ece5d8;
-    --card: #3a322c; --card-foreground: #ece5d8;
-    --popover: #3a322c; --popover-foreground: #ece5d8;
-    --primary: #c0a080; --primary-foreground: #2d2621;
-    --secondary: #4a4039; --secondary-foreground: #ece5d8;
-    --muted: #3a322c; --muted-foreground: #c5bcac;
-    --accent: #59493e; --accent-foreground: #ece5d8;
-    --destructive: #b54a35; --destructive-foreground: #ffffff;
-    --border: #4a4039; --input: #4a4039; --ring: #c0a080;
-    --chart-4: #8d6e4c; --chart-5: #735a3a;
-    --primary-rgb: 192 160 128;
+    --background: #221f1b; --foreground: #ece7dd;
+    --card: #2c2823; --card-foreground: #ece7dd;
+    --popover: #2c2823; --popover-foreground: #ece7dd;
+    --primary: #d2774f; --primary-foreground: #221f1b;
+    --secondary: #3a3a33; --secondary-foreground: #ece7dd;
+    --muted: #2c2823; --muted-foreground: #b8b0a2;
+    --accent: #3e4a39; --accent-foreground: #ece7dd;
+    --destructive: #d05a44; --destructive-foreground: #ffffff;
+    --border: #3c382f; --input: #3c382f; --ring: #d2774f;
+    --chart-4: #9fae89; --chart-5: #d2774f;
+    --primary-rgb: 210 119 79;
     --shadow-rgb: 0 0 0; --shadow-op: 0.8;
-    --accent-text: #c0a080;
-    --cta-bg: #c0a080; --cta-fg: #2d2621;
-    --tube-bg: rgba(45, 38, 33, 0.72);
+    --accent-text: #e58a5f;
+    --cta-bg: #d2774f; --cta-fg: #221f1b;
+    --sage: #9fae89; --sage-rgb: 159 174 137;
+    --tube-bg: rgba(34, 31, 27, 0.72);
     --veil: rgba(255, 255, 255, 0.03);
   }
 
@@ -247,8 +251,8 @@
     font-size: 0.72rem;
     letter-spacing: 0.24em;
     text-transform: uppercase;
-    color: var(--accent-text);
-    font-weight: 600;
+    color: var(--sage);
+    font-weight: 700;
   }
 
   /* ============ BOUTONS ============ */
@@ -276,8 +280,8 @@
   }
   .btn-primary:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 22px 46px -12px rgb(var(--primary-rgb) / 0.75); }
   .btn-primary:hover svg { transform: translate(3px, -3px); }     /* the ↗ arrow lifts away */
-  .btn-ghost { background: var(--veil); color: var(--foreground); border-color: var(--border); }
-  .btn-ghost:hover { transform: translateY(-2px) scale(1.02); border-color: var(--ring); box-shadow: var(--glow); }
+  .btn-ghost { background: transparent; color: var(--foreground); border-color: transparent; }
+  .btn-ghost:hover { transform: translateY(-2px); background: var(--veil); border-color: var(--border); box-shadow: none; }
 
   /* ============ HERO ============ */
   header {
@@ -352,12 +356,12 @@
   .hero-inner h1 {
     font-family: var(--display);
     font-weight: 800;
-    font-size: clamp(2.6rem, 7.4vw, 5.3rem);
+    font-size: clamp(3rem, 8.6vw, 6.2rem);
     line-height: 1.0;
     letter-spacing: -0.035em;
     margin-block: 16px 22px;
   }
-  .hero-inner h1 em { font-style: normal; }   /* highlight handled by .hl */
+  .hero-inner h1 em { font-style: italic; }   /* italic display moment on the highlighted word */
   .hero-inner .lede {
     font-size: clamp(1.05rem, 2.2vw, 1.28rem);
     color: var(--muted-foreground);
@@ -474,7 +478,7 @@
     display: flex; align-items: center; gap: 9px;
     font-size: 0.88rem; font-weight: 500; color: var(--muted-foreground);
   }
-  .trust-list svg { width: 15px; height: 15px; color: var(--accent-text); flex: none; }
+  .trust-list svg { width: 15px; height: 15px; color: var(--sage); flex: none; }
 
   /* ============ SECTIONS ============ */
   .section-head { margin-bottom: 60px; max-width: 600px; }
@@ -557,9 +561,9 @@
   }
   .step-icon {
     width: 42px; height: 42px;
-    background: rgb(var(--primary-rgb) / 0.12); border: 1px solid var(--ring);
+    background: rgb(var(--sage-rgb) / 0.16); border: 1px solid rgb(var(--sage-rgb) / 0.5);
     border-radius: var(--radius); display: grid; place-items: center;
-    margin-bottom: 18px; color: var(--accent-text);
+    margin-bottom: 18px; color: var(--sage);
   }
   .step-icon svg { width: 18px; height: 18px; }
   .step h3 { font-family: var(--display); font-weight: 700; font-size: 1.18rem; margin-bottom: 8px; }
@@ -713,7 +717,8 @@
   /* 4 · Headline highlight reveal */
   .hl {
     position: relative; isolation: isolate; white-space: nowrap;
-    color: var(--cta-fg); padding-inline: 0.08em;
+    color: var(--cta-fg); padding-inline: 0.12em;
+    font-style: italic;                 /* small editorial "display moment" */
   }
   .hl::before {
     content: ""; position: absolute; inset: 0.02em -0.06em; z-index: -1;
