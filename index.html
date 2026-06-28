@@ -282,6 +282,10 @@
   .btn-primary:hover svg { transform: translate(3px, -3px); }     /* the ↗ arrow lifts away */
   .btn-ghost { background: transparent; color: var(--foreground); border-color: transparent; }
   .btn-ghost:hover { transform: translateY(-2px); background: var(--veil); border-color: var(--border); box-shadow: none; }
+  .btn-outline { background: var(--card); color: var(--foreground); border-color: var(--border); }
+  .btn-outline:hover { transform: translateY(-2px) scale(1.02); border-color: var(--ring); box-shadow: var(--glow); }
+  .hero-browse { display: inline-block; margin-top: 18px; font-weight: 600; font-size: .95rem; color: var(--accent-text); text-decoration: none; }
+  .hero-browse:hover { text-decoration: underline; }
 
   /* ============ HERO ============ */
   header {
@@ -1120,11 +1124,15 @@
         <p class="lede">Déco minimaliste, façonnée en PLA d'origine végétale — imprimée seulement quand tu commandes. Zéro stock, zéro déchet.</p>
         <div class="cta-row">
           <a class="btn btn-primary" href="https://www.vinted.fr/member/60879390-cosyprints" target="_blank" rel="noopener">
-            Voir la boutique Vinted
+            Voir sur Vinted
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
           </a>
-          <a class="btn btn-ghost" href="#categories">Découvrir nos univers</a>
+          <a class="btn btn-outline" href="https://www.leboncoin.fr/profil/0408d333-46e3-4487-b2f3-4743fd34c872" target="_blank" rel="noopener">
+            Voir sur Leboncoin
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
+          </a>
         </div>
+        <a class="hero-browse" href="#categories">ou parcourir nos univers →</a>
       </div>
 
       <div class="stage" aria-hidden="true">
@@ -1456,38 +1464,6 @@
     </div>
   </section>
 
-  <section id="shop">
-    <div class="wrap">
-      <div class="shop-head reveal">
-        <p class="eyebrow">Où nous trouver</p>
-        <h2>On vend là où l'achat est simple et sécurisé.</h2>
-      </div>
-
-      <div class="platforms">
-        <a class="platform platform--vinted reveal" href="https://www.vinted.fr/member/60879390-cosyprints" target="_blank" rel="noopener">
-          <span class="platform__logo">Vinted</span>
-          <span class="platform__copy">Achète nos dernières impressions en toute sécurité sur Vinted.</span>
-          <span class="platform__trust">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            Paiement &amp; livraison protégés par Vinted
-          </span>
-          <span class="platform__cta">Ouvrir la boutique
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-        </a>
-
-        <a class="platform platform--lbc reveal" href="https://www.leboncoin.fr/profil/0408d333-46e3-4487-b2f3-4743fd34c872" target="_blank" rel="noopener">
-          <span class="platform__logo">leboncoin</span>
-          <span class="platform__copy">Retrouve aussi nos créations près de chez toi sur Leboncoin.</span>
-          <span class="platform__trust">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            Remise en main propre ou livraison sécurisée
-          </span>
-          <span class="platform__cta">Voir le profil
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-        </a>
-      </div>
-    </div>
-  </section>
 </main>
 
 <footer id="contact">
@@ -1496,14 +1472,6 @@
       <div class="foot-brand">
         <div class="brandmark">Cosy<span style="color:var(--accent-text)">·</span>Prints</div>
         <p>Impression 3D faite main à Grenoble. Site vitrine — toutes les ventes se font sur Vinted &amp; Leboncoin.</p>
-      </div>
-
-      <div class="foot-col">
-        <h4>Acheter</h4>
-        <div class="foot-stack">
-          <a class="foot-pill" href="https://www.vinted.fr/member/60879390-cosyprints" target="_blank" rel="noopener"><span class="dot dot--vinted"></span>Boutique Vinted</a>
-          <a class="foot-pill" href="https://www.leboncoin.fr/profil/0408d333-46e3-4487-b2f3-4743fd34c872" target="_blank" rel="noopener"><span class="dot dot--lbc"></span>Profil Leboncoin</a>
-        </div>
       </div>
 
       <div class="foot-col">
