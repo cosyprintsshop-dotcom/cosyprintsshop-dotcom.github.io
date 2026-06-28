@@ -575,6 +575,18 @@
   @media (max-width: 639px) {
     body { padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
   }
+
+  /* ============ Mobile comfort: tap feedback · tighter rhythm ============ */
+  .btn:active { transform: scale(.97); }
+  .eng-phone:active, .eng-cause-link:active { transform: scale(.97); }
+  .eng-cause:active { transform: scale(.99); }
+  .tubelight__item:active { transform: scale(.92); }
+  .theme-toggle:active, .menu-btn:active { transform: scale(.9); }
+  .menu-pop a:active { background: var(--accent); }
+  @media (max-width: 639px) {
+    .cat-hero { padding-block: 38px 22px; }
+    .eng-block { padding-block: 40px; }
+  }
 </style>
 
 <script type="application/ld+json">

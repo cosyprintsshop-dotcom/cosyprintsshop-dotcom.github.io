@@ -951,6 +951,44 @@
   @media (max-width: 639px) {
     body { padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
   }
+
+  /* ============ Mobile comfort: tap feedback · tighter rhythm · sticky shop CTA ============ */
+  /* tactile press feedback — matters on touch, where :hover never fires */
+  .btn:active { transform: translateY(0) scale(.97); }
+  .card:active, .platform:active { transform: scale(.985); }
+  .card-swatch:active { transform: scale(.86); }
+  .tubelight__item:active { transform: scale(.92); }
+  .theme-toggle:active, .menu-btn:active { transform: scale(.9); }
+  .menu-pop a:active { background: var(--accent); }
+  .faq-item summary:active { color: var(--accent-text); }
+
+  .sticky-cta { display: none; }
+
+  @media (max-width: 639px) {
+    /* tighter vertical rhythm — less endless scrolling */
+    header { padding-block: 42px 30px; }
+    .hero-inner h1 { font-size: clamp(2.35rem, 10.5vw, 3.1rem); }
+    #categories, #process, #shop, #faq { padding-block: 52px; }
+    #showcase { padding-block: 18px 40px; }
+    .section-head { margin-bottom: 32px; }
+    .shop-head { margin: 0 auto 32px; }
+    .grid { gap: 14px; }
+    .steps { gap: 14px; }
+
+    /* sticky shop CTA — reveals after the hero, floats above the bottom nav */
+    .sticky-cta {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      position: fixed; left: 12px; right: 12px; bottom: calc(74px + env(safe-area-inset-bottom, 0px));
+      z-index: 330; min-height: 50px; border-radius: 9999px;
+      background: var(--cta-bg); color: var(--cta-fg); font-weight: 700; font-size: .98rem; text-decoration: none;
+      box-shadow: 0 12px 30px -8px rgb(var(--primary-rgb) / .55);
+      opacity: 0; transform: translateY(20px); pointer-events: none;
+      transition: opacity .25s ease, transform .25s ease;
+    }
+    .sticky-cta svg { width: 18px; height: 18px; }
+    .sticky-cta.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    body { padding-bottom: calc(140px + env(safe-area-inset-bottom, 0px)); }
+  }
 </style>
 
 <script type="application/ld+json">
@@ -1479,8 +1517,23 @@
   </div>
 </footer>
 
+<!-- Sticky mobile shop CTA (revealed after the hero by JS; hidden on desktop via CSS) -->
+<a class="sticky-cta" id="stickyCta" href="https://www.vinted.fr/member/60879390-cosyprints" target="_blank" rel="noopener">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+  Voir la boutique Vinted
+</a>
+
 <script>
   // Reveal on scroll — grid siblings "print in" with a short stagger.
+  // Sticky mobile shop CTA — reveal once the hero is scrolled past
+  (function () {
+    const cta = document.getElementById('stickyCta');
+    if (!cta) return;
+    const onScroll = () => cta.classList.toggle('show', window.scrollY > window.innerHeight * 0.6);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (!e.isIntersecting) return;
@@ -1687,6 +1740,7 @@
     const canvas = document.getElementById('heroShader');
     if (!canvas) return;
     if (!window.matchMedia('(prefers-reduced-motion: no-preference)').matches) return;
+    if (window.matchMedia('(max-width: 767px)').matches) return;   // skip the WebGL shader on phones (perf/data)
 
     const isDark = () => document.documentElement.getAttribute('data-theme') !== 'light';
     const s = document.createElement('script');
