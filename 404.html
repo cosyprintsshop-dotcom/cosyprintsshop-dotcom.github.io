@@ -1,67 +1,63 @@
 <!DOCTYPE html>
-<html lang="fr" class="no-js" data-theme="dark">
+<html lang="fr" class="no-js">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<script>(function(){var d=document.documentElement;d.classList.remove('no-js');var t='dark';try{var s=localStorage.getItem('theme');if(s==='light'||s==='dark'){t=s;}else if(window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches){t='light';}}catch(e){}d.setAttribute('data-theme',t);})();</script>
-<title>Page introuvable — Cosy Prints</title>
+<script>
+  (function () {
+    var d = document.documentElement;
+    d.classList.remove('no-js');
+    var t = 'light';
+    try {
+      var s = localStorage.getItem('theme');
+      if (s === 'light' || s === 'dark') { t = s; }
+      else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) { t = 'dark'; }
+    } catch (e) {}
+    d.setAttribute('data-theme', t);
+  })();
+</script>
+
+<title data-i18n="e404.title">Page introuvable — CosyPrints</title>
 <meta name="robots" content="noindex" />
-<meta name="theme-color" content="#f5f1e6" media="(prefers-color-scheme: light)" />
-<meta name="theme-color" content="#2d2621" />
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%232d2621'/%3E%3Ccircle cx='16' cy='13' r='7' fill='%23c0a080'/%3E%3Crect x='7' y='22' width='18' height='3.5' rx='1.75' fill='%238d6e4c'/%3E%3C/svg%3E" />
+<meta name="theme-color" content="#f3efe6" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#19160f" media="(prefers-color-scheme: dark)" />
+<link rel="icon" media="(prefers-color-scheme: light)" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23f3efe6'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='20' text-anchor='middle' fill='%231c1a16'%3EC%3C/text%3E%3C/svg%3E" />
+<link rel="icon" media="(prefers-color-scheme: dark)" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2319160f'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='20' text-anchor='middle' fill='%23ece6d8'%3EC%3C/text%3E%3C/svg%3E" />
+
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<!-- Absolute path: 404.html can be served for a missing URL at any depth. -->
+<link rel="stylesheet" href="/assets/theme.css" />
+
 <style>
-  :root {
-    --background: #f5f1e6; --foreground: #4a3f35; --card: #fffcf5; --border: #dbd0ba;
-    --primary: #a67c52; --primary-rgb: 166 124 82; --cta-bg: #8d6e4c; --cta-fg: #ffffff;
-    --muted-foreground: #6f5d49; --accent-text: #735a3a;
-    --display: "Bricolage Grotesque", system-ui, sans-serif;
-    --body: "Hanken Grotesk", system-ui, sans-serif;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --background: #2d2621; --foreground: #ece5d8; --card: #3a322c; --border: #4a4039;
-      --primary: #c0a080; --primary-rgb: 192 160 128; --cta-bg: #c0a080; --cta-fg: #2d2621;
-      --muted-foreground: #c5bcac; --accent-text: #c0a080;
-    }
-  }
-  :root[data-theme="dark"] {
-    --background: #2d2621; --foreground: #ece5d8; --card: #3a322c; --border: #4a4039;
-    --primary: #c0a080; --primary-rgb: 192 160 128; --cta-bg: #c0a080; --cta-fg: #2d2621;
-    --muted-foreground: #c5bcac; --accent-text: #c0a080;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: var(--body); color: var(--foreground);
-    background: radial-gradient(120% 80% at 50% -10%, rgb(var(--primary-rgb) / 0.12), transparent 55%), var(--background);
-    min-height: 100dvh; display: grid; place-items: center; padding: 24px; text-align: center;
-    -webkit-font-smoothing: antialiased;
-  }
-  .e { max-width: 540px; }
-  .code { font-family: var(--display); font-weight: 800; font-size: clamp(4rem, 16vw, 8rem); line-height: 1; letter-spacing: -0.04em; color: var(--accent-text); }
-  h1 { font-family: var(--display); font-weight: 800; font-size: clamp(1.4rem, 4vw, 2rem); letter-spacing: -0.02em; margin: 8px 0 12px; }
-  p { color: var(--muted-foreground); margin-bottom: 28px; }
-  .btn {
-    display: inline-flex; align-items: center; gap: 9px;
-    min-height: 52px; padding: 14px 26px; border-radius: 9999px;
-    background: var(--cta-bg); color: var(--cta-fg); font-weight: 700; font-family: var(--body);
-    text-decoration: none; box-shadow: 0 12px 30px -12px rgb(var(--primary-rgb) / 0.6);
-    transition: transform .18s ease;
-  }
-  .btn:hover { transform: translateY(-2px); }
-  :focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; border-radius: 6px; }
+  body { min-height: 100dvh; display: grid; place-items: center; padding: 40px var(--gutter); }
+  .err { max-width: 620px; text-align: center; }
+  .err__code { font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--accent); }
+  .err__big { font-family: var(--display); font-weight: 400; font-size: clamp(5rem, 22vw, 11rem); line-height: 0.9; letter-spacing: -0.04em; margin: 10px 0 4px; }
+  .err__title { font-family: var(--display); font-weight: 400; font-style: italic; font-size: clamp(1.4rem, 4vw, 2.1rem); line-height: 1.12; letter-spacing: -0.015em; }
+  .err__msg { color: var(--ink-soft); margin: 18px auto 32px; max-width: 46ch; }
+  .err__actions { display: flex; flex-wrap: wrap; gap: 14px 26px; justify-content: center; align-items: center; }
+  .err__wordmark { display: inline-block; margin-bottom: 40px; font-family: var(--display); font-weight: 500; font-size: 1.1rem; }
+  .err__wordmark .dot { color: var(--accent); }
 </style>
 </head>
 <body>
-  <main class="e">
-    <div class="code">404</div>
-    <h1>Cette page s'est imprimée de travers.</h1>
-    <p>La page que tu cherches n'existe pas (ou plus). Reviens à l'accueil pour parcourir nos univers.</p>
-    <a class="btn" href="/">Retour à l'accueil
-      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-    </a>
+  <main class="err">
+    <a class="err__wordmark" href="/" translate="no">Cosy<span class="dot">·</span>Prints</a>
+    <p class="err__code">Erreur 404</p>
+    <p class="err__big">404</p>
+    <h1 class="err__title" data-i18n="e404.title_h">Cette page s'est imprimée de travers.</h1>
+    <p class="err__msg" data-i18n="e404.msg">La page que tu cherches n'existe pas, ou plus. Reviens à l'accueil pour parcourir nos univers.</p>
+    <div class="err__actions">
+      <a class="btn btn--accent" href="/" data-i18n="e404.home">Retour à l'accueil</a>
+      <a class="tlink" href="/boutique.html"><span data-i18n="e404.catalogue">Voir le catalogue</span> <span class="arr">→</span></a>
+    </div>
   </main>
+
+  <!-- Bilingual layer (absolute paths for any-depth 404 serving) -->
+  <script src="/assets/i18n.en.js"></script>
+  <script src="/assets/i18n.js"></script>
 </body>
 </html>

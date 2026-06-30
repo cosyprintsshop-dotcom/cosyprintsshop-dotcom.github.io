@@ -138,5 +138,12 @@ window.CP_EN = {
   'eng.by_email': 'By email',
   'eng.note': 'A text message is enough.',
   'eng.soon_txt': "<b>Soon on Facebook.</b> To see, transparently, how much we've donated.",
-  'eng.soon_pill': 'Soon'
+  'eng.soon_pill': 'Soon',
+
+  /* ---- 404 page ---- */
+  'e404.title': 'Page not found — CosyPrints',
+  'e404.title_h': 'This page printed crooked.',
+  'e404.msg': "The page you're looking for doesn't exist, or no longer does. Head back home to browse our worlds.",
+  'e404.home': 'Back home',
+  'e404.catalogue': 'View the catalogue'
 };
