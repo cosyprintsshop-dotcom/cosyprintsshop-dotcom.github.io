@@ -1,1464 +1,382 @@
 <!DOCTYPE html>
-<html lang="fr" class="no-js" data-theme="dark">
+<html lang="fr" class="no-js">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<!-- Theme bootstrap: default dark (preserves the cosy mood); follow OS only when it explicitly prefers light. Also drops the no-js flag. -->
+<!-- Theme bootstrap: paper (light) by default; follow OS only when it prefers dark. -->
 <script>
   (function () {
     var d = document.documentElement;
     d.classList.remove('no-js');
-    // Mobile fix: stop the browser reopening the page where you last scrolled (it was landing at the bottom).
     try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {}
-    var t = 'dark';
+    var t = 'light';
     try {
       var s = localStorage.getItem('theme');
       if (s === 'light' || s === 'dark') { t = s; }
-      else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) { t = 'light'; }
-    } catch (e) {
-      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) { t = 'light'; }
-    }
+      else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) { t = 'dark'; }
+    } catch (e) {}
     d.setAttribute('data-theme', t);
   })();
 </script>
 
-<title>Cosy Prints — Impressions 3D faites main à Grenoble</title>
-<meta name="description" content="Cosy Prints : déco cosy et objets utiles imprimés en 3D à Grenoble. Homie vibe, cable management, lampes et gadgets. En vente sur Vinted et Leboncoin." />
-<meta name="theme-color" content="#f6f3ec" media="(prefers-color-scheme: light)" />
-<meta name="theme-color" content="#221f1b" />
+<title data-i18n="meta.title">CosyPrints — objets imprimés en 3D pour la maison · Saint-Martin-d'Uriage</title>
+<meta name="description" data-i18n-attr="content:meta.description" content="CosyPrints : objets utiles et déco pour la maison, imprimés en 3D à la main à Saint-Martin-d'Uriage, près de Grenoble. PLA d'origine végétale. En vente sur Vinted et Leboncoin." />
+<meta name="theme-color" content="#f3efe6" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#19160f" media="(prefers-color-scheme: dark)" />
 
 <meta property="og:type" content="website" />
 <meta property="og:locale" content="fr_FR" />
-<meta property="og:title" content="Cosy Prints — Impressions 3D faites main à Grenoble" />
-<meta property="og:description" content="Déco cosy et objets utiles imprimés en 3D. En vente sur Vinted et Leboncoin." />
-<meta property="og:url" content="https://cosyprintsshop-dotcom.github.io" />
+<meta property="og:title" content="CosyPrints — objets imprimés en 3D pour la maison" />
+<meta property="og:description" content="Objets utiles et déco pour la maison, imprimés à Saint-Martin-d'Uriage. En vente sur Vinted et Leboncoin." />
+<meta property="og:url" content="https://cosyprintsshop-dotcom.github.io/" />
 <meta name="twitter:card" content="summary" />
 <link rel="canonical" href="https://cosyprintsshop-dotcom.github.io/" />
+<link rel="alternate" hreflang="fr" href="https://cosyprintsshop-dotcom.github.io/" />
+<link rel="alternate" hreflang="en" href="https://cosyprintsshop-dotcom.github.io/?lang=en" />
+<link rel="alternate" hreflang="x-default" href="https://cosyprintsshop-dotcom.github.io/" />
 
-<link rel="icon" media="(prefers-color-scheme: light)" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23f5f1e6'/%3E%3Ccircle cx='16' cy='13' r='7' fill='%23a67c52'/%3E%3Crect x='7' y='22' width='18' height='3.5' rx='1.75' fill='%23b3906f'/%3E%3C/svg%3E" />
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%232d2621'/%3E%3Ccircle cx='16' cy='13' r='7' fill='%23c0a080'/%3E%3Crect x='7' y='22' width='18' height='3.5' rx='1.75' fill='%238d6e4c'/%3E%3C/svg%3E" />
+<link rel="icon" media="(prefers-color-scheme: light)" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23f3efe6'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='20' text-anchor='middle' fill='%231c1a16'%3EC%3C/text%3E%3C/svg%3E" />
+<link rel="icon" media="(prefers-color-scheme: dark)" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2319160f'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='20' text-anchor='middle' fill='%23ece6d8'%3EC%3C/text%3E%3C/svg%3E" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="assets/theme.css" />
 
 <style>
-  :root {
-    /* ===== Palette tokens — LIGHT (also the no-preference / no-JS fallback) ===== */
-    --background: #f6f3ec;
-    --foreground: #2b2722;
-    --card: #fffdf8;
-    --card-foreground: #2b2722;
-    --popover: #fffdf8;
-    --popover-foreground: #2b2722;
-    --primary: #bf5a38;                     /* terracotta — brand accent */
-    --primary-foreground: #ffffff;
-    --secondary: #e8e7d8;                   /* soft sage-tinted surface */
-    --secondary-foreground: #3c4035;
-    --muted: #efebe0;
-    --muted-foreground: #6a6253;           /* warm grey, AA on cream */
-    --accent: #cfd8c4;                      /* sage hover surface */
-    --accent-foreground: #2b2722;
-    --destructive: #b54a35;
-    --destructive-foreground: #ffffff;
-    --border: #e4ded0;
-    --input: #e4ded0;
-    --ring: #bf5a38;
-    --chart-4: #87987b;
-    --chart-5: #c08a6a;
-    --radius: 0.25rem;
-
-    /* theme-tuned helpers (re-derived per theme below) */
-    --primary-rgb: 191 90 56;              /* terracotta channels, for glows */
-    --shadow-rgb: 43 39 34;
-    --shadow-op: 0.14;
-    --accent-text: #a3471f;                /* deep terracotta — links/CTAs, AA on cream */
-    --cta-bg: #b3502f;                      /* slightly darker so white CTA text hits AA */
-    --cta-fg: #ffffff;
-    --sage: #5f6e51;                        /* second accent — decorative only (eyebrows, icons) */
-    --sage-rgb: 95 110 81;
-    --tube-bg: rgba(255, 253, 248, 0.72);  /* glass nav surface */
-    --veil: rgba(43, 39, 34, 0.04);        /* faint surface tint */
-
-    /* platform brand colors (constant across themes) */
-    --vinted-1: #12b6bf;
-    --vinted-2: #007782;
-    --lbc-1:    #ff8a3d;
-    --lbc-2:    #ec5a13;
-
-    --display: "Bricolage Grotesque", system-ui, sans-serif;
-    --body: "Hanken Grotesk", system-ui, sans-serif;
-    --maxw: 1100px;
-    --glow: 0 0 46px -14px rgb(var(--primary-rgb) / 0.45);
-
-    /* ===== Legacy aliases → tokens (keeps existing rules working) ===== */
-    --night:      var(--background);
-    --espresso:   var(--background);
-    --cocoa:      var(--card);
-    --cocoa-soft: var(--secondary);
-    --line:       var(--border);
-    --line-warm:  var(--ring);
-    --cream:      var(--foreground);
-    --cream-dim:  var(--muted-foreground);
-    --honey:      var(--accent-text);
-    --honey-lit:  var(--primary);
-    --amber:      var(--primary);
-    --clay:       var(--chart-4);
-    --rose:       var(--chart-5);
-  }
-
-  /* ===== Dark tokens — applied for dark-OS users with no JS, and as the default
-     theme via [data-theme="dark"] which the head script sets (default dark). ===== */
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --background: #221f1b; --foreground: #ece7dd;
-      --card: #2c2823; --card-foreground: #ece7dd;
-      --popover: #2c2823; --popover-foreground: #ece7dd;
-      --primary: #d2774f; --primary-foreground: #221f1b;
-      --secondary: #3a3a33; --secondary-foreground: #ece7dd;
-      --muted: #2c2823; --muted-foreground: #b8b0a2;
-      --accent: #3e4a39; --accent-foreground: #ece7dd;
-      --destructive: #d05a44; --destructive-foreground: #ffffff;
-      --border: #3c382f; --input: #3c382f; --ring: #d2774f;
-      --chart-4: #9fae89; --chart-5: #d2774f;
-      --primary-rgb: 210 119 79;
-      --shadow-rgb: 0 0 0; --shadow-op: 0.8;
-      --accent-text: #e58a5f;
-      --cta-bg: #d2774f; --cta-fg: #221f1b;
-      --sage: #9fae89; --sage-rgb: 159 174 137;
-      --tube-bg: rgba(34, 31, 27, 0.72);
-      --veil: rgba(255, 255, 255, 0.03);
-    }
-  }
-  :root[data-theme="dark"] {
-    --background: #221f1b; --foreground: #ece7dd;
-    --card: #2c2823; --card-foreground: #ece7dd;
-    --popover: #2c2823; --popover-foreground: #ece7dd;
-    --primary: #d2774f; --primary-foreground: #221f1b;
-    --secondary: #3a3a33; --secondary-foreground: #ece7dd;
-    --muted: #2c2823; --muted-foreground: #b8b0a2;
-    --accent: #3e4a39; --accent-foreground: #ece7dd;
-    --destructive: #d05a44; --destructive-foreground: #ffffff;
-    --border: #3c382f; --input: #3c382f; --ring: #d2774f;
-    --chart-4: #9fae89; --chart-5: #d2774f;
-    --primary-rgb: 210 119 79;
-    --shadow-rgb: 0 0 0; --shadow-op: 0.8;
-    --accent-text: #e58a5f;
-    --cta-bg: #d2774f; --cta-fg: #221f1b;
-    --sage: #9fae89; --sage-rgb: 159 174 137;
-    --tube-bg: rgba(34, 31, 27, 0.72);
-    --veil: rgba(255, 255, 255, 0.03);
-  }
-
-  /* Native form controls follow the theme (fixes the dark-mode <select> dropdown) */
-  :root { color-scheme: light; }
-  :root[data-theme="dark"] { color-scheme: dark; }
-  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { color-scheme: dark; } }
-
-  /* Smooth cross-page transitions (Chrome); brand + nav persist across the navigation */
-  @view-transition { navigation: auto; }
-  .topbar .brandmark { view-transition-name: brand; }
-  .tubelight { view-transition-name: nav; }
-  /* ===== Theme toggle: 3D-print reveal — a printer gantry descends and "prints" the new theme =====
-     JS flips data-theme instantly, then plays this overlay: a cover in the OLD background colour
-     retracts top→bottom while a full-width gantry rail + nozzle carriage zig-zag down, laying layers. */
-  #printFx {
-    position: fixed; inset: 0; z-index: 2147483000;
-    pointer-events: none; overflow: hidden; visibility: hidden;
-    --pfx-dur: 1500ms; --pfx-zig: 330ms;     /* slow enough to read the head travelling */
-  }
-  #printFx.is-printing { visibility: visible; }
-  .pfx-cover { position: absolute; inset: 0; background: var(--pfx-oldbg, var(--background)); }
-  .pfx-cover::after {                 /* build-plate grid on the not-yet-printed area */
-    content: ""; position: absolute; inset: 0; opacity: .5;
-    background:
-      repeating-linear-gradient(0deg,  transparent 0 27px, rgb(var(--primary-rgb) / .10) 27px 28px),
-      repeating-linear-gradient(90deg, transparent 0 27px, rgb(var(--primary-rgb) / .10) 27px 28px);
-  }
-  #printFx.is-printing .pfx-cover { animation: pfx-reveal var(--pfx-dur) cubic-bezier(.45,.05,.55,.95) forwards; }
-  @keyframes pfx-reveal { from { clip-path: inset(0 0 0 0); } to { clip-path: inset(100% 0 0 0); } }
-
-  .pfx-band { position: absolute; left: 0; top: 0; width: 100%; height: 0; will-change: transform; }
-  #printFx.is-printing .pfx-band { animation: pfx-descend var(--pfx-dur) cubic-bezier(.45,.05,.55,.95) forwards; }
-  @keyframes pfx-descend { from { transform: translateY(0); } to { transform: translateY(100vh); } }
-
-  .pfx-lines {                        /* freshly-printed layer lines, stacking above the gantry */
-    position: absolute; left: 0; right: 0; bottom: 2px; height: 86px;
-    background: repeating-linear-gradient(0deg, rgb(var(--primary-rgb) / .5) 0 1px, transparent 1px 4px);
-    -webkit-mask-image: linear-gradient(to top, #000, transparent);
-            mask-image: linear-gradient(to top, #000, transparent);
-  }
-  .pfx-rail {                         /* the gantry rail (X-axis) — spans the screen, reads as a 3D printer */
-    position: absolute; left: -2%; right: -2%; top: -3px; height: 6px; border-radius: 3px;
-    background: linear-gradient(180deg, #ded7c8, #9a9080 52%, #6a6354);
-    box-shadow: 0 1px 3px rgb(0 0 0 / .3), 0 0 16px rgb(var(--primary-rgb) / .35);
-  }
-  :root[data-theme="dark"] .pfx-rail { background: linear-gradient(180deg, #6f6757, #45403a 52%, #2c2824); }
-  .pfx-head {                         /* the print head: carriage mounted on the rail + hot nozzle */
-    position: absolute; left: 50%; top: -11px; width: 32px; height: 36px; margin-left: -16px;
-    color: var(--primary); will-change: transform;
-  }
-  #printFx.is-printing .pfx-head { animation: pfx-zig var(--pfx-zig) cubic-bezier(.5,0,.5,1) infinite alternate; }
-  @keyframes pfx-zig { from { transform: translateX(-42vw); } to { transform: translateX(42vw); } }
-  .pfx-head svg { display: block; width: 100%; height: 100%; filter: drop-shadow(0 2px 4px rgb(0 0 0 / .35)); }
-  .pfx-head::after {                  /* molten extrusion glow at the nozzle tip */
-    content: ""; position: absolute; left: 50%; bottom: -3px; width: 15px; height: 15px; margin-left: -7.5px;
-    border-radius: 50%; background: radial-gradient(circle, #fff, rgb(var(--primary-rgb) / .8) 35%, transparent 70%);
-    animation: pfx-pulse .42s ease-in-out infinite alternate;
-  }
-  @keyframes pfx-pulse { from { opacity: .65; transform: scale(.82); } to { opacity: 1; transform: scale(1.12); } }
-  @media (prefers-reduced-motion: reduce) { #printFx { display: none; } }
-  @media (prefers-reduced-motion: reduce) {
-    ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  html { scroll-behavior: smooth; }
-  @media (min-width: 640px) {
-    html { scroll-padding-top: 96px; }                 /* clear the fixed top nav on anchor jumps */
-    #categories, #process, #shop, #contact { scroll-margin-top: 96px; }
-  }
-
-  body {
-    font-family: var(--body);
-    color: var(--foreground);
-    background:
-      radial-gradient(110% 70% at 50% -8%, rgb(var(--primary-rgb) / 0.10), transparent 55%),
-      radial-gradient(90% 55% at 88% 108%, rgb(var(--primary-rgb) / 0.08), transparent 60%),
-      var(--background);
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
-  }
-
-  a { color: inherit; text-decoration: none; }
-
-  .wrap { width: 100%; max-width: var(--maxw); margin-inline: auto; padding-inline: 24px; }
-
-  .layers {
-    background-image: repeating-linear-gradient(
-      to bottom,
-      rgb(var(--primary-rgb) / 0.06) 0px,
-      rgb(var(--primary-rgb) / 0.06) 1px,
-      transparent 1px,
-      transparent 7px
-    );
-  }
-
-  .eyebrow {
-    font-size: 0.72rem;
-    letter-spacing: 0.24em;
-    text-transform: uppercase;
-    color: var(--sage);
-    font-weight: 700;
-  }
-
-  /* ============ BOUTONS ============ */
-  .btn {
-    position: relative; overflow: hidden; isolation: isolate;
-    display: inline-flex; align-items: center; justify-content: center; gap: 9px;
-    font-family: var(--body); font-weight: 600; font-size: 1rem;
-    min-height: 52px; padding: 14px 26px; border-radius: 9999px;
-    border: 1px solid transparent; cursor: pointer;
-    transition: transform .22s cubic-bezier(.34,1.56,.64,1), box-shadow .22s ease, background .22s ease, border-color .22s ease;
-    touch-action: manipulation;
-  }
-  /* micro-interaction: a light sheen sweeps across on hover/focus */
-  .btn::before {
-    content: ""; position: absolute; inset: 0; z-index: -1;
-    background: linear-gradient(110deg, transparent 32%, rgb(255 255 255 / .38) 50%, transparent 68%);
-    transform: translateX(-130%); transition: transform .6s ease;
-  }
-  .btn:hover::before, .btn:focus-visible::before { transform: translateX(130%); }
-  .btn svg { width: 17px; height: 17px; flex: none; transition: transform .22s ease; }
-  .btn-primary {
-    background: var(--cta-bg);
-    color: var(--cta-fg); font-weight: 700;
-    box-shadow: 0 12px 30px -12px rgb(var(--primary-rgb) / 0.6);
-  }
-  .btn-primary:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 22px 46px -12px rgb(var(--primary-rgb) / 0.75); }
-  .btn-primary:hover svg { transform: translate(3px, -3px); }     /* the ↗ arrow lifts away */
-  .btn-ghost { background: transparent; color: var(--foreground); border-color: transparent; }
-  .btn-ghost:hover { transform: translateY(-2px); background: var(--veil); border-color: var(--border); box-shadow: none; }
-  .btn-outline { background: var(--card); color: var(--foreground); border-color: var(--border); }
-  .btn-outline:hover { transform: translateY(-2px) scale(1.02); border-color: var(--ring); box-shadow: var(--glow); }
-  .hero-browse { display: inline-block; margin-top: 18px; font-weight: 600; font-size: .95rem; color: var(--accent-text); text-decoration: none; }
-  .hero-browse:hover { text-decoration: underline; }
-
-  /* ============ HERO ============ */
-  header {
-    position: relative;
-    padding-block: clamp(64px, 12vw, 132px) clamp(56px, 10vw, 104px);
-    overflow: hidden;
-    perspective: 1200px;                 /* depth for the scroll-recede + pointer tilt below */
-    perspective-origin: 50% 30%;
-  }
-  /* Pure-CSS ambient glow (replaces the ~600KB Three.js shader) — two slow drifting auras */
-  header::before, header::after {
-    content: "";
-    position: absolute;
-    z-index: 0;
-    pointer-events: none;
-    border-radius: 50%;
-    filter: blur(46px);
-    will-change: transform, opacity;
-  }
-  header::before {
-    top: -22%; left: 50%;
-    width: min(900px, 122vw); height: 600px;
-    background: radial-gradient(ellipse at center, rgb(var(--primary-rgb) / 0.55), transparent 70%);
-    opacity: 0.7;
-    animation: auraA 17s ease-in-out infinite alternate;
-  }
-  header::after {
-    top: 6%; left: 16%;
-    width: min(540px, 82vw); height: 440px;
-    background: radial-gradient(ellipse at center, rgb(var(--primary-rgb) / 0.4), transparent 70%);
-    opacity: 0.5;
-    animation: auraB 23s ease-in-out infinite alternate;
-  }
-  @keyframes auraA {
-    from { transform: translateX(-54%) translateY(-3%) scale(1); }
-    to   { transform: translateX(-46%) translateY(4%) scale(1.14); }
-  }
-  @keyframes auraB {
-    from { transform: translateX(-6%) scale(0.95); opacity: 0.28; }
-    to   { transform: translateX(12%) scale(1.16); opacity: 0.5; }
-  }
-
-  /* Scroll-scrubbed "blinds" shader (loaded lazily by JS; renders in both themes, motion only) */
-  .hero-shader {
-    position: absolute; inset: 0; z-index: 0;
-    width: 100%; height: 100%; display: block;
-    pointer-events: none; opacity: 0.36;
-    mix-blend-mode: screen;                       /* dark: bright filament streaks glow on the espresso bg */
-    -webkit-mask-image: radial-gradient(115% 95% at 50% 6%, #000 30%, rgba(0,0,0,0.5) 60%, transparent 92%);
-            mask-image: radial-gradient(115% 95% at 50% 6%, #000 30%, rgba(0,0,0,0.5) 60%, transparent 92%);
-  }
-  /* light: shader paints dark warm pigment on white, multiply keeps only the streaks (the cream stays cream) */
-  :root[data-theme="light"] .hero-shader { mix-blend-mode: multiply; opacity: 0.22; }
-  @media (prefers-reduced-motion: reduce) { .hero-shader { display: none; } }
-
-  .topbar {
-    display: flex; align-items: center; justify-content: space-between; gap: 16px;
-    margin-bottom: clamp(44px, 8vw, 88px);
-    position: relative; z-index: 2;
-  }
-  .brandmark { font-family: var(--display); font-weight: 800; font-size: 1.3rem; letter-spacing: -0.01em; }
-  .brandmark span { color: var(--accent-text); }
-
-  .hero-grid {
-    position: relative; z-index: 2;
-    display: grid;
-    grid-template-columns: 1.05fr 0.95fr;
-    gap: clamp(32px, 6vw, 64px);
-    align-items: center;
-  }
-  .hero-inner { max-width: 640px; }
-  .hero-inner h1 {
-    font-family: var(--display);
-    font-weight: 800;
-    font-size: clamp(3rem, 8.6vw, 6.2rem);
-    line-height: 1.0;
-    letter-spacing: -0.035em;
-    margin-block: 16px 22px;
-  }
-  .hero-inner h1 em { font-style: italic; }   /* italic display moment on the highlighted word */
-  .hero-inner .lede {
-    font-size: clamp(1.05rem, 2.2vw, 1.28rem);
-    color: var(--muted-foreground);
-    max-width: 48ch;
-  }
-  .cta-row { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 34px; }
-
-  /* Immersive scroll: JS drives these transforms (spring-eased). Hero lifts & tips back as you
-     scroll past; the print panel reacts to the pointer in 3D. Reduced-motion users get neither. */
-  .hero-grid { transform-style: preserve-3d; transform-origin: 50% 0%; will-change: transform, opacity; }
-  .hero-inner { will-change: transform; }
-  .stage__panel { transition: box-shadow .3s ease; will-change: transform; }
-  @media (prefers-reduced-motion: reduce) {
-    .hero-grid, .hero-inner, .stage__panel { transform: none !important; opacity: 1 !important; }
-  }
-
-  /* Stage with 3D-print layers visual */
-  .stage { position: relative; aspect-ratio: 4 / 5; }
-  .stage__glow {
-    position: absolute; inset: -8% -4% auto 50%; transform: translateX(-50%);
-    height: 70%; width: 80%;
-    background: radial-gradient(ellipse at center, rgb(var(--primary-rgb) / 0.32), transparent 68%);
-    filter: blur(6px); pointer-events: none;
-  }
-  .stage__panel {
-    position: absolute; inset: 0;
-    border-radius: var(--radius);
-    border: 1px solid var(--ring);
-    background:
-      radial-gradient(circle at 50% 32%, rgb(var(--primary-rgb) / 0.15), transparent 60%),
-      var(--secondary);
-    box-shadow: 0 40px 80px -34px rgb(var(--shadow-rgb) / var(--shadow-op)), inset 0 0 60px -30px rgb(var(--primary-rgb) / 0.28);
-    overflow: hidden;
-    display: grid; place-items: center;
-  }
-
-  /* 3D printing layers animation */
-  .print-preview { display: flex; flex-direction: column; align-items: center; gap: 18px; width: 68%; }
-  .print-nozzle { color: var(--muted-foreground); opacity: 0.6; }
-  .print-nozzle svg { width: 52px; height: 42px; }
-  .print-layers { display: flex; flex-direction: column; gap: 7px; width: 100%; }
-  .print-layer {
-    height: 9px; border-radius: 9999px; width: var(--w, 100%);
-    background: var(--primary);
-    box-shadow: 0 0 10px rgb(var(--primary-rgb) / 0.3);
-    animation: layerGrow 0.45s ease both;
-    transform-origin: left center;
-  }
-  .print-layer:nth-child(1) { animation-delay: 0.10s; }
-  .print-layer:nth-child(2) { animation-delay: 0.25s; }
-  .print-layer:nth-child(3) { animation-delay: 0.40s; }
-  .print-layer:nth-child(4) { animation-delay: 0.55s; }
-  .print-layer:nth-child(5) { animation-delay: 0.70s; }
-  .print-layer:nth-child(6) { animation-delay: 0.85s; }
-  .print-layer:nth-child(7) { animation-delay: 1.00s; }
-  @keyframes layerGrow {
-    from { opacity: 0; transform: scaleX(0); }
-    to   { opacity: 1; transform: scaleX(1); }
-  }
-
-  .stage__tag {
-    position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
-    font-size: 0.74rem; letter-spacing: 0.04em; color: var(--muted-foreground);
-    background: var(--card); padding: 6px 14px; border-radius: 9999px;
-    border: 1px solid var(--border);
-    display: flex; align-items: center; gap: 6px; white-space: nowrap;
-  }
-  .stage__tag svg { width: 13px; height: 13px; flex: none; }
-
-  /* hero video frame: drop a <video class="hero-vid"> into .stage__panel and it fills the frame */
-  .hero-vid { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
-  .stage__panel:has(.hero-vid) { background: #000; }
-  .stage__panel:has(.hero-vid) .print-preview { display: none; }   /* placeholder auto-hides once a video is added */
-
-  /* ---- premium category cards: photo zoom, strong badge, colour swatches ---- */
-  .card-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  .card-photo { overflow: hidden; }
-  .card-photo .layers, .card-photo .card-img { transition: transform .5s cubic-bezier(.2,.7,.2,1); }
-  .card:hover .card-photo .layers, .card:hover .card-photo .card-img { transform: scale(1.08); }
-  .card-badge {
-    position: absolute; top: 12px; left: 12px; z-index: 2;
-    font-size: .66rem; font-weight: 700; letter-spacing: .03em; text-transform: uppercase;
-    padding: 6px 11px; border-radius: 9999px;
-    background: var(--card); color: var(--accent-text); border: 1px solid var(--border);
-    box-shadow: 0 6px 16px -8px rgb(var(--shadow-rgb) / var(--shadow-op));
-  }
-  .card-swatches { display: flex; gap: 7px; margin-top: 16px; }
-  .card-swatch {
-    width: 20px; height: 20px; border-radius: 50%; cursor: pointer; flex: none;
-    border: 2px solid var(--card); box-shadow: 0 0 0 1px var(--border);
-    transition: transform .15s ease, box-shadow .15s ease;
-  }
-  .card-swatch:hover { transform: scale(1.18); }
-  .card-swatch.is-active { box-shadow: 0 0 0 2px var(--accent-text); }
-  .sw-terracotta { background: #c0613f; }
-  .sw-sauge { background: #9aa882; }
-  .sw-noir { background: #2b2722; }
-  .sw-creme { background: #efe7d6; }
-
-  /* reassurance line under the steps */
-  .process-note { text-align: center; margin-top: 30px; color: var(--muted-foreground); font-size: .95rem; }
-  .process-note b { color: var(--foreground); }
-
-  /* ============ TRUST BAR ============ */
-  .trust-bar {
-    border-bottom: 1px solid var(--border);
-    padding-block: 18px;
-  }
-  .trust-list {
-    display: flex; flex-wrap: wrap; justify-content: center;
-    list-style: none; gap: 10px 36px;
-  }
-  .trust-list li {
-    display: flex; align-items: center; gap: 9px;
-    font-size: 0.88rem; font-weight: 500; color: var(--muted-foreground);
-  }
-  .trust-list svg { width: 15px; height: 15px; color: var(--sage); flex: none; }
-
-  /* ============ SECTIONS ============ */
-  .section-head { margin-bottom: 60px; max-width: 600px; }
-  .section-head h2 {
-    font-family: var(--display); font-weight: 800;
-    font-size: clamp(1.8rem, 4.5vw, 2.7rem);
-    letter-spacing: -0.02em; line-height: 1.08; margin-top: 12px;
-  }
-  .section-head p { color: var(--muted-foreground); margin-top: 14px; }
-
-  #categories { padding-block: clamp(76px, 12vw, 140px); }
-
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-    gap: 20px;
-  }
-
-  /* Category cards — full card is the link */
-  .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    overflow: hidden;
-    display: flex; flex-direction: column;
-    cursor: pointer;
-    transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
-    touch-action: manipulation;
-  }
-  .card:hover {
-    transform: translateY(-6px);
-    border-color: var(--ring);
-    box-shadow: 0 24px 50px -28px rgb(var(--shadow-rgb) / var(--shadow-op)), 0 0 40px -16px rgb(var(--primary-rgb) / 0.25);
-  }
-
-  .card-photo {
-    aspect-ratio: 4 / 3;
-    background:
-      radial-gradient(circle at 30% 28%, rgb(var(--primary-rgb) / 0.12), transparent 60%),
-      var(--secondary);
-    display: grid; place-items: center;
-    border-bottom: 1px solid var(--border);
-    position: relative;
-  }
-  .card-photo .layers { position: absolute; inset: 0; opacity: .6; }
-  .card-ph-icon { position: relative; z-index: 1; opacity: .55; width: 36px; height: 36px; color: var(--accent-text); }
-
-  .card-body { padding: 22px 22px 24px; display: flex; flex-direction: column; flex: 1; }
-  .card-body h3 { font-family: var(--display); font-weight: 600; font-size: 1.3rem; letter-spacing: -.01em; }
-  .card-body p { color: var(--muted-foreground); font-size: .95rem; margin-top: 8px; flex: 1; }
-  .card-link {
-    margin-top: 18px; font-weight: 600; font-size: .92rem; color: var(--accent-text);
-    display: inline-flex; align-items: center; gap: 6px;
-  }
-  .card-link svg { width: 15px; height: 15px; transition: transform .18s ease; }
-  .card:hover .card-link svg { transform: translateX(4px); }
-
-  /* ============ COMMENT ÇA MARCHE ============ */
-  #process {
-    padding-block: clamp(76px, 12vw, 136px);
-    border-top: 1px solid var(--border);
-  }
-  .steps {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 20px;
-  }
-  .step {
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: var(--radius); padding: 28px 26px 30px;
-    position: relative; overflow: hidden;
-    transition: border-color .22s ease, box-shadow .22s ease;
-  }
-  .step:hover { border-color: var(--ring); box-shadow: var(--glow); }
-  .step-num {
-    position: absolute; top: 16px; right: 18px;
-    font-family: var(--display); font-weight: 800; font-size: 3.5rem;
-    color: rgb(var(--primary-rgb) / 0.12); line-height: 1; letter-spacing: -0.04em;
-    pointer-events: none; user-select: none;
-  }
-  .step-icon {
-    width: 42px; height: 42px;
-    background: rgb(var(--sage-rgb) / 0.16); border: 1px solid rgb(var(--sage-rgb) / 0.5);
-    border-radius: var(--radius); display: grid; place-items: center;
-    margin-bottom: 18px; color: var(--sage);
-  }
-  .step-icon svg { width: 18px; height: 18px; }
-  .step h3 { font-family: var(--display); font-weight: 700; font-size: 1.18rem; margin-bottom: 8px; }
-  .step p { color: var(--muted-foreground); font-size: 0.93rem; line-height: 1.55; }
-
-  /* ============ OÙ ACHETER ============ */
-  #shop { padding-block: clamp(76px, 11vw, 128px); border-top: 1px solid var(--border); }
-  .shop-head { text-align: center; max-width: 560px; margin: 0 auto 60px; }
-  .shop-head h2 { font-family: var(--display); font-weight: 800; font-size: clamp(1.8rem, 4.5vw, 2.6rem); letter-spacing: -.02em; line-height: 1.1; margin-top: 12px; }
-  .shop-head p { color: var(--muted-foreground); margin-top: 14px; }
-
-  .platforms { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-  .platform {
-    position: relative; overflow: hidden;
-    border-radius: var(--radius);
-    border: 1px solid var(--border);
-    background: var(--card);
-    padding: 30px 28px 26px;
-    display: flex; flex-direction: column; gap: 16px;
-    cursor: pointer;
-    transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
-    touch-action: manipulation;
-  }
-  .platform:hover { transform: translateY(-5px); border-color: var(--ring); }
-  .platform::after {
-    content: ""; position: absolute; top: -40%; right: -20%;
-    width: 320px; height: 320px; border-radius: 50%;
-    opacity: .16; filter: blur(14px); pointer-events: none;
-  }
-  .platform--vinted::after { background: var(--vinted-1); }
-  .platform--lbc::after { background: var(--lbc-1); }
-  .platform--vinted:hover { box-shadow: 0 28px 60px -28px rgba(18, 182, 191, 0.5); }
-  .platform--lbc:hover { box-shadow: 0 28px 60px -28px rgba(255, 138, 61, 0.5); }
-
-  .platform__logo {
-    align-self: flex-start;
-    font-weight: 800; font-size: 1.15rem; letter-spacing: -0.02em;
-    color: #fff; padding: 8px 16px; border-radius: var(--radius);
-    position: relative; z-index: 1;
-  }
-  .platform--vinted .platform__logo { background: linear-gradient(135deg, var(--vinted-1), var(--vinted-2)); }
-  .platform--lbc .platform__logo { background: linear-gradient(135deg, var(--lbc-1), var(--lbc-2)); }
-
-  .platform__copy { position: relative; z-index: 1; color: var(--foreground); font-weight: 500; }
-  .platform__trust {
-    position: relative; z-index: 1;
-    display: inline-flex; align-items: center; gap: 7px;
-    font-size: 0.85rem; color: var(--muted-foreground);
-  }
-  .platform__trust svg { width: 15px; height: 15px; color: var(--accent-text); flex: none; }
-  .platform__cta {
-    position: relative; z-index: 1; margin-top: auto;
-    display: inline-flex; align-items: center; gap: 8px;
-    font-weight: 700; color: var(--accent-text);
-  }
-  .platform__cta svg { width: 16px; height: 16px; transition: transform .18s ease; }
-  .platform:hover .platform__cta svg { transform: translateX(4px); }
-
-  /* ============ FOOTER ============ */
-  footer { border-top: 1px solid var(--border); padding-block: 48px; margin-top: clamp(40px, 8vw, 80px); }
-  .foot-grid { display: flex; flex-wrap: wrap; gap: 28px 40px; align-items: flex-start; justify-content: space-between; }
-  .foot-brand { max-width: 320px; }
-  .foot-brand .brandmark { font-size: 1.15rem; }
-  .foot-brand p { color: var(--muted-foreground); font-size: 0.92rem; margin-top: 10px; }
-
-  .foot-col h4 { font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted-foreground); margin-bottom: 14px; }
-  .foot-stack { display: flex; flex-direction: column; gap: 10px; }
-  .foot-pill {
-    display: inline-flex; align-items: center; gap: 9px;
-    padding: 10px 16px; border-radius: 9999px;
-    border: 1px solid var(--border); background: var(--veil);
-    font-weight: 600; font-size: 0.92rem;
-    transition: border-color .18s ease, transform .18s ease, background .18s ease;
-    touch-action: manipulation;
-  }
-  .foot-pill:hover { transform: translateY(-2px); border-color: var(--ring); }
-  .foot-pill .dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
-  .foot-pill .dot--vinted { background: var(--vinted-1); }
-  .foot-pill .dot--lbc { background: var(--lbc-1); }
-  .foot-pill .dot--mail { background: var(--chart-5); }
-
-  .copyright { width: 100%; font-size: .82rem; color: var(--muted-foreground); margin-top: 30px; }
-
-  /* ============ Apparition au scroll ============ */
-  .reveal { opacity: 0; transform: translateY(20px); transition: opacity .6s ease, transform .6s ease; }
-  .reveal.in { opacity: 1; transform: none; }
-  .no-js .reveal { opacity: 1; transform: none; }   /* sections stay visible if JS is blocked/slow */
-
-  @media (prefers-reduced-motion: reduce) {
-    * { animation: none !important; transition: none !important; }
-    .reveal { opacity: 1; transform: none; }
-    .print-layer { animation: none; }
-    html { scroll-behavior: auto; }
-  }
-
-  /* ============ Responsive ============ */
-  @media (max-width: 860px) {
-    .hero-grid { grid-template-columns: 1fr; }
-    .stage { max-width: 360px; margin-inline: auto; aspect-ratio: 5 / 4; order: -1; }
-  }
-  @media (max-width: 600px) {
-    .cta-row .btn { flex: 1 1 100%; }
-    .stage { max-width: 250px; aspect-ratio: 5 / 4; }   /* keep a compact print visual on phones */
-    .foot-grid { flex-direction: column; }
-  }
-
-  :focus-visible { outline: 2px solid var(--ring); outline-offset: 3px; border-radius: 6px; }
-
-  /* ============ 21st.dev-style flourishes ============ */
-
-  /* 1 · Infinite marquee band */
-  .marquee {
-    position: relative; overflow: hidden;
-    border-block: 1px solid var(--border);
-    background: transparent;
-    padding-block: 13px;
-    -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
-            mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
-  }
-  .marquee__track {
-    display: inline-flex; align-items: center; white-space: nowrap;
-    animation: marquee 60s linear infinite; will-change: transform;
-  }
-  .marquee:hover .marquee__track { animation-play-state: paused; }
-  .marquee__item {
-    display: inline-flex; align-items: center; gap: 16px; padding-inline: 16px;
-    font-family: var(--body); font-weight: 600;
-    font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--muted-foreground);
-  }
-  .marquee__item::before {
-    content: ""; width: 5px; height: 5px; border-radius: 50%; flex: none;
-    background: var(--primary);
-  }
-  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-
-  /* (CTA shimmer removed — buttons stay clean; the lift on hover is enough) */
-
-  /* 3 · Cursor spotlight on cards */
-  .card { position: relative; }
-  .card::before, .platform::before {
-    content: ""; position: absolute; inset: 0; z-index: 3;
-    border-radius: inherit; pointer-events: none;
-    opacity: 0; transition: opacity .3s ease;
-    background: radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), rgb(var(--primary-rgb) / 0.16), transparent 70%);
-  }
-  @media (hover: hover) {
-    .card:hover::before, .platform:hover::before { opacity: 1; }
-  }
-
-  /* 4 · Headline highlight reveal */
-  .hl {
-    position: relative; isolation: isolate; white-space: nowrap;
-    color: var(--cta-fg); padding-inline: 0.12em;
-    font-style: italic;                 /* small editorial "display moment" */
-  }
-  .hl::before {
-    content: ""; position: absolute; inset: 0.02em -0.06em; z-index: -1;
-    border-radius: 0.12em; background: var(--primary);
-    transform: scaleX(0); transform-origin: left center;
-    transition: transform .55s cubic-bezier(0.6, 0, 0.2, 1);
-  }
-  .hl.is-lit::before { transform: scaleX(1); }
-  @media (prefers-reduced-motion: reduce) {
-    .marquee__track { animation: none; }
-    .hl::before { transform: scaleX(1); transition: none; }
-  }
-
-  /* ============ Skip link ============ */
-  .skip-link {
-    position: fixed; top: 10px; left: 10px; z-index: 400;
-    background: var(--card); color: var(--foreground);
-    border: 1px solid var(--ring); border-radius: 9999px;
-    padding: 10px 18px; font-weight: 600;
-    transform: translateY(-160%); transition: transform .18s ease;
-  }
-  .skip-link:focus-visible { transform: translateY(0); }
-
-  /* ============ Theme toggle ============ */
-  .theme-toggle {
-    position: fixed; top: 16px; right: 16px; z-index: 320;
-    width: 44px; height: 44px; border-radius: 9999px;
-    display: grid; place-items: center;
-    background: var(--tube-bg); border: 1px solid var(--border);
-    color: var(--foreground); cursor: pointer;
-    -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
-    box-shadow: 0 8px 24px -14px rgb(var(--shadow-rgb) / var(--shadow-op));
-    transition: transform .18s ease, border-color .18s ease;
-    touch-action: manipulation;
-  }
-  .theme-toggle:hover { transform: translateY(-2px); border-color: var(--ring); }
-  .theme-toggle svg { width: 20px; height: 20px; }
-  .theme-toggle .i-moon { display: none; }
-  :root[data-theme="light"] .theme-toggle .i-sun { display: none; }
-  :root[data-theme="light"] .theme-toggle .i-moon { display: block; }
-  .no-js .theme-toggle { display: none; }
-
-  /* ============ Menu button (top-left twin of the theme toggle) ============ */
-  .menu-btn {
-    position: fixed; top: 16px; left: 16px; z-index: 320;
-    width: 44px; height: 44px; border-radius: 9999px;
-    display: grid; place-items: center;
-    background: var(--tube-bg); border: 1px solid var(--border);
-    color: var(--foreground); cursor: pointer;
-    -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
-    box-shadow: 0 8px 24px -14px rgb(var(--shadow-rgb) / var(--shadow-op));
-    transition: transform .18s ease, border-color .18s ease;
-    touch-action: manipulation;
-  }
-  .menu-btn:hover { transform: translateY(-2px); border-color: var(--ring); }
-  .no-js .menu-btn { display: none; }
-
-  /* animated hamburger → X (three bars) */
-  .menu-btn__box { position: relative; width: 18px; height: 14px; }
-  .menu-btn__bar {
-    position: absolute; left: 0; width: 18px; height: 2px; border-radius: 2px;
-    background: currentColor; transition: transform .25s ease, opacity .2s ease;
-  }
-  .menu-btn__bar:nth-child(1) { top: 0; }
-  .menu-btn__bar:nth-child(2) { top: 6px; }
-  .menu-btn__bar:nth-child(3) { top: 12px; }
-  .menu-btn[aria-expanded="true"] .menu-btn__bar:nth-child(1) { transform: translateY(6px) rotate(45deg); }
-  .menu-btn[aria-expanded="true"] .menu-btn__bar:nth-child(2) { opacity: 0; }
-  .menu-btn[aria-expanded="true"] .menu-btn__bar:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
-
-  /* dropdown panel — same glassy surface as the nav/toggle, rounded */
-  .menu-pop {
-    position: fixed; top: 70px; left: 16px; z-index: 319;
-    min-width: 210px; padding: 8px;
-    background: var(--tube-bg); border: 1px solid var(--border); border-radius: 16px;
-    -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
-    box-shadow: 0 18px 44px -22px rgb(var(--shadow-rgb) / var(--shadow-op));
-    display: flex; flex-direction: column; gap: 2px;
-    transform-origin: top left;
-    opacity: 0; transform: translateY(-8px) scale(.96); visibility: hidden; pointer-events: none;
-    transition: opacity .18s ease, transform .18s ease, visibility .18s;
-  }
-  .menu-pop.is-open { opacity: 1; transform: translateY(0) scale(1); visibility: visible; pointer-events: auto; }
-  .menu-pop a {
-    display: flex; align-items: center; gap: 11px;
-    padding: 10px 12px; border-radius: 10px;
-    color: var(--muted-foreground); text-decoration: none;
-    font-size: .95rem; font-weight: 500; line-height: 1.2;
-    transition: background .15s ease, color .15s ease;
-  }
-  .menu-pop a:hover { background: var(--accent); color: var(--foreground); }
-  .menu-pop a .ic  { width: 17px; height: 17px; flex: none; opacity: .85; }
-  .menu-pop a .ext { width: 13px; height: 13px; margin-left: auto; opacity: .5; }
-  .menu-pop__sep { height: 1px; background: var(--border); margin: 6px 4px; }
-  .menu-pop__label { font-size: .7rem; letter-spacing: .05em; text-transform: uppercase; color: var(--muted-foreground); padding: 4px 12px 2px; opacity: .7; }
-  @media (prefers-reduced-motion: reduce) { .menu-btn__bar, .menu-pop { transition: none; } }
-
-  /* ============ FAQ ============ */
-  #faq { padding-block: clamp(76px, 11vw, 128px); border-top: 1px solid var(--border); }
-  .faq { display: grid; gap: 12px; max-width: 760px; }
-  .faq-item { border: 1px solid var(--border); border-radius: var(--radius); background: var(--card); overflow: hidden; }
-  .faq-item summary {
-    list-style: none; cursor: pointer; padding: 18px 20px;
-    display: flex; align-items: center; justify-content: space-between; gap: 16px;
-    font-family: var(--display); font-weight: 600; font-size: 1.05rem; color: var(--foreground);
-    transition: color .16s ease;
-  }
-  .faq-item summary::-webkit-details-marker { display: none; }
-  .faq-item summary:hover { color: var(--accent-text); }
-  .faq-chevron { width: 18px; height: 18px; flex: none; color: var(--accent-text); transition: transform .25s ease; }
-  .faq-item[open] .faq-chevron { transform: rotate(180deg); }
-  .faq-a { padding: 0 20px 18px; color: var(--muted-foreground); }
-
-  /* ============ Atelier showcase (scroll-straightening frame) ============ */
-  #showcase { padding-block: clamp(36px, 7vw, 84px) clamp(56px, 10vw, 116px); overflow: clip; }
-  .showcase { max-width: 920px; margin: 36px auto 0; perspective: 1400px; }
-  .showcase-frame {
-    border-radius: clamp(18px, 3vw, 30px);
-    border: 4px solid var(--border);
-    background: var(--secondary);
-    padding: clamp(8px, 1.5vw, 18px);
-    box-shadow: 0 40px 90px -40px rgb(var(--shadow-rgb) / var(--shadow-op));
-    transform: rotateX(0deg) scale(1);
-    transform-style: preserve-3d;
-  }
-  @supports (animation-timeline: view()) {
-    @media (prefers-reduced-motion: no-preference) {
-      .showcase-frame {
-        transform: rotateX(24deg) scale(0.92);
-        animation: showcase-straighten linear both;
-        animation-timeline: view();
-        animation-range: entry 8% cover 42%;
-      }
-      @keyframes showcase-straighten { to { transform: rotateX(0deg) scale(1); } }
-    }
-  }
-  .showcase-screen {
-    position: relative;
-    border-radius: clamp(12px, 2vw, 22px); overflow: hidden;
-    border: 1px solid var(--border);
-    aspect-ratio: 16 / 10;
-    display: grid; place-items: center;
-    background:
-      radial-gradient(120% 90% at 50% 0%, rgb(var(--primary-rgb) / 0.18), transparent 60%),
-      var(--card);
-  }
-  .showcase-cap {
-    position: absolute; left: 16px; bottom: 14px;
-    display: inline-flex; align-items: center; gap: 8px;
-    font-size: 0.78rem; color: var(--muted-foreground);
-    background: var(--card); border: 1px solid var(--border);
-    padding: 6px 12px; border-radius: 9999px;
-    -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
-  }
-  .showcase-cap b { color: var(--accent-text); font-weight: 700; }
-
-  /* ============ Tubelight floating nav ============ */
-  .tubelight {
-    position: fixed;
-    left: 50%;
-    bottom: calc(18px + env(safe-area-inset-bottom, 0px));
-    transform: translateX(-50%);
-    z-index: 300;
-  }
-  @media (min-width: 640px) {
-    .tubelight { bottom: auto; top: 16px; }
-  }
-  .tubelight__pill {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    padding: 6px;
-    border-radius: 9999px;
-    background: var(--tube-bg);
-    border: 1px solid var(--border);
-    -webkit-backdrop-filter: blur(14px);
-    backdrop-filter: blur(14px);
-    box-shadow: 0 12px 34px -16px rgb(var(--shadow-rgb) / var(--shadow-op)), 0 0 36px -16px rgb(var(--primary-rgb) / 0.4);
-  }
-  .tubelight__item {
-    position: relative;
-    z-index: 1;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 44px;
-    padding: 0 20px;
-    border-radius: 9999px;
-    font-family: var(--body);
-    font-weight: 600;
-    font-size: 0.92rem;
-    line-height: 1;
-    color: var(--muted-foreground);
-    white-space: nowrap;
-    transition: color .2s ease;
-    touch-action: manipulation;
-  }
-  .tubelight__item:hover { color: var(--foreground); }
-  .tubelight__item.is-active { color: var(--accent-text); }
-  .tubelight__item .icon { width: 20px; height: 20px; display: none; }
-  @media (max-width: 767px) {
-    .tubelight__item { padding: 0; width: 52px; }
-    .tubelight__item .label { display: none; }
-    .tubelight__item .icon { display: block; }
-  }
-  .tubelight__lamp {
-    position: absolute;
-    top: 0; left: 0;
-    width: 0; height: 100%;
-    border-radius: 9999px;
-    background: rgb(var(--primary-rgb) / 0.15);
-    transform: translateX(0);
-    transition: transform .35s cubic-bezier(0.34, 1.45, 0.6, 1), width .35s cubic-bezier(0.34, 1.45, 0.6, 1);
-    pointer-events: none;
-  }
-  .tubelight__lamp::before {
-    content: "";
-    position: absolute;
-    top: -7px; left: 50%;
-    transform: translateX(-50%);
-    width: 36px; height: 4px;
-    background: var(--primary);
-    border-radius: 0 0 8px 8px;
-    box-shadow: 0 -7px 18px 2px rgb(var(--primary-rgb) / 0.5), 0 0 12px 1px rgb(var(--primary-rgb) / 0.8);
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .tubelight__lamp { transition: none; }
-  }
-  @media (max-width: 639px) {
-    body { padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
-  }
-
-  /* ============ Mobile comfort: tap feedback · tighter rhythm · sticky shop CTA ============ */
-  /* tactile press feedback — matters on touch, where :hover never fires */
-  .btn:active { transform: translateY(0) scale(.97); }
-  .card:active, .platform:active { transform: scale(.985); }
-  .card-swatch:active { transform: scale(.86); }
-  .tubelight__item:active { transform: scale(.92); }
-  .theme-toggle:active, .menu-btn:active { transform: scale(.9); }
-  .menu-pop a:active { background: var(--accent); }
-  .faq-item summary:active { color: var(--accent-text); }
-
-  .sticky-cta { display: none; }
-
-  @media (max-width: 639px) {
-    /* tighter vertical rhythm — less endless scrolling */
-    header { padding-block: 42px 30px; }
-    .hero-inner h1 { font-size: clamp(2.35rem, 10.5vw, 3.1rem); }
-    #categories, #process, #shop, #faq { padding-block: 52px; }
-    #showcase { padding-block: 18px 40px; }
-    .section-head { margin-bottom: 32px; }
-    .shop-head { margin: 0 auto 32px; }
-    .grid { gap: 14px; }
-    .steps { gap: 14px; }
-
-    /* sticky shop CTA — reveals after the hero, floats above the bottom nav */
-    .sticky-cta {
-      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-      position: fixed; left: 12px; right: 12px; bottom: calc(74px + env(safe-area-inset-bottom, 0px));
-      z-index: 330; min-height: 50px; border-radius: 9999px;
-      background: var(--cta-bg); color: var(--cta-fg); font-weight: 700; font-size: .98rem; text-decoration: none;
-      box-shadow: 0 12px 30px -8px rgb(var(--primary-rgb) / .55);
-      opacity: 0; transform: translateY(20px); pointer-events: none;
-      transition: opacity .25s ease, transform .25s ease;
-    }
-    .sticky-cta svg { width: 18px; height: 18px; }
-    .sticky-cta.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
-    body { padding-bottom: calc(140px + env(safe-area-inset-bottom, 0px)); }
-  }
+  /* ===== Homepage-specific composition ===== */
+
+  /* Hero — asymmetric: editorial column + technical metadata plate */
+  .hero { padding-block: clamp(48px, 9vw, 120px) clamp(48px, 8vw, 104px); }
+  .hero-grid { display: grid; grid-template-columns: 1fr; gap: clamp(36px, 6vw, 64px); }
+  @media (min-width: 900px) { .hero-grid { grid-template-columns: 1.35fr 0.65fr; align-items: end; } }
+  .hero h1 { font-family: var(--display); font-weight: 400; font-size: clamp(2.9rem, 8vw, 6rem);
+    line-height: 0.98; letter-spacing: -0.025em; margin-block: 22px 26px; }
+  .hero h1 em { font-style: italic; color: var(--accent); }
+  .hero .lede { font-size: clamp(1.08rem, 1.8vw, 1.3rem); color: var(--ink-soft); max-width: 46ch; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 12px 28px; margin-top: 34px; align-items: center; }
+  .hero-plate { border-top: 1px solid var(--ink); padding-top: 18px; }
+  .hero-plate__cap { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 14px; }
+
+  /* Locality / trust strip — typographic, hairline framed, no icon cards */
+  .locality { border-block: var(--rule); }
+  .locality__row { display: grid; grid-template-columns: 1fr; }
+  @media (min-width: 760px) { .locality__row { grid-template-columns: repeat(3, 1fr); } }
+  .locality__item { font-family: var(--mono); font-size: 0.76rem; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--ink-soft); padding: 20px 0; }
+  @media (min-width: 760px) { .locality__item + .locality__item { border-left: var(--rule); padding-left: 28px; } }
+  .locality__item b { color: var(--ink); font-weight: 500; }
+
+  /* Worlds — editorial index list, not cards */
+  .worlds { display: flex; flex-direction: column; }
+  .world { display: grid; grid-template-columns: 3ch 1fr auto; gap: 18px 24px; align-items: baseline;
+    padding: clamp(22px, 3.4vw, 38px) 0; border-top: var(--rule); color: var(--ink);
+    transition: padding-left .3s cubic-bezier(.2,.6,.2,1); }
+  .worlds .world:last-child { border-bottom: var(--rule); }
+  @media (hover: hover) { .world:hover { padding-left: 14px; } .world:hover .world__name { color: var(--accent); } }
+  .world__idx { font-family: var(--mono); font-size: 0.74rem; letter-spacing: 0.08em; color: var(--ink-soft); }
+  .world__name { font-family: var(--display); font-weight: 400; font-size: clamp(1.5rem, 3.6vw, 2.5rem); line-height: 1.05; letter-spacing: -0.01em; transition: color .25s ease; }
+  .world__desc { grid-column: 2 / 3; color: var(--ink-soft); font-size: 0.98rem; max-width: 46ch; margin-top: 6px; }
+  .world__go { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); white-space: nowrap; }
+  .world:hover .world__go { color: var(--accent); }
+
+  /* Atelier — image plate + editorial text */
+  .atelier-grid { display: grid; grid-template-columns: 1fr; gap: clamp(28px, 5vw, 56px); align-items: center; }
+  @media (min-width: 860px) { .atelier-grid { grid-template-columns: 0.9fr 1.1fr; } }
+  .atelier-plate { aspect-ratio: 4 / 5; background: var(--paper-2); border: var(--rule); position: relative; overflow: hidden; }
+  .atelier-plate__layers { position: absolute; inset: 0;
+    background-image: repeating-linear-gradient(to bottom, transparent 0 9px, color-mix(in srgb, var(--ink) 7%, transparent) 9px 10px); }
+  .atelier-plate__tag { position: absolute; left: 16px; bottom: 14px; font-family: var(--mono); font-size: 0.68rem;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); background: var(--paper); padding: 6px 11px; border: var(--rule); }
+  .atelier-body h2 { font-family: var(--display); font-weight: 400; font-size: clamp(1.9rem, 4.4vw, 3rem); line-height: 1.05; letter-spacing: -0.015em; }
+  .atelier-body p { color: var(--ink-soft); margin-top: 18px; max-width: 50ch; }
+
+  /* Process — numbered editorial sequence */
+  .steps { display: grid; grid-template-columns: 1fr; }
+  @media (min-width: 760px) { .steps { grid-template-columns: repeat(3, 1fr); } }
+  .step { padding: 30px 0; border-top: 1px solid var(--ink); }
+  @media (min-width: 760px) { .step { padding: 0 28px 0 0; border-top: 1px solid var(--ink); padding-top: 22px; } .step + .step { padding-left: 28px; border-left: var(--rule); } }
+  .step__num { font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.1em; color: var(--accent); }
+  .step h3 { font-family: var(--display); font-weight: 400; font-size: 1.5rem; margin-block: 12px 8px; }
+  .step p { color: var(--ink-soft); font-size: 0.96rem; }
+
+  /* Newsletter — restrained capture */
+  .news-grid { display: grid; grid-template-columns: 1fr; gap: 28px; }
+  @media (min-width: 860px) { .news-grid { grid-template-columns: 1fr 0.9fr; align-items: end; gap: 56px; } }
+  .news h2 { font-family: var(--display); font-weight: 400; font-size: clamp(1.8rem, 4vw, 2.8rem); line-height: 1.06; letter-spacing: -0.015em; }
+  .news p { color: var(--ink-soft); margin-top: 14px; max-width: 44ch; }
+  .news-form { display: flex; border: 1px solid var(--ink); }
+  .news-form input { flex: 1; min-width: 0; background: transparent; color: var(--ink); padding: 16px 16px;
+    font-family: var(--mono); font-size: 0.85rem; border: 0; }
+  .news-form input::placeholder { color: var(--ink-soft); }
+  .news-form button { padding: 16px 22px; background: var(--ink); color: var(--paper); border-left: 1px solid var(--ink);
+    font-family: var(--mono); font-size: 0.76rem; letter-spacing: 0.08em; text-transform: uppercase; transition: background .25s ease; }
+  .news-form button:hover { background: var(--accent); }
+  .news-note { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.04em; color: var(--ink-soft); margin-top: 12px; text-transform: uppercase; }
+
+  /* FAQ — editorial accordion */
+  .faq { display: grid; gap: 0; }
+  .faq details { border-top: var(--rule); }
+  .faq details:last-child { border-bottom: var(--rule); }
+  .faq summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; gap: 20px; align-items: baseline;
+    padding: 22px 0; font-family: var(--display); font-weight: 400; font-size: clamp(1.15rem, 2.2vw, 1.5rem); line-height: 1.2; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary:hover { color: var(--accent); }
+  .faq summary .sign { font-family: var(--mono); font-size: 1.1rem; color: var(--accent); flex: none; transition: transform .25s ease; }
+  .faq details[open] summary .sign { transform: rotate(45deg); }
+  .faq .ans { color: var(--ink-soft); padding: 0 0 24px; max-width: 64ch; }
 </style>
 
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "Store",
-      "@id": "https://cosyprintsshop-dotcom.github.io/#store",
-      "name": "Cosy Prints",
-      "description": "Déco cosy et objets utiles imprimés en 3D à Grenoble, faits main. En vente sur Vinted et Leboncoin.",
-      "url": "https://cosyprintsshop-dotcom.github.io",
-      "email": "cosyprints.shop@gmail.com",
-      "areaServed": "Grenoble, France",
-      "knowsLanguage": "fr",
-      "sameAs": [
-        "https://www.vinted.fr/member/60879390-cosyprints",
-        "https://www.leboncoin.fr/profil/0408d333-46e3-4487-b2f3-4743fd34c872"
-      ]
-    },
-    {
-      "@type": "FAQPage",
-      "mainEntity": [
-        { "@type": "Question", "name": "Combien de temps pour recevoir ma commande ?", "acceptedAnswer": { "@type": "Answer", "text": "Chaque pièce est imprimée à la demande à Grenoble, puis expédiée via Vinted ou Leboncoin. Le délai dépend de la pièce et de la plateforme — on te tient au courant à chaque étape." } },
-        { "@type": "Question", "name": "En quelle matière imprimez-vous ?", "acceptedAnswer": { "@type": "Answer", "text": "On imprime en filament de qualité, couche après couche, pour des pièces solides et durables. Pour une matière ou une finition particulière, écris-nous avant de commander." } },
-        { "@type": "Question", "name": "Puis-je commander une pièce sur-mesure ?", "acceptedAnswer": { "@type": "Answer", "text": "Oui. Écris-nous à cosyprints.shop@gmail.com avec ton idée et on étudie l'impression à la demande." } },
-        { "@type": "Question", "name": "Comment se passent le paiement et la livraison ?", "acceptedAnswer": { "@type": "Answer", "text": "Tout passe par Vinted ou Leboncoin : paiement et livraison sont gérés et protégés par les plateformes. À Grenoble, la remise en main propre est possible via Leboncoin." } },
-        { "@type": "Question", "name": "Pourquoi acheter sur Vinted ou Leboncoin et pas sur le site ?", "acceptedAnswer": { "@type": "Answer", "text": "Cosy Prints est une vitrine. On vend sur Vinted et Leboncoin pour un paiement et une livraison sécurisés, sans créer de compte chez nous." } }
-      ]
-    }
+  "@type": "Store",
+  "@id": "https://cosyprintsshop-dotcom.github.io/#store",
+  "name": "CosyPrints",
+  "description": "Objets utiles et déco pour la maison, imprimés en 3D à la main à Saint-Martin-d'Uriage, près de Grenoble.",
+  "url": "https://cosyprintsshop-dotcom.github.io",
+  "email": "cosyprints.shop@gmail.com",
+  "areaServed": "Grenoble, France",
+  "address": { "@type": "PostalAddress", "addressLocality": "Saint-Martin-d'Uriage", "addressRegion": "Isère", "addressCountry": "FR" },
+  "knowsLanguage": ["fr", "en"],
+  "sameAs": [
+    "https://www.vinted.fr/member/60879390-cosyprints",
+    "https://www.leboncoin.fr/profil/0408d333-46e3-4487-b2f3-4743fd34c872"
   ]
 }
 </script>
 </head>
+
 <body>
 
-<a class="skip-link" href="#contenu">Aller au contenu</a>
+<a class="skip-link" href="#main" data-i18n="a11y.skip">Aller au contenu</a>
 
-<button class="theme-toggle" id="themeToggle" type="button" aria-label="Changer de thème">
-  <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
-  <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
-</button>
+<!-- ============ Header ============ -->
+<header class="site-header">
+  <div class="wrap site-header__bar">
+    <a class="wordmark" href="index.html" translate="no">Cosy<span class="dot">·</span>Prints</a>
 
-<!-- 3D-print theme reveal: printer gantry that "prints" the new theme (driven by #themeToggle) -->
-<div id="printFx" aria-hidden="true">
-  <div class="pfx-cover"></div>
-  <div class="pfx-band">
-    <div class="pfx-lines"></div>
-    <div class="pfx-rail"></div>
-    <div class="pfx-head">
-      <svg viewBox="0 0 32 44" aria-hidden="true">
-        <rect x="2" y="0" width="28" height="11" rx="2.5" fill="currentColor"/>
-        <path d="M7 11 H25 L20 30 H12 Z" fill="currentColor"/>
-        <path d="M12 30 H20 L16.5 40 H15.5 Z" fill="currentColor"/>
-      </svg>
+    <nav class="nav" aria-label="Navigation principale">
+      <a href="boutique.html" data-i18n="nav.catalogue">Catalogue</a>
+      <a href="#univers" data-i18n="nav.univers">Univers</a>
+      <a href="#atelier" data-i18n="nav.atelier">Atelier</a>
+      <a href="engagement.html" data-i18n="nav.engagement">Notre engagement</a>
+      <a href="#contact" data-i18n="nav.contact">Contact</a>
+    </nav>
+
+    <div class="header-controls">
+      <button class="ctrl ctrl--lang" data-lang-toggle type="button" aria-label="Switch to English" aria-pressed="false">
+        <span class="lang-code">EN</span>
+      </button>
+      <button class="ctrl ctrl--theme" id="themeToggle" type="button" aria-label="Changer de thème">
+        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+      </button>
+      <button class="menu-btn" id="menuBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="mobileNav" aria-label="Ouvrir le menu">
+        <span class="menu-btn__box" aria-hidden="true"><span class="menu-btn__bar"></span><span class="menu-btn__bar"></span><span class="menu-btn__bar"></span></span>
+      </button>
     </div>
   </div>
-</div>
 
-<!-- Top-left menu: animated hamburger → X, opens a themed nav dropdown -->
-<button class="menu-btn" id="menuBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="menuPop" aria-label="Ouvrir le menu">
-  <span class="menu-btn__box" aria-hidden="true">
-    <span class="menu-btn__bar"></span>
-    <span class="menu-btn__bar"></span>
-    <span class="menu-btn__bar"></span>
-  </span>
-</button>
-<nav class="menu-pop" id="menuPop" aria-label="Menu de navigation">
-  <a href="#accueil">
-    <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-    Accueil
-  </a>
-  <a href="#categories">
-    <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
-    Catégories
-  </a>
-  <a href="#contact">
-    <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-    Contact
-  </a>
-  <a href="engagement.html">
-    <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-4.35-9.5-8.5A5.2 5.2 0 0 1 12 6a5.2 5.2 0 0 1 9.5 6.5C19 16.65 12 21 12 21z"/></svg>
-    Notre engagement
-  </a>
-  <div class="menu-pop__sep"></div>
-  <div class="menu-pop__label">Nos boutiques</div>
-  <a href="https://www.vinted.fr/member/60879390-cosyprints" target="_blank" rel="noopener">
-    <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-    Vinted
-    <svg class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
-  </a>
-  <a href="https://www.leboncoin.fr/profil/0408d333-46e3-4487-b2f3-4743fd34c872" target="_blank" rel="noopener">
-    <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-    Leboncoin
-    <svg class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
-  </a>
-</nav>
-
-<!-- ============ Tubelight floating nav ============ -->
-<nav class="tubelight" aria-label="Navigation principale">
-  <div class="tubelight__pill" id="navPill">
-    <span class="tubelight__lamp" aria-hidden="true"></span>
-    <a class="tubelight__item" href="#accueil" data-section="accueil" data-spy="true" aria-label="Accueil">
-      <span class="label">Accueil</span>
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-    </a>
-    <a class="tubelight__item" href="#categories" data-section="categories" data-spy="true" aria-label="Catégories">
-      <span class="label">Catégories</span>
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
-    </a>
-    <a class="tubelight__item" href="#contact" data-section="contact" data-spy="true" aria-label="Contact">
-      <span class="label">Contact</span>
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-    </a>
-  </div>
-</nav>
-
-<header id="accueil">
-  <canvas class="hero-shader" id="heroShader" aria-hidden="true"></canvas>
-  <div class="wrap">
-    <div class="topbar">
-      <div class="brandmark" translate="no">Cosy<span>·</span>Prints</div>
-    </div>
-
-    <div class="hero-grid">
-      <div class="hero-inner">
-        <p class="eyebrow">Fait main à Grenoble · imprimé à la demande</p>
-        <h1>Des objets qui réchauffent ton <em class="hl">chez-toi</em>.</h1>
-        <p class="lede">Déco minimaliste, façonnée en PLA d'origine végétale — imprimée seulement quand tu commandes. Zéro stock, zéro déchet.</p>
-        <div class="cta-row">
-          <a class="btn btn-primary" href="https://www.vinted.fr/member/60879390-cosyprints" target="_blank" rel="noopener">
-            Voir sur Vinted
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
-          </a>
-          <a class="btn btn-outline" href="https://www.leboncoin.fr/profil/0408d333-46e3-4487-b2f3-4743fd34c872" target="_blank" rel="noopener">
-            Voir sur Leboncoin
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
-          </a>
-        </div>
-        <a class="hero-browse" href="#categories">ou parcourir nos univers →</a>
-      </div>
-
-      <div class="stage" aria-hidden="true">
-        <div class="stage__glow"></div>
-        <div class="stage__panel layers">
-          <!-- 🎥 VIDÉO HERO — décommente ce bloc et mets ton fichier (mp4/webm). La vidéo remplit le cadre et masque le placeholder animé ci-dessous :
-          <video class="hero-vid" autoplay muted loop playsinline poster="img/hero-poster.jpg">
-            <source src="img/hero.webm" type="video/webm">
-            <source src="img/hero.mp4" type="video/mp4">
-          </video>
-          -->
-          <div class="print-preview">
-            <svg class="print-nozzle" viewBox="0 0 52 42" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="4" y="2" width="44" height="18" rx="5"/>
-              <path d="M16 20 12 34h28l-4-14"/>
-              <line x1="26" y1="34" x2="26" y2="40"/>
-              <circle cx="26" cy="40" r="2" fill="currentColor"/>
-            </svg>
-            <div class="print-layers">
-              <div class="print-layer" style="--w:70%"></div>
-              <div class="print-layer" style="--w:88%"></div>
-              <div class="print-layer" style="--w:96%"></div>
-              <div class="print-layer" style="--w:100%"></div>
-              <div class="print-layer" style="--w:94%"></div>
-              <div class="print-layer" style="--w:80%"></div>
-              <div class="print-layer" style="--w:62%"></div>
-            </div>
-          </div>
-          <span class="stage__tag">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5M2 12l10 5 10-5"/></svg>
-            PLA d'origine végétale · fait main
-          </span>
-        </div>
-      </div>
-    </div>
-  </div>
+  <nav class="mobile-nav" id="mobileNav" aria-label="Menu">
+    <a href="boutique.html"><span data-i18n="nav.catalogue">Catalogue</span><span class="idx">01</span></a>
+    <a href="#univers"><span data-i18n="nav.univers">Univers</span><span class="idx">02</span></a>
+    <a href="#atelier"><span data-i18n="nav.atelier">Atelier</span><span class="idx">03</span></a>
+    <a href="engagement.html"><span data-i18n="nav.engagement">Notre engagement</span><span class="idx">04</span></a>
+    <a href="#contact"><span data-i18n="nav.contact">Contact</span><span class="idx">05</span></a>
+  </nav>
 </header>
 
-<!-- Trust bar -->
-<div class="trust-bar">
-  <div class="wrap">
-    <ul class="trust-list" aria-label="Nos engagements">
-      <li>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-        Fait main à Grenoble
-      </li>
-      <li>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="2" y1="9" x2="22" y2="9"/><line x1="2" y1="13" x2="22" y2="13"/></svg>
-        PLA d'origine végétale
-      </li>
-      <li>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        Paiement sécurisé
-      </li>
-      <li>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-        Livraison dès 2,88 €
-      </li>
-    </ul>
+<main id="main">
+
+  <!-- ============ Hero ============ -->
+  <section class="hero wrap">
+    <div class="hero-grid">
+      <div>
+        <p class="eyebrow eyebrow--accent" data-i18n="hero.eyebrow">Atelier · Saint-Martin-d'Uriage, près de Grenoble</p>
+        <h1 data-i18n="hero.title">Des objets qui réchauffent <em>la maison</em>.</h1>
+        <p class="lede" data-i18n="hero.lede">Déco, cuisine, luminaires et accessoires — dessinés et imprimés en 3D dans notre atelier, en PLA d'origine végétale. Imprimés à la demande, sans stock.</p>
+        <div class="hero-actions">
+          <a class="tlink" href="https://www.vinted.fr/member/60879390-cosyprints" target="_blank" rel="noopener">
+            <span data-i18n="hero.cta_vinted">Découvrir sur Vinted</span>
+            <svg class="arr" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+          </a>
+          <a class="tlink" href="https://www.leboncoin.fr/profil/0408d333-46e3-4487-b2f3-4743fd34c872" target="_blank" rel="noopener">
+            <span data-i18n="hero.cta_lbc">Découvrir sur Leboncoin</span>
+            <svg class="arr" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+          </a>
+          <a class="tlink" href="boutique.html">
+            <span data-i18n="hero.browse">Voir le catalogue</span>
+            <svg class="arr" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <aside class="hero-plate" aria-label="Fiche atelier">
+        <p class="hero-plate__cap" data-i18n="hero.plate_cap">La fiche</p>
+        <div class="meta-list">
+          <div><span data-i18n="meta.k_place">Lieu</span><b>Saint-Martin-d'Uriage</b></div>
+          <div><span data-i18n="meta.k_method">Méthode</span><b data-i18n="meta.v_method">Impression 3D</b></div>
+          <div><span data-i18n="meta.k_material">Matière</span><b data-i18n="meta.v_material">PLA d'origine végétale</b></div>
+          <div><span data-i18n="meta.k_sale">Vente</span><b>Vinted &amp; Leboncoin</b></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ============ Locality / trust strip ============ -->
+  <div class="locality">
+    <div class="wrap locality__row">
+      <div class="locality__item" data-i18n="trust.handmade">Fait main · <b>Saint-Martin-d'Uriage</b></div>
+      <div class="locality__item" data-i18n="trust.pla"><b>PLA</b> d'origine végétale</div>
+      <div class="locality__item" data-i18n="trust.payment">Paiement protégé · <b>Vinted &amp; Leboncoin</b></div>
+    </div>
   </div>
-</div>
 
-<!-- Marquee band -->
-<div class="marquee" aria-hidden="true">
-  <div class="marquee__track">
-    <span class="marquee__item">Homie Vibe</span>
-    <span class="marquee__item">Cable Management</span>
-    <span class="marquee__item">Lumière &amp; Lampes</span>
-    <span class="marquee__item">Bureau &amp; Rangement</span>
-    <span class="marquee__item">Gadgets Utiles</span>
-    <span class="marquee__item">Fait main à Grenoble</span>
-    <span class="marquee__item">Impression 3D</span>
-    <span class="marquee__item">Couche par couche</span>
-    <span class="marquee__item">Homie Vibe</span>
-    <span class="marquee__item">Cable Management</span>
-    <span class="marquee__item">Lumière &amp; Lampes</span>
-    <span class="marquee__item">Bureau &amp; Rangement</span>
-    <span class="marquee__item">Gadgets Utiles</span>
-    <span class="marquee__item">Fait main à Grenoble</span>
-    <span class="marquee__item">Impression 3D</span>
-    <span class="marquee__item">Couche par couche</span>
-  </div>
-</div>
-
-<main id="contenu" tabindex="-1">
-  <!-- Atelier showcase -->
-  <section id="showcase" aria-labelledby="showcase-title">
+  <!-- ============ Univers (editorial index) ============ -->
+  <section class="section" id="univers" aria-labelledby="univers-title">
     <div class="wrap">
-      <div class="section-head reveal" style="margin-inline:auto; text-align:center;">
-        <p class="eyebrow">L'atelier</p>
-        <h2 id="showcase-title">Du fil à l'objet, couche après couche.</h2>
+      <div class="section-head reveal">
+        <p class="section-head__index" data-i18n="cat.eyebrow">§ Nos univers</p>
+        <div>
+          <h2 class="section-head__title" id="univers-title" data-i18n="cat.title">Cinq familles d'objets pour <em>la maison</em>.</h2>
+          <p class="section-head__lead" data-i18n="cat.subtitle">Choisis un univers — on s'occupe de l'impression, dans la couleur que tu veux.</p>
+        </div>
       </div>
-      <div class="showcase">
-        <div class="showcase-frame">
-          <div class="showcase-screen">
-            <div class="print-preview" style="width:42%;">
-              <svg class="print-nozzle" viewBox="0 0 52 42" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <rect x="4" y="2" width="44" height="18" rx="5"/>
-                <path d="M16 20 12 34h28l-4-14"/>
-                <line x1="26" y1="34" x2="26" y2="40"/>
-                <circle cx="26" cy="40" r="2" fill="currentColor"/>
-              </svg>
-              <div class="print-layers">
-                <div class="print-layer" style="--w:70%"></div>
-                <div class="print-layer" style="--w:88%"></div>
-                <div class="print-layer" style="--w:96%"></div>
-                <div class="print-layer" style="--w:100%"></div>
-                <div class="print-layer" style="--w:90%"></div>
-                <div class="print-layer" style="--w:74%"></div>
-              </div>
-            </div>
-            <span class="showcase-cap"><b>Imprimé</b> à Grenoble · couche par couche</span>
-          </div>
+
+      <div class="worlds reveal">
+        <a class="world" href="boutique.html?cat=homie-vibe">
+          <span class="world__idx">01</span>
+          <span class="world__name" data-i18n="card.homie.title">Homie Vibe</span>
+          <span class="world__go" data-i18n="cat.cta_catalogue">Voir →</span>
+          <span class="world__desc" data-i18n="card.homie.desc">Vases, supports, objets déco — des pièces minimalistes qui réchauffent la pièce.</span>
+        </a>
+        <a class="world" href="boutique.html?cat=cable-management">
+          <span class="world__idx">02</span>
+          <span class="world__name" data-i18n="card.cable.title">Cable Management</span>
+          <span class="world__go" data-i18n="cat.cta_catalogue">Voir →</span>
+          <span class="world__desc" data-i18n="card.cable.desc">Clips, passe-câbles et supports : le bureau net, fini les nœuds.</span>
+        </a>
+        <a class="world" href="boutique.html?cat=lampes">
+          <span class="world__idx">03</span>
+          <span class="world__name" data-i18n="card.lampes.title">Lumière &amp; Lampes</span>
+          <span class="world__go" data-i18n="cat.cta_catalogue">Voir →</span>
+          <span class="world__desc" data-i18n="card.lampes.desc">Abat-jours et lampes pour une lumière douce, le soir venu.</span>
+        </a>
+        <a class="world" href="boutique.html?cat=bureau">
+          <span class="world__idx">04</span>
+          <span class="world__name" data-i18n="card.bureau.title">Bureau &amp; Rangement</span>
+          <span class="world__go" data-i18n="cat.cta_catalogue">Voir →</span>
+          <span class="world__desc" data-i18n="card.bureau.desc">Organiseurs et supports malins pour un espace qui respire.</span>
+        </a>
+        <a class="world" href="boutique.html?cat=gadgets">
+          <span class="world__idx">05</span>
+          <span class="world__name" data-i18n="card.gadgets.title">Gadgets Utiles</span>
+          <span class="world__go" data-i18n="cat.cta_catalogue">Voir →</span>
+          <span class="world__desc" data-i18n="card.gadgets.desc">Les petits objets malins du quotidien, imprimés à la demande.</span>
+        </a>
+        <a class="world" href="mailto:cosyprints.shop@gmail.com">
+          <span class="world__idx">06</span>
+          <span class="world__name" data-i18n="card.custom.title">Sur-mesure</span>
+          <span class="world__go" data-i18n="cat.cta_contact">Nous écrire →</span>
+          <span class="world__desc" data-i18n="card.custom.desc">Une idée en tête ? On l'imprime, dans la couleur que tu veux.</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Atelier ============ -->
+  <section class="section" id="atelier" aria-labelledby="atelier-title">
+    <div class="wrap atelier-grid">
+      <div class="atelier-plate reveal" aria-hidden="true">
+        <div class="atelier-plate__layers"></div>
+        <span class="atelier-plate__tag" data-i18n="atelier.tag">Imprimé couche par couche</span>
+      </div>
+      <div class="atelier-body reveal">
+        <p class="eyebrow eyebrow--accent" data-i18n="atelier.eyebrow">L'atelier</p>
+        <h2 id="atelier-title" data-i18n="atelier.title" style="margin-top:14px;">Imprimé près de Grenoble, à Saint-Martin-d'Uriage.</h2>
+        <p data-i18n="atelier.body1">Chaque pièce est imprimée à la demande, couche après couche, en PLA d'origine végétale. Pas de stock, pas de gaspillage — seulement l'objet que tu as choisi.</p>
+        <p data-i18n="atelier.body2">L'impression 3D, c'est notre méthode. Mais ce qui compte, c'est l'objet : utile, soigné, fait pour durer chez toi.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Process ============ -->
+  <section class="section" aria-labelledby="process-title">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="section-head__index" data-i18n="process.eyebrow">§ Commander</p>
+        <div>
+          <h2 class="section-head__title" id="process-title" data-i18n="process.title">Sécurisé, du clic à ta porte.</h2>
+        </div>
+      </div>
+      <div class="steps reveal">
+        <div class="step">
+          <p class="step__num">01</p>
+          <h3 data-i18n="process.step1.title">Tu choisis</h3>
+          <p data-i18n="process.step1.desc">Ta pièce préférée sur notre boutique Vinted ou Leboncoin.</p>
+        </div>
+        <div class="step">
+          <p class="step__num">02</p>
+          <h3 data-i18n="process.step2.title">On imprime</h3>
+          <p data-i18n="process.step2.desc">À la demande, dans notre atelier, en PLA d'origine végétale. Rien que pour toi.</p>
+        </div>
+        <div class="step">
+          <p class="step__num">03</p>
+          <h3 data-i18n="process.step3.title">Tu reçois</h3>
+          <p data-i18n="process.step3.desc">Paiement 100% protégé par la plateforme, livré en Mondial Relay dès 2,88 €.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="categories">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <p class="eyebrow">Nos univers</p>
-        <h2>Choisis ton style, on s'occupe de l'impression.</h2>
-        <p>Clique sur un univers pour voir le catalogue.</p>
+  <!-- ============ Newsletter ============ -->
+  <section class="section news" aria-labelledby="news-title">
+    <div class="wrap news-grid reveal">
+      <div>
+        <p class="eyebrow eyebrow--accent" data-i18n="news.eyebrow">Rester informé</p>
+        <h2 id="news-title" data-i18n="news.title" style="margin-top:14px;">Nouveautés, retours en stock, éditions.</h2>
+        <p data-i18n="news.body">On écrit rarement — seulement quand un nouvel objet sort ou qu'une pièce revient.</p>
       </div>
-
-      <div class="grid">
-
-        <a class="card reveal" href="boutique.html?cat=homie-vibe">
-          <div class="card-photo">
-            <span class="card-badge">Biosourcé</span>
-            <div class="layers"></div>
-            <svg class="card-ph-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
-          </div>
-          <div class="card-body">
-            <h3>Homie Vibe</h3>
-            <p>Vases, supports, objets déco — des pièces minimalistes qui réchauffent la pièce.</p>
-            <div class="card-swatches" aria-hidden="true">
-              <span class="card-swatch sw-terracotta is-active" title="Terracotta"></span>
-              <span class="card-swatch sw-sauge" title="Sauge"></span>
-              <span class="card-swatch sw-noir" title="Noir mat"></span>
-              <span class="card-swatch sw-creme" title="Blanc crème"></span>
-            </div>
-            <span class="card-link">Voir le catalogue
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-          </div>
-        </a>
-
-        <a class="card reveal" href="boutique.html?cat=cable-management">
-          <div class="card-photo">
-            <span class="card-badge">Finition mat</span>
-            <div class="layers"></div>
-            <svg class="card-ph-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-          </div>
-          <div class="card-body">
-            <h3>Cable Management</h3>
-            <p>Clips, passe-câbles et supports : le bureau net, fini les nœuds.</p>
-            <div class="card-swatches" aria-hidden="true">
-              <span class="card-swatch sw-terracotta is-active" title="Terracotta"></span>
-              <span class="card-swatch sw-sauge" title="Sauge"></span>
-              <span class="card-swatch sw-noir" title="Noir mat"></span>
-              <span class="card-swatch sw-creme" title="Blanc crème"></span>
-            </div>
-            <span class="card-link">Voir le catalogue
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-          </div>
-        </a>
-
-        <a class="card reveal" href="boutique.html?cat=lampes">
-          <div class="card-photo">
-            <span class="card-badge">Lumière tamisée</span>
-            <div class="layers"></div>
-            <svg class="card-ph-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>
-          </div>
-          <div class="card-body">
-            <h3>Lumière &amp; Lampes</h3>
-            <p>Abat-jours et lampes pour une lumière douce, le soir venu.</p>
-            <div class="card-swatches" aria-hidden="true">
-              <span class="card-swatch sw-terracotta is-active" title="Terracotta"></span>
-              <span class="card-swatch sw-sauge" title="Sauge"></span>
-              <span class="card-swatch sw-noir" title="Noir mat"></span>
-              <span class="card-swatch sw-creme" title="Blanc crème"></span>
-            </div>
-            <span class="card-link">Voir le catalogue
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-          </div>
-        </a>
-
-        <a class="card reveal" href="boutique.html?cat=bureau">
-          <div class="card-photo">
-            <span class="card-badge">Modulable</span>
-            <div class="layers"></div>
-            <svg class="card-ph-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-          </div>
-          <div class="card-body">
-            <h3>Bureau &amp; Rangement</h3>
-            <p>Organiseurs et supports malins pour un espace qui respire.</p>
-            <div class="card-swatches" aria-hidden="true">
-              <span class="card-swatch sw-terracotta is-active" title="Terracotta"></span>
-              <span class="card-swatch sw-sauge" title="Sauge"></span>
-              <span class="card-swatch sw-noir" title="Noir mat"></span>
-              <span class="card-swatch sw-creme" title="Blanc crème"></span>
-            </div>
-            <span class="card-link">Voir le catalogue
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-          </div>
-        </a>
-
-        <a class="card reveal" href="boutique.html?cat=gadgets">
-          <div class="card-photo">
-            <span class="card-badge">Astucieux</span>
-            <div class="layers"></div>
-            <svg class="card-ph-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4V2M15 16v-2M8 9h2M20 9h2M17.8 11.8 19 13M17.8 6.2 19 5M3 21l9-9M12.2 6.2 11 5"/></svg>
-          </div>
-          <div class="card-body">
-            <h3>Gadgets Utiles</h3>
-            <p>Les petits objets malins du quotidien, imprimés à la demande.</p>
-            <div class="card-swatches" aria-hidden="true">
-              <span class="card-swatch sw-terracotta is-active" title="Terracotta"></span>
-              <span class="card-swatch sw-sauge" title="Sauge"></span>
-              <span class="card-swatch sw-noir" title="Noir mat"></span>
-              <span class="card-swatch sw-creme" title="Blanc crème"></span>
-            </div>
-            <span class="card-link">Voir le catalogue
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-          </div>
-        </a>
-
-        <a class="card reveal" href="mailto:cosyprints.shop@gmail.com">
-          <div class="card-photo">
-            <span class="card-badge">Personnalisable</span>
-            <div class="layers"></div>
-            <svg class="card-ph-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-          </div>
-          <div class="card-body">
-            <h3>Sur-mesure</h3>
-            <p>Une idée en tête ? On l'imprime, dans la couleur que tu veux.</p>
-            <div class="card-swatches" aria-hidden="true">
-              <span class="card-swatch sw-terracotta is-active" title="Terracotta"></span>
-              <span class="card-swatch sw-sauge" title="Sauge"></span>
-              <span class="card-swatch sw-noir" title="Noir mat"></span>
-              <span class="card-swatch sw-creme" title="Blanc crème"></span>
-            </div>
-            <span class="card-link">Nous contacter
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-          </div>
-        </a>
-
+      <div>
+        <form class="news-form" id="newsForm" novalidate>
+          <input type="email" id="newsEmail" name="email" required autocomplete="email" placeholder="ton@email.fr" data-i18n-attr="placeholder:news.placeholder" aria-label="E-mail" />
+          <button type="submit" data-i18n="news.cta">S'inscrire</button>
+        </form>
+        <p class="news-note" id="newsNote" data-i18n="news.note">Pas de spam. Désinscription en un clic.</p>
       </div>
     </div>
   </section>
 
-  <!-- Comment ça marche -->
-  <section id="process">
+  <!-- ============ FAQ ============ -->
+  <section class="section" aria-labelledby="faq-title">
     <div class="wrap">
       <div class="section-head reveal">
-        <p class="eyebrow">Commander, simplement</p>
-        <h2>Sécurisé, du clic à ta porte.</h2>
+        <p class="section-head__index" data-i18n="faq.eyebrow">§ Questions</p>
+        <div><h2 class="section-head__title" id="faq-title" data-i18n="faq.title">Tout ce qu'il faut savoir.</h2></div>
       </div>
-      <div class="steps">
-        <div class="step reveal">
-          <div class="step-num">01</div>
-          <div class="step-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 6v16l7-4 8 4 7-4V2l-7 4-8-4-7 4z"/><path d="M8 2v16M16 6v16"/></svg>
-          </div>
-          <h3>Tu choisis</h3>
-          <p>Ta pièce préférée sur notre boutique Vinted ou Leboncoin.</p>
-        </div>
-        <div class="step reveal">
-          <div class="step-num">02</div>
-          <div class="step-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="2" y1="9" x2="22" y2="9"/><line x1="2" y1="13" x2="22" y2="13"/></svg>
-          </div>
-          <h3>On imprime</h3>
-          <p>À la demande, à Grenoble, en PLA d'origine végétale. Rien que pour toi.</p>
-        </div>
-        <div class="step reveal">
-          <div class="step-num">03</div>
-          <div class="step-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          </div>
-          <h3>Tu reçois</h3>
-          <p>Paiement 100% protégé par la plateforme, livré en Mondial Relay dès 2,88&nbsp;€.</p>
-        </div>
-      </div>
-      <p class="process-note reveal">Paiement protégé par Vinted &amp; Leboncoin · Livraison <b>Mondial Relay dès 2,88&nbsp;€</b> · Sans créer de compte.</p>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section id="faq">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <p class="eyebrow">Questions fréquentes</p>
-        <h2>Tout ce qu'il faut savoir.</h2>
-      </div>
-      <div class="faq">
-        <details class="faq-item">
-          <summary>Combien de temps pour recevoir ma commande ?
-            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-          </summary>
-          <div class="faq-a"><p>Chaque pièce est imprimée à la demande à Grenoble, puis expédiée via Vinted ou Leboncoin. On te tient au courant à chaque étape.</p></div>
+      <div class="faq reveal">
+        <details>
+          <summary><span data-i18n="faq.q1">Combien de temps pour recevoir ma commande ?</span><span class="sign" aria-hidden="true">+</span></summary>
+          <div class="ans" data-i18n="faq.a1">Chaque pièce est imprimée à la demande dans notre atelier, puis expédiée via Vinted ou Leboncoin. On te tient au courant à chaque étape.</div>
         </details>
-        <details class="faq-item">
-          <summary>En quelle matière imprimez-vous ?
-            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-          </summary>
-          <div class="faq-a"><p>En filament de qualité, pour des pièces solides et durables. Pour une couleur ou une finition particulière, écris-nous avant de commander.</p></div>
+        <details>
+          <summary><span data-i18n="faq.q2">En quelle matière imprimez-vous ?</span><span class="sign" aria-hidden="true">+</span></summary>
+          <div class="ans" data-i18n="faq.a2">En filament de qualité, pour des pièces solides et durables. Pour une couleur ou une finition particulière, écris-nous avant de commander.</div>
         </details>
-        <details class="faq-item">
-          <summary>Puis-je commander une pièce sur-mesure ?
-            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-          </summary>
-          <div class="faq-a"><p>Oui ! Écris-nous à cosyprints.shop@gmail.com avec ton idée, on te dit ce qu'on peut faire.</p></div>
+        <details>
+          <summary><span data-i18n="faq.q3">Puis-je commander une pièce sur-mesure ?</span><span class="sign" aria-hidden="true">+</span></summary>
+          <div class="ans" data-i18n="faq.a3">Oui ! Écris-nous à cosyprints.shop@gmail.com avec ton idée, on te dit ce qu'on peut faire.</div>
         </details>
-        <details class="faq-item">
-          <summary>Comment se passent le paiement et la livraison ?
-            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-          </summary>
-          <div class="faq-a"><p>Tout passe par Vinted ou Leboncoin : paiement et livraison protégés par les plateformes. Remise en main propre possible à Grenoble via Leboncoin.</p></div>
+        <details>
+          <summary><span data-i18n="faq.q4">Comment se passent le paiement et la livraison ?</span><span class="sign" aria-hidden="true">+</span></summary>
+          <div class="ans" data-i18n="faq.a4">Tout passe par Vinted ou Leboncoin : paiement et livraison protégés par les plateformes. Remise en main propre possible à Grenoble via Leboncoin.</div>
         </details>
-        <details class="faq-item">
-          <summary>Pourquoi acheter sur Vinted ou Leboncoin et pas sur le site ?
-            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-          </summary>
-          <div class="faq-a"><p>Cosy Prints est une vitrine : on vend sur Vinted &amp; Leboncoin pour un paiement et une livraison sécurisés, sans créer de compte.</p></div>
+        <details>
+          <summary><span data-i18n="faq.q5">Pourquoi acheter sur Vinted ou Leboncoin et pas sur le site ?</span><span class="sign" aria-hidden="true">+</span></summary>
+          <div class="ans" data-i18n="faq.a5">CosyPrints est une vitrine : on vend sur Vinted &amp; Leboncoin pour un paiement et une livraison sécurisés, sans créer de compte.</div>
         </details>
       </div>
     </div>
@@ -1466,372 +384,103 @@
 
 </main>
 
-<footer id="contact">
+<!-- ============ Footer ============ -->
+<footer class="site-footer" id="contact">
   <div class="wrap">
-    <div class="foot-grid">
-      <div class="foot-brand">
-        <div class="brandmark">Cosy<span style="color:var(--accent-text)">·</span>Prints</div>
-        <p>Impression 3D faite main à Grenoble. Site vitrine — toutes les ventes se font sur Vinted &amp; Leboncoin.</p>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="wordmark" href="index.html" translate="no">Cosy<span class="dot">·</span>Prints</a>
+        <p data-i18n="footer.tagline">Impression 3D faite main à Saint-Martin-d'Uriage, près de Grenoble. Site vitrine — toutes les ventes se font sur Vinted &amp; Leboncoin.</p>
       </div>
-
-      <div class="foot-col">
-        <h4>Contact</h4>
-        <div class="foot-stack">
-          <a class="foot-pill" href="mailto:cosyprints.shop@gmail.com"><span class="dot dot--mail"></span>cosyprints.shop@gmail.com</a>
+      <div>
+        <h4 data-i18n="footer.explore">Explorer</h4>
+        <div class="footer-list">
+          <a href="boutique.html" data-i18n="nav.catalogue">Catalogue</a>
+          <a href="#univers" data-i18n="nav.univers">Univers</a>
+          <a href="engagement.html" data-i18n="nav.engagement">Notre engagement</a>
+        </div>
+      </div>
+      <div>
+        <h4 data-i18n="footer.contact">Contact</h4>
+        <div class="footer-list">
+          <a href="mailto:cosyprints.shop@gmail.com">cosyprints.shop@gmail.com</a>
+          <a href="https://www.vinted.fr/member/60879390-cosyprints" target="_blank" rel="noopener">Vinted ↗</a>
+          <a href="https://www.leboncoin.fr/profil/0408d333-46e3-4487-b2f3-4743fd34c872" target="_blank" rel="noopener">Leboncoin ↗</a>
         </div>
       </div>
     </div>
-    <p class="copyright">© 2026 Cosy Prints — Impression 3D, Grenoble. Ventes via Vinted &amp; Leboncoin.</p>
+    <div class="footer-bottom">
+      <span data-i18n="footer.copyright">© 2026 CosyPrints — Saint-Martin-d'Uriage, France</span>
+      <span data-i18n="footer.madein">Imprimé à la demande · PLA végétal</span>
+    </div>
   </div>
 </footer>
 
-<!-- Sticky mobile shop CTA (revealed after the hero by JS; hidden on desktop via CSS) -->
-<a class="sticky-cta" id="stickyCta" href="https://www.vinted.fr/member/60879390-cosyprints" target="_blank" rel="noopener">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-  Voir la boutique Vinted
-</a>
-
 <script>
-  // Reveal on scroll — grid siblings "print in" with a short stagger.
-  // Sticky mobile shop CTA — reveal once the hero is scrolled past
+  // Reveal on scroll — calm, with a short stagger between siblings.
   (function () {
-    const cta = document.getElementById('stickyCta');
-    if (!cta) return;
-    const onScroll = () => cta.classList.toggle('show', window.scrollY > window.innerHeight * 0.6);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
-  })();
-
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (!e.isIntersecting) return;
-      const el = e.target;
-      const sibs = Array.prototype.slice.call(el.parentElement.querySelectorAll(':scope > .reveal'));
-      const i = sibs.indexOf(el);
-      if (i > 0) el.style.transitionDelay = Math.min(i, 6) * 70 + 'ms';
-      el.classList.add('in');
-      io.unobserve(el);
-    });
-  }, { threshold: 0.12 });
-  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-
-  // Headline highlight reveal — lights the honey marker behind .hl words when seen
-  const hlIO = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-lit'); hlIO.unobserve(e.target); } });
-  }, { threshold: 0.5 });
-  document.querySelectorAll('.hl').forEach(el => hlIO.observe(el));
-
-  // Visual colour swatches on the category cards — purely indicative, no navigation
-  document.querySelectorAll('.card-swatches').forEach((group) => {
-    group.addEventListener('click', (e) => {
-      const sw = e.target.closest('.card-swatch');
-      if (!sw) return;
-      e.preventDefault(); e.stopPropagation();
-      group.querySelectorAll('.card-swatch').forEach((s) => s.classList.toggle('is-active', s === sw));
-    });
-  });
-
-  // Cursor spotlight on cards (desktop / fine-pointer only; rect cached per card, not read every move)
-  if (window.matchMedia('(hover: hover)').matches) {
-    let cur = null, rect = null;
-    document.addEventListener('pointermove', (e) => {
-      const el = e.target.closest('.card, .platform');
-      if (!el) { cur = null; return; }
-      if (el !== cur) { cur = el; rect = el.getBoundingClientRect(); }
-      el.style.setProperty('--mx', ((e.clientX - rect.left) / rect.width * 100) + '%');
-      el.style.setProperty('--my', ((e.clientY - rect.top) / rect.height * 100) + '%');
-    });
-  }
-
-  // ---- Tubelight floating nav: sliding lamp + scroll-spy ----
-  (function () {
-    const pill = document.getElementById('navPill');
-    if (!pill) return;
-    const items = Array.prototype.slice.call(pill.querySelectorAll('.tubelight__item'));
-    const lamp = pill.querySelector('.tubelight__lamp');
-    const byId = {};
-    items.forEach((it) => { byId[it.dataset.section] = it; });
-
-    const moveLamp = (item, animate) => {
-      if (!item) return;
-      if (!animate) lamp.style.transition = 'none';
-      lamp.style.width = item.offsetWidth + 'px';
-      lamp.style.transform = 'translateX(' + item.offsetLeft + 'px)';
-      if (!animate) { void lamp.offsetWidth; lamp.style.transition = ''; }
-    };
-    const setActive = (item, animate) => {
-      if (!item) return;
-      items.forEach((it) => {
-        const on = it === item;
-        it.classList.toggle('is-active', on);
-        if (on) it.setAttribute('aria-current', 'true'); else it.removeAttribute('aria-current');
+    if (!('IntersectionObserver' in window)) { document.querySelectorAll('.reveal').forEach(function (e) { e.classList.add('in'); }); return; }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('in');
+        io.unobserve(e.target);
       });
-      moveLamp(item, animate);
-    };
-
-    let current = pill.querySelector('.tubelight__item.is-active') || byId['accueil'] || items[0];
-    const hash = (location.hash || '').replace('#', '');
-    if (hash && byId[hash] && byId[hash].dataset.spy === 'true') current = byId[hash];
-    setActive(current, false);
-
-    let rt;
-    window.addEventListener('resize', () => {
-      clearTimeout(rt);
-      rt = setTimeout(() => setActive(pill.querySelector('.tubelight__item.is-active') || current, false), 90);
-    });
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(() => setActive(pill.querySelector('.tubelight__item.is-active') || current, false));
-    }
-
-    // A click wins until the smooth-scroll settles, so jumping straight to
-    // Contact (the footer) isn't overridden by sections passing through the band.
-    let spyLock = false, settle;
-    const unlockSoon = () => { clearTimeout(settle); settle = setTimeout(() => { spyLock = false; }, 160); };
-    items.forEach((it) => {
-      if (it.dataset.spy === 'true') it.addEventListener('click', () => { setActive(it, true); spyLock = true; unlockSoon(); });
-    });
-
-    const spy = items.filter((it) => it.dataset.spy === 'true' && document.getElementById(it.dataset.section));
-    if ('IntersectionObserver' in window && spy.length) {
-      const io2 = new IntersectionObserver((entries) => {
-        if (spyLock) return;
-        entries.forEach((e) => { if (e.isIntersecting) setActive(byId[e.target.id], true); });
-      }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
-      spy.forEach((it) => io2.observe(document.getElementById(it.dataset.section)));
-
-      // The footer (#contact) may never cross the band — activate the last
-      // item at the very bottom, and keep the lock alive while scrolling.
-      const last = spy[spy.length - 1];
-      window.addEventListener('scroll', () => {
-        if (spyLock) { unlockSoon(); return; }
-        if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) setActive(last, true);
-      }, { passive: true });
-    }
-
-    // ---- Drag the glass pill left/right to scrub between sections (touch / mobile) ----
-    // Press and slide on the nav: the page smooth-scrolls to the section under your finger.
-    (function () {
-      let dragging = false, moved = false, startX = 0, startY = 0, lastItem = null;
-      const itemAtX = (x) => {
-        let best = null, bestDist = Infinity;
-        spy.forEach((it) => {
-          const r = it.getBoundingClientRect();
-          const d = Math.abs(x - (r.left + r.width / 2));
-          if (d < bestDist) { bestDist = d; best = it; }
-        });
-        return best;
-      };
-      pill.addEventListener('touchstart', (e) => {
-        const t = e.touches[0];
-        dragging = true; moved = false; startX = t.clientX; startY = t.clientY; lastItem = null;
-      }, { passive: true });
-      pill.addEventListener('touchmove', (e) => {
-        if (!dragging) return;
-        const t = e.touches[0];
-        const dx = t.clientX - startX, dy = t.clientY - startY;
-        if (!moved) {
-          if (Math.abs(dx) < 10 || Math.abs(dx) <= Math.abs(dy)) return;   // wait for a clear sideways drag
-          moved = true;
-        }
-        e.preventDefault();                 // take over the gesture (stop native scroll)
-        spyLock = true;                     // keep the scroll-spy from fighting us
-        const it = itemAtX(t.clientX);
-        if (it && it !== lastItem) {
-          lastItem = it;
-          setActive(it, true);
-          const sec = document.getElementById(it.dataset.section);
-          if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      }, { passive: false });
-      const end = () => { if (!dragging) return; dragging = false; if (moved) unlockSoon(); };
-      pill.addEventListener('touchend', end, { passive: true });
-      pill.addEventListener('touchcancel', end, { passive: true });
-      // a real drag shouldn't also fire the tap-navigation on the item the finger lifts over
-      pill.addEventListener('click', (e) => { if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; } }, true);
-    })();
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.reveal').forEach(function (e) { io.observe(e); });
   })();
 
-  // ---- Theme toggle: high-speed 3D-print reveal ----
-  // Flip the theme instantly, then play a print-head sweep that "prints" the new theme over the old.
+  // Theme toggle — instant, no overlay (calm by design).
   (function () {
-    const btn = document.getElementById('themeToggle');
+    var btn = document.getElementById('themeToggle');
     if (!btn) return;
-    const root = document.documentElement;
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const fx = document.getElementById('printFx');
-    const cover = fx && fx.querySelector('.pfx-cover');
-    const label = (t) => btn.setAttribute('aria-label', t === 'light' ? 'Activer le thème sombre' : 'Activer le thème clair');
-    const apply = (t) => { root.setAttribute('data-theme', t); try { localStorage.setItem('theme', t); } catch (e) {} label(t); };
+    var root = document.documentElement;
+    var label = function (t) { btn.setAttribute('aria-label', t === 'light' ? 'Activer le thème sombre' : 'Activer le thème clair'); };
     label(root.getAttribute('data-theme'));
-
-    let printing = false;
-    btn.addEventListener('click', () => {
-      const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-      if (!fx || reduce.matches) { apply(next); return; }            // no overlay → just switch
-      if (printing) return;                                          // ignore clicks mid-print
-      printing = true;
-      const oldBg = getComputedStyle(root).getPropertyValue('--background').trim();
-      fx.style.setProperty('--pfx-oldbg', oldBg);                    // cover = the colour we're leaving
-      apply(next);                                                   // page underneath is now the new theme
-      fx.classList.remove('is-printing'); void fx.offsetWidth;        // restart the print animation
-      fx.classList.add('is-printing');
-      let cleaned = false;
-      const done = () => { if (cleaned) return; cleaned = true; clearTimeout(t); fx.classList.remove('is-printing'); printing = false; };
-      const t = setTimeout(done, 2000);                              // guaranteed cleanup if animationend never fires (> --pfx-dur)
-      if (cover) cover.addEventListener('animationend', done, { once: true });
+    btn.addEventListener('click', function () {
+      var next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      label(next);
     });
   })();
 
-  // ---- Top-left menu: animated hamburger → X + themed nav dropdown ----
+  // Mobile menu drawer.
   (function () {
-    const btn = document.getElementById('menuBtn');
-    const pop = document.getElementById('menuPop');
-    if (!btn || !pop) return;
-    const isOpen = () => btn.getAttribute('aria-expanded') === 'true';
-    const setOpen = (open) => {
+    var btn = document.getElementById('menuBtn');
+    var nav = document.getElementById('mobileNav');
+    if (!btn || !nav) return;
+    var setOpen = function (open) {
       btn.setAttribute('aria-expanded', open ? 'true' : 'false');
       btn.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
-      pop.classList.toggle('is-open', open);
+      nav.classList.toggle('is-open', open);
     };
-    btn.addEventListener('click', (e) => { e.stopPropagation(); setOpen(!isOpen()); });
-    document.addEventListener('click', (e) => {
-      if (isOpen() && !pop.contains(e.target) && !btn.contains(e.target)) setOpen(false);
+    btn.addEventListener('click', function () { setOpen(btn.getAttribute('aria-expanded') !== 'true'); });
+    nav.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { setOpen(false); }); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setOpen(false); });
+  })();
+
+  // Newsletter — no backend yet (Phase 2). Gracefully fall back to a prefilled email.
+  (function () {
+    var form = document.getElementById('newsForm');
+    var note = document.getElementById('newsNote');
+    if (!form) return;
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var email = document.getElementById('newsEmail').value.trim();
+      if (!email || email.indexOf('@') === -1) { document.getElementById('newsEmail').focus(); return; }
+      var en = document.documentElement.getAttribute('lang') === 'en';
+      var subject = encodeURIComponent(en ? 'Newsletter sign-up' : 'Inscription newsletter');
+      var body = encodeURIComponent((en ? 'Please add me to the list: ' : 'Ajoutez-moi à la liste : ') + email);
+      window.location.href = 'mailto:cosyprints.shop@gmail.com?subject=' + subject + '&body=' + body;
+      if (note) note.textContent = en ? 'Opening your email app…' : 'Ouverture de ta messagerie…';
     });
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && isOpen()) { setOpen(false); btn.focus(); } });
-    pop.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
-  })();
-
-  // ---- Hero "blinds" scroll animation: scroll-scrubbed WebGL shader ----
-  // Lazy-loaded; mobile + desktop, motion only. Renders in BOTH themes: bright filament streaks
-  // on dark (screen blend), dark warm pigment on light (multiply blend) — switched by the `theme` uniform.
-  (function () {
-    const canvas = document.getElementById('heroShader');
-    if (!canvas) return;
-    if (!window.matchMedia('(prefers-reduced-motion: no-preference)').matches) return;
-    if (window.matchMedia('(max-width: 767px)').matches) return;   // skip the WebGL shader on phones (perf/data)
-
-    const isDark = () => document.documentElement.getAttribute('data-theme') !== 'light';
-    const s = document.createElement('script');
-    s.src = 'https://unpkg.com/three@0.149.0/build/three.min.js';
-    s.async = true;
-    s.onload = init;
-    document.head.appendChild(s);
-
-    function init() {
-      if (typeof THREE === 'undefined') return;
-      const header = canvas.closest('header');
-      if (!header) return;
-
-      const camera = new THREE.Camera(); camera.position.z = 1;
-      const scene = new THREE.Scene();
-      const geometry = new THREE.PlaneGeometry(2, 2);
-      const uniforms = { time: { value: 0 }, resolution: { value: new THREE.Vector2() }, theme: { value: isDark() ? 0.0 : 1.0 } };
-      const vertexShader = 'void main(){ gl_Position = vec4(position,1.0); }';
-      const fragmentShader = [
-        'precision highp float;',
-        'uniform vec2 resolution; uniform float time; uniform float theme;',
-        'void main(void){',
-        '  vec2 uv = (gl_FragCoord.xy*2.0 - resolution.xy)/min(resolution.x,resolution.y);',
-        '  float t = time*0.05; float lineWidth = 0.0017;',
-        '  vec3 pal[3]; pal[0]=vec3(1.00,0.80,0.42); pal[1]=vec3(1.00,0.62,0.34); pal[2]=vec3(0.86,0.55,0.37);',
-        '  vec3 color = vec3(0.0);',
-        '  for(int j=0;j<3;j++){ float a=0.0;',
-        '    for(int i=0;i<5;i++){ a += lineWidth*float(i*i)/abs(fract(t-0.01*float(j)+float(i)*0.01)*5.0 - length(uv) + mod(uv.x+uv.y,0.2)); }',
-        '    color += pal[j]*a; }',
-        '  if (theme > 0.5) {',                                    // light theme: invert for multiply blend
-        '    float lum = clamp(max(max(color.r,color.g),color.b), 0.0, 1.0);',
-        '    vec3 pigment = vec3(0.34, 0.25, 0.15);',              // deep cocoa-brown streaks
-        '    gl_FragColor = vec4(mix(vec3(1.0), pigment, lum), 1.0);',  // white stays = no change under multiply
-        '  } else {',                                              // dark theme: bright streaks for screen blend
-        '    gl_FragColor = vec4(color, 1.0);',
-        '  }',
-        '}'
-      ].join('\n');
-      const material = new THREE.ShaderMaterial({ uniforms, vertexShader, fragmentShader });
-      scene.add(new THREE.Mesh(geometry, material));
-
-      let renderer;
-      try { renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true }); } catch (e) { return; }
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
-
-      const maxTime = 12; let targetTime = 0;
-      const clamp = (n, lo, hi) => Math.min(Math.max(n, lo), hi);
-      const updateTarget = () => { const r = header.getBoundingClientRect(); const p = r.height > 0 ? clamp(-r.top / r.height, 0, 1) : 0; targetTime = p * maxTime; };
-      const resize = () => { renderer.setSize(header.clientWidth, header.clientHeight, false); uniforms.resolution.value.set(canvas.width, canvas.height); updateTarget(); };
-      resize();
-      if ('ResizeObserver' in window) { new ResizeObserver(resize).observe(header); } else { window.addEventListener('resize', resize); }
-      window.addEventListener('scroll', updateTarget, { passive: true });
-
-      let visible = true;
-      if ('IntersectionObserver' in window) { new IntersectionObserver((e) => { visible = e[0].isIntersecting; }, { threshold: 0 }).observe(header); }
-      (function loop() {
-        requestAnimationFrame(loop);
-        if (!visible || document.hidden) return;
-        uniforms.theme.value = isDark() ? 0.0 : 1.0;                        // follow theme toggle / OS change
-        uniforms.time.value += (targetTime - uniforms.time.value) * 0.08;   // LERP scrub
-        renderer.render(scene, camera);
-      })();
-    }
-  })();
-
-  // ---- Immersive 3D hero: scroll-recede + pointer tilt, spring-eased ----
-  // As you scroll past the hero it lifts and tips back into depth; the print panel reacts to the
-  // pointer in 3D. Everything is lerped each frame so it glides — and eases back as you scroll up.
-  (function () {
-    if (!window.matchMedia('(prefers-reduced-motion: no-preference)').matches) return;
-    const header = document.getElementById('accueil');
-    if (!header) return;
-    const grid  = header.querySelector('.hero-grid');
-    const inner = header.querySelector('.hero-inner');
-    const panel = header.querySelector('.stage__panel');
-    if (!grid) return;
-
-    const clamp = (n, lo, hi) => Math.min(Math.max(n, lo), hi);
-    let pT = 0, pC = 0;                       // scroll progress  (target / eased-current)
-    let mxT = 0, mxC = 0, myT = 0, myC = 0;   // pointer offset -1..1 (target / eased-current)
-
-    const onScroll = () => {
-      const r = header.getBoundingClientRect();
-      pT = r.height > 0 ? clamp(-r.top / r.height, 0, 1) : 0;
-    };
-    const onMove = (e) => {
-      const r = header.getBoundingClientRect();
-      mxT = clamp(((e.clientX - r.left) / r.width  - 0.5) * 2, -1, 1);
-      myT = clamp(((e.clientY - r.top)  / r.height - 0.5) * 2, -1, 1);
-    };
-    const onLeave = () => { mxT = 0; myT = 0; };
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    if (window.matchMedia('(hover: hover)').matches) {
-      header.addEventListener('pointermove', onMove, { passive: true });
-      header.addEventListener('pointerleave', onLeave, { passive: true });
-    }
-    onScroll();
-
-    (function loop() {
-      requestAnimationFrame(loop);
-      pC  += (pT  - pC ) * 0.10;              // spring toward the live targets
-      mxC += (mxT - mxC) * 0.07;
-      myC += (myT - myC) * 0.07;
-
-      const e = pC * pC * (3 - 2 * pC);       // smoothstep — subtle at first, recedes as it leaves
-      grid.style.transform =
-        'translate3d(0,' + (e * -32).toFixed(2) + 'px,0) rotateX(' + (e * 6).toFixed(2) + 'deg) scale(' + (1 - e * 0.05).toFixed(4) + ')';
-      grid.style.opacity = (1 - e * 0.32).toFixed(3);
-
-      if (inner) inner.style.transform = 'translateY(' + (e * -10).toFixed(2) + 'px)';
-
-      if (panel) {
-        const ry = mxC * 7;                   // look left / right with the pointer
-        const rx = -myC * 5 + e * 4;          // look up / down + tip back on scroll
-        panel.style.transform =
-          'rotateY(' + ry.toFixed(2) + 'deg) rotateX(' + rx.toFixed(2) + 'deg) translateZ(' + (e * 16).toFixed(2) + 'px)';
-        panel.style.boxShadow =
-          (-mxC * 12).toFixed(1) + 'px ' + (34 + myC * 8).toFixed(1) + 'px 80px -34px rgb(var(--shadow-rgb) / var(--shadow-op)), inset 0 0 60px -30px rgb(var(--primary-rgb) / 0.28)';
-      }
-    })();
   })();
 </script>
+
+<!-- Bilingual layer (FR source in the HTML, EN from the dictionary) -->
+<script src="assets/i18n.en.js"></script>
+<script src="assets/i18n.js"></script>
 
 </body>
 </html>

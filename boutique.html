@@ -1,731 +1,171 @@
 <!DOCTYPE html>
-<html lang="fr" class="no-js" data-theme="dark">
+<html lang="fr" class="no-js">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<!-- Theme bootstrap: default dark; follow OS only when it explicitly prefers light. Also drops the no-js flag. -->
 <script>
   (function () {
     var d = document.documentElement;
     d.classList.remove('no-js');
-    // Mobile fix: stop the browser reopening the page where you last scrolled (it was landing at the bottom).
     try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {}
-    var t = 'dark';
+    var t = 'light';
     try {
       var s = localStorage.getItem('theme');
       if (s === 'light' || s === 'dark') { t = s; }
-      else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) { t = 'light'; }
-    } catch (e) {
-      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) { t = 'light'; }
-    }
+      else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) { t = 'dark'; }
+    } catch (e) {}
     d.setAttribute('data-theme', t);
   })();
 </script>
 
-<title>Catalogue — Cosy Prints</title>
-<meta name="description" content="Le catalogue Cosy Prints : déco cosy, lampes, cable management et gadgets imprimés en 3D à Grenoble. Filtre par univers." />
-<meta name="theme-color" content="#f6f3ec" media="(prefers-color-scheme: light)" />
-<meta name="theme-color" content="#221f1b" />
+<title>Catalogue — CosyPrints</title>
+<meta name="description" data-i18n-attr="content:meta.description.boutique" content="Le catalogue CosyPrints : déco, cuisine, luminaires et accessoires imprimés en 3D à Saint-Martin-d'Uriage. Filtre par univers." />
+<meta name="theme-color" content="#f3efe6" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#19160f" media="(prefers-color-scheme: dark)" />
 
 <meta property="og:type" content="website" />
 <meta property="og:locale" content="fr_FR" />
-<meta property="og:title" content="Catalogue — Cosy Prints" />
-<meta property="og:description" content="Déco cosy et objets utiles imprimés en 3D. Filtre par univers." />
+<meta property="og:title" content="Catalogue — CosyPrints" />
+<meta property="og:description" content="Déco, cuisine, luminaires et accessoires imprimés en 3D. Filtre par univers." />
 <meta property="og:url" content="https://cosyprintsshop-dotcom.github.io/boutique.html" />
 <meta name="twitter:card" content="summary" />
 <link rel="canonical" href="https://cosyprintsshop-dotcom.github.io/boutique.html" />
+<link rel="alternate" hreflang="fr" href="https://cosyprintsshop-dotcom.github.io/boutique.html" />
+<link rel="alternate" hreflang="en" href="https://cosyprintsshop-dotcom.github.io/boutique.html?lang=en" />
+<link rel="alternate" hreflang="x-default" href="https://cosyprintsshop-dotcom.github.io/boutique.html" />
 
-<link rel="icon" media="(prefers-color-scheme: light)" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23f5f1e6'/%3E%3Ccircle cx='16' cy='13' r='7' fill='%23a67c52'/%3E%3Crect x='7' y='22' width='18' height='3.5' rx='1.75' fill='%23b3906f'/%3E%3C/svg%3E" />
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%232d2621'/%3E%3Ccircle cx='16' cy='13' r='7' fill='%23c0a080'/%3E%3Crect x='7' y='22' width='18' height='3.5' rx='1.75' fill='%238d6e4c'/%3E%3C/svg%3E" />
+<link rel="icon" media="(prefers-color-scheme: light)" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23f3efe6'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='20' text-anchor='middle' fill='%231c1a16'%3EC%3C/text%3E%3C/svg%3E" />
+<link rel="icon" media="(prefers-color-scheme: dark)" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2319160f'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='20' text-anchor='middle' fill='%23ece6d8'%3EC%3C/text%3E%3C/svg%3E" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="assets/theme.css" />
 
 <style>
-  :root {
-    /* ===== Palette tokens — LIGHT (also the no-preference / no-JS fallback) ===== */
-    --background: #f6f3ec;
-    --foreground: #2b2722;
-    --card: #fffdf8;
-    --card-foreground: #2b2722;
-    --popover: #fffdf8;
-    --popover-foreground: #2b2722;
-    --primary: #bf5a38;
-    --primary-foreground: #ffffff;
-    --secondary: #e8e7d8;
-    --secondary-foreground: #3c4035;
-    --muted: #efebe0;
-    --muted-foreground: #6a6253;
-    --accent: #cfd8c4;
-    --accent-foreground: #2b2722;
-    --destructive: #b54a35;
-    --destructive-foreground: #ffffff;
-    --border: #e4ded0;
-    --input: #e4ded0;
-    --ring: #bf5a38;
-    --chart-4: #87987b;
-    --chart-5: #c08a6a;
-    --radius: 0.25rem;
+  /* ===== Catalogue-specific composition ===== */
+  .cat-hero { padding-block: clamp(40px, 7vw, 84px) clamp(28px, 4vw, 44px); }
+  .cat-hero h1 { font-family: var(--display); font-weight: 400; font-size: clamp(2.4rem, 6.5vw, 4.6rem);
+    line-height: 1.0; letter-spacing: -0.02em; margin-top: 16px; }
+  .cat-hero .cat-sub { color: var(--ink-soft); margin-top: 18px; max-width: 52ch; }
 
-    --primary-rgb: 191 90 56;
-    --shadow-rgb: 43 39 34;
-    --shadow-op: 0.14;
-    --accent-text: #a3471f;
-    --cta-bg: #b3502f;
-    --cta-fg: #ffffff;
-    --sage: #5f6e51;
-    --sage-rgb: 95 110 81;
-    --tube-bg: rgba(255, 253, 248, 0.72);
-    --veil: rgba(43, 39, 34, 0.04);
-
-    --vinted-1: #12b6bf;
-    --vinted-2: #007782;
-    --lbc-1:    #ff8a3d;
-    --lbc-2:    #ec5a13;
-
-    --display: "Bricolage Grotesque", system-ui, sans-serif;
-    --body: "Hanken Grotesk", system-ui, sans-serif;
-    --maxw: 1100px;
-    --glow: 0 0 46px -14px rgb(var(--primary-rgb) / 0.45);
-
-    /* legacy aliases → tokens */
-    --night:      var(--background);
-    --espresso:   var(--background);
-    --cocoa:      var(--card);
-    --cocoa-soft: var(--secondary);
-    --line:       var(--border);
-    --line-warm:  var(--ring);
-    --cream:      var(--foreground);
-    --cream-dim:  var(--muted-foreground);
-    --honey:      var(--accent-text);
-    --honey-lit:  var(--primary);
-    --amber:      var(--primary);
-    --clay:       var(--chart-4);
-    --rose:       var(--chart-5);
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --background: #221f1b; --foreground: #ece7dd;
-      --card: #2c2823; --card-foreground: #ece7dd;
-      --popover: #2c2823; --popover-foreground: #ece7dd;
-      --primary: #d2774f; --primary-foreground: #221f1b;
-      --secondary: #3a3a33; --secondary-foreground: #ece7dd;
-      --muted: #2c2823; --muted-foreground: #b8b0a2;
-      --accent: #3e4a39; --accent-foreground: #ece7dd;
-      --destructive: #d05a44; --destructive-foreground: #ffffff;
-      --border: #3c382f; --input: #3c382f; --ring: #d2774f;
-      --chart-4: #9fae89; --chart-5: #d2774f;
-      --primary-rgb: 210 119 79;
-      --shadow-rgb: 0 0 0; --shadow-op: 0.8;
-      --accent-text: #e58a5f;
-      --cta-bg: #d2774f; --cta-fg: #221f1b;
-      --sage: #9fae89; --sage-rgb: 159 174 137;
-      --tube-bg: rgba(34, 31, 27, 0.72);
-      --veil: rgba(255, 255, 255, 0.03);
-    }
-  }
-  :root[data-theme="dark"] {
-    --background: #221f1b; --foreground: #ece7dd;
-    --card: #2c2823; --card-foreground: #ece7dd;
-    --popover: #2c2823; --popover-foreground: #ece7dd;
-    --primary: #d2774f; --primary-foreground: #221f1b;
-    --secondary: #3a3a33; --secondary-foreground: #ece7dd;
-    --muted: #2c2823; --muted-foreground: #b8b0a2;
-    --accent: #3e4a39; --accent-foreground: #ece7dd;
-    --destructive: #d05a44; --destructive-foreground: #ffffff;
-    --border: #3c382f; --input: #3c382f; --ring: #d2774f;
-    --chart-4: #9fae89; --chart-5: #d2774f;
-    --primary-rgb: 210 119 79;
-    --shadow-rgb: 0 0 0; --shadow-op: 0.8;
-    --accent-text: #e58a5f;
-    --cta-bg: #d2774f; --cta-fg: #221f1b;
-    --sage: #9fae89; --sage-rgb: 159 174 137;
-    --tube-bg: rgba(34, 31, 27, 0.72);
-    --veil: rgba(255, 255, 255, 0.03);
-  }
-
-  /* Native form controls follow the theme (fixes the dark-mode <select> dropdown) */
-  :root { color-scheme: light; }
-  :root[data-theme="dark"] { color-scheme: dark; }
-  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { color-scheme: dark; } }
-
-  /* Smooth cross-page transitions (Chrome); brand + nav persist across the navigation */
-  @view-transition { navigation: auto; }
-  .topbar .brandmark { view-transition-name: brand; }
-  .tubelight { view-transition-name: nav; }
-  /* ===== Theme toggle: 3D-print reveal — a printer gantry descends and "prints" the new theme =====
-     JS flips data-theme instantly, then plays this overlay: a cover in the OLD background colour
-     retracts top→bottom while a full-width gantry rail + nozzle carriage zig-zag down, laying layers. */
-  #printFx {
-    position: fixed; inset: 0; z-index: 2147483000;
-    pointer-events: none; overflow: hidden; visibility: hidden;
-    --pfx-dur: 1500ms; --pfx-zig: 330ms;     /* slow enough to read the head travelling */
-  }
-  #printFx.is-printing { visibility: visible; }
-  .pfx-cover { position: absolute; inset: 0; background: var(--pfx-oldbg, var(--background)); }
-  .pfx-cover::after {                 /* build-plate grid on the not-yet-printed area */
-    content: ""; position: absolute; inset: 0; opacity: .5;
-    background:
-      repeating-linear-gradient(0deg,  transparent 0 27px, rgb(var(--primary-rgb) / .10) 27px 28px),
-      repeating-linear-gradient(90deg, transparent 0 27px, rgb(var(--primary-rgb) / .10) 27px 28px);
-  }
-  #printFx.is-printing .pfx-cover { animation: pfx-reveal var(--pfx-dur) cubic-bezier(.45,.05,.55,.95) forwards; }
-  @keyframes pfx-reveal { from { clip-path: inset(0 0 0 0); } to { clip-path: inset(100% 0 0 0); } }
-
-  .pfx-band { position: absolute; left: 0; top: 0; width: 100%; height: 0; will-change: transform; }
-  #printFx.is-printing .pfx-band { animation: pfx-descend var(--pfx-dur) cubic-bezier(.45,.05,.55,.95) forwards; }
-  @keyframes pfx-descend { from { transform: translateY(0); } to { transform: translateY(100vh); } }
-
-  .pfx-lines {                        /* freshly-printed layer lines, stacking above the gantry */
-    position: absolute; left: 0; right: 0; bottom: 2px; height: 86px;
-    background: repeating-linear-gradient(0deg, rgb(var(--primary-rgb) / .5) 0 1px, transparent 1px 4px);
-    -webkit-mask-image: linear-gradient(to top, #000, transparent);
-            mask-image: linear-gradient(to top, #000, transparent);
-  }
-  .pfx-rail {                         /* the gantry rail (X-axis) — spans the screen, reads as a 3D printer */
-    position: absolute; left: -2%; right: -2%; top: -3px; height: 6px; border-radius: 3px;
-    background: linear-gradient(180deg, #ded7c8, #9a9080 52%, #6a6354);
-    box-shadow: 0 1px 3px rgb(0 0 0 / .3), 0 0 16px rgb(var(--primary-rgb) / .35);
-  }
-  :root[data-theme="dark"] .pfx-rail { background: linear-gradient(180deg, #6f6757, #45403a 52%, #2c2824); }
-  .pfx-head {                         /* the print head: carriage mounted on the rail + hot nozzle */
-    position: absolute; left: 50%; top: -11px; width: 32px; height: 36px; margin-left: -16px;
-    color: var(--primary); will-change: transform;
-  }
-  #printFx.is-printing .pfx-head { animation: pfx-zig var(--pfx-zig) cubic-bezier(.5,0,.5,1) infinite alternate; }
-  @keyframes pfx-zig { from { transform: translateX(-42vw); } to { transform: translateX(42vw); } }
-  .pfx-head svg { display: block; width: 100%; height: 100%; filter: drop-shadow(0 2px 4px rgb(0 0 0 / .35)); }
-  .pfx-head::after {                  /* molten extrusion glow at the nozzle tip */
-    content: ""; position: absolute; left: 50%; bottom: -3px; width: 15px; height: 15px; margin-left: -7.5px;
-    border-radius: 50%; background: radial-gradient(circle, #fff, rgb(var(--primary-rgb) / .8) 35%, transparent 70%);
-    animation: pfx-pulse .42s ease-in-out infinite alternate;
-  }
-  @keyframes pfx-pulse { from { opacity: .65; transform: scale(.82); } to { opacity: 1; transform: scale(1.12); } }
-  @media (prefers-reduced-motion: reduce) { #printFx { display: none; } }
-  @media (prefers-reduced-motion: reduce) {
-    ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  @media (min-width: 640px) { html { scroll-padding-top: 96px; } }
-  body {
-    font-family: var(--body);
-    color: var(--foreground);
-    background:
-      radial-gradient(110% 60% at 50% -8%, rgb(var(--primary-rgb) / 0.10), transparent 55%),
-      var(--background);
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
-    min-height: 100dvh;
-  }
-  a { color: inherit; text-decoration: none; }
-  .wrap { width: 100%; max-width: var(--maxw); margin-inline: auto; padding-inline: 24px; }
-
-  .layers {
-    background-image: repeating-linear-gradient(to bottom,
-      rgb(var(--primary-rgb) / 0.06) 0px, rgb(var(--primary-rgb) / 0.06) 1px,
-      transparent 1px, transparent 7px);
-  }
-  .eyebrow { font-size: 0.72rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--sage); font-weight: 700; }
-
-  /* ===== Boutons ===== */
-  .btn {
-    display: inline-flex; align-items: center; justify-content: center; gap: 9px;
-    font-family: var(--body); font-weight: 600; font-size: 1rem;
-    min-height: 50px; padding: 13px 24px; border-radius: 9999px;
-    border: 1px solid transparent; cursor: pointer; white-space: nowrap;
-    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-    touch-action: manipulation;
-  }
-  .btn-primary {
-    background: var(--cta-bg);
-    color: var(--cta-fg); font-weight: 700;
-    box-shadow: 0 12px 30px -12px rgb(var(--primary-rgb) / 0.6);
-  }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 18px 40px -12px rgb(var(--primary-rgb) / 0.7); }
-  .btn-ghost { background: var(--veil); color: var(--foreground); border-color: var(--border); }
-  .btn-ghost:hover { transform: translateY(-2px); border-color: var(--ring); box-shadow: var(--glow); }
-
-  /* ===== En-tête ===== */
-  .cat-hero { position: relative; overflow: hidden; padding-block: clamp(28px, 6vw, 48px) clamp(28px, 6vw, 44px); }
-  .cat-hero::before {
-    content: ""; position: absolute; top: -40%; left: 50%; transform: translateX(-50%);
-    width: min(760px, 120vw); height: 420px;
-    background: radial-gradient(ellipse at center, rgb(var(--primary-rgb) / 0.4), rgb(var(--primary-rgb) / 0.12) 45%, transparent 70%);
-    pointer-events: none;
-  }
-  .topbar { position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: clamp(34px, 6vw, 56px); }
-  .brandmark { font-family: var(--display); font-weight: 800; font-size: 1.3rem; letter-spacing: -0.01em; }
-  .brandmark span { color: var(--accent-text); }
-
-  .cat-intro { position: relative; z-index: 2; max-width: 680px; }
-  .cat-intro h1 { font-family: var(--display); font-weight: 800; font-size: clamp(2rem, 5.5vw, 3.2rem); letter-spacing: -0.025em; line-height: 1.05; margin-block: 12px 14px; }
-  .cat-sub { color: var(--muted-foreground); max-width: 56ch; }
-
-  /* ===== Barre filtres + tri ===== */
-  .catalogue-bar {
-    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
-    gap: 16px; padding-block: 8px 24px;
-    position: sticky; top: 0; z-index: 5;
-    background: linear-gradient(180deg, var(--background) 72%, transparent);
-    backdrop-filter: blur(2px);
-  }
-  @media (min-width: 640px) { .catalogue-bar { top: 78px; } }   /* sit below the fixed top nav */
+  /* Filter + sort bar */
+  .catalogue-bar { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between;
+    padding-block: 18px; border-top: var(--rule); border-bottom: var(--rule); }
   .filters { display: flex; flex-wrap: wrap; gap: 8px; }
-  .chip {
-    padding: 9px 17px; border-radius: 9999px;
-    border: 1px solid var(--border); background: var(--veil);
-    color: var(--muted-foreground); font-weight: 600; font-size: 0.9rem;
-    cursor: pointer; touch-action: manipulation;
-    transition: color .16s ease, border-color .16s ease, background .16s ease, transform .16s ease;
-    min-height: 44px; display: inline-flex; align-items: center;
-  }
-  .chip:hover { color: var(--foreground); border-color: var(--ring); transform: translateY(-1px); }
-  .chip.is-active {
-    background: var(--cta-bg);
-    color: var(--cta-fg); border-color: transparent;
-    box-shadow: 0 8px 22px -10px rgb(var(--primary-rgb) / 0.55);
-  }
-  .cat-meta { display: flex; align-items: center; gap: 18px; color: var(--muted-foreground); font-size: 0.9rem; }
-  .count { white-space: nowrap; font-variant-numeric: tabular-nums; }
-  .sort { display: inline-flex; align-items: center; gap: 8px; }
-  .sort select {
-    font-family: var(--body); font-size: 0.88rem; color: var(--foreground);
-    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
-    padding: 8px 14px; cursor: pointer; min-height: 44px;
-  }
-  .sort select:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+  .chip { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--ink-soft); padding: 9px 14px; border: 1px solid var(--line); border-radius: 0;
+    transition: color .2s ease, border-color .2s ease, background .2s ease; }
+  .chip:hover { color: var(--ink); border-color: var(--line-2); }
+  .chip.is-active { color: var(--paper); background: var(--ink); border-color: var(--ink); }
+  .cat-meta { display: flex; align-items: center; gap: 18px; }
+  .count { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); white-space: nowrap; }
+  .sort { display: inline-flex; align-items: center; gap: 9px; font-family: var(--mono); font-size: 0.72rem;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+  .sort select { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--ink); background: transparent; border: 1px solid var(--line); border-radius: 0; padding: 8px 10px; }
 
-  /* ===== Grille produits ===== */
-  .product-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 18px; padding-bottom: clamp(48px, 9vw, 90px);
-  }
+  /* Product grid — sharp image plates, text below, no floating cards */
+  .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+    gap: clamp(24px, 3vw, 44px) clamp(20px, 2.4vw, 32px); padding-block: clamp(32px, 5vw, 60px); }
+  .pcard { display: flex; flex-direction: column; }
+  .pcard__media { position: relative; aspect-ratio: 4 / 5; background: var(--paper-2); border: var(--rule);
+    overflow: hidden; display: grid; place-items: center; }
+  .pcard__media img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+  @media (hover: hover) { .pcard:hover .pcard__media img { transform: scale(1.04); } }
+  .pcard__ph { width: 38px; height: 38px; color: var(--ink-soft); opacity: .4; }
+  .pcard__tag { position: absolute; top: 12px; left: 12px; font-family: var(--mono); font-size: 0.64rem;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--paper); background: var(--ink); padding: 5px 9px; }
+  .pcard__tag--soon { background: var(--accent); }
+  .pcard__row { display: flex; justify-content: space-between; gap: 14px; align-items: baseline; margin-top: 16px; }
+  .pcard__name { font-family: var(--display); font-weight: 400; font-size: 1.3rem; line-height: 1.1; letter-spacing: -0.01em; }
+  .pcard__price { font-family: var(--mono); font-size: 0.82rem; color: var(--ink-soft); white-space: nowrap; }
+  .pcard__desc { color: var(--ink-soft); font-size: 0.92rem; margin-top: 6px; }
+  .pcard__go { margin-top: 14px; font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; }
 
-  .product-card {
-    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
-    overflow: hidden; display: flex; flex-direction: column;
-    cursor: pointer; touch-action: manipulation;
-    animation: rise .45s ease both;
-    transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
-  }
-  .product-card:hover {
-    transform: translateY(-5px); border-color: var(--ring);
-    box-shadow: 0 24px 50px -28px rgb(var(--shadow-rgb) / var(--shadow-op)), 0 0 40px -16px rgb(var(--primary-rgb) / 0.25);
-  }
-  @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  /* Empty / ghost states */
+  .notice { display: flex; flex-wrap: wrap; align-items: center; gap: 18px 28px; justify-content: space-between;
+    border: 1px solid var(--ink); padding: clamp(22px, 3vw, 34px); margin-bottom: clamp(28px, 4vw, 48px); }
+  .notice__txt { flex: 1 1 260px; }
+  .notice__title { font-family: var(--display); font-weight: 400; font-size: clamp(1.3rem, 2.6vw, 1.8rem); }
+  .notice__body { color: var(--ink-soft); margin-top: 8px; font-size: 0.95rem; max-width: 52ch; }
+  .pcard.ghost .pcard__media { background: var(--paper-2); }
+  .pcard.ghost { opacity: 0.55; }
+  .ghost-line { display: block; height: 12px; background: var(--paper-2); border: var(--rule); margin-top: 14px; }
+  .ghost-line--lg { width: 64%; } .ghost-line--sm { width: 38%; margin-top: 8px; }
 
-  .product-media {
-    aspect-ratio: 1 / 1; position: relative;
-    background: radial-gradient(circle at 32% 28%, rgb(var(--primary-rgb) / 0.12), transparent 60%), var(--secondary);
-    display: grid; place-items: center; border-bottom: 1px solid var(--border);
-  }
-  .pm-img { width: 100%; height: 100%; object-fit: cover; }
-  .pm-ph { width: 38px; height: 38px; opacity: 0.5; color: var(--accent-text); }
-
-  .product-info { padding: 16px 16px 18px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
-  .product-info h3 { font-family: var(--display); font-weight: 600; font-size: 1.08rem; letter-spacing: -.01em; }
-  .product-info p { color: var(--muted-foreground); font-size: 0.88rem; flex: 1; }
-  .product-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; }
-  .price { font-weight: 700; color: var(--accent-text); font-variant-numeric: tabular-nums; }
-  .product-buy {
-    font-weight: 600; font-size: 0.9rem; color: var(--foreground);
-    border-bottom: 1px solid var(--ring); padding-bottom: 1px;
-    transition: color .16s ease;
-  }
-  .product-buy:hover { color: var(--accent-text); }
-
-  .badge { position: absolute; top: 12px; left: 12px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.03em; padding: 5px 11px; border-radius: 9999px; }
-  .badge--soon { position: static; align-self: flex-start; margin-top: 4px; color: var(--accent-text); background: rgb(var(--primary-rgb) / 0.14); border: 1px solid var(--ring); }
-  .badge--sold { color: #fff; background: rgba(0,0,0,0.62); border: 1px solid rgba(255,255,255,0.18); }
-
-  /* ===== Tuiles « Bientôt » ===== */
-  .product-card.ghost { opacity: 0.6; }
-  .product-card.ghost .product-media { background: var(--secondary); }
-  .product-card.ghost .pm-ph { opacity: 0.25; }
-  .ghost-line { height: 11px; border-radius: 6px; background: linear-gradient(90deg, rgb(var(--primary-rgb) / 0.16), rgb(var(--primary-rgb) / 0.06)); }
-  .ghost-line--lg { width: 72%; }
-  .ghost-line--sm { width: 42%; }
-
-  /* ===== Bandeau « aucun produit » ===== */
-  .notice {
-    grid-column: 1 / -1;
-    display: flex; flex-wrap: wrap; align-items: center; gap: 18px;
-    background: var(--card); border: 1px solid var(--ring); border-radius: var(--radius);
-    padding: 28px 28px; margin-bottom: 8px; box-shadow: var(--glow);
-  }
-  .notice-ico {
-    width: 52px; height: 52px; flex: none;
-    background: rgb(var(--primary-rgb) / 0.12); border: 1px solid var(--ring);
-    border-radius: var(--radius); display: grid; place-items: center; color: var(--accent-text);
-  }
-  .notice-ico svg { width: 22px; height: 22px; }
-  .notice-txt { flex: 1; min-width: 220px; }
-  .notice-txt strong { font-family: var(--display); font-weight: 700; font-size: 1.15rem; }
-  .notice-txt p { color: var(--muted-foreground); font-size: 0.94rem; margin-top: 5px; }
-  .notice .btn { flex: none; }
-
-  /* ===== Footer ===== */
-  footer { border-top: 1px solid var(--border); padding-block: 44px; }
-  .foot-grid { display: flex; flex-wrap: wrap; gap: 28px 40px; align-items: flex-start; justify-content: space-between; }
-  .foot-brand { max-width: 320px; }
-  .foot-brand .brandmark { font-size: 1.15rem; }
-  .foot-brand p { color: var(--muted-foreground); font-size: 0.92rem; margin-top: 10px; }
-  .foot-col h4 { font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted-foreground); margin-bottom: 14px; }
-  .foot-stack { display: flex; flex-direction: column; gap: 10px; }
-  .foot-pill {
-    display: inline-flex; align-items: center; gap: 9px; padding: 10px 16px; border-radius: 9999px;
-    border: 1px solid var(--border); background: var(--veil); font-weight: 600; font-size: 0.92rem;
-    transition: border-color .18s ease, transform .18s ease;
-    touch-action: manipulation;
-  }
-  .foot-pill:hover { transform: translateY(-2px); border-color: var(--ring); }
-  .foot-pill .dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
-  .foot-pill .dot--vinted { background: var(--vinted-1); }
-  .foot-pill .dot--lbc { background: var(--lbc-1); }
-  .foot-pill .dot--mail { background: var(--chart-5); }
-  .copyright { width: 100%; font-size: .82rem; color: var(--muted-foreground); margin-top: 30px; }
-
-  @media (prefers-reduced-motion: reduce) {
-    * { animation: none !important; transition: none !important; }
-    html { scroll-behavior: auto; }
-  }
-  @media (max-width: 600px) {
-    .catalogue-bar { position: static; }
-    .notice .btn { width: 100%; }
-    .foot-grid { flex-direction: column; }
-  }
-  :focus-visible { outline: 2px solid var(--ring); outline-offset: 3px; border-radius: 6px; }
-
-  /* ============ 21st.dev-style flourishes ============ */
-  /* (CTA shimmer removed — buttons stay clean) */
-
-  /* Cursor spotlight on product cards */
-  .product-card { position: relative; }
-  .product-card::before {
-    content: ""; position: absolute; inset: 0; z-index: 3;
-    border-radius: inherit; pointer-events: none;
-    opacity: 0; transition: opacity .3s ease;
-    background: radial-gradient(200px circle at var(--mx, 50%) var(--my, 50%), rgb(var(--primary-rgb) / 0.16), transparent 70%);
-  }
-  @media (hover: hover) { .product-card:hover::before { opacity: 1; } }
-
-  /* ============ Skip link ============ */
-  .skip-link {
-    position: fixed; top: 10px; left: 10px; z-index: 400;
-    background: var(--card); color: var(--foreground);
-    border: 1px solid var(--ring); border-radius: 9999px;
-    padding: 10px 18px; font-weight: 600;
-    transform: translateY(-160%); transition: transform .18s ease;
-  }
-  .skip-link:focus-visible { transform: translateY(0); }
-
-  /* ============ Theme toggle ============ */
-  .theme-toggle {
-    position: fixed; top: 16px; right: 16px; z-index: 320;
-    width: 44px; height: 44px; border-radius: 9999px;
-    display: grid; place-items: center;
-    background: var(--tube-bg); border: 1px solid var(--border);
-    color: var(--foreground); cursor: pointer;
-    -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
-    box-shadow: 0 8px 24px -14px rgb(var(--shadow-rgb) / var(--shadow-op));
-    transition: transform .18s ease, border-color .18s ease;
-    touch-action: manipulation;
-  }
-  .theme-toggle:hover { transform: translateY(-2px); border-color: var(--ring); }
-  .theme-toggle svg { width: 20px; height: 20px; }
-  .theme-toggle .i-moon { display: none; }
-  :root[data-theme="light"] .theme-toggle .i-sun { display: none; }
-  :root[data-theme="light"] .theme-toggle .i-moon { display: block; }
-  .no-js .theme-toggle { display: none; }
-
-  /* ============ Menu button (top-left twin of the theme toggle) ============ */
-  .menu-btn {
-    position: fixed; top: 16px; left: 16px; z-index: 320;
-    width: 44px; height: 44px; border-radius: 9999px;
-    display: grid; place-items: center;
-    background: var(--tube-bg); border: 1px solid var(--border);
-    color: var(--foreground); cursor: pointer;
-    -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
-    box-shadow: 0 8px 24px -14px rgb(var(--shadow-rgb) / var(--shadow-op));
-    transition: transform .18s ease, border-color .18s ease;
-    touch-action: manipulation;
-  }
-  .menu-btn:hover { transform: translateY(-2px); border-color: var(--ring); }
-  .no-js .menu-btn { display: none; }
-
-  /* animated hamburger → X (three bars) */
-  .menu-btn__box { position: relative; width: 18px; height: 14px; }
-  .menu-btn__bar {
-    position: absolute; left: 0; width: 18px; height: 2px; border-radius: 2px;
-    background: currentColor; transition: transform .25s ease, opacity .2s ease;
-  }
-  .menu-btn__bar:nth-child(1) { top: 0; }
-  .menu-btn__bar:nth-child(2) { top: 6px; }
-  .menu-btn__bar:nth-child(3) { top: 12px; }
-  .menu-btn[aria-expanded="true"] .menu-btn__bar:nth-child(1) { transform: translateY(6px) rotate(45deg); }
-  .menu-btn[aria-expanded="true"] .menu-btn__bar:nth-child(2) { opacity: 0; }
-  .menu-btn[aria-expanded="true"] .menu-btn__bar:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
-
-  /* dropdown panel — same glassy surface as the nav/toggle, rounded */
-  .menu-pop {
-    position: fixed; top: 70px; left: 16px; z-index: 319;
-    min-width: 210px; padding: 8px;
-    background: var(--tube-bg); border: 1px solid var(--border); border-radius: 16px;
-    -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
-    box-shadow: 0 18px 44px -22px rgb(var(--shadow-rgb) / var(--shadow-op));
-    display: flex; flex-direction: column; gap: 2px;
-    transform-origin: top left;
-    opacity: 0; transform: translateY(-8px) scale(.96); visibility: hidden; pointer-events: none;
-    transition: opacity .18s ease, transform .18s ease, visibility .18s;
-  }
-  .menu-pop.is-open { opacity: 1; transform: translateY(0) scale(1); visibility: visible; pointer-events: auto; }
-  .menu-pop a {
-    display: flex; align-items: center; gap: 11px;
-    padding: 10px 12px; border-radius: 10px;
-    color: var(--muted-foreground); text-decoration: none;
-    font-size: .95rem; font-weight: 500; line-height: 1.2;
-    transition: background .15s ease, color .15s ease;
-  }
-  .menu-pop a:hover { background: var(--accent); color: var(--foreground); }
-  .menu-pop a .ic  { width: 17px; height: 17px; flex: none; opacity: .85; }
-  .menu-pop a .ext { width: 13px; height: 13px; margin-left: auto; opacity: .5; }
-  .menu-pop__sep { height: 1px; background: var(--border); margin: 6px 4px; }
-  .menu-pop__label { font-size: .7rem; letter-spacing: .05em; text-transform: uppercase; color: var(--muted-foreground); padding: 4px 12px 2px; opacity: .7; }
-  @media (prefers-reduced-motion: reduce) { .menu-btn__bar, .menu-pop { transition: none; } }
-
-  /* ============ Tubelight floating nav ============ */
-  .tubelight {
-    position: fixed;
-    left: 50%;
-    bottom: calc(18px + env(safe-area-inset-bottom, 0px));
-    transform: translateX(-50%);
-    z-index: 300;
-  }
-  @media (min-width: 640px) {
-    .tubelight { bottom: auto; top: 16px; }
-  }
-  .tubelight__pill {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    padding: 6px;
-    border-radius: 9999px;
-    background: var(--tube-bg);
-    border: 1px solid var(--border);
-    -webkit-backdrop-filter: blur(14px);
-    backdrop-filter: blur(14px);
-    box-shadow: 0 12px 34px -16px rgb(var(--shadow-rgb) / var(--shadow-op)), 0 0 36px -16px rgb(var(--primary-rgb) / 0.4);
-  }
-  .tubelight__item {
-    position: relative;
-    z-index: 1;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 44px;
-    padding: 0 20px;
-    border-radius: 9999px;
-    font-family: var(--body);
-    font-weight: 600;
-    font-size: 0.92rem;
-    line-height: 1;
-    color: var(--muted-foreground);
-    white-space: nowrap;
-    transition: color .2s ease;
-    touch-action: manipulation;
-  }
-  .tubelight__item:hover { color: var(--foreground); }
-  .tubelight__item.is-active { color: var(--accent-text); }
-  .tubelight__item .icon { width: 20px; height: 20px; display: none; }
-  @media (max-width: 767px) {
-    .tubelight__item { padding: 0; width: 52px; }
-    .tubelight__item .label { display: none; }
-    .tubelight__item .icon { display: block; }
-  }
-  .tubelight__lamp {
-    position: absolute;
-    top: 0; left: 0;
-    width: 0; height: 100%;
-    border-radius: 9999px;
-    background: rgb(var(--primary-rgb) / 0.15);
-    transform: translateX(0);
-    transition: transform .35s cubic-bezier(0.34, 1.45, 0.6, 1), width .35s cubic-bezier(0.34, 1.45, 0.6, 1);
-    pointer-events: none;
-  }
-  .tubelight__lamp::before {
-    content: "";
-    position: absolute;
-    top: -7px; left: 50%;
-    transform: translateX(-50%);
-    width: 36px; height: 4px;
-    background: var(--primary);
-    border-radius: 0 0 8px 8px;
-    box-shadow: 0 -7px 18px 2px rgb(var(--primary-rgb) / 0.5), 0 0 12px 1px rgb(var(--primary-rgb) / 0.8);
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .tubelight__lamp { transition: none; }
-  }
-  @media (max-width: 639px) {
-    body { padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
-  }
-
-  /* ============ Mobile comfort: tap feedback · tighter rhythm ============ */
-  .btn:active { transform: scale(.97); }
-  .product-card:active { transform: scale(.985); }
-  .tubelight__item:active { transform: scale(.92); }
-  .theme-toggle:active, .menu-btn:active { transform: scale(.9); }
-  .menu-pop a:active { background: var(--accent); }
-  @media (max-width: 639px) {
-    .cat-hero { padding-block: 38px 22px; }
-  }
+  .noscript-note { border: 1px solid var(--ink); padding: 22px; margin-top: 24px; }
+  .noscript-note strong { font-family: var(--display); font-weight: 400; font-size: 1.3rem; }
+  .noscript-note p { color: var(--ink-soft); margin: 8px 0 16px; }
 </style>
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Store",
-  "@id": "https://cosyprintsshop-dotcom.github.io/#store",
-  "name": "Cosy Prints",
-  "description": "Catalogue Cosy Prints : déco cosy, lampes, cable management et gadgets imprimés en 3D à Grenoble, faits main.",
-  "url": "https://cosyprintsshop-dotcom.github.io/boutique.html",
-  "email": "cosyprints.shop@gmail.com",
-  "areaServed": "Grenoble, France",
-  "knowsLanguage": "fr",
-  "sameAs": [
-    "https://www.vinted.fr/member/60879390-cosyprints",
-    "https://www.leboncoin.fr/profil/0408d333-46e3-4487-b2f3-4743fd34c872"
-  ]
-}
-</script>
 </head>
+
 <body>
 
-<a class="skip-link" href="#contenu">Aller au contenu</a>
+<a class="skip-link" href="#main" data-i18n="a11y.skip">Aller au contenu</a>
 
-<button class="theme-toggle" id="themeToggle" type="button" aria-label="Changer de thème">
-  <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
-  <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
-</button>
-
-<!-- 3D-print theme reveal: printer gantry that "prints" the new theme (driven by #themeToggle) -->
-<div id="printFx" aria-hidden="true">
-  <div class="pfx-cover"></div>
-  <div class="pfx-band">
-    <div class="pfx-lines"></div>
-    <div class="pfx-rail"></div>
-    <div class="pfx-head">
-      <svg viewBox="0 0 32 44" aria-hidden="true">
-        <rect x="2" y="0" width="28" height="11" rx="2.5" fill="currentColor"/>
-        <path d="M7 11 H25 L20 30 H12 Z" fill="currentColor"/>
-        <path d="M12 30 H20 L16.5 40 H15.5 Z" fill="currentColor"/>
-      </svg>
+<header class="site-header">
+  <div class="wrap site-header__bar">
+    <a class="wordmark" href="index.html" translate="no">Cosy<span class="dot">·</span>Prints</a>
+    <nav class="nav" aria-label="Navigation principale">
+      <a href="boutique.html" aria-current="page" data-i18n="nav.catalogue">Catalogue</a>
+      <a href="index.html#univers" data-i18n="nav.univers">Univers</a>
+      <a href="index.html#atelier" data-i18n="nav.atelier">Atelier</a>
+      <a href="engagement.html" data-i18n="nav.engagement">Notre engagement</a>
+      <a href="index.html#contact" data-i18n="nav.contact">Contact</a>
+    </nav>
+    <div class="header-controls">
+      <button class="ctrl ctrl--lang" data-lang-toggle type="button" aria-label="Switch to English" aria-pressed="false">
+        <span class="lang-code">EN</span>
+      </button>
+      <button class="ctrl ctrl--theme" id="themeToggle" type="button" aria-label="Changer de thème">
+        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+      </button>
+      <button class="menu-btn" id="menuBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="mobileNav" aria-label="Ouvrir le menu">
+        <span class="menu-btn__box" aria-hidden="true"><span class="menu-btn__bar"></span><span class="menu-btn__bar"></span><span class="menu-btn__bar"></span></span>
+      </button>
     </div>
   </div>
-</div>
-
-<!-- Top-left menu: animated hamburger → X, opens a themed nav dropdown -->
-<button class="menu-btn" id="menuBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="menuPop" aria-label="Ouvrir le menu">
-  <span class="menu-btn__box" aria-hidden="true">
-    <span class="menu-btn__bar"></span>
-    <span class="menu-btn__bar"></span>
-    <span class="menu-btn__bar"></span>
-  </span>
-</button>
-<nav class="menu-pop" id="menuPop" aria-label="Menu de navigation">
-  <a href="index.html#accueil">
-    <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-    Accueil
-  </a>
-  <a href="index.html#categories">
-    <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
-    Catégories
-  </a>
-  <a href="index.html#contact">
-    <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-    Contact
-  </a>
-  <a href="engagement.html">
-    <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-4.35-9.5-8.5A5.2 5.2 0 0 1 12 6a5.2 5.2 0 0 1 9.5 6.5C19 16.65 12 21 12 21z"/></svg>
-    Notre engagement
-  </a>
-  <div class="menu-pop__sep"></div>
-  <div class="menu-pop__label">Nos boutiques</div>
-  <a href="https://www.vinted.fr/member/60879390-cosyprints" target="_blank" rel="noopener">
-    <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-    Vinted
-    <svg class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
-  </a>
-  <a href="https://www.leboncoin.fr/profil/0408d333-46e3-4487-b2f3-4743fd34c872" target="_blank" rel="noopener">
-    <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-    Leboncoin
-    <svg class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
-  </a>
-</nav>
-
-<!-- ============ Tubelight floating nav ============ -->
-<nav class="tubelight" aria-label="Navigation principale">
-  <div class="tubelight__pill" id="navPill">
-    <span class="tubelight__lamp" aria-hidden="true"></span>
-    <a class="tubelight__item" href="index.html#accueil" data-section="accueil" aria-label="Accueil">
-      <span class="label">Accueil</span>
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-    </a>
-    <a class="tubelight__item" href="index.html#categories" data-section="categories" aria-label="Catégories">
-      <span class="label">Catégories</span>
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
-    </a>
-    <a class="tubelight__item" href="index.html#contact" data-section="contact" aria-label="Contact">
-      <span class="label">Contact</span>
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-    </a>
-  </div>
-</nav>
-
-<header class="cat-hero layers">
-  <div class="wrap">
-    <div class="topbar">
-      <a class="brandmark" href="index.html" translate="no">Cosy<span>·</span>Prints</a>
-    </div>
-    <div class="cat-intro">
-      <p class="eyebrow">Catalogue · impression 3D à Grenoble</p>
-      <h1 id="cat-title">Toutes nos créations</h1>
-      <p class="cat-sub">Parcours nos univers. Chaque pièce est imprimée à la main, couche après couche — livraison et paiement gérés via Vinted ou Leboncoin.</p>
-    </div>
-  </div>
+  <nav class="mobile-nav" id="mobileNav" aria-label="Menu">
+    <a href="boutique.html"><span data-i18n="nav.catalogue">Catalogue</span><span class="idx">01</span></a>
+    <a href="index.html#univers"><span data-i18n="nav.univers">Univers</span><span class="idx">02</span></a>
+    <a href="index.html#atelier"><span data-i18n="nav.atelier">Atelier</span><span class="idx">03</span></a>
+    <a href="engagement.html"><span data-i18n="nav.engagement">Notre engagement</span><span class="idx">04</span></a>
+    <a href="index.html#contact"><span data-i18n="nav.contact">Contact</span><span class="idx">05</span></a>
+  </nav>
 </header>
 
-<main id="contenu" tabindex="-1">
+<main id="main">
+  <section class="cat-hero wrap">
+    <p class="eyebrow eyebrow--accent" data-i18n="shop.eyebrow">Catalogue · impression 3D à Saint-Martin-d'Uriage</p>
+    <h1 id="cat-title">Toutes nos créations</h1>
+    <p class="cat-sub" data-i18n="shop.sub">Parcours nos univers. Chaque pièce est imprimée à la main, couche après couche — livraison et paiement gérés via Vinted ou Leboncoin.</p>
+  </section>
+
   <div class="wrap">
     <div class="catalogue-bar">
       <div class="filters" id="filters" role="tablist" aria-label="Filtrer par univers"></div>
       <div class="cat-meta">
         <span class="count" id="count">0 produit</span>
         <label class="sort">
-          <span>Tri</span>
+          <span data-i18n="shop.sort_label">Tri</span>
           <select id="sort" aria-label="Trier les produits">
-            <option value="new">Nouveautés</option>
-            <option value="price-asc">Prix croissant</option>
-            <option value="price-desc">Prix décroissant</option>
+            <option value="new" data-i18n="shop.sort_new">Nouveautés</option>
+            <option value="price-asc" data-i18n="shop.sort_asc">Prix croissant</option>
+            <option value="price-desc" data-i18n="shop.sort_desc">Prix décroissant</option>
           </select>
         </label>
       </div>
     </div>
 
     <noscript>
-      <div class="notice" style="margin-top:24px">
-        <div class="notice-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
-        <div class="notice-txt">
-          <strong>Active JavaScript pour voir le catalogue.</strong>
-          <p>Ou retrouve-nous directement sur notre boutique Vinted.</p>
-        </div>
-        <a class="btn btn-primary" href="https://www.vinted.fr/member/60879390-cosyprints" target="_blank" rel="noopener">Voir sur Vinted</a>
+      <div class="noscript-note">
+        <strong data-i18n="shop.nojs_title">Active JavaScript pour voir le catalogue.</strong>
+        <p data-i18n="shop.nojs_body">Ou retrouve-nous directement sur notre boutique Vinted.</p>
+        <a class="btn" href="https://www.vinted.fr/member/60879390-cosyprints" target="_blank" rel="noopener" data-i18n="shop.see_vinted">Voir sur Vinted</a>
       </div>
     </noscript>
 
@@ -733,40 +173,78 @@
   </div>
 </main>
 
-<footer id="contact">
+<footer class="site-footer" id="contact">
   <div class="wrap">
-    <div class="foot-grid">
-      <div class="foot-brand">
-        <a class="brandmark" href="index.html">Cosy<span style="color:var(--accent-text)">·</span>Prints</a>
-        <p>Impression 3D faite main à Grenoble. Site vitrine — toutes les ventes se font sur Vinted &amp; Leboncoin.</p>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="wordmark" href="index.html" translate="no">Cosy<span class="dot">·</span>Prints</a>
+        <p data-i18n="footer.tagline">Impression 3D faite main à Saint-Martin-d'Uriage, près de Grenoble. Site vitrine — toutes les ventes se font sur Vinted &amp; Leboncoin.</p>
       </div>
-      <div class="foot-col">
-        <h4>Contact</h4>
-        <div class="foot-stack">
-          <a class="foot-pill" href="mailto:cosyprints.shop@gmail.com"><span class="dot dot--mail"></span>cosyprints.shop@gmail.com</a>
+      <div>
+        <h4 data-i18n="footer.explore">Explorer</h4>
+        <div class="footer-list">
+          <a href="boutique.html" data-i18n="nav.catalogue">Catalogue</a>
+          <a href="index.html#univers" data-i18n="nav.univers">Univers</a>
+          <a href="engagement.html" data-i18n="nav.engagement">Notre engagement</a>
+        </div>
+      </div>
+      <div>
+        <h4 data-i18n="footer.contact">Contact</h4>
+        <div class="footer-list">
+          <a href="mailto:cosyprints.shop@gmail.com">cosyprints.shop@gmail.com</a>
+          <a href="https://www.vinted.fr/member/60879390-cosyprints" target="_blank" rel="noopener">Vinted ↗</a>
+          <a href="https://www.leboncoin.fr/profil/0408d333-46e3-4487-b2f3-4743fd34c872" target="_blank" rel="noopener">Leboncoin ↗</a>
         </div>
       </div>
     </div>
-    <p class="copyright">© 2026 Cosy Prints — Impression 3D, Grenoble. Ventes via Vinted &amp; Leboncoin.</p>
+    <div class="footer-bottom">
+      <span data-i18n="footer.copyright">© 2026 CosyPrints — Saint-Martin-d'Uriage, France</span>
+      <span data-i18n="footer.madein">Imprimé à la demande · PLA végétal</span>
+    </div>
   </div>
 </footer>
 
 <script>
-  const CATEGORIES = [
-    { slug: 'all',              label: 'Tout' },
-    { slug: 'homie-vibe',       label: 'Homie Vibe' },
-    { slug: 'cable-management', label: 'Cable Management' },
-    { slug: 'lampes',           label: 'Lumière & Lampes' },
-    { slug: 'bureau',           label: 'Bureau & Rangement' },
-    { slug: 'gadgets',          label: 'Gadgets Utiles' }
-  ];
+  // Current locale, kept in sync with the bilingual layer (assets/i18n.js).
+  const L = () => (document.documentElement.getAttribute('lang') === 'en' ? 'en' : 'fr');
 
-  /* Ajoute tes produits ici :
-     { name, price, category, desc, img, url }
-  */
-  const PRODUCTS = [
-    // (vide pour le moment)
+  const CATEGORIES = [
+    { slug: 'all',              label: { fr: 'Tout',                en: 'All' } },
+    { slug: 'homie-vibe',       label: { fr: 'Homie Vibe',          en: 'Homie Vibe' } },
+    { slug: 'cable-management', label: { fr: 'Cable Management',     en: 'Cable Management' } },
+    { slug: 'lampes',           label: { fr: 'Lumière & Lampes',    en: 'Light & Lamps' } },
+    { slug: 'bureau',           label: { fr: 'Bureau & Rangement',  en: 'Desk & Storage' } },
+    { slug: 'gadgets',          label: { fr: 'Gadgets Utiles',      en: 'Useful Gadgets' } }
   ];
+  const catLabel = (c) => c.label[L()] || c.label.fr;
+
+  // Catalogue UI strings rendered from JS (the static markup uses data-i18n instead).
+  const B = {
+    fr: {
+      allTitle: 'Toutes nos créations', cataloguer: 'Catalogue',
+      unit: 'produit', units: 'produits',
+      sold: 'Vendu', soon: 'Bientôt', see: 'Voir', soonSee: 'En stock bientôt',
+      emptyTitle: 'Aucun produit en ligne pour le moment.',
+      emptyBody: 'On imprime de nouvelles pièces — reviens très vite. En attendant, retrouve-nous sur Vinted.',
+      seeVinted: 'Voir sur Vinted'
+    },
+    en: {
+      allTitle: 'All our creations', cataloguer: 'Catalogue',
+      unit: 'item', units: 'items',
+      sold: 'Sold', soon: 'Soon', see: 'View', soonSee: 'In stock soon',
+      emptyTitle: 'No products online just yet.',
+      emptyBody: "We're printing new pieces — check back very soon. In the meantime, find us on Vinted.",
+      seeVinted: 'View on Vinted'
+    }
+  };
+  const t = (k) => (B[L()][k] != null ? B[L()][k] : B.fr[k]);
+
+  /* Add products here. Text fields can be bilingual { fr, en } or plain strings.
+     { name:{fr,en}, desc:{fr,en}, price, category, img, url, status:'sold'|'soon' } */
+  const PRODUCTS = [
+    // (empty for now)
+  ];
+  const loc = (v) => (v && typeof v === 'object') ? (v[L()] || v.fr || '') : (v == null ? '' : v);
 
   const grid = document.getElementById('grid');
   const filtersEl = document.getElementById('filters');
@@ -775,44 +253,48 @@
   const sortEl = document.getElementById('sort');
   const slugs = CATEGORIES.map(c => c.slug);
 
-  const camSvg = `<svg class="pm-ph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>`;
-  const wandSvg = `<svg class="pm-ph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4V2M15 16v-2M8 9h2M20 9h2M17.8 11.8 19 13M17.8 6.2 19 5M3 21l9-9M12.2 6.2 11 5"/></svg>`;
-  const heartSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`;
+  const phSvg = `<svg class="pcard__ph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>`;
+
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]));
+  const fmtPrice = n => n.toLocaleString(L() === 'en' ? 'en-IE' : 'fr-FR', { style: 'currency', currency: 'EUR', minimumFractionDigits: 0, maximumFractionDigits: 0 });
+
+  function productCard(p) {
+    const name = loc(p.name), desc = loc(p.desc);
+    const media = p.img
+      ? `<img src="${esc(p.img)}" alt="${esc(name)}" loading="lazy">`
+      : phSvg;
+    let tag = '';
+    if (p.status === 'sold') tag = `<span class="pcard__tag">${esc(t('sold'))}</span>`;
+    else if (p.status === 'soon') tag = `<span class="pcard__tag pcard__tag--soon">${esc(t('soon'))}</span>`;
+    const buyable = p.url && p.status !== 'soon';
+    const go = buyable
+      ? `<a class="pcard__go tlink" href="${esc(p.url)}" target="_blank" rel="noopener">${esc(t('see'))} <span class="arr">↗</span></a>`
+      : (p.status === 'soon' ? `<span class="pcard__go" style="color:var(--accent)">${esc(t('soonSee'))}</span>` : '');
+    const Tag = buyable ? 'a' : 'div';
+    const open = buyable ? `<a class="pcard__media" href="${esc(p.url)}" target="_blank" rel="noopener">` : `<div class="pcard__media">`;
+    const close = buyable ? `</a>` : `</div>`;
+    return `<article class="pcard">
+      ${open}${media}${tag}${close}
+      <div class="pcard__row">
+        <h3 class="pcard__name">${esc(name)}</h3>
+        ${p.price != null ? `<span class="pcard__price">${fmtPrice(p.price)}</span>` : ''}
+      </div>
+      ${desc ? `<p class="pcard__desc">${esc(desc)}</p>` : ''}
+      ${go}
+    </article>`;
+  }
+
+  const ghostCard = () => `<div class="pcard ghost" aria-hidden="true">
+      <div class="pcard__media">${phSvg}</div>
+      <span class="ghost-line ghost-line--lg"></span>
+      <span class="ghost-line ghost-line--sm"></span>
+    </div>`;
 
   function currentCat() {
     const p = new URLSearchParams(location.search).get('cat');
     return slugs.includes(p) ? p : 'all';
   }
   let active = currentCat();
-
-  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]));
-  const fmtPrice = n => n.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR', minimumFractionDigits: 0, maximumFractionDigits: 0 });
-
-  function productCard(p) {
-    const media = p.img
-      ? `<img class="pm-img" src="${esc(p.img)}" alt="${esc(p.name)}" loading="lazy">`
-      : camSvg;
-    return `<article class="product-card">
-      <div class="product-media">${media}${p.sold ? '<span class="badge badge--sold">Vendu</span>' : ''}</div>
-      <div class="product-info">
-        <h3>${esc(p.name)}</h3>
-        ${p.desc ? `<p>${esc(p.desc)}</p>` : ''}
-        <div class="product-foot">
-          <span class="price">${p.price != null ? fmtPrice(p.price) : ''}</span>
-          ${p.url ? `<a class="product-buy" href="${esc(p.url)}" target="_blank" rel="noopener">Voir →</a>` : ''}
-        </div>
-      </div>
-    </article>`;
-  }
-
-  const ghostCard = () => `<div class="product-card ghost" aria-hidden="true">
-      <div class="product-media">${wandSvg}</div>
-      <div class="product-info">
-        <span class="ghost-line ghost-line--lg"></span>
-        <span class="ghost-line ghost-line--sm"></span>
-        <span class="badge badge--soon">Bientôt</span>
-      </div>
-    </div>`;
 
   function sortItems(items) {
     const v = sortEl ? sortEl.value : 'new';
@@ -826,32 +308,34 @@
     filtersEl.innerHTML = CATEGORIES.map(c => {
       const href = c.slug === 'all' ? 'boutique.html' : 'boutique.html?cat=' + c.slug;
       const on = c.slug === active;
-      return `<a class="chip${on ? ' is-active' : ''}" href="${href}" data-cat="${c.slug}" role="tab" aria-selected="${on}">${esc(c.label)}</a>`;
+      return `<a class="chip${on ? ' is-active' : ''}" href="${href}" data-cat="${c.slug}" role="tab" aria-selected="${on}">${esc(catLabel(c))}</a>`;
     }).join('');
 
-    const label = CATEGORIES.find(c => c.slug === active).label;
-    titleEl.textContent = active === 'all' ? 'Toutes nos créations' : label;
-    document.title = (active === 'all' ? 'Catalogue' : label) + ' — Cosy Prints';
+    const cat = CATEGORIES.find(c => c.slug === active);
+    const label = catLabel(cat);
+    titleEl.textContent = active === 'all' ? t('allTitle') : label;
+    document.title = (active === 'all' ? t('cataloguer') : label) + ' — CosyPrints';
 
     let items = active === 'all' ? PRODUCTS : PRODUCTS.filter(p => p.category === active);
     items = sortItems(items);
-    countEl.textContent = items.length + (items.length > 1 ? ' produits' : ' produit');
+    countEl.textContent = items.length + ' ' + (items.length > 1 ? t('units') : t('unit'));
 
     if (items.length === 0) {
       grid.innerHTML =
-        `<div class="notice">
-          <div class="notice-ico">${heartSvg}</div>
-          <div class="notice-txt">
-            <strong>Aucun produit en ligne pour le moment.</strong>
-            <p>On imprime de nouvelles pièces — reviens très vite ! En attendant, retrouve-nous sur Vinted.</p>
+        `<div class="notice" style="grid-column:1/-1">
+          <div class="notice__txt">
+            <p class="notice__title">${esc(t('emptyTitle'))}</p>
+            <p class="notice__body">${esc(t('emptyBody'))}</p>
           </div>
-          <a class="btn btn-primary" href="https://www.vinted.fr/member/60879390-cosyprints" target="_blank" rel="noopener">Voir sur Vinted</a>
+          <a class="btn btn--accent" href="https://www.vinted.fr/member/60879390-cosyprints" target="_blank" rel="noopener">${esc(t('seeVinted'))}</a>
         </div>` +
         Array.from({ length: 3 }, ghostCard).join('');
     } else {
       grid.innerHTML = items.map(productCard).join('');
     }
   }
+
+  document.addEventListener('cp:langchange', render);
 
   filtersEl.addEventListener('click', e => {
     const a = e.target.closest('.chip');
@@ -866,105 +350,37 @@
 
   render();
 
-  // Cursor spotlight on product cards (desktop / fine-pointer only; rect cached per card, not read every move)
-  if (window.matchMedia('(hover: hover)').matches) {
-    let cur = null, rect = null;
-    document.addEventListener('pointermove', (e) => {
-      const el = e.target.closest('.product-card');
-      if (!el) { cur = null; return; }
-      if (el !== cur) { cur = el; rect = el.getBoundingClientRect(); }
-      el.style.setProperty('--mx', ((e.clientX - rect.left) / rect.width * 100) + '%');
-      el.style.setProperty('--my', ((e.clientY - rect.top) / rect.height * 100) + '%');
-    });
-  }
-
-  // ---- Tubelight floating nav: sliding lamp (active = current page) ----
+  // ---- Theme toggle (instant) + mobile menu ----
   (function () {
-    const pill = document.getElementById('navPill');
-    if (!pill) return;
-    const items = Array.prototype.slice.call(pill.querySelectorAll('.tubelight__item'));
-    const lamp = pill.querySelector('.tubelight__lamp');
-
-    const moveLamp = (item, animate) => {
-      if (!item) return;
-      if (!animate) lamp.style.transition = 'none';
-      lamp.style.width = item.offsetWidth + 'px';
-      lamp.style.transform = 'translateX(' + item.offsetLeft + 'px)';
-      if (!animate) { void lamp.offsetWidth; lamp.style.transition = ''; }
-    };
-    const setActive = (item, animate) => {
-      if (!item) return;
-      items.forEach((it) => {
-        const on = it === item;
-        it.classList.toggle('is-active', on);
-        if (on) it.setAttribute('aria-current', 'page'); else it.removeAttribute('aria-current');
+    var btn = document.getElementById('themeToggle');
+    if (btn) {
+      var root = document.documentElement;
+      var label = function (t) { btn.setAttribute('aria-label', t === 'light' ? 'Activer le thème sombre' : 'Activer le thème clair'); };
+      label(root.getAttribute('data-theme'));
+      btn.addEventListener('click', function () {
+        var next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+        root.setAttribute('data-theme', next);
+        try { localStorage.setItem('theme', next); } catch (e) {}
+        label(next);
       });
-      moveLamp(item, animate);
-    };
-
-    const current = pill.querySelector('.tubelight__item.is-active') || items[0];
-    setActive(current, false);
-
-    let rt;
-    window.addEventListener('resize', () => {
-      clearTimeout(rt);
-      rt = setTimeout(() => setActive(pill.querySelector('.tubelight__item.is-active') || current, false), 90);
-    });
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(() => setActive(pill.querySelector('.tubelight__item.is-active') || current, false));
+    }
+    var mb = document.getElementById('menuBtn'), nav = document.getElementById('mobileNav');
+    if (mb && nav) {
+      var setOpen = function (open) {
+        mb.setAttribute('aria-expanded', open ? 'true' : 'false');
+        mb.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
+        nav.classList.toggle('is-open', open);
+      };
+      mb.addEventListener('click', function () { setOpen(mb.getAttribute('aria-expanded') !== 'true'); });
+      nav.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { setOpen(false); }); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setOpen(false); });
     }
   })();
-
-  // ---- Top-left menu: animated hamburger → X + themed nav dropdown ----
-  (function () {
-    const btn = document.getElementById('menuBtn');
-    const pop = document.getElementById('menuPop');
-    if (!btn || !pop) return;
-    const isOpen = () => btn.getAttribute('aria-expanded') === 'true';
-    const setOpen = (open) => {
-      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-      btn.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
-      pop.classList.toggle('is-open', open);
-    };
-    btn.addEventListener('click', (e) => { e.stopPropagation(); setOpen(!isOpen()); });
-    document.addEventListener('click', (e) => {
-      if (isOpen() && !pop.contains(e.target) && !btn.contains(e.target)) setOpen(false);
-    });
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && isOpen()) { setOpen(false); btn.focus(); } });
-    pop.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
-  })();
-
-  // ---- Theme toggle: high-speed 3D-print reveal ----
-  // Flip the theme instantly, then play a print-head sweep that "prints" the new theme over the old.
-  (function () {
-    const btn = document.getElementById('themeToggle');
-    if (!btn) return;
-    const root = document.documentElement;
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const fx = document.getElementById('printFx');
-    const cover = fx && fx.querySelector('.pfx-cover');
-    const label = (t) => btn.setAttribute('aria-label', t === 'light' ? 'Activer le thème sombre' : 'Activer le thème clair');
-    const apply = (t) => { root.setAttribute('data-theme', t); try { localStorage.setItem('theme', t); } catch (e) {} label(t); };
-    label(root.getAttribute('data-theme'));
-
-    let printing = false;
-    btn.addEventListener('click', () => {
-      const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-      if (!fx || reduce.matches) { apply(next); return; }            // no overlay → just switch
-      if (printing) return;                                          // ignore clicks mid-print
-      printing = true;
-      const oldBg = getComputedStyle(root).getPropertyValue('--background').trim();
-      fx.style.setProperty('--pfx-oldbg', oldBg);                    // cover = the colour we're leaving
-      apply(next);                                                   // page underneath is now the new theme
-      fx.classList.remove('is-printing'); void fx.offsetWidth;        // restart the print animation
-      fx.classList.add('is-printing');
-      let cleaned = false;
-      const done = () => { if (cleaned) return; cleaned = true; clearTimeout(t); fx.classList.remove('is-printing'); printing = false; };
-      const t = setTimeout(done, 2000);                              // guaranteed cleanup if animationend never fires (> --pfx-dur)
-      if (cover) cover.addEventListener('animationend', done, { once: true });
-    });
-  })();
 </script>
+
+<!-- Bilingual layer (FR source in the HTML, EN from the dictionary) -->
+<script src="assets/i18n.en.js"></script>
+<script src="assets/i18n.js"></script>
 
 </body>
 </html>
