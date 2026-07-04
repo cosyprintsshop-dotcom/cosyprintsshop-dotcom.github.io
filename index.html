@@ -4,7 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<!-- Theme bootstrap: paper (light) by default; follow OS only when it prefers dark. -->
+<!-- Theme bootstrap: paper (light) by default; dark follows the OS preference only
+     (the manual toggle was removed in the 2026-07 restyle — stale stored prefs are cleared). -->
 <script>
   (function () {
     var d = document.documentElement;
@@ -12,9 +13,8 @@
     try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {}
     var t = 'light';
     try {
-      var s = localStorage.getItem('theme');
-      if (s === 'light' || s === 'dark') { t = s; }
-      else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) { t = 'dark'; }
+      localStorage.removeItem('theme');
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) { t = 'dark'; }
     } catch (e) {}
     d.setAttribute('data-theme', t);
   })();
@@ -29,12 +29,12 @@
 <meta property="og:locale" content="fr_FR" />
 <meta property="og:title" content="CosyPrints — objets imprimés en 3D pour la maison" />
 <meta property="og:description" content="Objets utiles et déco pour la maison, imprimés à Saint-Martin-d'Uriage. En vente sur Vinted et Leboncoin." />
-<meta property="og:url" content="https://cosyprintsshop-dotcom.github.io/" />
+<meta property="og:url" content="https://cosyprints.com/" />
 <meta name="twitter:card" content="summary" />
-<link rel="canonical" href="https://cosyprintsshop-dotcom.github.io/" />
-<link rel="alternate" hreflang="fr" href="https://cosyprintsshop-dotcom.github.io/" />
-<link rel="alternate" hreflang="en" href="https://cosyprintsshop-dotcom.github.io/?lang=en" />
-<link rel="alternate" hreflang="x-default" href="https://cosyprintsshop-dotcom.github.io/" />
+<link rel="canonical" href="https://cosyprints.com/" />
+<link rel="alternate" hreflang="fr" href="https://cosyprints.com/" />
+<link rel="alternate" hreflang="en" href="https://cosyprints.com/?lang=en" />
+<link rel="alternate" hreflang="x-default" href="https://cosyprints.com/" />
 
 <link rel="icon" media="(prefers-color-scheme: light)" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23f3efe6'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='20' text-anchor='middle' fill='%231c1a16'%3EC%3C/text%3E%3C/svg%3E" />
 <link rel="icon" media="(prefers-color-scheme: dark)" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2319160f'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='20' text-anchor='middle' fill='%23ece6d8'%3EC%3C/text%3E%3C/svg%3E" />
@@ -56,9 +56,10 @@
     line-height: 0.98; letter-spacing: -0.025em; margin-block: 22px 26px; }
   .hero h1 em { font-style: italic; color: var(--accent); }
   .hero .lede { font-size: clamp(1.08rem, 1.8vw, 1.3rem); color: var(--ink-soft); max-width: 46ch; }
-  .hero-actions { display: flex; flex-wrap: wrap; gap: 12px 28px; margin-top: 34px; align-items: center; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 12px 16px; margin-top: 34px; align-items: center; }
   .hero-plate { border-top: 1px solid var(--ink); padding-top: 18px; }
   .hero-plate__cap { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 14px; }
+  @media (max-width: 899px) { .hero-plate { display: none; } }
 
   /* Locality / trust strip — typographic, hairline framed, no icon cards */
   .locality { border-block: var(--rule); }
@@ -68,6 +69,9 @@
     color: var(--ink-soft); padding: 20px 0; }
   @media (min-width: 760px) { .locality__item + .locality__item { border-left: var(--rule); padding-left: 28px; } }
   .locality__item b { color: var(--ink); font-weight: 500; }
+
+  /* Collection preview — shared .product-grid/.pcard styles live in theme.css */
+  .coll-cta { text-align: center; margin-top: clamp(8px, 2vw, 24px); }
 
   /* Worlds — editorial index list, not cards */
   .worlds { display: flex; flex-direction: column; }
@@ -92,15 +96,6 @@
     letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); background: var(--paper); padding: 6px 11px; border: var(--rule); }
   .atelier-body h2 { font-family: var(--display); font-weight: 400; font-size: clamp(1.9rem, 4.4vw, 3rem); line-height: 1.05; letter-spacing: -0.015em; }
   .atelier-body p { color: var(--ink-soft); margin-top: 18px; max-width: 50ch; }
-
-  /* Process — numbered editorial sequence */
-  .steps { display: grid; grid-template-columns: 1fr; }
-  @media (min-width: 760px) { .steps { grid-template-columns: repeat(3, 1fr); } }
-  .step { padding: 30px 0; border-top: 1px solid var(--ink); }
-  @media (min-width: 760px) { .step { padding: 0 28px 0 0; border-top: 1px solid var(--ink); padding-top: 22px; } .step + .step { padding-left: 28px; border-left: var(--rule); } }
-  .step__num { font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.1em; color: var(--accent); }
-  .step h3 { font-family: var(--display); font-weight: 400; font-size: 1.5rem; margin-block: 12px 8px; }
-  .step p { color: var(--ink-soft); font-size: 0.96rem; }
 
   /* Newsletter — restrained capture */
   .news-grid { display: grid; grid-template-columns: 1fr; gap: 28px; }
@@ -133,10 +128,10 @@
 {
   "@context": "https://schema.org",
   "@type": "Store",
-  "@id": "https://cosyprintsshop-dotcom.github.io/#store",
+  "@id": "https://cosyprints.com/#store",
   "name": "CosyPrints",
   "description": "Objets utiles et déco pour la maison, imprimés en 3D à la main à Saint-Martin-d'Uriage, près de Grenoble.",
-  "url": "https://cosyprintsshop-dotcom.github.io",
+  "url": "https://cosyprints.com",
   "email": "cosyprints.shop@gmail.com",
   "areaServed": "Grenoble, France",
   "address": { "@type": "PostalAddress", "addressLocality": "Saint-Martin-d'Uriage", "addressRegion": "Isère", "addressCountry": "FR" },
@@ -152,6 +147,12 @@
 <body>
 
 <a class="skip-link" href="#main" data-i18n="a11y.skip">Aller au contenu</a>
+
+<!-- ============ Announcement bar ============ -->
+<div class="ann-bar">
+  <p><span data-i18n="ann.text">Fabriqué à la demande · PLA végétal · Expédié sous 5–10 jours</span>
+  · <a href="engagement.html" data-i18n="ann.link">Notre mission →</a></p>
+</div>
 
 <!-- ============ Header ============ -->
 <header class="site-header">
@@ -170,9 +171,9 @@
       <button class="ctrl ctrl--lang" data-lang-toggle type="button" aria-label="Switch to English" aria-pressed="false">
         <span class="lang-code">EN</span>
       </button>
-      <button class="ctrl ctrl--theme" id="themeToggle" type="button" aria-label="Changer de thème">
-        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
-        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+      <button class="ctrl ctrl--cart" data-cart-open type="button" aria-label="Ouvrir le panier" data-i18n-attr="aria-label:cart.open_aria">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <span class="cart-count" data-cart-count hidden>0</span>
       </button>
       <button class="menu-btn" id="menuBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="mobileNav" aria-label="Ouvrir le menu">
         <span class="menu-btn__box" aria-hidden="true"><span class="menu-btn__bar"></span><span class="menu-btn__bar"></span><span class="menu-btn__bar"></span></span>
@@ -196,21 +197,14 @@
     <div class="hero-grid">
       <div>
         <p class="eyebrow eyebrow--accent" data-i18n="hero.eyebrow">Atelier · Saint-Martin-d'Uriage, près de Grenoble</p>
-        <h1 data-i18n="hero.title">Des objets qui réchauffent <em>la maison</em>.</h1>
-        <p class="lede" data-i18n="hero.lede">Déco, cuisine, luminaires et accessoires — dessinés et imprimés en 3D dans notre atelier, en PLA d'origine végétale. Imprimés à la demande, sans stock.</p>
+        <h1 data-i18n="hero.title">Des objets artisanaux, <em>imprimés pour toi</em>.</h1>
+        <p class="lede" data-i18n="hero.lede">Déco et objets utiles pour la maison, imprimés en 3D à la main à Saint-Martin-d'Uriage. Chaque pièce est fabriquée à la demande.</p>
         <div class="hero-actions">
-          <a class="tlink" href="https://www.vinted.fr/member/60879390-cosyprints" target="_blank" rel="noopener">
-            <span data-i18n="hero.cta_vinted">Découvrir sur Vinted</span>
-            <svg class="arr" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+          <a class="btn btn--accent" href="boutique.html">
+            <span data-i18n="hero.cta_primary">Voir la collection</span>
+            <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </a>
-          <a class="tlink" href="https://www.leboncoin.fr/profil/0408d333-46e3-4487-b2f3-4743fd34c872" target="_blank" rel="noopener">
-            <span data-i18n="hero.cta_lbc">Découvrir sur Leboncoin</span>
-            <svg class="arr" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
-          </a>
-          <a class="tlink" href="boutique.html">
-            <span data-i18n="hero.browse">Voir le catalogue</span>
-            <svg class="arr" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </a>
+          <a class="btn" href="engagement.html" data-i18n="hero.cta_mission">Notre mission</a>
         </div>
       </div>
 
@@ -231,9 +225,93 @@
     <div class="wrap locality__row">
       <div class="locality__item" data-i18n="trust.handmade">Fait main · <b>Saint-Martin-d'Uriage</b></div>
       <div class="locality__item" data-i18n="trust.pla"><b>PLA</b> d'origine végétale</div>
-      <div class="locality__item" data-i18n="trust.payment">Paiement protégé · <b>Vinted &amp; Leboncoin</b></div>
+      <div class="locality__item" data-i18n="trust.madetoorder">Fabriqué <b>à la demande</b> · sans stock</div>
     </div>
   </div>
+
+  <!-- ============ Mission banner (ink panel) ============ -->
+  <section class="mission" aria-labelledby="mission-title">
+    <div class="wrap reveal">
+      <p class="eyebrow" data-i18n="mission.eyebrow">§ Notre engagement</p>
+      <h2 class="sr-only" id="mission-title" data-i18n="mission.title">Notre engagement</h2>
+      <div class="mission__grid">
+        <div class="mission__pillar">
+          <p class="mission__num"><span data-countup="20">20</span>&nbsp;%</p>
+          <h3 data-i18n="mission.p1.title">Recherche contre le cancer</h3>
+          <p data-i18n="mission.p1.body">20 % de chaque vente finance la recherche contre le cancer, en mémoire de ceux qu'on a perdus.</p>
+        </div>
+        <div class="mission__pillar">
+          <p class="mission__num"><span data-countup="20">20</span>&nbsp;%</p>
+          <h3 data-i18n="mission.p2.title">Dépollution des océans</h3>
+          <p data-i18n="mission.p2.body">20 % finance des initiatives certifiées de collecte du plastique en mer — parce que notre matière vient de la terre.</p>
+        </div>
+      </div>
+      <p class="mission__cta">
+        <a class="tlink" href="engagement.html">
+          <span data-i18n="mission.cta">En savoir plus sur notre engagement</span>
+          <svg class="arr" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ Collection preview ============ -->
+  <section class="section" id="collection" aria-labelledby="coll-title">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="section-head__index" data-i18n="coll.eyebrow">§ Collection</p>
+        <div>
+          <h2 class="section-head__title" id="coll-title" data-i18n="coll.title">Pièces <em>récentes</em>.</h2>
+          <p class="section-head__lead" data-i18n="coll.lead">Chaque objet est imprimé à la demande dans notre atelier. La collection s'agrandit au fil des impressions.</p>
+        </div>
+      </div>
+
+      <div class="product-grid reveal">
+        <article class="pcard">
+          <div class="pcard__media">
+            <svg class="pcard__ph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            <span class="pcard__tag pcard__tag--soon" data-i18n="coll.soon">Bientôt</span>
+            <span class="pcard__badge" data-i18n="coll.badge_pla">PLA végétal</span>
+          </div>
+          <div class="pcard__row"><h3 class="pcard__name" data-i18n="coll.p1.name">Vase strié</h3></div>
+          <p class="pcard__desc" data-i18n="coll.p1.desc">Univers Homie Vibe — courbes striées, couleur au choix.</p>
+          <div class="pcard__actions"><span class="pcard__go" style="color:var(--accent)" data-i18n="coll.soon_note">En stock bientôt</span></div>
+        </article>
+        <article class="pcard">
+          <div class="pcard__media">
+            <svg class="pcard__ph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            <span class="pcard__tag pcard__tag--soon" data-i18n="coll.soon">Bientôt</span>
+            <span class="pcard__badge" data-i18n="coll.badge_batch">Série limitée</span>
+          </div>
+          <div class="pcard__row"><h3 class="pcard__name" data-i18n="coll.p2.name">Lampe Aurore</h3></div>
+          <p class="pcard__desc" data-i18n="coll.p2.desc">Univers Lumière &amp; Lampes — lumière douce, le soir venu.</p>
+          <div class="pcard__actions"><span class="pcard__go" style="color:var(--accent)" data-i18n="coll.soon_note">En stock bientôt</span></div>
+        </article>
+        <article class="pcard">
+          <div class="pcard__media">
+            <svg class="pcard__ph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            <span class="pcard__tag pcard__tag--soon" data-i18n="coll.soon">Bientôt</span>
+            <span class="pcard__badge" data-i18n="coll.badge_pla">PLA végétal</span>
+          </div>
+          <div class="pcard__row"><h3 class="pcard__name" data-i18n="coll.p3.name">Organiseur de bureau</h3></div>
+          <p class="pcard__desc" data-i18n="coll.p3.desc">Univers Bureau &amp; Rangement — un espace qui respire.</p>
+          <div class="pcard__actions"><span class="pcard__go" style="color:var(--accent)" data-i18n="coll.soon_note">En stock bientôt</span></div>
+        </article>
+        <div class="pcard ghost" aria-hidden="true">
+          <div class="pcard__media"><svg class="pcard__ph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
+          <span class="ghost-line ghost-line--lg"></span>
+          <span class="ghost-line ghost-line--sm"></span>
+        </div>
+      </div>
+
+      <div class="coll-cta reveal">
+        <a class="btn btn--accent" href="boutique.html">
+          <span data-i18n="coll.cta">Voir tout le catalogue</span>
+          <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
 
   <!-- ============ Univers (editorial index) ============ -->
   <section class="section" id="univers" aria-labelledby="univers-title">
@@ -303,53 +381,6 @@
     </div>
   </section>
 
-  <!-- ============ Process ============ -->
-  <section class="section" aria-labelledby="process-title">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <p class="section-head__index" data-i18n="process.eyebrow">§ Commander</p>
-        <div>
-          <h2 class="section-head__title" id="process-title" data-i18n="process.title">Sécurisé, du clic à ta porte.</h2>
-        </div>
-      </div>
-      <div class="steps reveal">
-        <div class="step">
-          <p class="step__num">01</p>
-          <h3 data-i18n="process.step1.title">Tu choisis</h3>
-          <p data-i18n="process.step1.desc">Ta pièce préférée sur notre boutique Vinted ou Leboncoin.</p>
-        </div>
-        <div class="step">
-          <p class="step__num">02</p>
-          <h3 data-i18n="process.step2.title">On imprime</h3>
-          <p data-i18n="process.step2.desc">À la demande, dans notre atelier, en PLA d'origine végétale. Rien que pour toi.</p>
-        </div>
-        <div class="step">
-          <p class="step__num">03</p>
-          <h3 data-i18n="process.step3.title">Tu reçois</h3>
-          <p data-i18n="process.step3.desc">Paiement 100% protégé par la plateforme, livré en Mondial Relay dès 2,88 €.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ Newsletter ============ -->
-  <section class="section news" aria-labelledby="news-title">
-    <div class="wrap news-grid reveal">
-      <div>
-        <p class="eyebrow eyebrow--accent" data-i18n="news.eyebrow">Rester informé</p>
-        <h2 id="news-title" data-i18n="news.title" style="margin-top:14px;">Nouveautés, retours en stock, éditions.</h2>
-        <p data-i18n="news.body">On écrit rarement — seulement quand un nouvel objet sort ou qu'une pièce revient.</p>
-      </div>
-      <div>
-        <form class="news-form" id="newsForm" novalidate>
-          <input type="email" id="newsEmail" name="email" required autocomplete="email" placeholder="ton@email.fr" data-i18n-attr="placeholder:news.placeholder" aria-label="E-mail" />
-          <button type="submit" data-i18n="news.cta">S'inscrire</button>
-        </form>
-        <p class="news-note" id="newsNote" data-i18n="news.note">Pas de spam. Désinscription en un clic.</p>
-      </div>
-    </div>
-  </section>
-
   <!-- ============ FAQ ============ -->
   <section class="section" aria-labelledby="faq-title">
     <div class="wrap">
@@ -378,6 +409,24 @@
           <summary><span data-i18n="faq.q5">Pourquoi acheter sur Vinted ou Leboncoin et pas sur le site ?</span><span class="sign" aria-hidden="true">+</span></summary>
           <div class="ans" data-i18n="faq.a5">CosyPrints est une vitrine : on vend sur Vinted &amp; Leboncoin pour un paiement et une livraison sécurisés, sans créer de compte.</div>
         </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Newsletter ============ -->
+  <section class="section news" aria-labelledby="news-title">
+    <div class="wrap news-grid reveal">
+      <div>
+        <p class="eyebrow eyebrow--accent" data-i18n="news.eyebrow">Rester informé</p>
+        <h2 id="news-title" data-i18n="news.title" style="margin-top:14px;">Nouveautés, retours en stock, éditions.</h2>
+        <p data-i18n="news.body">On écrit rarement — seulement quand un nouvel objet sort ou qu'une pièce revient.</p>
+      </div>
+      <div>
+        <form class="news-form" id="newsForm" novalidate>
+          <input type="email" id="newsEmail" name="email" required autocomplete="email" placeholder="ton@email.fr" data-i18n-attr="placeholder:news.placeholder" aria-label="E-mail" />
+          <button type="submit" data-i18n="news.cta">S'inscrire</button>
+        </form>
+        <p class="news-note" id="newsNote" data-i18n="news.note">Pas de spam. Désinscription en un clic.</p>
       </div>
     </div>
   </section>
@@ -430,21 +479,6 @@
     document.querySelectorAll('.reveal').forEach(function (e) { io.observe(e); });
   })();
 
-  // Theme toggle — instant, no overlay (calm by design).
-  (function () {
-    var btn = document.getElementById('themeToggle');
-    if (!btn) return;
-    var root = document.documentElement;
-    var label = function (t) { btn.setAttribute('aria-label', t === 'light' ? 'Activer le thème sombre' : 'Activer le thème clair'); };
-    label(root.getAttribute('data-theme'));
-    btn.addEventListener('click', function () {
-      var next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-      root.setAttribute('data-theme', next);
-      try { localStorage.setItem('theme', next); } catch (e) {}
-      label(next);
-    });
-  })();
-
   // Mobile menu drawer.
   (function () {
     var btn = document.getElementById('menuBtn');
@@ -477,6 +511,10 @@
     });
   })();
 </script>
+
+<!-- Shared behaviour (cart drawer, count-up) — must load before the i18n layer
+     so the injected drawer markup is captured like static HTML. -->
+<script src="assets/site.js"></script>
 
 <!-- Bilingual layer (FR source in the HTML, EN from the dictionary) -->
 <script src="assets/i18n.en.js"></script>

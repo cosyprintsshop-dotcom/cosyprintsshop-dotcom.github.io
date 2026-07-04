@@ -11,9 +11,8 @@
     try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {}
     var t = 'light';
     try {
-      var s = localStorage.getItem('theme');
-      if (s === 'light' || s === 'dark') { t = s; }
-      else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) { t = 'dark'; }
+      localStorage.removeItem('theme');
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) { t = 'dark'; }
     } catch (e) {}
     d.setAttribute('data-theme', t);
   })();
@@ -28,12 +27,12 @@
 <meta property="og:locale" content="fr_FR" />
 <meta property="og:title" content="Notre engagement — CosyPrints" />
 <meta property="og:description" content="Une partie de chaque vente soutient la lutte contre le cancer et le nettoyage des océans." />
-<meta property="og:url" content="https://cosyprintsshop-dotcom.github.io/engagement.html" />
+<meta property="og:url" content="https://cosyprints.com/engagement.html" />
 <meta name="twitter:card" content="summary" />
-<link rel="canonical" href="https://cosyprintsshop-dotcom.github.io/engagement.html" />
-<link rel="alternate" hreflang="fr" href="https://cosyprintsshop-dotcom.github.io/engagement.html" />
-<link rel="alternate" hreflang="en" href="https://cosyprintsshop-dotcom.github.io/engagement.html?lang=en" />
-<link rel="alternate" hreflang="x-default" href="https://cosyprintsshop-dotcom.github.io/engagement.html" />
+<link rel="canonical" href="https://cosyprints.com/engagement.html" />
+<link rel="alternate" hreflang="fr" href="https://cosyprints.com/engagement.html" />
+<link rel="alternate" hreflang="en" href="https://cosyprints.com/engagement.html?lang=en" />
+<link rel="alternate" hreflang="x-default" href="https://cosyprints.com/engagement.html" />
 
 <link rel="icon" media="(prefers-color-scheme: light)" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23f3efe6'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='20' text-anchor='middle' fill='%231c1a16'%3EC%3C/text%3E%3C/svg%3E" />
 <link rel="icon" media="(prefers-color-scheme: dark)" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2319160f'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='20' text-anchor='middle' fill='%23ece6d8'%3EC%3C/text%3E%3C/svg%3E" />
@@ -91,6 +90,12 @@
 
 <a class="skip-link" href="#main" data-i18n="a11y.skip">Aller au contenu</a>
 
+<!-- ============ Announcement bar ============ -->
+<div class="ann-bar">
+  <p><span data-i18n="ann.text">Fabriqué à la demande · PLA végétal · Expédié sous 5–10 jours</span>
+  · <a href="engagement.html" data-i18n="ann.link">Notre mission →</a></p>
+</div>
+
 <header class="site-header">
   <div class="wrap site-header__bar">
     <a class="wordmark" href="index.html" translate="no">Cosy<span class="dot">·</span>Prints</a>
@@ -105,9 +110,9 @@
       <button class="ctrl ctrl--lang" data-lang-toggle type="button" aria-label="Switch to English" aria-pressed="false">
         <span class="lang-code">EN</span>
       </button>
-      <button class="ctrl ctrl--theme" id="themeToggle" type="button" aria-label="Changer de thème">
-        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
-        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+      <button class="ctrl ctrl--cart" data-cart-open type="button" aria-label="Ouvrir le panier" data-i18n-attr="aria-label:cart.open_aria">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <span class="cart-count" data-cart-count hidden>0</span>
       </button>
       <button class="menu-btn" id="menuBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="mobileNav" aria-label="Ouvrir le menu">
         <span class="menu-btn__box" aria-hidden="true"><span class="menu-btn__bar"></span><span class="menu-btn__bar"></span><span class="menu-btn__bar"></span></span>
@@ -128,6 +133,23 @@
     <p class="eyebrow eyebrow--accent" data-i18n="eng.eyebrow">Au-delà des objets</p>
     <h1 data-i18n="eng.h1">Notre engagement</h1>
     <p class="sub" data-i18n="eng.sub">On reverse une partie de chaque vente à deux causes qui comptent pour nous.</p>
+  </section>
+
+  <!-- ============ Impact counter (ink panel) ============ -->
+  <section class="mission" aria-labelledby="impact-title">
+    <div class="wrap reveal">
+      <p class="eyebrow" data-i18n="eng.imp_eyebrow">§ Impact total</p>
+      <div class="mission__headline">
+        <p class="mission__num"><span data-countup="40">40</span>&nbsp;%</p>
+        <h2 class="mission__title" id="impact-title" data-i18n="eng.imp_title">de chaque vente, reversés à nos deux causes.</h2>
+      </div>
+      <p class="mission__sub" data-i18n="eng.imp_split">20 % pour la recherche contre le cancer · 20 % pour retirer le plastique des océans.</p>
+      <div class="impact-stats">
+        <span data-i18n="eng.imp_since">Depuis l'ouverture :</span>
+        <span><span data-i18n="eng.imp_k1">Dons recherche</span> — <b>0 €</b></span>
+        <span><span data-i18n="eng.imp_k2">Plastique retiré</span> — <b>0 g</b></span>
+      </div>
+    </div>
   </section>
 
   <div class="wrap eng">
@@ -224,20 +246,8 @@
     document.querySelectorAll('.reveal').forEach(function (e) { io.observe(e); });
   })();
 
-  // Theme toggle + mobile menu.
+  // Mobile menu.
   (function () {
-    var btn = document.getElementById('themeToggle');
-    if (btn) {
-      var root = document.documentElement;
-      var label = function (t) { btn.setAttribute('aria-label', t === 'light' ? 'Activer le thème sombre' : 'Activer le thème clair'); };
-      label(root.getAttribute('data-theme'));
-      btn.addEventListener('click', function () {
-        var next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-        root.setAttribute('data-theme', next);
-        try { localStorage.setItem('theme', next); } catch (e) {}
-        label(next);
-      });
-    }
     var mb = document.getElementById('menuBtn'), nav = document.getElementById('mobileNav');
     if (mb && nav) {
       var setOpen = function (open) {
@@ -251,6 +261,10 @@
     }
   })();
 </script>
+
+<!-- Shared behaviour (cart drawer, count-up) — must load before the i18n layer
+     so the injected drawer markup is captured like static HTML. -->
+<script src="assets/site.js"></script>
 
 <!-- Bilingual layer (FR source in the HTML, EN from the dictionary) -->
 <script src="assets/i18n.en.js"></script>

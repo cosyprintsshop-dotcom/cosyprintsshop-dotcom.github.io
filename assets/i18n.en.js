@@ -11,22 +11,22 @@ window.CP_EN = {
   'a11y.skip': 'Skip to content',
 
   /* ---- Navigation ---- */
-  'nav.home': 'Home',
   'nav.catalogue': 'Catalogue',
   'nav.univers': 'Worlds',
   'nav.atelier': 'Workshop',
-  'nav.categories': 'Categories',
   'nav.contact': 'Contact',
   'nav.engagement': 'Our pledge',
-  'menu.shops': 'Our shops',
+
+  /* ---- Announcement bar ---- */
+  'ann.text': 'Made to order · Plant-based PLA · Ships in 5–10 days',
+  'ann.link': 'Our mission →',
 
   /* ---- Hero ---- */
   'hero.eyebrow': "Workshop · Saint-Martin-d'Uriage, near Grenoble",
-  'hero.title': 'Objects that warm <em>the home</em>.',
-  'hero.lede': 'Decor, kitchen, lighting and accessories — designed and 3D-printed in our workshop, in plant-based PLA. Printed to order, no stock.',
-  'hero.cta_vinted': 'Discover on Vinted',
-  'hero.cta_lbc': 'Discover on Leboncoin',
-  'hero.browse': 'View the catalogue',
+  'hero.title': 'Artisan objects, <em>printed just for you</em>.',
+  'hero.lede': "Handcrafted 3D-printed decor and useful objects from Saint-Martin-d'Uriage. Every piece is made to order.",
+  'hero.cta_primary': 'Browse the collection',
+  'hero.cta_mission': 'Our mission',
   'hero.plate_cap': 'The spec',
 
   /* ---- Hero metadata plate ---- */
@@ -40,7 +40,45 @@ window.CP_EN = {
   /* ---- Locality / trust strip ---- */
   'trust.handmade': "Handmade · <b>Saint-Martin-d'Uriage</b>",
   'trust.pla': '<b>PLA</b> · plant-based',
-  'trust.payment': 'Protected payment · <b>Vinted &amp; Leboncoin</b>',
+  'trust.madetoorder': 'Made <b>to order</b> · no stock',
+
+  /* ---- Mission banner (homepage ink panel) ---- */
+  'mission.eyebrow': '§ Our pledge',
+  'mission.title': 'Our pledge',
+  'mission.p1.title': 'Cancer research',
+  'mission.p1.body': "20% of every sale goes to cancer research funding, in memory of those we've lost.",
+  'mission.p2.title': 'Ocean plastic removal',
+  'mission.p2.body': '20% funds certified ocean plastic removal initiatives — because our material comes from the earth.',
+  'mission.cta': 'Learn more about our commitment',
+
+  /* ---- Collection preview (homepage) ---- */
+  'coll.eyebrow': '§ Collection',
+  'coll.title': 'Recent <em>pieces</em>.',
+  'coll.lead': 'Every object is printed to order in our workshop. The collection grows with every print.',
+  'coll.cta': 'Browse the full catalogue',
+  'coll.soon': 'Soon',
+  'coll.soon_note': 'In stock soon',
+  'coll.badge_pla': 'Plant-based PLA',
+  'coll.badge_batch': 'Limited batch',
+  'coll.p1.name': 'Ridged vase',
+  'coll.p1.desc': 'Homie Vibe world — ridged curves, any colour you like.',
+  'coll.p2.name': 'Aurore lamp',
+  'coll.p2.desc': 'Light &amp; Lamps world — a soft glow when evening comes.',
+  'coll.p3.name': 'Desk organiser',
+  'coll.p3.desc': 'Desk &amp; Storage world — a space that breathes.',
+
+  /* ---- Cart drawer ---- */
+  'cart.aria': 'Cart',
+  'cart.open_aria': 'Open cart',
+  'cart.close_aria': 'Close cart',
+  'cart.title': 'Your cart',
+  'cart.empty': 'Your cart is empty. Every piece is made just for you.',
+  'cart.impact_title': 'Your impact',
+  'cart.impact_hint': 'Start shopping to track your impact.',
+  'cart.impact_cancer': 'Supporting cancer research',
+  'cart.total': 'Total',
+  'cart.checkout': 'Check out on Vinted',
+  'cart.note': 'Protected payment via Vinted or Leboncoin.',
 
   /* ---- Worlds (catalogue families) ---- */
   'cat.eyebrow': '§ Our worlds',
@@ -67,16 +105,6 @@ window.CP_EN = {
   'atelier.title': "Printed near Grenoble, in Saint-Martin-d'Uriage.",
   'atelier.body1': 'Each piece is printed to order, layer after layer, in plant-based PLA. No stock, no waste — only the object you chose.',
   'atelier.body2': '3D printing is our method. But what matters is the object: useful, refined, made to last in your home.',
-
-  /* ---- Process ---- */
-  'process.eyebrow': '§ Ordering',
-  'process.title': 'Secure, from click to your door.',
-  'process.step1.title': 'You choose',
-  'process.step1.desc': 'Your favourite piece on our Vinted or Leboncoin shop.',
-  'process.step2.title': 'We print',
-  'process.step2.desc': 'To order, in our workshop, in plant-based PLA. Just for you.',
-  'process.step3.title': 'You receive',
-  'process.step3.desc': 'Payment 100% protected by the platform, delivered via Mondial Relay from €2.88.',
 
   /* ---- Newsletter ---- */
   'news.eyebrow': 'Stay in the loop',
@@ -122,6 +150,12 @@ window.CP_EN = {
   /* ---- Engagement / pledge page (engagement.html) ---- */
   'meta.title.engagement': 'Our pledge — CosyPrints',
   'meta.description.engagement': 'At CosyPrints, part of our profits supports the fight against cancer and the cleaning of plastic from the sea. A commitment close to our hearts.',
+  'eng.imp_eyebrow': '§ Total impact',
+  'eng.imp_title': 'of every sale, given to our two causes.',
+  'eng.imp_split': '20% to cancer research · 20% to removing plastic from the oceans.',
+  'eng.imp_since': 'Since we opened:',
+  'eng.imp_k1': 'Research donations',
+  'eng.imp_k2': 'Plastic removed',
   'eng.eyebrow': 'Beyond the objects',
   'eng.h1': 'Our pledge',
   'eng.sub': 'We give part of every sale to two causes that matter to us.',
