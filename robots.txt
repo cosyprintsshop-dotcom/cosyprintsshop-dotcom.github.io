@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://cosyprintsshop-dotcom.github.io/sitemap.xml
+Sitemap: https://cosyprints.com/sitemap.xml
