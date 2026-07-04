@@ -90,9 +90,9 @@ window.CP_EN = {
   'card.homie.desc': 'Vases, stands, decor pieces — minimalist objects that warm up the room.',
   'card.cable.title': 'Cable Management',
   'card.cable.desc': 'Clips, cable guides and holders: a tidy desk, no more tangles.',
-  'card.lampes.title': 'Light & Lamps',
+  'card.lampes.title': 'Light &amp; Lamps',
   'card.lampes.desc': 'Shades and lamps for a soft glow when evening comes.',
-  'card.bureau.title': 'Desk & Storage',
+  'card.bureau.title': 'Desk &amp; Storage',
   'card.bureau.desc': 'Clever organisers and stands for a space that breathes.',
   'card.gadgets.title': 'Useful Gadgets',
   'card.gadgets.desc': 'The small, clever everyday objects, printed to order.',
@@ -126,7 +126,7 @@ window.CP_EN = {
   'faq.q4': 'How do payment and delivery work?',
   'faq.a4': 'Everything goes through Vinted or Leboncoin: payment and delivery are protected by the platforms. Local pickup possible near Grenoble via Leboncoin.',
   'faq.q5': 'Why buy on Vinted or Leboncoin and not on the site?',
-  'faq.a5': 'CosyPrints is a showcase: we sell on Vinted & Leboncoin for secure payment and delivery, with no account to create.',
+  'faq.a5': 'CosyPrints is a showcase: we sell on Vinted &amp; Leboncoin for secure payment and delivery, with no account to create.',
 
   /* ---- Footer ---- */
   'footer.tagline': "Handmade 3D printing in Saint-Martin-d'Uriage, near Grenoble. A showcase site — all sales happen on Vinted &amp; Leboncoin.",
