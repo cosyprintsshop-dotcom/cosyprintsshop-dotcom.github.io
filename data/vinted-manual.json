@@ -1,0 +1,11 @@
+{
+  "_readme": [
+    "Hand-maintained source of truth for your PUBLIC Vinted listings — never modified by the scripts.",
+    "Vinted's terms prohibit scraping, so you copy your own listing info here (you wrote it, you own it).",
+    "Add one object per listing to `items`, then run: npm run sync:catalog",
+    "Minimal entry: { \"title_fr\": \"Vase spirale terracotta\", \"price\": \"24,90\", \"source_url\": \"https://www.vinted.fr/items/1234567890-vase\" }",
+    "Optional fields: title_en, desc_fr, desc_en, img, images[], category (homie-vibe | cable-management | lampes | bureau | gadgets), badge (eco-pla | limited | made-to-order | null), status (active | sold | soon), material, location, created_at (YYYY-MM-DD).",
+    "Omitted category/badge are inferred from keywords. See README.md § Catalogue."
+  ],
+  "items": []
+}

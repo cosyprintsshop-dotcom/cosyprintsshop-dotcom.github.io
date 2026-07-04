@@ -1,0 +1,8 @@
+{
+  "_readme": [
+    "Optional extra items that are not listed on any platform (e.g. made-to-order pieces).",
+    "Same fields as the other manual files; `source_url` may point anywhere you like (or be omitted).",
+    "Never modified by the scripts. Run npm run sync:catalog after editing."
+  ],
+  "items": []
+}

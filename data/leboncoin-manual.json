@@ -1,0 +1,11 @@
+{
+  "_readme": [
+    "Hand-maintained source of truth for your PUBLIC Leboncoin listings — never modified by the scripts.",
+    "Leboncoin forbids automated access (robots.txt + CGU), so you copy your own listing info here (you wrote it, you own it).",
+    "Add one object per listing to `items`, then run: npm run sync:catalog",
+    "Minimal entry: { \"title_fr\": \"Lampe alpine PLA\", \"price\": \"29\", \"source_url\": \"https://www.leboncoin.fr/ad/decoration/1234567890\" }",
+    "Optional fields: title_en, desc_fr, desc_en, img, images[], category (homie-vibe | cable-management | lampes | bureau | gadgets), badge (eco-pla | limited | made-to-order | null), status (active | sold | soon), material, location, created_at (YYYY-MM-DD).",
+    "Omitted category/badge are inferred from keywords. See README.md § Catalogue."
+  ],
+  "items": []
+}

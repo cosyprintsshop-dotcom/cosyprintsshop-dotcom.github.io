@@ -1,0 +1,15 @@
+{
+  "name": "cosyprints-site",
+  "private": true,
+  "type": "module",
+  "description": "cosyprints.com — static site + compliant catalogue sync (no scraping; manual source files, see README)",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "import:leboncoin": "node scripts/import-leboncoin.js",
+    "import:vinted": "node scripts/import-vinted.js",
+    "sync:catalog": "node scripts/import-leboncoin.js && node scripts/import-vinted.js && node scripts/sync-catalog.js",
+    "dev": "node scripts/dev-server.js"
+  }
+}

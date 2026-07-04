@@ -11,9 +11,8 @@
     try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {}
     var t = 'light';
     try {
-      var s = localStorage.getItem('theme');
-      if (s === 'light' || s === 'dark') { t = s; }
-      else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) { t = 'dark'; }
+      localStorage.removeItem('theme');
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) { t = 'dark'; }
     } catch (e) {}
     d.setAttribute('data-theme', t);
   })();
@@ -28,12 +27,12 @@
 <meta property="og:locale" content="fr_FR" />
 <meta property="og:title" content="Catalogue — CosyPrints" />
 <meta property="og:description" content="Déco, cuisine, luminaires et accessoires imprimés en 3D. Filtre par univers." />
-<meta property="og:url" content="https://cosyprintsshop-dotcom.github.io/boutique.html" />
+<meta property="og:url" content="https://cosyprints.com/boutique.html" />
 <meta name="twitter:card" content="summary" />
-<link rel="canonical" href="https://cosyprintsshop-dotcom.github.io/boutique.html" />
-<link rel="alternate" hreflang="fr" href="https://cosyprintsshop-dotcom.github.io/boutique.html" />
-<link rel="alternate" hreflang="en" href="https://cosyprintsshop-dotcom.github.io/boutique.html?lang=en" />
-<link rel="alternate" hreflang="x-default" href="https://cosyprintsshop-dotcom.github.io/boutique.html" />
+<link rel="canonical" href="https://cosyprints.com/boutique.html" />
+<link rel="alternate" hreflang="fr" href="https://cosyprints.com/boutique.html" />
+<link rel="alternate" hreflang="en" href="https://cosyprints.com/boutique.html?lang=en" />
+<link rel="alternate" hreflang="x-default" href="https://cosyprints.com/boutique.html" />
 
 <link rel="icon" media="(prefers-color-scheme: light)" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23f3efe6'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='20' text-anchor='middle' fill='%231c1a16'%3EC%3C/text%3E%3C/svg%3E" />
 <link rel="icon" media="(prefers-color-scheme: dark)" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2319160f'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='20' text-anchor='middle' fill='%23ece6d8'%3EC%3C/text%3E%3C/svg%3E" />
@@ -67,34 +66,14 @@
   .sort select { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase;
     color: var(--ink); background: transparent; border: 1px solid var(--line); border-radius: 0; padding: 8px 10px; }
 
-  /* Product grid — sharp image plates, text below, no floating cards */
-  .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
-    gap: clamp(24px, 3vw, 44px) clamp(20px, 2.4vw, 32px); padding-block: clamp(32px, 5vw, 60px); }
-  .pcard { display: flex; flex-direction: column; }
-  .pcard__media { position: relative; aspect-ratio: 4 / 5; background: var(--paper-2); border: var(--rule);
-    overflow: hidden; display: grid; place-items: center; }
-  .pcard__media img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
-  @media (hover: hover) { .pcard:hover .pcard__media img { transform: scale(1.04); } }
-  .pcard__ph { width: 38px; height: 38px; color: var(--ink-soft); opacity: .4; }
-  .pcard__tag { position: absolute; top: 12px; left: 12px; font-family: var(--mono); font-size: 0.64rem;
-    letter-spacing: 0.1em; text-transform: uppercase; color: var(--paper); background: var(--ink); padding: 5px 9px; }
-  .pcard__tag--soon { background: var(--accent); }
-  .pcard__row { display: flex; justify-content: space-between; gap: 14px; align-items: baseline; margin-top: 16px; }
-  .pcard__name { font-family: var(--display); font-weight: 400; font-size: 1.3rem; line-height: 1.1; letter-spacing: -0.01em; }
-  .pcard__price { font-family: var(--mono); font-size: 0.82rem; color: var(--ink-soft); white-space: nowrap; }
-  .pcard__desc { color: var(--ink-soft); font-size: 0.92rem; margin-top: 6px; }
-  .pcard__go { margin-top: 14px; font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; }
+  /* Product grid + cards + ghosts: shared styles live in assets/theme.css. */
 
-  /* Empty / ghost states */
+  /* Empty state */
   .notice { display: flex; flex-wrap: wrap; align-items: center; gap: 18px 28px; justify-content: space-between;
     border: 1px solid var(--ink); padding: clamp(22px, 3vw, 34px); margin-bottom: clamp(28px, 4vw, 48px); }
   .notice__txt { flex: 1 1 260px; }
   .notice__title { font-family: var(--display); font-weight: 400; font-size: clamp(1.3rem, 2.6vw, 1.8rem); }
   .notice__body { color: var(--ink-soft); margin-top: 8px; font-size: 0.95rem; max-width: 52ch; }
-  .pcard.ghost .pcard__media { background: var(--paper-2); }
-  .pcard.ghost { opacity: 0.55; }
-  .ghost-line { display: block; height: 12px; background: var(--paper-2); border: var(--rule); margin-top: 14px; }
-  .ghost-line--lg { width: 64%; } .ghost-line--sm { width: 38%; margin-top: 8px; }
 
   .noscript-note { border: 1px solid var(--ink); padding: 22px; margin-top: 24px; }
   .noscript-note strong { font-family: var(--display); font-weight: 400; font-size: 1.3rem; }
@@ -105,6 +84,12 @@
 <body>
 
 <a class="skip-link" href="#main" data-i18n="a11y.skip">Aller au contenu</a>
+
+<!-- ============ Announcement bar ============ -->
+<div class="ann-bar">
+  <p><span data-i18n="ann.text">Fabriqué à la demande · PLA végétal · Expédié sous 5–10 jours</span>
+  · <a href="engagement.html" data-i18n="ann.link">Notre mission →</a></p>
+</div>
 
 <header class="site-header">
   <div class="wrap site-header__bar">
@@ -120,9 +105,9 @@
       <button class="ctrl ctrl--lang" data-lang-toggle type="button" aria-label="Switch to English" aria-pressed="false">
         <span class="lang-code">EN</span>
       </button>
-      <button class="ctrl ctrl--theme" id="themeToggle" type="button" aria-label="Changer de thème">
-        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
-        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+      <button class="ctrl ctrl--cart" data-cart-open type="button" aria-label="Ouvrir le panier" data-i18n-attr="aria-label:cart.open_aria">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <span class="cart-count" data-cart-count hidden>0</span>
       </button>
       <button class="menu-btn" id="menuBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="mobileNav" aria-label="Ouvrir le menu">
         <span class="menu-btn__box" aria-hidden="true"><span class="menu-btn__bar"></span><span class="menu-btn__bar"></span><span class="menu-btn__bar"></span></span>
@@ -204,6 +189,9 @@
   </div>
 </footer>
 
+<!-- Catalogue data (window.CP_PRODUCTS) — generated by `npm run sync:catalog`, see README -->
+<script src="assets/products.js"></script>
+
 <script>
   // Current locale, kept in sync with the bilingual layer (assets/i18n.js).
   const L = () => (document.documentElement.getAttribute('lang') === 'en' ? 'en' : 'fr');
@@ -224,6 +212,7 @@
       allTitle: 'Toutes nos créations', cataloguer: 'Catalogue',
       unit: 'produit', units: 'produits',
       sold: 'Vendu', soon: 'Bientôt', see: 'Voir', soonSee: 'En stock bientôt',
+      addCart: 'Ajouter au panier',
       emptyTitle: 'Aucun produit en ligne pour le moment.',
       emptyBody: 'On imprime de nouvelles pièces — reviens très vite. En attendant, retrouve-nous sur Vinted.',
       seeVinted: 'Voir sur Vinted'
@@ -232,6 +221,7 @@
       allTitle: 'All our creations', cataloguer: 'Catalogue',
       unit: 'item', units: 'items',
       sold: 'Sold', soon: 'Soon', see: 'View', soonSee: 'In stock soon',
+      addCart: 'Add to cart',
       emptyTitle: 'No products online just yet.',
       emptyBody: "We're printing new pieces — check back very soon. In the meantime, find us on Vinted.",
       seeVinted: 'View on Vinted'
@@ -239,11 +229,32 @@
   };
   const t = (k) => (B[L()][k] != null ? B[L()][k] : B.fr[k]);
 
-  /* Add products here. Text fields can be bilingual { fr, en } or plain strings.
-     { name:{fr,en}, desc:{fr,en}, price, category, img, url, status:'sold'|'soon' } */
-  const PRODUCTS = [
-    // (empty for now)
-  ];
+  /* Catalogue data comes from assets/products.js (window.CP_PRODUCTS),
+     generated from the data/ source files by `npm run sync:catalog` — see
+     README. adapt() maps the generated shape ({ title_fr, title_en, desc_fr,
+     desc_en, source_url, badge:'eco-pla', … }) onto the shape this page
+     renders; legacy inline items ({ name:{fr,en}, desc, url, badge:{fr,en} })
+     pass through untouched, so hand-written entries keep working. */
+  const BADGE_LABELS = {
+    'eco-pla':       { fr: 'PLA végétal',   en: 'Eco PLA' },
+    'limited':       { fr: 'Série limitée', en: 'Limited batch' },
+    'made-to-order': { fr: 'Sur commande',  en: 'Made to order' }
+  };
+  function adapt(p) {
+    if (p.name != null) return p; // legacy inline shape
+    return {
+      id: p.id,
+      name: { fr: p.title_fr || p.title || '', en: p.title_en || '' },
+      desc: { fr: p.desc_fr || p.desc || '', en: p.desc_en || '' },
+      price: p.price,
+      category: p.category,
+      img: p.img || (p.images && p.images[0]) || '',
+      url: p.source_url || p.url || '',
+      status: p.status,
+      badge: (p.badge && BADGE_LABELS[p.badge]) || p.badge
+    };
+  }
+  const PRODUCTS = (window.CP_PRODUCTS || []).map(adapt);
   const loc = (v) => (v && typeof v === 'object') ? (v[L()] || v.fr || '') : (v == null ? '' : v);
 
   const grid = document.getElementById('grid');
@@ -261,26 +272,30 @@
   function productCard(p) {
     const name = loc(p.name), desc = loc(p.desc);
     const media = p.img
-      ? `<img src="${esc(p.img)}" alt="${esc(name)}" loading="lazy">`
+      ? `<img src="${esc(p.img)}" alt="${esc(name)}" loading="lazy" width="600" height="750">`
       : phSvg;
     let tag = '';
     if (p.status === 'sold') tag = `<span class="pcard__tag">${esc(t('sold'))}</span>`;
     else if (p.status === 'soon') tag = `<span class="pcard__tag pcard__tag--soon">${esc(t('soon'))}</span>`;
+    const badge = p.badge ? `<span class="pcard__badge">${esc(loc(p.badge))}</span>` : '';
     const buyable = p.url && p.status !== 'soon';
+    const canAdd = p.status !== 'sold' && p.status !== 'soon';
     const go = buyable
-      ? `<a class="pcard__go tlink" href="${esc(p.url)}" target="_blank" rel="noopener">${esc(t('see'))} <span class="arr">↗</span></a>`
+      ? `<a class="pcard__go tlink" href="${esc(p.url)}" target="_blank" rel="noopener noreferrer">${esc(t('see'))} <span class="arr">↗</span></a>`
       : (p.status === 'soon' ? `<span class="pcard__go" style="color:var(--accent)">${esc(t('soonSee'))}</span>` : '');
-    const Tag = buyable ? 'a' : 'div';
-    const open = buyable ? `<a class="pcard__media" href="${esc(p.url)}" target="_blank" rel="noopener">` : `<div class="pcard__media">`;
+    const add = canAdd
+      ? `<button class="pcard__add" type="button" data-add="${PRODUCTS.indexOf(p)}">${esc(t('addCart'))}</button>`
+      : '';
+    const open = buyable ? `<a class="pcard__media" href="${esc(p.url)}" target="_blank" rel="noopener noreferrer">` : `<div class="pcard__media">`;
     const close = buyable ? `</a>` : `</div>`;
     return `<article class="pcard">
-      ${open}${media}${tag}${close}
+      ${open}${media}${tag}${badge}${close}
       <div class="pcard__row">
         <h3 class="pcard__name">${esc(name)}</h3>
         ${p.price != null ? `<span class="pcard__price">${fmtPrice(p.price)}</span>` : ''}
       </div>
       ${desc ? `<p class="pcard__desc">${esc(desc)}</p>` : ''}
-      ${go}
+      ${(add || go) ? `<div class="pcard__actions">${add}${go}</div>` : ''}
     </article>`;
   }
 
@@ -348,22 +363,19 @@
   window.addEventListener('popstate', () => { active = currentCat(); render(); });
   if (sortEl) sortEl.addEventListener('change', render);
 
+  // "Add to cart" — hands the item to the shared drawer (assets/site.js).
+  grid.addEventListener('click', e => {
+    const b = e.target.closest('[data-add]');
+    if (!b || !window.CosyCart) return;
+    const p = PRODUCTS[+b.dataset.add];
+    if (!p) return;
+    CosyCart.add({ id: 'p' + b.dataset.add, name: loc(p.name), price: p.price != null ? p.price : 0, url: p.url || '' });
+  });
+
   render();
 
-  // ---- Theme toggle (instant) + mobile menu ----
+  // ---- Mobile menu ----
   (function () {
-    var btn = document.getElementById('themeToggle');
-    if (btn) {
-      var root = document.documentElement;
-      var label = function (t) { btn.setAttribute('aria-label', t === 'light' ? 'Activer le thème sombre' : 'Activer le thème clair'); };
-      label(root.getAttribute('data-theme'));
-      btn.addEventListener('click', function () {
-        var next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-        root.setAttribute('data-theme', next);
-        try { localStorage.setItem('theme', next); } catch (e) {}
-        label(next);
-      });
-    }
     var mb = document.getElementById('menuBtn'), nav = document.getElementById('mobileNav');
     if (mb && nav) {
       var setOpen = function (open) {
@@ -377,6 +389,10 @@
     }
   })();
 </script>
+
+<!-- Shared behaviour (cart drawer, count-up) — must load before the i18n layer
+     so the injected drawer markup is captured like static HTML. -->
+<script src="assets/site.js"></script>
 
 <!-- Bilingual layer (FR source in the HTML, EN from the dictionary) -->
 <script src="assets/i18n.en.js"></script>
