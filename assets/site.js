@@ -43,7 +43,7 @@
   };
   var fmtPrice = function (n) {
     return n.toLocaleString(L() === 'en' ? 'en-IE' : 'fr-FR',
-      { style: 'currency', currency: 'EUR', minimumFractionDigits: 0, maximumFractionDigits: 2 });
+      { style: 'currency', currency: 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2 });
   };
 
   /* Icons: Lucide paths (ISC) inlined — no runtime, no CDN. */
@@ -103,8 +103,6 @@
 
     document.querySelectorAll('[data-cart-count]').forEach(function (el) {
       el.textContent = n;
-      el.hidden = n === 0;
-      el.setAttribute('aria-hidden', 'true');
     });
 
     q('[data-cart-drawer-count]').textContent = n === 0 ? '' : n + ' ' + (n > 1 ? s('many') : s('one'));

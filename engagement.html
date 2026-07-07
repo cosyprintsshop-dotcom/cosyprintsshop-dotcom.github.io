@@ -6,27 +6,19 @@
 
 <script>
   (function () {
-    var d = document.documentElement;
-    d.classList.remove('no-js');
+    document.documentElement.classList.remove('no-js');
     try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {}
-    var t = 'light';
-    try {
-      localStorage.removeItem('theme');
-      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) { t = 'dark'; }
-    } catch (e) {}
-    d.setAttribute('data-theme', t);
   })();
 </script>
 
 <title data-i18n="meta.title.engagement">Notre engagement — CosyPrints</title>
-<meta name="description" data-i18n-attr="content:meta.description.engagement" content="Chez CosyPrints, une partie de nos bénéfices soutient la lutte contre le cancer et le nettoyage du plastique en mer. Un engagement qui nous tient à cœur." />
-<meta name="theme-color" content="#f3efe6" media="(prefers-color-scheme: light)" />
-<meta name="theme-color" content="#19160f" media="(prefers-color-scheme: dark)" />
+<meta name="description" data-i18n-attr="content:meta.description.engagement" content="Chez CosyPrints, 40 % de chaque vente soutient la lutte contre le cancer et le nettoyage du plastique en mer. Un engagement qui nous tient à cœur." />
+<meta name="theme-color" content="#faf9f6" />
 
 <meta property="og:type" content="website" />
 <meta property="og:locale" content="fr_FR" />
 <meta property="og:title" content="Notre engagement — CosyPrints" />
-<meta property="og:description" content="Une partie de chaque vente soutient la lutte contre le cancer et le nettoyage des océans." />
+<meta property="og:description" content="40 % de chaque vente soutient la lutte contre le cancer et le nettoyage des océans." />
 <meta property="og:url" content="https://cosyprints.com/engagement.html" />
 <meta name="twitter:card" content="summary" />
 <link rel="canonical" href="https://cosyprints.com/engagement.html" />
@@ -34,95 +26,50 @@
 <link rel="alternate" hreflang="en" href="https://cosyprints.com/engagement.html?lang=en" />
 <link rel="alternate" hreflang="x-default" href="https://cosyprints.com/engagement.html" />
 
-<link rel="icon" media="(prefers-color-scheme: light)" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23f3efe6'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='20' text-anchor='middle' fill='%231c1a16'%3EC%3C/text%3E%3C/svg%3E" />
-<link rel="icon" media="(prefers-color-scheme: dark)" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2319160f'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='20' text-anchor='middle' fill='%23ece6d8'%3EC%3C/text%3E%3C/svg%3E" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23faf9f6'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-style='italic' font-size='20' text-anchor='middle' fill='%232d312a'%3EC%3C/text%3E%3C/svg%3E" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..600;1,400..600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
 
 <link rel="stylesheet" href="assets/theme.css" />
-
-<style>
-  /* ===== Engagement-specific composition ===== */
-  .eng-hero { padding-block: clamp(40px, 7vw, 84px) clamp(28px, 4vw, 48px); }
-  .eng-hero h1 { font-family: var(--display); font-weight: 400; font-size: clamp(2.6rem, 7vw, 5rem);
-    line-height: 1.0; letter-spacing: -0.02em; margin-top: 16px; }
-  .eng-hero .sub { color: var(--ink-soft); margin-top: 18px; max-width: 50ch; font-size: 1.08rem; }
-
-  .eng { max-width: 820px; }
-  .eng-block { padding-block: clamp(40px, 6vw, 72px); border-top: var(--rule); }
-  .eng-tribute { text-align: center; max-width: 60ch; margin-inline: auto; }
-  .eng-tribute .eyebrow { display: inline-block; margin-bottom: 22px; }
-  .eng-tribute h2 { font-family: var(--display); font-weight: 400; font-size: clamp(1.7rem, 4.4vw, 2.7rem);
-    line-height: 1.12; letter-spacing: -0.015em; font-style: italic; }
-  .eng-tribute p { color: var(--ink-soft); margin-top: 20px; font-size: 1.08rem; }
-
-  .eng-title { font-family: var(--display); font-weight: 400; font-size: clamp(1.7rem, 4vw, 2.6rem); letter-spacing: -0.015em; }
-  .eng-causes { display: grid; grid-template-columns: 1fr; gap: 0; margin-top: clamp(24px, 3vw, 40px); }
-  @media (min-width: 720px) { .eng-causes { grid-template-columns: 1fr 1fr; gap: 0; } }
-  .eng-cause { padding: clamp(22px, 3vw, 32px) 0; border-top: var(--rule); }
-  @media (min-width: 720px) { .eng-cause:nth-child(2) { border-left: var(--rule); padding-left: 36px; } .eng-cause:nth-child(1) { padding-right: 36px; } }
-  .eng-cause .num { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; color: var(--accent); }
-  .eng-cause h3 { font-family: var(--display); font-weight: 400; font-size: 1.5rem; margin-block: 10px 8px; }
-  .eng-cause p { color: var(--ink-soft); font-size: 0.96rem; }
-  .eng-cause a { margin-top: 14px; display: inline-flex; }
-
-  .eng-support { text-align: center; }
-  .eng-support h2 { font-family: var(--display); font-weight: 400; font-size: clamp(1.6rem, 3.6vw, 2.3rem); }
-  .eng-support > p { color: var(--ink-soft); margin-top: 12px; max-width: 50ch; margin-inline: auto; }
-  .eng-contact { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; align-items: center; margin-top: 26px; }
-  .eng-phone { display: inline-flex; align-items: center; gap: 10px; border: 1px solid var(--ink); padding: 15px 22px;
-    font-family: var(--mono); font-size: 0.92rem; color: var(--ink); transition: background .25s ease, color .25s ease; }
-  .eng-phone:hover { background: var(--ink); color: var(--paper); }
-  .eng-phone svg { width: 17px; height: 17px; }
-  .eng-note { margin-top: 16px; font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); }
-
-  .eng-soon { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; justify-content: space-between; }
-  .eng-soon .txt { color: var(--ink-soft); font-size: 0.98rem; flex: 1 1 260px; }
-  .eng-soon .txt b { color: var(--ink); font-weight: 500; }
-  .eng-pill-soon { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--paper); background: var(--accent); padding: 7px 13px; white-space: nowrap; }
-</style>
 </head>
 
 <body>
 
 <a class="skip-link" href="#main" data-i18n="a11y.skip">Aller au contenu</a>
 
-<!-- ============ Announcement bar ============ -->
-<div class="ann-bar">
-  <p><span data-i18n="ann.text">Fabriqué à la demande · PLA végétal · Expédié sous 5–10 jours</span>
-  · <a href="engagement.html" data-i18n="ann.link">Notre mission →</a></p>
-</div>
-
+<!-- ============ Header ============ -->
 <header class="site-header">
-  <div class="wrap site-header__bar">
-    <a class="wordmark" href="index.html" translate="no">Cosy<span class="dot">·</span>Prints</a>
-    <nav class="nav" aria-label="Navigation principale">
-      <a href="boutique.html" data-i18n="nav.catalogue">Catalogue</a>
-      <a href="index.html#univers" data-i18n="nav.univers">Univers</a>
-      <a href="index.html#atelier" data-i18n="nav.atelier">Atelier</a>
-      <a href="engagement.html" aria-current="page" data-i18n="nav.engagement">Notre engagement</a>
-      <a href="index.html#contact" data-i18n="nav.contact">Contact</a>
-    </nav>
+  <nav class="wrap site-header__bar" aria-label="Navigation principale">
+    <div class="site-header__lead">
+      <a class="wordmark" href="index.html" translate="no">CosyPrints</a>
+      <div class="nav">
+        <a href="boutique.html" data-i18n="nav.catalogue">Boutique</a>
+        <a href="index.html#categories" data-i18n="nav.categories">Catégories</a>
+        <a href="index.html#demarche" data-i18n="nav.demarche">Notre démarche</a>
+        <a href="engagement.html" aria-current="page" data-i18n="nav.engagement">Notre engagement</a>
+      </div>
+    </div>
     <div class="header-controls">
-      <button class="ctrl ctrl--lang" data-lang-toggle type="button" aria-label="Switch to English" aria-pressed="false">
+      <a class="ctrl--contact" href="index.html#contact" data-i18n="nav.contact">Contact</a>
+      <button class="ctrl--lang" data-lang-toggle type="button" aria-label="Switch to English" aria-pressed="false">
         <span class="lang-code">EN</span>
       </button>
-      <button class="ctrl ctrl--cart" data-cart-open type="button" aria-label="Ouvrir le panier" data-i18n-attr="aria-label:cart.open_aria">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-        <span class="cart-count" data-cart-count hidden>0</span>
+      <button class="pill ctrl--cart" data-cart-open type="button" aria-label="Ouvrir le panier" data-i18n-attr="aria-label:cart.open_aria">
+        <span class="dot" aria-hidden="true"></span>
+        <span data-i18n="cart.label">Panier</span>
+        <span aria-hidden="true">(<span class="cart-count" data-cart-count>0</span>)</span>
       </button>
       <button class="menu-btn" id="menuBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="mobileNav" aria-label="Ouvrir le menu">
         <span class="menu-btn__box" aria-hidden="true"><span class="menu-btn__bar"></span><span class="menu-btn__bar"></span><span class="menu-btn__bar"></span></span>
       </button>
     </div>
-  </div>
+  </nav>
   <nav class="mobile-nav" id="mobileNav" aria-label="Menu">
-    <a href="boutique.html"><span data-i18n="nav.catalogue">Catalogue</span><span class="idx">01</span></a>
-    <a href="index.html#univers"><span data-i18n="nav.univers">Univers</span><span class="idx">02</span></a>
-    <a href="index.html#atelier"><span data-i18n="nav.atelier">Atelier</span><span class="idx">03</span></a>
+    <a href="boutique.html"><span data-i18n="nav.catalogue">Boutique</span><span class="idx">01</span></a>
+    <a href="index.html#categories"><span data-i18n="nav.categories">Catégories</span><span class="idx">02</span></a>
+    <a href="index.html#demarche"><span data-i18n="nav.demarche">Notre démarche</span><span class="idx">03</span></a>
     <a href="engagement.html"><span data-i18n="nav.engagement">Notre engagement</span><span class="idx">04</span></a>
     <a href="index.html#contact"><span data-i18n="nav.contact">Contact</span><span class="idx">05</span></a>
   </nav>
@@ -130,54 +77,46 @@
 
 <main id="main">
   <section class="eng-hero wrap">
-    <p class="eyebrow eyebrow--accent" data-i18n="eng.eyebrow">Au-delà des objets</p>
+    <p class="eyebrow" data-i18n="eng.eyebrow">Au-delà des objets</p>
     <h1 data-i18n="eng.h1">Notre engagement</h1>
-    <p class="sub" data-i18n="eng.sub">On reverse une partie de chaque vente à deux causes qui comptent pour nous.</p>
+    <p class="sub" data-i18n="eng.sub">Nous reversons une partie de chaque vente à deux causes qui comptent pour nous.</p>
   </section>
 
-  <!-- ============ Impact counter (ink panel) ============ -->
-  <section class="mission" aria-labelledby="impact-title">
+  <!-- ============ Impact ============ -->
+  <section class="section section--band" aria-labelledby="impact-title">
     <div class="wrap reveal">
-      <p class="eyebrow" data-i18n="eng.imp_eyebrow">§ Impact total</p>
-      <div class="mission__headline">
-        <p class="mission__num"><span data-countup="40">40</span>&nbsp;%</p>
-        <h2 class="mission__title" id="impact-title" data-i18n="eng.imp_title">de chaque vente, reversés à nos deux causes.</h2>
+      <p class="eyebrow" data-i18n="eng.imp_eyebrow">Impact total</p>
+      <div class="mission-head" style="margin-top:20px;">
+        <p class="mission-figure"><span data-countup="40">40</span>&nbsp;%</p>
+        <h2 id="impact-title" style="margin-top:18px;" data-i18n="eng.imp_title">de chaque vente, <em>reversés</em> à nos deux causes.</h2>
       </div>
-      <p class="mission__sub" data-i18n="eng.imp_split">20 % pour la recherche contre le cancer · 20 % pour retirer le plastique des océans.</p>
-      <div class="impact-stats">
+      <div class="mission-grid">
+        <div class="value">
+          <h3 data-i18n="eng.cause1_title">01. Lutte contre le cancer</h3>
+          <p data-i18n="eng.cause1_body">Recherche et soutien aux malades et à leurs proches.</p>
+          <p style="margin-top:14px;"><a class="ulink" href="https://www.ligue-cancer.net" target="_blank" rel="noopener">La Ligue contre le cancer ↗</a></p>
+        </div>
+        <div class="value">
+          <h3 data-i18n="eng.cause2_title">02. Nettoyage des océans</h3>
+          <p data-i18n="eng.cause2_body">Dépollution du plastique en mer.</p>
+          <p style="margin-top:14px;"><a class="ulink" href="https://www.theseacleaners.org" target="_blank" rel="noopener">The SeaCleaners ↗</a></p>
+        </div>
+      </div>
+      <div class="mission-stats">
         <span data-i18n="eng.imp_since">Depuis l'ouverture :</span>
-        <span><span data-i18n="eng.imp_k1">Dons recherche</span> — <b>0 €</b></span>
-        <span><span data-i18n="eng.imp_k2">Plastique retiré</span> — <b>0 g</b></span>
+        <span><span data-i18n="eng.imp_k1">Dons recherche</span> — <b>0&nbsp;€</b></span>
+        <span><span data-i18n="eng.imp_k2">Plastique retiré</span> — <b>0&nbsp;g</b></span>
       </div>
     </div>
   </section>
 
-  <div class="wrap eng">
+  <div class="wrap" style="max-width:880px;">
 
     <!-- Hommage (sober, universal) -->
     <section class="eng-block eng-tribute reveal">
-      <p class="eyebrow eyebrow--accent" data-i18n="eng.memory">En mémoire</p>
+      <p class="eyebrow" data-i18n="eng.memory">En mémoire</p>
       <h2 data-i18n="eng.tribute_title">Le cancer a touché nos proches.</h2>
-      <p data-i18n="eng.tribute_body">On a perdu des gens qu'on aime. S'engager contre cette maladie, c'est aussi notre façon de leur rendre hommage.</p>
-    </section>
-
-    <!-- Where the money goes -->
-    <section class="eng-block reveal">
-      <h2 class="eng-title" data-i18n="eng.where_title">Où va l'argent.</h2>
-      <div class="eng-causes">
-        <article class="eng-cause">
-          <p class="num">01</p>
-          <h3 data-i18n="eng.cause1_title">Lutte contre le cancer</h3>
-          <p data-i18n="eng.cause1_body">Recherche et soutien aux malades et à leurs proches.</p>
-          <a class="tlink" href="https://www.ligue-cancer.net" target="_blank" rel="noopener">La Ligue contre le cancer <span class="arr">↗</span></a>
-        </article>
-        <article class="eng-cause">
-          <p class="num">02</p>
-          <h3 data-i18n="eng.cause2_title">Nettoyage des océans</h3>
-          <p data-i18n="eng.cause2_body">Dépollution du plastique en mer.</p>
-          <a class="tlink" href="https://www.theseacleaners.org" target="_blank" rel="noopener">The SeaCleaners <span class="arr">↗</span></a>
-        </article>
-      </div>
+      <p data-i18n="eng.tribute_body">Nous avons perdu des gens que nous aimons. Nous engager contre cette maladie, c'est aussi notre façon de leur rendre hommage.</p>
     </section>
 
     <!-- Help -->
@@ -189,7 +128,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
           06 71 19 41 52
         </a>
-        <a class="btn" href="mailto:cosyprints.shop@gmail.com" data-i18n="eng.by_email">Par e-mail</a>
+        <a class="btn btn--sage" href="mailto:cosyprints.shop@gmail.com" data-i18n="eng.by_email">Par e-mail</a>
       </div>
       <p class="eng-note" data-i18n="eng.note">Un SMS suffit.</p>
     </section>
@@ -205,33 +144,52 @@
   </div>
 </main>
 
+<!-- ============ Footer ============ -->
 <footer class="site-footer" id="contact">
   <div class="wrap">
     <div class="footer-grid">
       <div class="footer-brand">
-        <a class="wordmark" href="index.html" translate="no">Cosy<span class="dot">·</span>Prints</a>
-        <p data-i18n="footer.tagline">Impression 3D faite main à Saint-Martin-d'Uriage, près de Grenoble. Site vitrine — toutes les ventes se font sur Vinted &amp; Leboncoin.</p>
-      </div>
-      <div>
-        <h4 data-i18n="footer.explore">Explorer</h4>
-        <div class="footer-list">
-          <a href="boutique.html" data-i18n="nav.catalogue">Catalogue</a>
-          <a href="index.html#univers" data-i18n="nav.univers">Univers</a>
-          <a href="engagement.html" data-i18n="nav.engagement">Notre engagement</a>
+        <h3 translate="no">CosyPrints</h3>
+        <p data-i18n="footer.tagline">Une nouvelle vision de l'objet quotidien. Imaginé et fabriqué avec soin près de Grenoble — toutes les ventes se font sur Vinted &amp; Leboncoin.</p>
+        <div class="footer-social">
+          <a href="https://www.vinted.fr/member/60879390-cosyprints" target="_blank" rel="noopener">Vinted</a>
+          <a href="https://www.leboncoin.fr/profil/0408d333-46e3-4487-b2f3-4743fd34c872" target="_blank" rel="noopener">Leboncoin</a>
         </div>
       </div>
-      <div>
-        <h4 data-i18n="footer.contact">Contact</h4>
-        <div class="footer-list">
-          <a href="mailto:cosyprints.shop@gmail.com">cosyprints.shop@gmail.com</a>
-          <a href="https://www.vinted.fr/member/60879390-cosyprints" target="_blank" rel="noopener">Vinted ↗</a>
-          <a href="https://www.leboncoin.fr/profil/0408d333-46e3-4487-b2f3-4743fd34c872" target="_blank" rel="noopener">Leboncoin ↗</a>
+      <div class="footer-cols">
+        <div>
+          <h4 data-i18n="footer.shop">Boutique</h4>
+          <ul>
+            <li><a href="boutique.html" data-i18n="footer.all">Tout voir</a></li>
+            <li><a href="boutique.html?cat=homie-vibe" data-i18n="card.homie.title">Homie Vibe</a></li>
+            <li><a href="boutique.html?cat=lampes" data-i18n="card.lampes.title">Lumière &amp; Lampes</a></li>
+            <li><a href="boutique.html?cat=bureau" data-i18n="card.bureau.title">Bureau &amp; Rangement</a></li>
+            <li><a href="boutique.html?cat=gadgets" data-i18n="card.gadgets.title">Gadgets Utiles</a></li>
+          </ul>
         </div>
+        <div>
+          <h4 data-i18n="footer.help">Aide</h4>
+          <ul>
+            <li><a href="index.html#faq-title" data-i18n="footer.faq">FAQ</a></li>
+            <li><a href="engagement.html" data-i18n="nav.engagement">Notre engagement</a></li>
+            <li><a href="mailto:cosyprints.shop@gmail.com" data-i18n="nav.contact">Contact</a></li>
+            <li><a href="https://www.vinted.fr/member/60879390-cosyprints" target="_blank" rel="noopener" data-i18n="footer.delivery">Livraison via Vinted</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-news">
+        <h4 data-i18n="news.title">Newsletter</h4>
+        <p data-i18n="news.body">Inscrivez-vous pour suivre nos nouvelles collections et les coulisses de l'atelier.</p>
+        <form class="news-form" id="newsForm" novalidate>
+          <input type="email" id="newsEmail" name="email" required autocomplete="email" placeholder="votre@email.com" data-i18n-attr="placeholder:news.placeholder" aria-label="E-mail" />
+          <button type="submit" data-i18n="news.cta">S'inscrire</button>
+        </form>
+        <p class="news-note" id="newsNote" data-i18n="news.note">Pas de spam. Désinscription en un clic.</p>
       </div>
     </div>
     <div class="footer-bottom">
-      <span data-i18n="footer.copyright">© 2026 CosyPrints — Saint-Martin-d'Uriage, France</span>
-      <span data-i18n="footer.madein">Imprimé à la demande · PLA végétal</span>
+      <p data-i18n="footer.copyright">© 2026 CosyPrints. Tous droits réservés.</p>
+      <p data-i18n="footer.madein">Fabriqué avec soin près de Grenoble.</p>
     </div>
   </div>
 </footer>
@@ -259,6 +217,23 @@
       nav.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { setOpen(false); }); });
       document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setOpen(false); });
     }
+  })();
+
+  // Newsletter (footer).
+  (function () {
+    var form = document.getElementById('newsForm');
+    var note = document.getElementById('newsNote');
+    if (!form) return;
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var email = document.getElementById('newsEmail').value.trim();
+      if (!email || email.indexOf('@') === -1) { document.getElementById('newsEmail').focus(); return; }
+      var en = document.documentElement.getAttribute('lang') === 'en';
+      var subject = encodeURIComponent(en ? 'Newsletter sign-up' : 'Inscription newsletter');
+      var body = encodeURIComponent((en ? 'Please add me to the list: ' : 'Ajoutez-moi à la liste : ') + email);
+      window.location.href = 'mailto:cosyprints.shop@gmail.com?subject=' + subject + '&body=' + body;
+      if (note) note.textContent = en ? 'Opening your email app…' : 'Ouverture de ta messagerie…';
+    });
   })();
 </script>
 

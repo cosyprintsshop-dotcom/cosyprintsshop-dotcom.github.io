@@ -6,27 +6,19 @@
 
 <script>
   (function () {
-    var d = document.documentElement;
-    d.classList.remove('no-js');
+    document.documentElement.classList.remove('no-js');
     try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {}
-    var t = 'light';
-    try {
-      localStorage.removeItem('theme');
-      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) { t = 'dark'; }
-    } catch (e) {}
-    d.setAttribute('data-theme', t);
   })();
 </script>
 
-<title>Catalogue — CosyPrints</title>
-<meta name="description" data-i18n-attr="content:meta.description.boutique" content="Le catalogue CosyPrints : déco, cuisine, luminaires et accessoires imprimés en 3D à Saint-Martin-d'Uriage. Filtre par univers." />
-<meta name="theme-color" content="#f3efe6" media="(prefers-color-scheme: light)" />
-<meta name="theme-color" content="#19160f" media="(prefers-color-scheme: dark)" />
+<title>Boutique — CosyPrints</title>
+<meta name="description" data-i18n-attr="content:meta.description.boutique" content="La boutique CosyPrints : déco, luminaires, rangement et accessoires imprimés en 3D à Saint-Martin-d'Uriage. Filtre par collection." />
+<meta name="theme-color" content="#faf9f6" />
 
 <meta property="og:type" content="website" />
 <meta property="og:locale" content="fr_FR" />
-<meta property="og:title" content="Catalogue — CosyPrints" />
-<meta property="og:description" content="Déco, cuisine, luminaires et accessoires imprimés en 3D. Filtre par univers." />
+<meta property="og:title" content="Boutique — CosyPrints" />
+<meta property="og:description" content="Déco, luminaires, rangement et accessoires imprimés en 3D. Filtre par collection." />
 <meta property="og:url" content="https://cosyprints.com/boutique.html" />
 <meta name="twitter:card" content="summary" />
 <link rel="canonical" href="https://cosyprints.com/boutique.html" />
@@ -34,90 +26,50 @@
 <link rel="alternate" hreflang="en" href="https://cosyprints.com/boutique.html?lang=en" />
 <link rel="alternate" hreflang="x-default" href="https://cosyprints.com/boutique.html" />
 
-<link rel="icon" media="(prefers-color-scheme: light)" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23f3efe6'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='20' text-anchor='middle' fill='%231c1a16'%3EC%3C/text%3E%3C/svg%3E" />
-<link rel="icon" media="(prefers-color-scheme: dark)" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2319160f'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='20' text-anchor='middle' fill='%23ece6d8'%3EC%3C/text%3E%3C/svg%3E" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23faf9f6'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-style='italic' font-size='20' text-anchor='middle' fill='%232d312a'%3EC%3C/text%3E%3C/svg%3E" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..600;1,400..600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
 
 <link rel="stylesheet" href="assets/theme.css" />
-
-<style>
-  /* ===== Catalogue-specific composition ===== */
-  .cat-hero { padding-block: clamp(40px, 7vw, 84px) clamp(28px, 4vw, 44px); }
-  .cat-hero h1 { font-family: var(--display); font-weight: 400; font-size: clamp(2.4rem, 6.5vw, 4.6rem);
-    line-height: 1.0; letter-spacing: -0.02em; margin-top: 16px; }
-  .cat-hero .cat-sub { color: var(--ink-soft); margin-top: 18px; max-width: 52ch; }
-
-  /* Filter + sort bar */
-  .catalogue-bar { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between;
-    padding-block: 18px; border-top: var(--rule); border-bottom: var(--rule); }
-  .filters { display: flex; flex-wrap: wrap; gap: 8px; }
-  .chip { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase;
-    color: var(--ink-soft); padding: 9px 14px; border: 1px solid var(--line); border-radius: 0;
-    transition: color .2s ease, border-color .2s ease, background .2s ease; }
-  .chip:hover { color: var(--ink); border-color: var(--line-2); }
-  .chip.is-active { color: var(--paper); background: var(--ink); border-color: var(--ink); }
-  .cat-meta { display: flex; align-items: center; gap: 18px; }
-  .count { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); white-space: nowrap; }
-  .sort { display: inline-flex; align-items: center; gap: 9px; font-family: var(--mono); font-size: 0.72rem;
-    letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
-  .sort select { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase;
-    color: var(--ink); background: transparent; border: 1px solid var(--line); border-radius: 0; padding: 8px 10px; }
-
-  /* Product grid + cards + ghosts: shared styles live in assets/theme.css. */
-
-  /* Empty state */
-  .notice { display: flex; flex-wrap: wrap; align-items: center; gap: 18px 28px; justify-content: space-between;
-    border: 1px solid var(--ink); padding: clamp(22px, 3vw, 34px); margin-bottom: clamp(28px, 4vw, 48px); }
-  .notice__txt { flex: 1 1 260px; }
-  .notice__title { font-family: var(--display); font-weight: 400; font-size: clamp(1.3rem, 2.6vw, 1.8rem); }
-  .notice__body { color: var(--ink-soft); margin-top: 8px; font-size: 0.95rem; max-width: 52ch; }
-
-  .noscript-note { border: 1px solid var(--ink); padding: 22px; margin-top: 24px; }
-  .noscript-note strong { font-family: var(--display); font-weight: 400; font-size: 1.3rem; }
-  .noscript-note p { color: var(--ink-soft); margin: 8px 0 16px; }
-</style>
 </head>
 
 <body>
 
 <a class="skip-link" href="#main" data-i18n="a11y.skip">Aller au contenu</a>
 
-<!-- ============ Announcement bar ============ -->
-<div class="ann-bar">
-  <p><span data-i18n="ann.text">Fabriqué à la demande · PLA végétal · Expédié sous 5–10 jours</span>
-  · <a href="engagement.html" data-i18n="ann.link">Notre mission →</a></p>
-</div>
-
+<!-- ============ Header ============ -->
 <header class="site-header">
-  <div class="wrap site-header__bar">
-    <a class="wordmark" href="index.html" translate="no">Cosy<span class="dot">·</span>Prints</a>
-    <nav class="nav" aria-label="Navigation principale">
-      <a href="boutique.html" aria-current="page" data-i18n="nav.catalogue">Catalogue</a>
-      <a href="index.html#univers" data-i18n="nav.univers">Univers</a>
-      <a href="index.html#atelier" data-i18n="nav.atelier">Atelier</a>
-      <a href="engagement.html" data-i18n="nav.engagement">Notre engagement</a>
-      <a href="index.html#contact" data-i18n="nav.contact">Contact</a>
-    </nav>
+  <nav class="wrap site-header__bar" aria-label="Navigation principale">
+    <div class="site-header__lead">
+      <a class="wordmark" href="index.html" translate="no">CosyPrints</a>
+      <div class="nav">
+        <a href="boutique.html" aria-current="page" data-i18n="nav.catalogue">Boutique</a>
+        <a href="index.html#categories" data-i18n="nav.categories">Catégories</a>
+        <a href="index.html#demarche" data-i18n="nav.demarche">Notre démarche</a>
+        <a href="engagement.html" data-i18n="nav.engagement">Notre engagement</a>
+      </div>
+    </div>
     <div class="header-controls">
-      <button class="ctrl ctrl--lang" data-lang-toggle type="button" aria-label="Switch to English" aria-pressed="false">
+      <a class="ctrl--contact" href="index.html#contact" data-i18n="nav.contact">Contact</a>
+      <button class="ctrl--lang" data-lang-toggle type="button" aria-label="Switch to English" aria-pressed="false">
         <span class="lang-code">EN</span>
       </button>
-      <button class="ctrl ctrl--cart" data-cart-open type="button" aria-label="Ouvrir le panier" data-i18n-attr="aria-label:cart.open_aria">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-        <span class="cart-count" data-cart-count hidden>0</span>
+      <button class="pill ctrl--cart" data-cart-open type="button" aria-label="Ouvrir le panier" data-i18n-attr="aria-label:cart.open_aria">
+        <span class="dot" aria-hidden="true"></span>
+        <span data-i18n="cart.label">Panier</span>
+        <span aria-hidden="true">(<span class="cart-count" data-cart-count>0</span>)</span>
       </button>
       <button class="menu-btn" id="menuBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="mobileNav" aria-label="Ouvrir le menu">
         <span class="menu-btn__box" aria-hidden="true"><span class="menu-btn__bar"></span><span class="menu-btn__bar"></span><span class="menu-btn__bar"></span></span>
       </button>
     </div>
-  </div>
+  </nav>
   <nav class="mobile-nav" id="mobileNav" aria-label="Menu">
-    <a href="boutique.html"><span data-i18n="nav.catalogue">Catalogue</span><span class="idx">01</span></a>
-    <a href="index.html#univers"><span data-i18n="nav.univers">Univers</span><span class="idx">02</span></a>
-    <a href="index.html#atelier"><span data-i18n="nav.atelier">Atelier</span><span class="idx">03</span></a>
+    <a href="boutique.html"><span data-i18n="nav.catalogue">Boutique</span><span class="idx">01</span></a>
+    <a href="index.html#categories"><span data-i18n="nav.categories">Catégories</span><span class="idx">02</span></a>
+    <a href="index.html#demarche"><span data-i18n="nav.demarche">Notre démarche</span><span class="idx">03</span></a>
     <a href="engagement.html"><span data-i18n="nav.engagement">Notre engagement</span><span class="idx">04</span></a>
     <a href="index.html#contact"><span data-i18n="nav.contact">Contact</span><span class="idx">05</span></a>
   </nav>
@@ -125,14 +77,14 @@
 
 <main id="main">
   <section class="cat-hero wrap">
-    <p class="eyebrow eyebrow--accent" data-i18n="shop.eyebrow">Catalogue · impression 3D à Saint-Martin-d'Uriage</p>
+    <p class="eyebrow" data-i18n="shop.eyebrow">Boutique · impression 3D à Saint-Martin-d'Uriage</p>
     <h1 id="cat-title">Toutes nos créations</h1>
-    <p class="cat-sub" data-i18n="shop.sub">Parcours nos univers. Chaque pièce est imprimée à la main, couche après couche — livraison et paiement gérés via Vinted ou Leboncoin.</p>
+    <p class="cat-sub" data-i18n="shop.sub">Parcourez nos collections. Chaque pièce est imprimée à la demande, couche après couche — livraison et paiement gérés via Vinted ou Leboncoin.</p>
   </section>
 
   <div class="wrap">
     <div class="catalogue-bar">
-      <div class="filters" id="filters" role="tablist" aria-label="Filtrer par univers"></div>
+      <div class="filters" id="filters" role="tablist" aria-label="Filtrer par collection"></div>
       <div class="cat-meta">
         <span class="count" id="count">0 produit</span>
         <label class="sort">
@@ -148,43 +100,62 @@
 
     <noscript>
       <div class="noscript-note">
-        <strong data-i18n="shop.nojs_title">Active JavaScript pour voir le catalogue.</strong>
-        <p data-i18n="shop.nojs_body">Ou retrouve-nous directement sur notre boutique Vinted.</p>
-        <a class="btn" href="https://www.vinted.fr/member/60879390-cosyprints" target="_blank" rel="noopener" data-i18n="shop.see_vinted">Voir sur Vinted</a>
+        <strong data-i18n="shop.nojs_title">Activez JavaScript pour voir la boutique.</strong>
+        <p data-i18n="shop.nojs_body">Ou retrouvez-nous directement sur notre boutique Vinted.</p>
+        <a class="btn btn--sage" href="https://www.vinted.fr/member/60879390-cosyprints" target="_blank" rel="noopener" data-i18n="shop.see_vinted">Voir sur Vinted</a>
       </div>
     </noscript>
 
-    <div class="product-grid" id="grid" aria-live="polite"></div>
+    <div class="product-grid catalogue-grid-pad" id="grid" aria-live="polite"></div>
   </div>
 </main>
 
+<!-- ============ Footer ============ -->
 <footer class="site-footer" id="contact">
   <div class="wrap">
     <div class="footer-grid">
       <div class="footer-brand">
-        <a class="wordmark" href="index.html" translate="no">Cosy<span class="dot">·</span>Prints</a>
-        <p data-i18n="footer.tagline">Impression 3D faite main à Saint-Martin-d'Uriage, près de Grenoble. Site vitrine — toutes les ventes se font sur Vinted &amp; Leboncoin.</p>
-      </div>
-      <div>
-        <h4 data-i18n="footer.explore">Explorer</h4>
-        <div class="footer-list">
-          <a href="boutique.html" data-i18n="nav.catalogue">Catalogue</a>
-          <a href="index.html#univers" data-i18n="nav.univers">Univers</a>
-          <a href="engagement.html" data-i18n="nav.engagement">Notre engagement</a>
+        <h3 translate="no">CosyPrints</h3>
+        <p data-i18n="footer.tagline">Une nouvelle vision de l'objet quotidien. Imaginé et fabriqué avec soin près de Grenoble — toutes les ventes se font sur Vinted &amp; Leboncoin.</p>
+        <div class="footer-social">
+          <a href="https://www.vinted.fr/member/60879390-cosyprints" target="_blank" rel="noopener">Vinted</a>
+          <a href="https://www.leboncoin.fr/profil/0408d333-46e3-4487-b2f3-4743fd34c872" target="_blank" rel="noopener">Leboncoin</a>
         </div>
       </div>
-      <div>
-        <h4 data-i18n="footer.contact">Contact</h4>
-        <div class="footer-list">
-          <a href="mailto:cosyprints.shop@gmail.com">cosyprints.shop@gmail.com</a>
-          <a href="https://www.vinted.fr/member/60879390-cosyprints" target="_blank" rel="noopener">Vinted ↗</a>
-          <a href="https://www.leboncoin.fr/profil/0408d333-46e3-4487-b2f3-4743fd34c872" target="_blank" rel="noopener">Leboncoin ↗</a>
+      <div class="footer-cols">
+        <div>
+          <h4 data-i18n="footer.shop">Boutique</h4>
+          <ul>
+            <li><a href="boutique.html" data-i18n="footer.all">Tout voir</a></li>
+            <li><a href="boutique.html?cat=homie-vibe" data-i18n="card.homie.title">Homie Vibe</a></li>
+            <li><a href="boutique.html?cat=lampes" data-i18n="card.lampes.title">Lumière &amp; Lampes</a></li>
+            <li><a href="boutique.html?cat=bureau" data-i18n="card.bureau.title">Bureau &amp; Rangement</a></li>
+            <li><a href="boutique.html?cat=gadgets" data-i18n="card.gadgets.title">Gadgets Utiles</a></li>
+          </ul>
         </div>
+        <div>
+          <h4 data-i18n="footer.help">Aide</h4>
+          <ul>
+            <li><a href="index.html#faq-title" data-i18n="footer.faq">FAQ</a></li>
+            <li><a href="engagement.html" data-i18n="nav.engagement">Notre engagement</a></li>
+            <li><a href="mailto:cosyprints.shop@gmail.com" data-i18n="nav.contact">Contact</a></li>
+            <li><a href="https://www.vinted.fr/member/60879390-cosyprints" target="_blank" rel="noopener" data-i18n="footer.delivery">Livraison via Vinted</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-news">
+        <h4 data-i18n="news.title">Newsletter</h4>
+        <p data-i18n="news.body">Inscrivez-vous pour suivre nos nouvelles collections et les coulisses de l'atelier.</p>
+        <form class="news-form" id="newsForm" novalidate>
+          <input type="email" id="newsEmail" name="email" required autocomplete="email" placeholder="votre@email.com" data-i18n-attr="placeholder:news.placeholder" aria-label="E-mail" />
+          <button type="submit" data-i18n="news.cta">S'inscrire</button>
+        </form>
+        <p class="news-note" id="newsNote" data-i18n="news.note">Pas de spam. Désinscription en un clic.</p>
       </div>
     </div>
     <div class="footer-bottom">
-      <span data-i18n="footer.copyright">© 2026 CosyPrints — Saint-Martin-d'Uriage, France</span>
-      <span data-i18n="footer.madein">Imprimé à la demande · PLA végétal</span>
+      <p data-i18n="footer.copyright">© 2026 CosyPrints. Tous droits réservés.</p>
+      <p data-i18n="footer.madein">Fabriqué avec soin près de Grenoble.</p>
     </div>
   </div>
 </footer>
@@ -209,16 +180,16 @@
   // Catalogue UI strings rendered from JS (the static markup uses data-i18n instead).
   const B = {
     fr: {
-      allTitle: 'Toutes nos créations', cataloguer: 'Catalogue',
+      allTitle: 'Toutes nos créations', cataloguer: 'Boutique',
       unit: 'produit', units: 'produits',
       sold: 'Vendu', soon: 'Bientôt', see: 'Voir', soonSee: 'En stock bientôt',
       addCart: 'Ajouter au panier',
       emptyTitle: 'Aucun produit en ligne pour le moment.',
-      emptyBody: 'On imprime de nouvelles pièces — reviens très vite. En attendant, retrouve-nous sur Vinted.',
+      emptyBody: 'On imprime de nouvelles pièces — revenez très vite. En attendant, retrouvez-nous sur Vinted.',
       seeVinted: 'Voir sur Vinted'
     },
     en: {
-      allTitle: 'All our creations', cataloguer: 'Catalogue',
+      allTitle: 'All our creations', cataloguer: 'Shop',
       unit: 'item', units: 'items',
       sold: 'Sold', soon: 'Soon', see: 'View', soonSee: 'In stock soon',
       addCart: 'Add to cart',
@@ -267,7 +238,7 @@
   const phSvg = `<svg class="pcard__ph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>`;
 
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]));
-  const fmtPrice = n => n.toLocaleString(L() === 'en' ? 'en-IE' : 'fr-FR', { style: 'currency', currency: 'EUR', minimumFractionDigits: 0, maximumFractionDigits: 0 });
+  const fmtPrice = n => n.toLocaleString(L() === 'en' ? 'en-IE' : 'fr-FR', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
   function productCard(p) {
     const name = loc(p.name), desc = loc(p.desc);
@@ -281,20 +252,18 @@
     const buyable = p.url && p.status !== 'soon';
     const canAdd = p.status !== 'sold' && p.status !== 'soon';
     const go = buyable
-      ? `<a class="pcard__go tlink" href="${esc(p.url)}" target="_blank" rel="noopener noreferrer">${esc(t('see'))} <span class="arr">↗</span></a>`
-      : (p.status === 'soon' ? `<span class="pcard__go" style="color:var(--accent)">${esc(t('soonSee'))}</span>` : '');
+      ? `<a class="pcard__go" href="${esc(p.url)}" target="_blank" rel="noopener">${esc(t('see'))} ↗</a>`
+      : (p.status === 'soon' ? `<span class="pcard__go" style="text-decoration:none;color:var(--sage-deep)">${esc(t('soonSee'))}</span>` : '');
     const add = canAdd
       ? `<button class="pcard__add" type="button" data-add="${PRODUCTS.indexOf(p)}">${esc(t('addCart'))}</button>`
       : '';
-    const open = buyable ? `<a class="pcard__media" href="${esc(p.url)}" target="_blank" rel="noopener noreferrer">` : `<div class="pcard__media">`;
+    const open = buyable ? `<a class="pcard__media" href="${esc(p.url)}" target="_blank" rel="noopener">` : `<div class="pcard__media">`;
     const close = buyable ? `</a>` : `</div>`;
     return `<article class="pcard">
       ${open}${media}${tag}${badge}${close}
-      <div class="pcard__row">
-        <h3 class="pcard__name">${esc(name)}</h3>
-        ${p.price != null ? `<span class="pcard__price">${fmtPrice(p.price)}</span>` : ''}
-      </div>
+      <h3 class="pcard__name">${esc(name)}</h3>
       ${desc ? `<p class="pcard__desc">${esc(desc)}</p>` : ''}
+      ${p.price != null ? `<p class="pcard__price">${fmtPrice(p.price)}</p>` : ''}
       ${(add || go) ? `<div class="pcard__actions">${add}${go}</div>` : ''}
     </article>`;
   }
@@ -342,7 +311,7 @@
             <p class="notice__title">${esc(t('emptyTitle'))}</p>
             <p class="notice__body">${esc(t('emptyBody'))}</p>
           </div>
-          <a class="btn btn--accent" href="https://www.vinted.fr/member/60879390-cosyprints" target="_blank" rel="noopener">${esc(t('seeVinted'))}</a>
+          <a class="btn btn--sage" href="https://www.vinted.fr/member/60879390-cosyprints" target="_blank" rel="noopener">${esc(t('seeVinted'))}</a>
         </div>` +
         Array.from({ length: 3 }, ghostCard).join('');
     } else {
@@ -369,7 +338,7 @@
     if (!b || !window.CosyCart) return;
     const p = PRODUCTS[+b.dataset.add];
     if (!p) return;
-    CosyCart.add({ id: 'p' + b.dataset.add, name: loc(p.name), price: p.price != null ? p.price : 0, url: p.url || '' });
+    CosyCart.add({ id: p.id != null ? String(p.id) : 'p' + b.dataset.add, name: loc(p.name), price: p.price != null ? p.price : 0, url: p.url || '' });
   });
 
   render();
@@ -387,6 +356,23 @@
       nav.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { setOpen(false); }); });
       document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setOpen(false); });
     }
+  })();
+
+  // ---- Newsletter (footer) ----
+  (function () {
+    var form = document.getElementById('newsForm');
+    var note = document.getElementById('newsNote');
+    if (!form) return;
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var email = document.getElementById('newsEmail').value.trim();
+      if (!email || email.indexOf('@') === -1) { document.getElementById('newsEmail').focus(); return; }
+      var en = document.documentElement.getAttribute('lang') === 'en';
+      var subject = encodeURIComponent(en ? 'Newsletter sign-up' : 'Inscription newsletter');
+      var body = encodeURIComponent((en ? 'Please add me to the list: ' : 'Ajoutez-moi à la liste : ') + email);
+      window.location.href = 'mailto:cosyprints.shop@gmail.com?subject=' + subject + '&body=' + body;
+      if (note) note.textContent = en ? 'Opening your email app…' : 'Ouverture de ta messagerie…';
+    });
   })();
 </script>
 

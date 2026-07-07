@@ -1,0 +1,15 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 1000' preserveAspectRatio='xMidYMid slice'>
+<defs>
+  <linearGradient id='g' x1='0' y1='0' x2='0.7' y2='1'>
+    <stop offset='0' stop-color='#f0ead9'/><stop offset='1' stop-color='#ddd3bc'/>
+  </linearGradient>
+  <pattern id='l' width='800' height='9' patternUnits='userSpaceOnUse'>
+    <rect width='800' height='9' fill='none'/>
+    <rect y='8' width='800' height='1' fill='#2d312a' opacity='0.045'/>
+  </pattern>
+</defs>
+<rect width='800' height='1000' fill='url(#g)'/>
+<rect width='800' height='1000' fill='url(#l)'/>
+<circle cx='400' cy='470' r='150' fill='none' stroke='#7b8e7e' stroke-width='1.5' opacity='0.5'/>
+<text x='400' y='478' text-anchor='middle' font-family='Georgia, serif' font-style='italic' font-size='30' fill='#2d312a' opacity='0.55'>CosyPrints</text>
+</svg>

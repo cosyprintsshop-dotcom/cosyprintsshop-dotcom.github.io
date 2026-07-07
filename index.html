@@ -4,31 +4,21 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<!-- Theme bootstrap: paper (light) by default; dark follows the OS preference only
-     (the manual toggle was removed in the 2026-07 restyle — stale stored prefs are cleared). -->
 <script>
   (function () {
-    var d = document.documentElement;
-    d.classList.remove('no-js');
+    document.documentElement.classList.remove('no-js');
     try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {}
-    var t = 'light';
-    try {
-      localStorage.removeItem('theme');
-      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) { t = 'dark'; }
-    } catch (e) {}
-    d.setAttribute('data-theme', t);
   })();
 </script>
 
-<title data-i18n="meta.title">CosyPrints — objets imprimés en 3D pour la maison · Saint-Martin-d'Uriage</title>
-<meta name="description" data-i18n-attr="content:meta.description" content="CosyPrints : objets utiles et déco pour la maison, imprimés en 3D à la main à Saint-Martin-d'Uriage, près de Grenoble. PLA d'origine végétale. En vente sur Vinted et Leboncoin." />
-<meta name="theme-color" content="#f3efe6" media="(prefers-color-scheme: light)" />
-<meta name="theme-color" content="#19160f" media="(prefers-color-scheme: dark)" />
+<title data-i18n="meta.title">CosyPrints — objets du quotidien, imprimés en 3D avec soin · Saint-Martin-d'Uriage</title>
+<meta name="description" data-i18n-attr="content:meta.description" content="CosyPrints : objets pour la maison dessinés et imprimés à la demande en PLA végétal, dans notre atelier de Saint-Martin-d'Uriage près de Grenoble. En vente sur Vinted et Leboncoin." />
+<meta name="theme-color" content="#faf9f6" />
 
 <meta property="og:type" content="website" />
 <meta property="og:locale" content="fr_FR" />
-<meta property="og:title" content="CosyPrints — objets imprimés en 3D pour la maison" />
-<meta property="og:description" content="Objets utiles et déco pour la maison, imprimés à Saint-Martin-d'Uriage. En vente sur Vinted et Leboncoin." />
+<meta property="og:title" content="CosyPrints — objets du quotidien, imprimés en 3D avec soin" />
+<meta property="og:description" content="Objets pour la maison, dessinés et imprimés à la demande en PLA végétal près de Grenoble. En vente sur Vinted et Leboncoin." />
 <meta property="og:url" content="https://cosyprints.com/" />
 <meta name="twitter:card" content="summary" />
 <link rel="canonical" href="https://cosyprints.com/" />
@@ -36,93 +26,13 @@
 <link rel="alternate" hreflang="en" href="https://cosyprints.com/?lang=en" />
 <link rel="alternate" hreflang="x-default" href="https://cosyprints.com/" />
 
-<link rel="icon" media="(prefers-color-scheme: light)" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23f3efe6'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='20' text-anchor='middle' fill='%231c1a16'%3EC%3C/text%3E%3C/svg%3E" />
-<link rel="icon" media="(prefers-color-scheme: dark)" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2319160f'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='20' text-anchor='middle' fill='%23ece6d8'%3EC%3C/text%3E%3C/svg%3E" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23faf9f6'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-style='italic' font-size='20' text-anchor='middle' fill='%232d312a'%3EC%3C/text%3E%3C/svg%3E" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..600;1,400..600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
 
 <link rel="stylesheet" href="assets/theme.css" />
-
-<style>
-  /* ===== Homepage-specific composition ===== */
-
-  /* Hero — asymmetric: editorial column + technical metadata plate */
-  .hero { padding-block: clamp(48px, 9vw, 120px) clamp(48px, 8vw, 104px); }
-  .hero-grid { display: grid; grid-template-columns: 1fr; gap: clamp(36px, 6vw, 64px); }
-  @media (min-width: 900px) { .hero-grid { grid-template-columns: 1.35fr 0.65fr; align-items: end; } }
-  .hero h1 { font-family: var(--display); font-weight: 400; font-size: clamp(2.9rem, 8vw, 6rem);
-    line-height: 0.98; letter-spacing: -0.025em; margin-block: 22px 26px; }
-  .hero h1 em { font-style: italic; color: var(--accent); }
-  .hero .lede { font-size: clamp(1.08rem, 1.8vw, 1.3rem); color: var(--ink-soft); max-width: 46ch; }
-  .hero-actions { display: flex; flex-wrap: wrap; gap: 12px 16px; margin-top: 34px; align-items: center; }
-  .hero-plate { border-top: 1px solid var(--ink); padding-top: 18px; }
-  .hero-plate__cap { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 14px; }
-  @media (max-width: 899px) { .hero-plate { display: none; } }
-
-  /* Locality / trust strip — typographic, hairline framed, no icon cards */
-  .locality { border-block: var(--rule); }
-  .locality__row { display: grid; grid-template-columns: 1fr; }
-  @media (min-width: 760px) { .locality__row { grid-template-columns: repeat(3, 1fr); } }
-  .locality__item { font-family: var(--mono); font-size: 0.76rem; letter-spacing: 0.06em; text-transform: uppercase;
-    color: var(--ink-soft); padding: 20px 0; }
-  @media (min-width: 760px) { .locality__item + .locality__item { border-left: var(--rule); padding-left: 28px; } }
-  .locality__item b { color: var(--ink); font-weight: 500; }
-
-  /* Collection preview — shared .product-grid/.pcard styles live in theme.css */
-  .coll-cta { text-align: center; margin-top: clamp(8px, 2vw, 24px); }
-
-  /* Worlds — editorial index list, not cards */
-  .worlds { display: flex; flex-direction: column; }
-  .world { display: grid; grid-template-columns: 3ch 1fr auto; gap: 18px 24px; align-items: baseline;
-    padding: clamp(22px, 3.4vw, 38px) 0; border-top: var(--rule); color: var(--ink);
-    transition: padding-left .3s cubic-bezier(.2,.6,.2,1); }
-  .worlds .world:last-child { border-bottom: var(--rule); }
-  @media (hover: hover) { .world:hover { padding-left: 14px; } .world:hover .world__name { color: var(--accent); } }
-  .world__idx { font-family: var(--mono); font-size: 0.74rem; letter-spacing: 0.08em; color: var(--ink-soft); }
-  .world__name { font-family: var(--display); font-weight: 400; font-size: clamp(1.5rem, 3.6vw, 2.5rem); line-height: 1.05; letter-spacing: -0.01em; transition: color .25s ease; }
-  .world__desc { grid-column: 2 / 3; color: var(--ink-soft); font-size: 0.98rem; max-width: 46ch; margin-top: 6px; }
-  .world__go { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); white-space: nowrap; }
-  .world:hover .world__go { color: var(--accent); }
-
-  /* Atelier — image plate + editorial text */
-  .atelier-grid { display: grid; grid-template-columns: 1fr; gap: clamp(28px, 5vw, 56px); align-items: center; }
-  @media (min-width: 860px) { .atelier-grid { grid-template-columns: 0.9fr 1.1fr; } }
-  .atelier-plate { aspect-ratio: 4 / 5; background: var(--paper-2); border: var(--rule); position: relative; overflow: hidden; }
-  .atelier-plate__layers { position: absolute; inset: 0;
-    background-image: repeating-linear-gradient(to bottom, transparent 0 9px, color-mix(in srgb, var(--ink) 7%, transparent) 9px 10px); }
-  .atelier-plate__tag { position: absolute; left: 16px; bottom: 14px; font-family: var(--mono); font-size: 0.68rem;
-    letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); background: var(--paper); padding: 6px 11px; border: var(--rule); }
-  .atelier-body h2 { font-family: var(--display); font-weight: 400; font-size: clamp(1.9rem, 4.4vw, 3rem); line-height: 1.05; letter-spacing: -0.015em; }
-  .atelier-body p { color: var(--ink-soft); margin-top: 18px; max-width: 50ch; }
-
-  /* Newsletter — restrained capture */
-  .news-grid { display: grid; grid-template-columns: 1fr; gap: 28px; }
-  @media (min-width: 860px) { .news-grid { grid-template-columns: 1fr 0.9fr; align-items: end; gap: 56px; } }
-  .news h2 { font-family: var(--display); font-weight: 400; font-size: clamp(1.8rem, 4vw, 2.8rem); line-height: 1.06; letter-spacing: -0.015em; }
-  .news p { color: var(--ink-soft); margin-top: 14px; max-width: 44ch; }
-  .news-form { display: flex; border: 1px solid var(--ink); }
-  .news-form input { flex: 1; min-width: 0; background: transparent; color: var(--ink); padding: 16px 16px;
-    font-family: var(--mono); font-size: 0.85rem; border: 0; }
-  .news-form input::placeholder { color: var(--ink-soft); }
-  .news-form button { padding: 16px 22px; background: var(--ink); color: var(--paper); border-left: 1px solid var(--ink);
-    font-family: var(--mono); font-size: 0.76rem; letter-spacing: 0.08em; text-transform: uppercase; transition: background .25s ease; }
-  .news-form button:hover { background: var(--accent); }
-  .news-note { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.04em; color: var(--ink-soft); margin-top: 12px; text-transform: uppercase; }
-
-  /* FAQ — editorial accordion */
-  .faq { display: grid; gap: 0; }
-  .faq details { border-top: var(--rule); }
-  .faq details:last-child { border-bottom: var(--rule); }
-  .faq summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; gap: 20px; align-items: baseline;
-    padding: 22px 0; font-family: var(--display); font-weight: 400; font-size: clamp(1.15rem, 2.2vw, 1.5rem); line-height: 1.2; }
-  .faq summary::-webkit-details-marker { display: none; }
-  .faq summary:hover { color: var(--accent); }
-  .faq summary .sign { font-family: var(--mono); font-size: 1.1rem; color: var(--accent); flex: none; transition: transform .25s ease; }
-  .faq details[open] summary .sign { transform: rotate(45deg); }
-  .faq .ans { color: var(--ink-soft); padding: 0 0 24px; max-width: 64ch; }
-</style>
 
 <script type="application/ld+json">
 {
@@ -130,7 +40,7 @@
   "@type": "Store",
   "@id": "https://cosyprints.com/#store",
   "name": "CosyPrints",
-  "description": "Objets utiles et déco pour la maison, imprimés en 3D à la main à Saint-Martin-d'Uriage, près de Grenoble.",
+  "description": "Objets pour la maison dessinés et imprimés à la demande en PLA végétal, dans notre atelier de Saint-Martin-d'Uriage, près de Grenoble.",
   "url": "https://cosyprints.com",
   "email": "cosyprints.shop@gmail.com",
   "areaServed": "Grenoble, France",
@@ -148,43 +58,37 @@
 
 <a class="skip-link" href="#main" data-i18n="a11y.skip">Aller au contenu</a>
 
-<!-- ============ Announcement bar ============ -->
-<div class="ann-bar">
-  <p><span data-i18n="ann.text">Fabriqué à la demande · PLA végétal · Expédié sous 5–10 jours</span>
-  · <a href="engagement.html" data-i18n="ann.link">Notre mission →</a></p>
-</div>
-
 <!-- ============ Header ============ -->
 <header class="site-header">
-  <div class="wrap site-header__bar">
-    <a class="wordmark" href="index.html" translate="no">Cosy<span class="dot">·</span>Prints</a>
-
-    <nav class="nav" aria-label="Navigation principale">
-      <a href="boutique.html" data-i18n="nav.catalogue">Catalogue</a>
-      <a href="#univers" data-i18n="nav.univers">Univers</a>
-      <a href="#atelier" data-i18n="nav.atelier">Atelier</a>
-      <a href="engagement.html" data-i18n="nav.engagement">Notre engagement</a>
-      <a href="#contact" data-i18n="nav.contact">Contact</a>
-    </nav>
-
+  <nav class="wrap site-header__bar" aria-label="Navigation principale">
+    <div class="site-header__lead">
+      <a class="wordmark" href="index.html" translate="no">CosyPrints</a>
+      <div class="nav">
+        <a href="boutique.html" data-i18n="nav.catalogue">Boutique</a>
+        <a href="#categories" data-i18n="nav.categories">Catégories</a>
+        <a href="#demarche" data-i18n="nav.demarche">Notre démarche</a>
+        <a href="engagement.html" data-i18n="nav.engagement">Notre engagement</a>
+      </div>
+    </div>
     <div class="header-controls">
-      <button class="ctrl ctrl--lang" data-lang-toggle type="button" aria-label="Switch to English" aria-pressed="false">
+      <a class="ctrl--contact" href="#contact" data-i18n="nav.contact">Contact</a>
+      <button class="ctrl--lang" data-lang-toggle type="button" aria-label="Switch to English" aria-pressed="false">
         <span class="lang-code">EN</span>
       </button>
-      <button class="ctrl ctrl--cart" data-cart-open type="button" aria-label="Ouvrir le panier" data-i18n-attr="aria-label:cart.open_aria">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-        <span class="cart-count" data-cart-count hidden>0</span>
+      <button class="pill ctrl--cart" data-cart-open type="button" aria-label="Ouvrir le panier" data-i18n-attr="aria-label:cart.open_aria">
+        <span class="dot" aria-hidden="true"></span>
+        <span data-i18n="cart.label">Panier</span>
+        <span aria-hidden="true">(<span class="cart-count" data-cart-count>0</span>)</span>
       </button>
       <button class="menu-btn" id="menuBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="mobileNav" aria-label="Ouvrir le menu">
         <span class="menu-btn__box" aria-hidden="true"><span class="menu-btn__bar"></span><span class="menu-btn__bar"></span><span class="menu-btn__bar"></span></span>
       </button>
     </div>
-  </div>
-
+  </nav>
   <nav class="mobile-nav" id="mobileNav" aria-label="Menu">
-    <a href="boutique.html"><span data-i18n="nav.catalogue">Catalogue</span><span class="idx">01</span></a>
-    <a href="#univers"><span data-i18n="nav.univers">Univers</span><span class="idx">02</span></a>
-    <a href="#atelier"><span data-i18n="nav.atelier">Atelier</span><span class="idx">03</span></a>
+    <a href="boutique.html"><span data-i18n="nav.catalogue">Boutique</span><span class="idx">01</span></a>
+    <a href="#categories"><span data-i18n="nav.categories">Catégories</span><span class="idx">02</span></a>
+    <a href="#demarche"><span data-i18n="nav.demarche">Notre démarche</span><span class="idx">03</span></a>
     <a href="engagement.html"><span data-i18n="nav.engagement">Notre engagement</span><span class="idx">04</span></a>
     <a href="#contact"><span data-i18n="nav.contact">Contact</span><span class="idx">05</span></a>
   </nav>
@@ -193,190 +97,207 @@
 <main id="main">
 
   <!-- ============ Hero ============ -->
-  <section class="hero wrap">
-    <div class="hero-grid">
+  <section class="hero">
+    <div class="wrap hero-grid">
       <div>
-        <p class="eyebrow eyebrow--accent" data-i18n="hero.eyebrow">Atelier · Saint-Martin-d'Uriage, près de Grenoble</p>
-        <h1 data-i18n="hero.title">Des objets artisanaux, <em>imprimés pour toi</em>.</h1>
-        <p class="lede" data-i18n="hero.lede">Déco et objets utiles pour la maison, imprimés en 3D à la main à Saint-Martin-d'Uriage. Chaque pièce est fabriquée à la demande.</p>
+        <p class="eyebrow" data-i18n="hero.eyebrow">Atelier près de Grenoble — Imprimé à la demande</p>
+        <h1 data-i18n="hero.title">Le beau, utile et raisonné.</h1>
+        <p class="lede" data-i18n="hero.lede">Des objets de maison en PLA végétal, dessinés et imprimés à la demande dans notre atelier de Saint-Martin-d'Uriage. Pour un quotidien plus doux, sans surstock ni compromis.</p>
         <div class="hero-actions">
-          <a class="btn btn--accent" href="boutique.html">
-            <span data-i18n="hero.cta_primary">Voir la collection</span>
-            <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          <a class="btn btn--sage" href="boutique.html">
+            <span class="plus" aria-hidden="true">+</span>
+            <span data-i18n="hero.cta_primary">Découvrir la collection</span>
           </a>
-          <a class="btn" href="engagement.html" data-i18n="hero.cta_mission">Notre mission</a>
+          <a class="btn" href="#demarche" data-i18n="hero.cta_secondary">Notre démarche</a>
         </div>
       </div>
-
-      <aside class="hero-plate" aria-label="Fiche atelier">
-        <p class="hero-plate__cap" data-i18n="hero.plate_cap">La fiche</p>
-        <div class="meta-list">
-          <div><span data-i18n="meta.k_place">Lieu</span><b>Saint-Martin-d'Uriage</b></div>
-          <div><span data-i18n="meta.k_method">Méthode</span><b data-i18n="meta.v_method">Impression 3D</b></div>
-          <div><span data-i18n="meta.k_material">Matière</span><b data-i18n="meta.v_material">PLA d'origine végétale</b></div>
-          <div><span data-i18n="meta.k_sale">Vente</span><b>Vinted &amp; Leboncoin</b></div>
-        </div>
-      </aside>
+      <div class="hero-media">
+        <img src="assets/img/hero-vase.svg" alt="Vase sculptural CosyPrints en PLA végétal, posé dans une lumière douce." width="800" height="1000" data-i18n-attr="alt:hero.img_alt" />
+      </div>
     </div>
   </section>
 
-  <!-- ============ Locality / trust strip ============ -->
-  <div class="locality">
-    <div class="wrap locality__row">
-      <div class="locality__item" data-i18n="trust.handmade">Fait main · <b>Saint-Martin-d'Uriage</b></div>
-      <div class="locality__item" data-i18n="trust.pla"><b>PLA</b> d'origine végétale</div>
-      <div class="locality__item" data-i18n="trust.madetoorder">Fabriqué <b>à la demande</b> · sans stock</div>
-    </div>
-  </div>
-
-  <!-- ============ Mission banner (ink panel) ============ -->
-  <section class="mission" aria-labelledby="mission-title">
-    <div class="wrap reveal">
-      <p class="eyebrow" data-i18n="mission.eyebrow">§ Notre engagement</p>
-      <h2 class="sr-only" id="mission-title" data-i18n="mission.title">Notre engagement</h2>
-      <div class="mission__grid">
-        <div class="mission__pillar">
-          <p class="mission__num"><span data-countup="20">20</span>&nbsp;%</p>
-          <h3 data-i18n="mission.p1.title">Recherche contre le cancer</h3>
-          <p data-i18n="mission.p1.body">20 % de chaque vente finance la recherche contre le cancer, en mémoire de ceux qu'on a perdus.</p>
+  <!-- ============ Categories (bento) ============ -->
+  <section class="section section--band" id="categories" aria-labelledby="categories-title">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div>
+          <p class="eyebrow" data-i18n="cat.eyebrow">Collections</p>
+          <h2 id="categories-title" data-i18n="cat.title">Parcourir l'atelier</h2>
         </div>
-        <div class="mission__pillar">
-          <p class="mission__num"><span data-countup="20">20</span>&nbsp;%</p>
-          <h3 data-i18n="mission.p2.title">Dépollution des océans</h3>
-          <p data-i18n="mission.p2.body">20 % finance des initiatives certifiées de collecte du plastique en mer — parce que notre matière vient de la terre.</p>
+        <a class="ulink" href="boutique.html" data-i18n="cat.seeall">Voir tout</a>
+      </div>
+      <div class="bento reveal">
+        <a class="bento__item bento__item--w8 bento__item--169" href="boutique.html?cat=homie-vibe">
+          <img src="assets/img/cat-cuisine.svg" alt="" width="800" height="500" loading="lazy" />
+          <span class="bento__label" data-i18n="card.homie.title">Homie Vibe</span>
+        </a>
+        <a class="bento__item bento__item--w4 bento__item--34" href="boutique.html?cat=lampes">
+          <img src="assets/img/cat-luminaires.svg" alt="" width="600" height="800" loading="lazy" />
+          <span class="bento__label" data-i18n="card.lampes.title">Lumière &amp; Lampes</span>
+        </a>
+        <a class="bento__item bento__item--w4 bento__item--sq" href="boutique.html?cat=cable-management">
+          <img src="assets/img/cat-animaux.svg" alt="" width="600" height="600" loading="lazy" />
+          <span class="bento__label" data-i18n="card.cable.title">Cable Management</span>
+        </a>
+        <a class="bento__item bento__item--w8 bento__item--21" href="boutique.html?cat=bureau">
+          <img src="assets/img/cat-rangement.svg" alt="" width="800" height="400" loading="lazy" />
+          <span class="bento__label" data-i18n="card.bureau.title">Bureau &amp; Rangement</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Values / démarche ============ -->
+  <section class="section section--hairline" id="demarche" aria-label="Notre démarche">
+    <div class="wrap values reveal">
+      <div class="value">
+        <h3 data-i18n="val.1.t">01. Imprimé à la demande</h3>
+        <p data-i18n="val.1.b">Nous ne produisons que ce qui est commandé. Pas de stocks dormants, pas de gaspillage inutile.</p>
+      </div>
+      <div class="value">
+        <h3 data-i18n="val.2.t">02. Origine végétale</h3>
+        <p data-i18n="val.2.b">Un PLA biosourcé, issu de l'amidon de maïs ou de canne à sucre. Renouvelable, sans pétrole.</p>
+      </div>
+      <div class="value">
+        <h3 data-i18n="val.3.t">03. Atelier près de Grenoble</h3>
+        <p data-i18n="val.3.b">Chaque pièce est dessinée, prototypée et fabriquée avec soin à Saint-Martin-d'Uriage.</p>
+      </div>
+      <div class="value">
+        <h3 data-i18n="val.4.t">04. Esthétique utile</h3>
+        <p data-i18n="val.4.b">Le design ne sacrifie jamais la fonction. Des objets pensés pour durer et servir au quotidien.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Featured products (placeholder pieces until the real ones land) ============ -->
+  <section class="section" id="selection" aria-labelledby="selection-title">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div>
+          <p class="eyebrow" data-i18n="sel.eyebrow">Sélection</p>
+          <h2 id="selection-title" data-i18n="sel.title">Les essentiels du moment</h2>
         </div>
       </div>
-      <p class="mission__cta">
-        <a class="tlink" href="engagement.html">
-          <span data-i18n="mission.cta">En savoir plus sur notre engagement</span>
-          <svg class="arr" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </a>
+      <div class="product-grid reveal" id="featured">
+        <article class="pcard">
+          <div class="pcard__media">
+            <img src="assets/img/prod-corbeille.svg" alt="" width="600" height="750" loading="lazy" />
+          </div>
+          <h3 class="pcard__name" data-i18n="sel.p1.name">Corbeille Onde</h3>
+          <p class="pcard__desc" data-i18n="sel.p1.detail">Olive mat · Taille L</p>
+          <p class="pcard__price">42,00&nbsp;€</p>
+          <div class="pcard__actions">
+            <button class="pcard__add" type="button" data-feat-add="corbeille-onde" data-price="42" data-i18n="sel.add">Ajouter au panier</button>
+          </div>
+        </article>
+        <article class="pcard">
+          <div class="pcard__media">
+            <img src="assets/img/prod-lampe.svg" alt="" width="600" height="750" loading="lazy" />
+          </div>
+          <h3 class="pcard__name" data-i18n="sel.p2.name">Lampe Prisme</h3>
+          <p class="pcard__desc" data-i18n="sel.p2.detail">Blanc cassé · LED incluse</p>
+          <p class="pcard__price">85,00&nbsp;€</p>
+          <div class="pcard__actions">
+            <button class="pcard__add" type="button" data-feat-add="lampe-prisme" data-price="85" data-i18n="sel.add">Ajouter au panier</button>
+          </div>
+        </article>
+        <article class="pcard">
+          <div class="pcard__media">
+            <img src="assets/img/prod-pateres.svg" alt="" width="600" height="750" loading="lazy" />
+          </div>
+          <h3 class="pcard__name" data-i18n="sel.p3.name">Lot de 3 Patères Galet</h3>
+          <p class="pcard__desc" data-i18n="sel.p3.detail">Sauge mat · Fixations incluses</p>
+          <p class="pcard__price">38,00&nbsp;€</p>
+          <div class="pcard__actions">
+            <button class="pcard__add" type="button" data-feat-add="pateres-galet" data-price="38" data-i18n="sel.add">Ajouter au panier</button>
+          </div>
+        </article>
+        <article class="pcard">
+          <div class="pcard__media">
+            <img src="assets/img/prod-cachepot.svg" alt="" width="600" height="750" loading="lazy" />
+          </div>
+          <h3 class="pcard__name" data-i18n="sel.p4.name">Cache-pot Dune</h3>
+          <p class="pcard__desc" data-i18n="sel.p4.detail">Sable · Ø 15 cm</p>
+          <p class="pcard__price">29,00&nbsp;€</p>
+          <div class="pcard__actions">
+            <button class="pcard__add" type="button" data-feat-add="cache-pot-dune" data-price="29" data-i18n="sel.add">Ajouter au panier</button>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Atelier / process ============ -->
+  <section class="section section--band" id="atelier" aria-labelledby="atelier-title">
+    <div class="wrap split reveal">
+      <div class="split__media">
+        <img src="assets/img/cat-cuisine.svg" alt="Détail d'objets CosyPrints dans une lumière naturelle douce." width="800" height="600" loading="lazy" data-i18n-attr="alt:atelier.img_alt" />
+      </div>
+      <div class="split__body">
+        <p class="eyebrow" data-i18n="atelier.eyebrow">L'atelier</p>
+        <h2 id="atelier-title" data-i18n="atelier.title">Une fabrication consciente, du filament à l'objet fini.</h2>
+        <p data-i18n="atelier.body">Chaque objet est dessiné dans notre atelier de Saint-Martin-d'Uriage, imprimé à la demande couche par couche, puis fini à la main. Notre matière, le PLA végétal, est biosourcée et renouvelable : nous privilégions la précision, la finition soignée et l'absence de surstock.</p>
+        <ul class="split__list">
+          <li><span class="dot" aria-hidden="true"></span><span data-i18n="atelier.li1">Zéro déchet de production</span></li>
+          <li><span class="dot" aria-hidden="true"></span><span data-i18n="atelier.li2">Design exclusif maison</span></li>
+          <li><span class="dot" aria-hidden="true"></span><span data-i18n="atelier.li3">Fabriqué à la demande près de Grenoble</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Mission / engagement ============ -->
+  <section class="section section--hairline" id="mission" aria-labelledby="mission-title">
+    <div class="wrap reveal">
+      <p class="eyebrow" data-i18n="mission.eyebrow">Notre engagement</p>
+      <div class="mission-head" style="margin-top:20px;">
+        <p class="mission-figure"><span data-countup="40">40</span>&nbsp;%</p>
+        <h2 id="mission-title" style="margin-top:18px;" data-i18n="mission.title">de chaque vente, <em>reversés</em> à deux causes qui nous tiennent à cœur.</h2>
+      </div>
+      <div class="mission-grid">
+        <div class="value">
+          <h3 data-i18n="mission.p1.t">01. Recherche contre le cancer</h3>
+          <p data-i18n="mission.p1.b">20 % de chaque vente finance la recherche contre le cancer, en mémoire de ceux qu'on a perdus.</p>
+        </div>
+        <div class="value">
+          <h3 data-i18n="mission.p2.t">02. Dépollution des océans</h3>
+          <p data-i18n="mission.p2.b">20 % finance des initiatives certifiées de collecte du plastique en mer — parce que notre matière vient de la terre.</p>
+        </div>
+      </div>
+      <div class="mission-stats">
+        <span data-i18n="mission.since">Depuis l'ouverture :</span>
+        <span><span data-i18n="mission.k1">Dons recherche</span> — <b>0&nbsp;€</b></span>
+        <span><span data-i18n="mission.k2">Plastique retiré</span> — <b>0&nbsp;g</b></span>
+      </div>
+      <p style="margin-top:32px;">
+        <a class="ulink" href="engagement.html" data-i18n="mission.cta">Découvrir notre engagement</a>
       </p>
     </div>
   </section>
 
-  <!-- ============ Collection preview ============ -->
-  <section class="section" id="collection" aria-labelledby="coll-title">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <p class="section-head__index" data-i18n="coll.eyebrow">§ Collection</p>
-        <div>
-          <h2 class="section-head__title" id="coll-title" data-i18n="coll.title">Pièces <em>récentes</em>.</h2>
-          <p class="section-head__lead" data-i18n="coll.lead">Chaque objet est imprimé à la demande dans notre atelier. La collection s'agrandit au fil des impressions.</p>
-        </div>
+  <!-- ============ Reassurance ============ -->
+  <section class="section section--hairline" aria-label="Nos garanties">
+    <div class="wrap reassure reveal">
+      <div>
+        <p class="mark" aria-hidden="true">·</p>
+        <h4 data-i18n="re.1.t">Emballage soigné</h4>
+        <p data-i18n="re.1.d">Sans plastique, prêt à offrir.</p>
       </div>
-
-      <div class="product-grid reveal">
-        <article class="pcard">
-          <div class="pcard__media">
-            <svg class="pcard__ph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-            <span class="pcard__tag pcard__tag--soon" data-i18n="coll.soon">Bientôt</span>
-            <span class="pcard__badge" data-i18n="coll.badge_pla">PLA végétal</span>
-          </div>
-          <div class="pcard__row"><h3 class="pcard__name" data-i18n="coll.p1.name">Vase strié</h3></div>
-          <p class="pcard__desc" data-i18n="coll.p1.desc">Univers Homie Vibe — courbes striées, couleur au choix.</p>
-          <div class="pcard__actions"><span class="pcard__go" style="color:var(--accent)" data-i18n="coll.soon_note">En stock bientôt</span></div>
-        </article>
-        <article class="pcard">
-          <div class="pcard__media">
-            <svg class="pcard__ph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-            <span class="pcard__tag pcard__tag--soon" data-i18n="coll.soon">Bientôt</span>
-            <span class="pcard__badge" data-i18n="coll.badge_batch">Série limitée</span>
-          </div>
-          <div class="pcard__row"><h3 class="pcard__name" data-i18n="coll.p2.name">Lampe Aurore</h3></div>
-          <p class="pcard__desc" data-i18n="coll.p2.desc">Univers Lumière &amp; Lampes — lumière douce, le soir venu.</p>
-          <div class="pcard__actions"><span class="pcard__go" style="color:var(--accent)" data-i18n="coll.soon_note">En stock bientôt</span></div>
-        </article>
-        <article class="pcard">
-          <div class="pcard__media">
-            <svg class="pcard__ph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-            <span class="pcard__tag pcard__tag--soon" data-i18n="coll.soon">Bientôt</span>
-            <span class="pcard__badge" data-i18n="coll.badge_pla">PLA végétal</span>
-          </div>
-          <div class="pcard__row"><h3 class="pcard__name" data-i18n="coll.p3.name">Organiseur de bureau</h3></div>
-          <p class="pcard__desc" data-i18n="coll.p3.desc">Univers Bureau &amp; Rangement — un espace qui respire.</p>
-          <div class="pcard__actions"><span class="pcard__go" style="color:var(--accent)" data-i18n="coll.soon_note">En stock bientôt</span></div>
-        </article>
-        <div class="pcard ghost" aria-hidden="true">
-          <div class="pcard__media"><svg class="pcard__ph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
-          <span class="ghost-line ghost-line--lg"></span>
-          <span class="ghost-line ghost-line--sm"></span>
-        </div>
+      <div>
+        <p class="mark" aria-hidden="true">·</p>
+        <h4 data-i18n="re.2.t">Fait à la demande</h4>
+        <p data-i18n="re.2.d">Pas de stock, pas de gaspillage.</p>
       </div>
-
-      <div class="coll-cta reveal">
-        <a class="btn btn--accent" href="boutique.html">
-          <span data-i18n="coll.cta">Voir tout le catalogue</span>
-          <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </a>
+      <div>
+        <p class="mark" aria-hidden="true">·</p>
+        <h4 data-i18n="re.3.t">Paiement protégé</h4>
+        <p data-i18n="re.3.d">Via Vinted &amp; Leboncoin.</p>
       </div>
-    </div>
-  </section>
-
-  <!-- ============ Univers (editorial index) ============ -->
-  <section class="section" id="univers" aria-labelledby="univers-title">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <p class="section-head__index" data-i18n="cat.eyebrow">§ Nos univers</p>
-        <div>
-          <h2 class="section-head__title" id="univers-title" data-i18n="cat.title">Cinq familles d'objets pour <em>la maison</em>.</h2>
-          <p class="section-head__lead" data-i18n="cat.subtitle">Choisis un univers — on s'occupe de l'impression, dans la couleur que tu veux.</p>
-        </div>
-      </div>
-
-      <div class="worlds reveal">
-        <a class="world" href="boutique.html?cat=homie-vibe">
-          <span class="world__idx">01</span>
-          <span class="world__name" data-i18n="card.homie.title">Homie Vibe</span>
-          <span class="world__go" data-i18n="cat.cta_catalogue">Voir →</span>
-          <span class="world__desc" data-i18n="card.homie.desc">Vases, supports, objets déco — des pièces minimalistes qui réchauffent la pièce.</span>
-        </a>
-        <a class="world" href="boutique.html?cat=cable-management">
-          <span class="world__idx">02</span>
-          <span class="world__name" data-i18n="card.cable.title">Cable Management</span>
-          <span class="world__go" data-i18n="cat.cta_catalogue">Voir →</span>
-          <span class="world__desc" data-i18n="card.cable.desc">Clips, passe-câbles et supports : le bureau net, fini les nœuds.</span>
-        </a>
-        <a class="world" href="boutique.html?cat=lampes">
-          <span class="world__idx">03</span>
-          <span class="world__name" data-i18n="card.lampes.title">Lumière &amp; Lampes</span>
-          <span class="world__go" data-i18n="cat.cta_catalogue">Voir →</span>
-          <span class="world__desc" data-i18n="card.lampes.desc">Abat-jours et lampes pour une lumière douce, le soir venu.</span>
-        </a>
-        <a class="world" href="boutique.html?cat=bureau">
-          <span class="world__idx">04</span>
-          <span class="world__name" data-i18n="card.bureau.title">Bureau &amp; Rangement</span>
-          <span class="world__go" data-i18n="cat.cta_catalogue">Voir →</span>
-          <span class="world__desc" data-i18n="card.bureau.desc">Organiseurs et supports malins pour un espace qui respire.</span>
-        </a>
-        <a class="world" href="boutique.html?cat=gadgets">
-          <span class="world__idx">05</span>
-          <span class="world__name" data-i18n="card.gadgets.title">Gadgets Utiles</span>
-          <span class="world__go" data-i18n="cat.cta_catalogue">Voir →</span>
-          <span class="world__desc" data-i18n="card.gadgets.desc">Les petits objets malins du quotidien, imprimés à la demande.</span>
-        </a>
-        <a class="world" href="mailto:cosyprints.shop@gmail.com">
-          <span class="world__idx">06</span>
-          <span class="world__name" data-i18n="card.custom.title">Sur-mesure</span>
-          <span class="world__go" data-i18n="cat.cta_contact">Nous écrire →</span>
-          <span class="world__desc" data-i18n="card.custom.desc">Une idée en tête ? On l'imprime, dans la couleur que tu veux.</span>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ Atelier ============ -->
-  <section class="section" id="atelier" aria-labelledby="atelier-title">
-    <div class="wrap atelier-grid">
-      <div class="atelier-plate reveal" aria-hidden="true">
-        <div class="atelier-plate__layers"></div>
-        <span class="atelier-plate__tag" data-i18n="atelier.tag">Imprimé couche par couche</span>
-      </div>
-      <div class="atelier-body reveal">
-        <p class="eyebrow eyebrow--accent" data-i18n="atelier.eyebrow">L'atelier</p>
-        <h2 id="atelier-title" data-i18n="atelier.title" style="margin-top:14px;">Imprimé près de Grenoble, à Saint-Martin-d'Uriage.</h2>
-        <p data-i18n="atelier.body1">Chaque pièce est imprimée à la demande, couche après couche, en PLA d'origine végétale. Pas de stock, pas de gaspillage — seulement l'objet que tu as choisi.</p>
-        <p data-i18n="atelier.body2">L'impression 3D, c'est notre méthode. Mais ce qui compte, c'est l'objet : utile, soigné, fait pour durer chez toi.</p>
+      <div>
+        <p class="mark" aria-hidden="true">·</p>
+        <h4 data-i18n="re.4.t">Service humain</h4>
+        <p data-i18n="re.4.d">Réponse sous 24 h ouvrées.</p>
       </div>
     </div>
   </section>
@@ -384,49 +305,31 @@
   <!-- ============ FAQ ============ -->
   <section class="section" aria-labelledby="faq-title">
     <div class="wrap">
-      <div class="section-head reveal">
-        <p class="section-head__index" data-i18n="faq.eyebrow">§ Questions</p>
-        <div><h2 class="section-head__title" id="faq-title" data-i18n="faq.title">Tout ce qu'il faut savoir.</h2></div>
+      <div class="section-head section-head--center reveal">
+        <p class="eyebrow" data-i18n="faq.eyebrow">Bon à savoir</p>
+        <h2 id="faq-title" data-i18n="faq.title">Questions fréquentes</h2>
       </div>
       <div class="faq reveal">
         <details>
-          <summary><span data-i18n="faq.q1">Combien de temps pour recevoir ma commande ?</span><span class="sign" aria-hidden="true">+</span></summary>
-          <div class="ans" data-i18n="faq.a1">Chaque pièce est imprimée à la demande dans notre atelier, puis expédiée via Vinted ou Leboncoin. On te tient au courant à chaque étape.</div>
+          <summary><span data-i18n="faq.q1">Qu'est-ce que le PLA ?</span><span class="sign" aria-hidden="true">+</span></summary>
+          <p class="ans" data-i18n="faq.a1">Le PLA (acide polylactique) est une matière plastique d'origine végétale, généralement issue de l'amidon de maïs. Il est biosourcé, renouvelable et biodégradable en conditions industrielles.</p>
         </details>
         <details>
-          <summary><span data-i18n="faq.q2">En quelle matière imprimez-vous ?</span><span class="sign" aria-hidden="true">+</span></summary>
-          <div class="ans" data-i18n="faq.a2">En filament de qualité, pour des pièces solides et durables. Pour une couleur ou une finition particulière, écris-nous avant de commander.</div>
+          <summary><span data-i18n="faq.q2">Les objets sont-ils résistants ?</span><span class="sign" aria-hidden="true">+</span></summary>
+          <p class="ans" data-i18n="faq.a2">Nos pièces sont conçues pour un usage décoratif et utilitaire quotidien. Le PLA offre une excellente rigidité. Évitez toutefois les températures supérieures à 50 °C (pas de lave-vaisselle).</p>
         </details>
         <details>
-          <summary><span data-i18n="faq.q3">Puis-je commander une pièce sur-mesure ?</span><span class="sign" aria-hidden="true">+</span></summary>
-          <div class="ans" data-i18n="faq.a3">Oui ! Écris-nous à cosyprints.shop@gmail.com avec ton idée, on te dit ce qu'on peut faire.</div>
+          <summary><span data-i18n="faq.q3">Quels sont les délais de fabrication ?</span><span class="sign" aria-hidden="true">+</span></summary>
+          <p class="ans" data-i18n="faq.a3">Chaque pièce est imprimée à la demande. Comptez 3 à 5 jours ouvrés pour la fabrication, puis quelques jours d'expédition via Mondial Relay.</p>
         </details>
         <details>
           <summary><span data-i18n="faq.q4">Comment se passent le paiement et la livraison ?</span><span class="sign" aria-hidden="true">+</span></summary>
-          <div class="ans" data-i18n="faq.a4">Tout passe par Vinted ou Leboncoin : paiement et livraison protégés par les plateformes. Remise en main propre possible à Grenoble via Leboncoin.</div>
+          <p class="ans" data-i18n="faq.a4">Tout passe par Vinted ou Leboncoin : paiement et livraison protégés par les plateformes, sans créer de compte chez nous. Remise en main propre possible autour de Grenoble.</p>
         </details>
         <details>
-          <summary><span data-i18n="faq.q5">Pourquoi acheter sur Vinted ou Leboncoin et pas sur le site ?</span><span class="sign" aria-hidden="true">+</span></summary>
-          <div class="ans" data-i18n="faq.a5">CosyPrints est une vitrine : on vend sur Vinted &amp; Leboncoin pour un paiement et une livraison sécurisés, sans créer de compte.</div>
+          <summary><span data-i18n="faq.q5">Comment entretenir mes objets ?</span><span class="sign" aria-hidden="true">+</span></summary>
+          <p class="ans" data-i18n="faq.a5">Un chiffon doux légèrement humide suffit. Évitez les produits abrasifs, l'exposition prolongée au soleil et les sources de chaleur directe.</p>
         </details>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ Newsletter ============ -->
-  <section class="section news" aria-labelledby="news-title">
-    <div class="wrap news-grid reveal">
-      <div>
-        <p class="eyebrow eyebrow--accent" data-i18n="news.eyebrow">Rester informé</p>
-        <h2 id="news-title" data-i18n="news.title" style="margin-top:14px;">Nouveautés, retours en stock, éditions.</h2>
-        <p data-i18n="news.body">On écrit rarement — seulement quand un nouvel objet sort ou qu'une pièce revient.</p>
-      </div>
-      <div>
-        <form class="news-form" id="newsForm" novalidate>
-          <input type="email" id="newsEmail" name="email" required autocomplete="email" placeholder="ton@email.fr" data-i18n-attr="placeholder:news.placeholder" aria-label="E-mail" />
-          <button type="submit" data-i18n="news.cta">S'inscrire</button>
-        </form>
-        <p class="news-note" id="newsNote" data-i18n="news.note">Pas de spam. Désinscription en un clic.</p>
       </div>
     </div>
   </section>
@@ -438,43 +341,57 @@
   <div class="wrap">
     <div class="footer-grid">
       <div class="footer-brand">
-        <a class="wordmark" href="index.html" translate="no">Cosy<span class="dot">·</span>Prints</a>
-        <p data-i18n="footer.tagline">Impression 3D faite main à Saint-Martin-d'Uriage, près de Grenoble. Site vitrine — toutes les ventes se font sur Vinted &amp; Leboncoin.</p>
-      </div>
-      <div>
-        <h4 data-i18n="footer.explore">Explorer</h4>
-        <div class="footer-list">
-          <a href="boutique.html" data-i18n="nav.catalogue">Catalogue</a>
-          <a href="#univers" data-i18n="nav.univers">Univers</a>
-          <a href="engagement.html" data-i18n="nav.engagement">Notre engagement</a>
+        <h3 translate="no">CosyPrints</h3>
+        <p data-i18n="footer.tagline">Une nouvelle vision de l'objet quotidien. Imaginé et fabriqué avec soin près de Grenoble — toutes les ventes se font sur Vinted &amp; Leboncoin.</p>
+        <div class="footer-social">
+          <a href="https://www.vinted.fr/member/60879390-cosyprints" target="_blank" rel="noopener">Vinted</a>
+          <a href="https://www.leboncoin.fr/profil/0408d333-46e3-4487-b2f3-4743fd34c872" target="_blank" rel="noopener">Leboncoin</a>
         </div>
       </div>
-      <div>
-        <h4 data-i18n="footer.contact">Contact</h4>
-        <div class="footer-list">
-          <a href="mailto:cosyprints.shop@gmail.com">cosyprints.shop@gmail.com</a>
-          <a href="https://www.vinted.fr/member/60879390-cosyprints" target="_blank" rel="noopener">Vinted ↗</a>
-          <a href="https://www.leboncoin.fr/profil/0408d333-46e3-4487-b2f3-4743fd34c872" target="_blank" rel="noopener">Leboncoin ↗</a>
+      <div class="footer-cols">
+        <div>
+          <h4 data-i18n="footer.shop">Boutique</h4>
+          <ul>
+            <li><a href="boutique.html" data-i18n="footer.all">Tout voir</a></li>
+            <li><a href="boutique.html?cat=homie-vibe" data-i18n="card.homie.title">Homie Vibe</a></li>
+            <li><a href="boutique.html?cat=lampes" data-i18n="card.lampes.title">Lumière &amp; Lampes</a></li>
+            <li><a href="boutique.html?cat=bureau" data-i18n="card.bureau.title">Bureau &amp; Rangement</a></li>
+            <li><a href="boutique.html?cat=gadgets" data-i18n="card.gadgets.title">Gadgets Utiles</a></li>
+          </ul>
         </div>
+        <div>
+          <h4 data-i18n="footer.help">Aide</h4>
+          <ul>
+            <li><a href="#faq-title" data-i18n="footer.faq">FAQ</a></li>
+            <li><a href="engagement.html" data-i18n="nav.engagement">Notre engagement</a></li>
+            <li><a href="mailto:cosyprints.shop@gmail.com" data-i18n="nav.contact">Contact</a></li>
+            <li><a href="https://www.vinted.fr/member/60879390-cosyprints" target="_blank" rel="noopener" data-i18n="footer.delivery">Livraison via Vinted</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-news">
+        <h4 data-i18n="news.title">Newsletter</h4>
+        <p data-i18n="news.body">Inscrivez-vous pour suivre nos nouvelles collections et les coulisses de l'atelier.</p>
+        <form class="news-form" id="newsForm" novalidate>
+          <input type="email" id="newsEmail" name="email" required autocomplete="email" placeholder="votre@email.com" data-i18n-attr="placeholder:news.placeholder" aria-label="E-mail" />
+          <button type="submit" data-i18n="news.cta">S'inscrire</button>
+        </form>
+        <p class="news-note" id="newsNote" data-i18n="news.note">Pas de spam. Désinscription en un clic.</p>
       </div>
     </div>
     <div class="footer-bottom">
-      <span data-i18n="footer.copyright">© 2026 CosyPrints — Saint-Martin-d'Uriage, France</span>
-      <span data-i18n="footer.madein">Imprimé à la demande · PLA végétal</span>
+      <p data-i18n="footer.copyright">© 2026 CosyPrints. Tous droits réservés.</p>
+      <p data-i18n="footer.madein">Fabriqué avec soin près de Grenoble.</p>
     </div>
   </div>
 </footer>
 
 <script>
-  // Reveal on scroll — calm, with a short stagger between siblings.
+  // Reveal on scroll — calm, once per element.
   (function () {
     if (!('IntersectionObserver' in window)) { document.querySelectorAll('.reveal').forEach(function (e) { e.classList.add('in'); }); return; }
     var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        e.target.classList.add('in');
-        io.unobserve(e.target);
-      });
+      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
     }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
     document.querySelectorAll('.reveal').forEach(function (e) { io.observe(e); });
   })();
@@ -492,6 +409,21 @@
     btn.addEventListener('click', function () { setOpen(btn.getAttribute('aria-expanded') !== 'true'); });
     nav.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { setOpen(false); }); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setOpen(false); });
+  })();
+
+  // Featured placeholder cards → shared cart drawer.
+  (function () {
+    document.getElementById('featured').addEventListener('click', function (e) {
+      var b = e.target.closest('[data-feat-add]');
+      if (!b || !window.CosyCart) return;
+      var card = b.closest('.pcard');
+      CosyCart.add({
+        id: b.getAttribute('data-feat-add'),
+        name: card.querySelector('.pcard__name').textContent,
+        price: parseFloat(b.getAttribute('data-price')) || 0,
+        url: ''
+      });
+    });
   })();
 
   // Newsletter — no backend yet (Phase 2). Gracefully fall back to a prefilled email.
