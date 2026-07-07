@@ -183,45 +183,45 @@
         <article class="pcard">
           <div class="pcard__media">
             <img src="assets/img/prod-corbeille.svg" alt="" width="600" height="750" loading="lazy" />
+            <span class="pcard__tag pcard__tag--soon" data-i18n="sel.soon">Bientôt</span>
           </div>
           <h3 class="pcard__name" data-i18n="sel.p1.name">Corbeille Onde</h3>
           <p class="pcard__desc" data-i18n="sel.p1.detail">Olive mat · Taille L</p>
-          <p class="pcard__price">42,00&nbsp;€</p>
           <div class="pcard__actions">
-            <button class="pcard__add" type="button" data-feat-add="corbeille-onde" data-price="42" data-i18n="sel.add">Ajouter au panier</button>
+            <span class="pcard__go" style="text-decoration:none;color:var(--sage-deep)" data-i18n="sel.soon_note">En stock bientôt</span>
           </div>
         </article>
         <article class="pcard">
           <div class="pcard__media">
             <img src="assets/img/prod-lampe.svg" alt="" width="600" height="750" loading="lazy" />
+            <span class="pcard__tag pcard__tag--soon" data-i18n="sel.soon">Bientôt</span>
           </div>
           <h3 class="pcard__name" data-i18n="sel.p2.name">Lampe Prisme</h3>
           <p class="pcard__desc" data-i18n="sel.p2.detail">Blanc cassé · LED incluse</p>
-          <p class="pcard__price">85,00&nbsp;€</p>
           <div class="pcard__actions">
-            <button class="pcard__add" type="button" data-feat-add="lampe-prisme" data-price="85" data-i18n="sel.add">Ajouter au panier</button>
+            <span class="pcard__go" style="text-decoration:none;color:var(--sage-deep)" data-i18n="sel.soon_note">En stock bientôt</span>
           </div>
         </article>
         <article class="pcard">
           <div class="pcard__media">
             <img src="assets/img/prod-pateres.svg" alt="" width="600" height="750" loading="lazy" />
+            <span class="pcard__tag pcard__tag--soon" data-i18n="sel.soon">Bientôt</span>
           </div>
           <h3 class="pcard__name" data-i18n="sel.p3.name">Lot de 3 Patères Galet</h3>
           <p class="pcard__desc" data-i18n="sel.p3.detail">Sauge mat · Fixations incluses</p>
-          <p class="pcard__price">38,00&nbsp;€</p>
           <div class="pcard__actions">
-            <button class="pcard__add" type="button" data-feat-add="pateres-galet" data-price="38" data-i18n="sel.add">Ajouter au panier</button>
+            <span class="pcard__go" style="text-decoration:none;color:var(--sage-deep)" data-i18n="sel.soon_note">En stock bientôt</span>
           </div>
         </article>
         <article class="pcard">
           <div class="pcard__media">
             <img src="assets/img/prod-cachepot.svg" alt="" width="600" height="750" loading="lazy" />
+            <span class="pcard__tag pcard__tag--soon" data-i18n="sel.soon">Bientôt</span>
           </div>
           <h3 class="pcard__name" data-i18n="sel.p4.name">Cache-pot Dune</h3>
           <p class="pcard__desc" data-i18n="sel.p4.detail">Sable · Ø 15 cm</p>
-          <p class="pcard__price">29,00&nbsp;€</p>
           <div class="pcard__actions">
-            <button class="pcard__add" type="button" data-feat-add="cache-pot-dune" data-price="29" data-i18n="sel.add">Ajouter au panier</button>
+            <span class="pcard__go" style="text-decoration:none;color:var(--sage-deep)" data-i18n="sel.soon_note">En stock bientôt</span>
           </div>
         </article>
       </div>
@@ -409,21 +409,6 @@
     btn.addEventListener('click', function () { setOpen(btn.getAttribute('aria-expanded') !== 'true'); });
     nav.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { setOpen(false); }); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setOpen(false); });
-  })();
-
-  // Featured placeholder cards → shared cart drawer.
-  (function () {
-    document.getElementById('featured').addEventListener('click', function (e) {
-      var b = e.target.closest('[data-feat-add]');
-      if (!b || !window.CosyCart) return;
-      var card = b.closest('.pcard');
-      CosyCart.add({
-        id: b.getAttribute('data-feat-add'),
-        name: card.querySelector('.pcard__name').textContent,
-        price: parseFloat(b.getAttribute('data-price')) || 0,
-        url: ''
-      });
-    });
   })();
 
   // Newsletter — no backend yet (Phase 2). Gracefully fall back to a prefilled email.

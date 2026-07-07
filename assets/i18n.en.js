@@ -62,7 +62,8 @@ window.CP_EN = {
   /* ---- Featured selection (placeholder pieces) ---- */
   'sel.eyebrow': 'Selection',
   'sel.title': 'Essentials of the moment',
-  'sel.add': 'Add to cart',
+  'sel.soon': 'Soon',
+  'sel.soon_note': 'In stock soon',
   'sel.p1.name': 'Onde basket',
   'sel.p1.detail': 'Matte olive · Size L',
   'sel.p2.name': 'Prisme lamp',
