@@ -1,0 +1,23 @@
+{
+  "name": "cosyprints-studio",
+  "private": true,
+  "version": "1.0.0",
+  "description": "CosyPrints content Studio (Sanity). Editors manage products, homepage, donations, FAQ.",
+  "type": "module",
+  "scripts": {
+    "dev": "sanity dev",
+    "build": "sanity build",
+    "deploy": "sanity deploy",
+    "start": "sanity start"
+  },
+  "dependencies": {
+    "@sanity/vision": "^3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "sanity": "^3",
+    "styled-components": "^6"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0"
+  }
+}

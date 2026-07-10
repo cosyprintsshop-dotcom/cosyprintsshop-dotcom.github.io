@@ -7,9 +7,14 @@
     "node": ">=18"
   },
   "scripts": {
+    "import:sanity": "node scripts/fetch-sanity.js",
     "import:leboncoin": "node scripts/import-leboncoin.js",
     "import:vinted": "node scripts/import-vinted.js",
-    "sync:catalog": "node scripts/import-leboncoin.js && node scripts/import-vinted.js && node scripts/sync-catalog.js",
+    "sync:catalog": "node scripts/fetch-sanity.js && node scripts/import-leboncoin.js && node scripts/import-vinted.js && node scripts/sync-catalog.js",
+    "build": "npm run sync:catalog",
     "dev": "node scripts/dev-server.js"
+  },
+  "dependencies": {
+    "@sanity/client": "^6.21.0"
   }
 }
