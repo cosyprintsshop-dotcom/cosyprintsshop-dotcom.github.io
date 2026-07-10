@@ -8,6 +8,7 @@
   },
   "scripts": {
     "import:sanity": "node scripts/fetch-sanity.js",
+    "seed:sanity": "node scripts/seed-sanity.js",
     "import:leboncoin": "node scripts/import-leboncoin.js",
     "import:vinted": "node scripts/import-vinted.js",
     "sync:catalog": "node scripts/fetch-sanity.js && node scripts/import-leboncoin.js && node scripts/import-vinted.js && node scripts/sync-catalog.js",

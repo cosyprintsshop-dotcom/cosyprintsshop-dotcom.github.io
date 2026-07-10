@@ -23,6 +23,19 @@ npm run dev               # http://localhost:3333 — the editor, running locall
 npx sanity deploy         # publish the editor to https://<name>.sanity.studio
 ```
 
+## Seed today's content (one time)
+
+After `sanity init`, mirror the current live site into the CMS. Create an **Editor**
+token at sanity.io/manage → API → Tokens, then from the **site root**:
+
+```bash
+SANITY_PROJECT_ID=<id> SANITY_WRITE_TOKEN=<token> npm run seed:sanity
+```
+
+This uploads the current images and creates the categories, four "Bientôt" products,
+FAQ, the 40% / €0 / 0 g impact figures, settings, and homepage. It's idempotent —
+safe to re-run. Then open the Studio and **Publier**.
+
 ## Wire the build (site repo root)
 
 The build script reads two env vars. Set them locally and in Cloudflare Pages:
