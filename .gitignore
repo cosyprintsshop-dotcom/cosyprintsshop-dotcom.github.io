@@ -1,0 +1,5 @@
+# Dependencies (installed by the build; not committed)
+node_modules/
+
+# OS / editor noise
+.DS_Store

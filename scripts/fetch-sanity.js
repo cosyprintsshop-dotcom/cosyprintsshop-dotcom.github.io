@@ -23,7 +23,9 @@ if (!projectId) {
 
 // Imported dynamically so the build works even before `npm install` adds the dep.
 const {createClient} = await import('@sanity/client');
-const client = createClient({projectId, dataset, apiVersion: '2024-01-01', useCdn: true});
+// useCdn:false — builds must read live, so a publish-triggered rebuild never
+// fetches a stale (cached) value of the edit that triggered it.
+const client = createClient({projectId, dataset, apiVersion: '2024-01-01', useCdn: false});
 
 /* Exclude drafts: a content edit stays invisible on the site until Publish. */
 const NOT_DRAFT = '!(_id in path("drafts.**"))';

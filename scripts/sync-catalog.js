@@ -91,6 +91,21 @@ function main() {
   fs.writeFileSync(PRODUCTS_JS, js, 'utf8');
 
   console.log(`catalog: ${merged.length} item(s) → data/catalog.json + assets/products.js`);
+
+  // CMS content (homepage/impact/FAQ/settings from Sanity) → assets/content.js (window.CP_CONTENT).
+  const CONTENT_JSON = path.join(DATA_DIR, 'content.json');
+  if (fs.existsSync(CONTENT_JSON)) {
+    const content = readJsonIfExists(CONTENT_JSON) || {};
+    const contentBanner =
+      '/* AUTO-GENERATED from Sanity by scripts/fetch-sanity.js — DO NOT EDIT.\n' +
+      '   Source of truth: the CosyPrints Studio (cosyprints.sanity.studio). */\n';
+    fs.writeFileSync(
+      path.join(ROOT, 'assets', 'content.js'),
+      `${contentBanner}window.CP_CONTENT = ${JSON.stringify(content, null, 2)};\n`,
+      'utf8',
+    );
+    console.log('content: assets/content.js written');
+  }
 }
 
 main();
