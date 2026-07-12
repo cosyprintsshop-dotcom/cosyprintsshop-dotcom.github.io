@@ -6,18 +6,24 @@
                           normalizes/dedupes/timestamps them like every other source.
      data/content.json  → homepage, impact, FAQ, site settings (for page rendering).
 
-   Runs at build time (Cloudflare Pages) and locally. Requires SANITY_PROJECT_ID.
-   When it is unset (e.g. before the Sanity project exists), this exits 0 and
+   Runs at build time (Cloudflare Pages) and locally. Needs the Sanity project
+   id: SANITY_PROJECT_ID, or the Studio's SANITY_STUDIO_PROJECT_ID (read from
+   studio/.env locally via loadEnv). When neither is set, this exits 0 and
    writes nothing, so the site still builds from the existing manual sources.
+   A SANITY_API_TOKEN is only needed for private/draft content — published
+   content is public and served from the CDN without one.
    ========================================================================== */
 import path from 'node:path';
 import {DATA_DIR, writeJson} from './lib/normalize.js';
+import {loadEnv} from './lib/env.js';
 
-const projectId = process.env.SANITY_PROJECT_ID;
-const dataset = process.env.SANITY_DATASET || 'production';
+loadEnv();
+const projectId = process.env.SANITY_PROJECT_ID || process.env.SANITY_STUDIO_PROJECT_ID;
+const dataset = process.env.SANITY_DATASET || process.env.SANITY_STUDIO_DATASET || 'production';
+const token = process.env.SANITY_API_TOKEN;
 
 if (!projectId) {
-  console.log('fetch-sanity: SANITY_PROJECT_ID not set — skipping (no Sanity source yet).');
+  console.log('fetch-sanity: no SANITY_PROJECT_ID / SANITY_STUDIO_PROJECT_ID — skipping (no Sanity source yet).');
   process.exit(0);
 }
 
@@ -25,7 +31,14 @@ if (!projectId) {
 const {createClient} = await import('@sanity/client');
 // useCdn:false — builds must read live, so a publish-triggered rebuild never
 // fetches a stale (cached) value of the edit that triggered it.
-const client = createClient({projectId, dataset, apiVersion: '2024-01-01', useCdn: false});
+// token is passed only when set (needed for a private dataset / drafts).
+const client = createClient({
+  projectId,
+  dataset,
+  apiVersion: '2024-01-01',
+  useCdn: false,
+  ...(token ? {token} : {}),
+});
 
 /* Exclude drafts: a content edit stays invisible on the site until Publish. */
 const NOT_DRAFT = '!(_id in path("drafts.**"))';
@@ -41,8 +54,10 @@ const blocksToText = (blocks = []) =>
     .join('\n\n')
     .trim();
 
-/* Sanity availability → the site's canonical status vocabulary. */
-const STATUS = {available: 'active', coming_soon: 'coming_soon', sold_out: 'sold_out'};
+/* Sanity availability (schema: available|coming_soon|sold_out) → the vocabulary
+   boutique.html actually renders: 'active' (buyable), 'soon' (Bientôt tag),
+   'sold' (Vendu tag). Keep these values in step with the checks in boutique.html. */
+const STATUS = {available: 'active', coming_soon: 'soon', sold_out: 'sold'};
 
 async function main() {
   const products = await client.fetch(
