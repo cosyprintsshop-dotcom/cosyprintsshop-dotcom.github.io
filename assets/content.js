@@ -1,0 +1,100 @@
+/* AUTO-GENERATED from Sanity by scripts/fetch-sanity.js — DO NOT EDIT.
+   Source of truth: the CosyPrints Studio (cosyprints.sanity.studio). */
+window.CP_CONTENT = {
+  "settings": {
+    "_createdAt": "2026-07-10T23:44:22Z",
+    "_id": "siteSettings",
+    "_rev": "QTr3kVZCMN1aKHEp8Dc9mx",
+    "_type": "siteSettings",
+    "_updatedAt": "2026-07-10T23:44:22Z",
+    "contactEmail": "cosyprints.shop@gmail.com",
+    "social": {
+      "leboncoin": "https://www.leboncoin.fr/profil/0408d333-46e3-4487-b2f3-4743fd34c872",
+      "vinted": "https://www.vinted.fr/member/60879390-cosyprints"
+    }
+  },
+  "homepage": {
+    "featured": [
+      {
+        "name": "Corbeille Onde",
+        "slug": "corbeille-onde"
+      },
+      {
+        "name": "Lampe Prisme",
+        "slug": "lampe-prisme"
+      },
+      {
+        "name": "Lot de 3 Patères Galet",
+        "slug": "pateres-galet"
+      },
+      {
+        "name": "Cache-pot Dune",
+        "slug": "cache-pot-dune"
+      }
+    ],
+    "heroEyebrow": "Atelier près de Grenoble — Imprimé à la demande",
+    "heroImage": "https://cdn.sanity.io/images/1qw286fu/production/80da4c4d65d621459c0e0120ca9b80f4bec1634f-1080x1350.jpg?w=1200&auto=format&fit=max",
+    "heroLede": "Des objets de maison en PLA végétal, dessinés et imprimés à la demande dans notre atelier de Saint-Martin-d’Uriage. Pour un quotidien plus doux, sans surstock ni compromis.",
+    "heroTitle": "Le beau, utile et raisonné.",
+    "sections": {
+      "atelier": true,
+      "categories": true,
+      "demarche": true,
+      "engagement": true,
+      "faq": true
+    }
+  },
+  "impact": {
+    "_createdAt": "2026-07-10T23:44:21Z",
+    "_id": "impact",
+    "_rev": "n2jKNmhOULls857Kr8Ope6",
+    "_system": {
+      "base": {
+        "id": "impact",
+        "rev": "RYh7HG0dvWKV5QWecXFiz9"
+      }
+    },
+    "_type": "impact",
+    "_updatedAt": "2026-07-12T15:07:40Z",
+    "causes": [
+      {
+        "_key": "cancer",
+        "body": "5 % de chaque vente finance la recherche contre le cancer, en mémoire de ceux qu’on a perdus.",
+        "share": 5,
+        "title": "Recherche contre le cancer"
+      },
+      {
+        "_key": "ocean",
+        "body": "5 % finance des initiatives certifiées de collecte du plastique en mer — parce que notre matière vient de la terre.",
+        "share": 5,
+        "title": "Dépollution des océans"
+      }
+    ],
+    "donationsRaised": 0,
+    "lastUpdated": "2026-07-12",
+    "percentage": 10,
+    "plasticRemoved": 0
+  },
+  "faqs": [
+    {
+      "question": "Qu’est-ce que le PLA ?",
+      "answer": "Le PLA (acide polylactique) est une matière plastique d’origine végétale, généralement issue de l’amidon de maïs. Il est biosourcé, renouvelable et biodégradable en conditions industrielles."
+    },
+    {
+      "question": "Les objets sont-ils résistants ?",
+      "answer": "Nos pièces sont conçues pour un usage décoratif et utilitaire quotidien. Le PLA offre une excellente rigidité. Évitez toutefois les températures supérieures à 50 °C (pas de lave-vaisselle)."
+    },
+    {
+      "question": "Quels sont les délais de fabrication ?",
+      "answer": "Chaque pièce est imprimée à la demande. Comptez 3 à 5 jours ouvrés pour la fabrication, puis quelques jours d’expédition via Mondial Relay."
+    },
+    {
+      "question": "Comment se passent le paiement et la livraison ?",
+      "answer": "Tout passe par Vinted ou Leboncoin : paiement et livraison protégés par les plateformes, sans créer de compte chez nous. Remise en main propre possible autour de Grenoble."
+    },
+    {
+      "question": "Comment entretenir mes objets ?",
+      "answer": "Un chiffon doux légèrement humide suffit. Évitez les produits abrasifs, l’exposition prolongée au soleil et les sources de chaleur directe."
+    }
+  ]
+};

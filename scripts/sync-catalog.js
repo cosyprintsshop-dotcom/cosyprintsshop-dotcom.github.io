@@ -23,8 +23,10 @@ import {
 const CATALOG_FILE = path.join(DATA_DIR, 'catalog.json');
 const PRODUCTS_JS = path.join(ROOT, 'assets', 'products.js');
 
-/* Merge priority: hand-curated entries beat platform imports. */
+/* Merge priority: Sanity (the CMS) wins, then hand-curated, then platform imports.
+   The Sanity entry is a no-op until scripts/fetch-sanity.js has written data/sanity.json. */
 const SOURCES = [
+  { source: 'sanity', load: () => { const f = path.join(DATA_DIR, 'sanity.json'); return fs.existsSync(f) ? readManualFile(f).items.map((r) => normalizeItem(r, 'sanity')).filter(Boolean) : null; } },
   { source: 'manual', load: () => readManualFile(path.join(DATA_DIR, 'manual.json')).items.map((r) => normalizeItem(r, 'manual')).filter(Boolean) },
   { source: 'vinted', load: () => (readJsonIfExists(path.join(DATA_DIR, 'vinted.json'))?.items) ?? null },
   { source: 'leboncoin', load: () => (readJsonIfExists(path.join(DATA_DIR, 'leboncoin.json'))?.items) ?? null }
@@ -89,6 +91,21 @@ function main() {
   fs.writeFileSync(PRODUCTS_JS, js, 'utf8');
 
   console.log(`catalog: ${merged.length} item(s) → data/catalog.json + assets/products.js`);
+
+  // CMS content (homepage/impact/FAQ/settings from Sanity) → assets/content.js (window.CP_CONTENT).
+  const CONTENT_JSON = path.join(DATA_DIR, 'content.json');
+  if (fs.existsSync(CONTENT_JSON)) {
+    const content = readJsonIfExists(CONTENT_JSON) || {};
+    const contentBanner =
+      '/* AUTO-GENERATED from Sanity by scripts/fetch-sanity.js — DO NOT EDIT.\n' +
+      '   Source of truth: the CosyPrints Studio (cosyprints.sanity.studio). */\n';
+    fs.writeFileSync(
+      path.join(ROOT, 'assets', 'content.js'),
+      `${contentBanner}window.CP_CONTENT = ${JSON.stringify(content, null, 2)};\n`,
+      'utf8',
+    );
+    console.log('content: assets/content.js written');
+  }
 }
 
 main();

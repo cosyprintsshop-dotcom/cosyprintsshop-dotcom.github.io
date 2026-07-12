@@ -87,7 +87,7 @@
     <div class="wrap reveal">
       <p class="eyebrow" data-i18n="eng.imp_eyebrow">Impact total</p>
       <div class="mission-head" style="margin-top:20px;">
-        <p class="mission-figure"><span data-countup="40">40</span>&nbsp;%</p>
+        <p class="mission-figure"><span data-countup="40" data-cms="impact.percentage">40</span>&nbsp;%</p>
         <h2 id="impact-title" style="margin-top:18px;" data-i18n="eng.imp_title">de chaque vente, <em>reversés</em> à nos deux causes.</h2>
       </div>
       <div class="mission-grid">
@@ -104,8 +104,8 @@
       </div>
       <div class="mission-stats">
         <span data-i18n="eng.imp_since">Depuis l'ouverture :</span>
-        <span><span data-i18n="eng.imp_k1">Dons recherche</span> — <b>0&nbsp;€</b></span>
-        <span><span data-i18n="eng.imp_k2">Plastique retiré</span> — <b>0&nbsp;g</b></span>
+        <span><span data-i18n="eng.imp_k1">Dons recherche</span> — <b data-cms="impact.donationsRaised">0&nbsp;€</b></span>
+        <span><span data-i18n="eng.imp_k2">Plastique retiré</span> — <b data-cms="impact.plasticRemoved">0&nbsp;g</b></span>
       </div>
     </div>
   </section>
@@ -244,6 +244,10 @@
 <!-- Bilingual layer (FR source in the HTML, EN from the dictionary) -->
 <script src="assets/i18n.en.js"></script>
 <script src="assets/i18n.js"></script>
+
+<!-- CMS render layer (Sanity → impact figures). No-op if content.js is absent. -->
+<script src="assets/content.js"></script>
+<script src="assets/cms.js"></script>
 
 </body>
 </html>

@@ -1,4 +1,101 @@
 {
-  "count": 0,
-  "items": []
+  "count": 4,
+  "items": [
+    {
+      "id": "sanity-cache-pot-dune",
+      "source": "sanity",
+      "source_url": null,
+      "source_platform_id": null,
+      "title_fr": "Cache-pot Dune",
+      "title_en": null,
+      "desc_fr": "Sable · Ø 15 cm",
+      "desc_en": null,
+      "price": null,
+      "currency": "EUR",
+      "img": "https://cdn.sanity.io/images/1qw286fu/production/b3acff25d28ce4612ad64fb5255a894b7a1ef6e7-800x1000.jpg?w=1000&auto=format&fit=max",
+      "images": [
+        "https://cdn.sanity.io/images/1qw286fu/production/b3acff25d28ce4612ad64fb5255a894b7a1ef6e7-800x1000.jpg?w=1000&auto=format&fit=max"
+      ],
+      "category": "homie-vibe",
+      "badge": null,
+      "status": "soon",
+      "platform": "sanity",
+      "location": null,
+      "material": null,
+      "created_at": "2026-07-12",
+      "updated_at": "2026-07-12"
+    },
+    {
+      "id": "sanity-corbeille-onde",
+      "source": "sanity",
+      "source_url": null,
+      "source_platform_id": null,
+      "title_fr": "Corbeille Onde",
+      "title_en": null,
+      "desc_fr": "Olive mat · Taille L",
+      "desc_en": null,
+      "price": null,
+      "currency": "EUR",
+      "img": "https://cdn.sanity.io/images/1qw286fu/production/b2c878bf0ccd323c04a482d91376e9c4d5fabbc8-800x1000.jpg?w=1000&auto=format&fit=max",
+      "images": [
+        "https://cdn.sanity.io/images/1qw286fu/production/b2c878bf0ccd323c04a482d91376e9c4d5fabbc8-800x1000.jpg?w=1000&auto=format&fit=max"
+      ],
+      "category": "homie-vibe",
+      "badge": null,
+      "status": "soon",
+      "platform": "sanity",
+      "location": null,
+      "material": null,
+      "created_at": "2026-07-12",
+      "updated_at": "2026-07-12"
+    },
+    {
+      "id": "sanity-lampe-prisme",
+      "source": "sanity",
+      "source_url": null,
+      "source_platform_id": null,
+      "title_fr": "Lampe Prisme",
+      "title_en": null,
+      "desc_fr": "Blanc cassé · LED incluse",
+      "desc_en": null,
+      "price": null,
+      "currency": "EUR",
+      "img": "https://cdn.sanity.io/images/1qw286fu/production/108f8b9624057f5d08b49c92ee6f2c48ee782798-800x1000.jpg?w=1000&auto=format&fit=max",
+      "images": [
+        "https://cdn.sanity.io/images/1qw286fu/production/108f8b9624057f5d08b49c92ee6f2c48ee782798-800x1000.jpg?w=1000&auto=format&fit=max"
+      ],
+      "category": "lampes",
+      "badge": null,
+      "status": "soon",
+      "platform": "sanity",
+      "location": null,
+      "material": null,
+      "created_at": "2026-07-12",
+      "updated_at": "2026-07-12"
+    },
+    {
+      "id": "sanity-pateres-galet",
+      "source": "sanity",
+      "source_url": null,
+      "source_platform_id": null,
+      "title_fr": "Lot de 3 Patères Galet",
+      "title_en": null,
+      "desc_fr": "Sauge mat · Fixations incluses",
+      "desc_en": null,
+      "price": null,
+      "currency": "EUR",
+      "img": "https://cdn.sanity.io/images/1qw286fu/production/36f360f0ab0dacffadd81fa6c23d20522a0d5418-800x1000.jpg?w=1000&auto=format&fit=max",
+      "images": [
+        "https://cdn.sanity.io/images/1qw286fu/production/36f360f0ab0dacffadd81fa6c23d20522a0d5418-800x1000.jpg?w=1000&auto=format&fit=max"
+      ],
+      "category": "homie-vibe",
+      "badge": null,
+      "status": "soon",
+      "platform": "sanity",
+      "location": null,
+      "material": null,
+      "created_at": "2026-07-12",
+      "updated_at": "2026-07-12"
+    }
+  ]
 }
