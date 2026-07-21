@@ -47,7 +47,7 @@ window.CP_CONTENT = {
   "impact": {
     "_createdAt": "2026-07-10T23:44:21Z",
     "_id": "impact",
-    "_rev": "n2jKNmhOULls857Kr8Ope6",
+    "_rev": "QTr3kVZCMN1aKHEp8EmITP",
     "_system": {
       "base": {
         "id": "impact",
