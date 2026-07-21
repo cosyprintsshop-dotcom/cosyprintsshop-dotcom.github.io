@@ -1,0 +1,50 @@
+name: Rebuild site from Sanity
+
+# Keeps cosyprints.com in sync with the CosyPrints Studio without moving hosting.
+# The site stays on GitHub Pages (deploy-from-main); this job regenerates the
+# CMS-driven files and commits them, which Pages then republishes.
+on:
+  workflow_dispatch: {}          # manual "Run workflow" button (instant rebuild)
+  schedule:
+    - cron: '*/15 * * * *'       # every 15 min: picks up anything you Published
+  push:
+    branches: [main]
+    paths-ignore:                # don't loop on the files this job itself writes
+      - 'assets/products.js'
+      - 'assets/content.js'
+      - 'data/catalog.json'
+      - 'data/sanity.json'
+      - 'data/content.json'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: rebuild-site
+  cancel-in-progress: false
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - run: npm install --no-audit --no-fund
+      - name: Build from Sanity
+        run: npm run build
+        env:
+          SANITY_PROJECT_ID: 1qw286fu   # public project id — safe to commit
+          SANITY_DATASET: production
+      - name: Commit regenerated content (only if it changed)
+        run: |
+          git config user.name "cosyprints-bot"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add assets/products.js assets/content.js data/catalog.json data/sanity.json data/content.json
+          if git diff --staged --quiet; then
+            echo "No content changes — nothing to publish."
+          else
+            git commit -m "Rebuild site content from Sanity [skip ci]"
+            git push
+          fi
