@@ -86,9 +86,9 @@ window.CP_EN = {
   'mission.eyebrow': 'Our pledge',
   'mission.title': 'of every sale, <em>given</em> to two causes close to our hearts.',
   'mission.p1.t': '01. Cancer research',
-  'mission.p1.b': "20% of every sale funds cancer research, in memory of those we've lost.",
+  'mission.p1.b': "5% of every sale funds cancer research, in memory of those we've lost.",
   'mission.p2.t': '02. Ocean cleanup',
-  'mission.p2.b': '20% funds certified ocean plastic removal initiatives — because our material comes from the earth.',
+  'mission.p2.b': '5% funds certified ocean plastic removal initiatives — because our material comes from the earth.',
   'mission.since': 'Since we opened:',
   'mission.k1': 'Research donations',
   'mission.k2': 'Plastic removed',
@@ -149,7 +149,7 @@ window.CP_EN = {
 
   /* ---- Engagement / pledge page (engagement.html) ---- */
   'meta.title.engagement': 'Our pledge — CosyPrints',
-  'meta.description.engagement': 'At CosyPrints, 40% of every sale supports the fight against cancer and the cleanup of ocean plastic. A commitment close to our hearts.',
+  'meta.description.engagement': 'At CosyPrints, 10% of every sale supports the fight against cancer and the cleanup of ocean plastic. A commitment close to our hearts.',
   'eng.eyebrow': 'Beyond the objects',
   'eng.h1': 'Our pledge',
   'eng.sub': 'We give part of every sale to two causes that matter to us.',
