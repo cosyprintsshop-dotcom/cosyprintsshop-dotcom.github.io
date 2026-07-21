@@ -211,3 +211,54 @@
     els.forEach(function (el) { io.observe(el); });
   })();
 })();
+
+/* ==========================================================================
+   Shared page behaviour — consolidated here so index/boutique/engagement no
+   longer duplicate these IIFEs inline. Each one guards for the elements it
+   needs, so it is a silent no-op on any page that lacks them. site.js loads on
+   every page (before the i18n layer), which is why this is the right home.
+   ========================================================================== */
+
+/* Reveal on scroll — calm, once per element. */
+(function () {
+  if (!('IntersectionObserver' in window)) {
+    document.querySelectorAll('.reveal').forEach(function (e) { e.classList.add('in'); });
+    return;
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+  document.querySelectorAll('.reveal').forEach(function (e) { io.observe(e); });
+})();
+
+/* Mobile menu drawer. */
+(function () {
+  var btn = document.getElementById('menuBtn');
+  var nav = document.getElementById('mobileNav');
+  if (!btn || !nav) return;
+  var setOpen = function (open) {
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    btn.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
+    nav.classList.toggle('is-open', open);
+  };
+  btn.addEventListener('click', function () { setOpen(btn.getAttribute('aria-expanded') !== 'true'); });
+  nav.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { setOpen(false); }); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setOpen(false); });
+})();
+
+/* Newsletter — no backend yet (Phase 2). Falls back to a prefilled email. */
+(function () {
+  var form = document.getElementById('newsForm');
+  var note = document.getElementById('newsNote');
+  if (!form) return;
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var email = document.getElementById('newsEmail').value.trim();
+    if (!email || email.indexOf('@') === -1) { document.getElementById('newsEmail').focus(); return; }
+    var en = document.documentElement.getAttribute('lang') === 'en';
+    var subject = encodeURIComponent(en ? 'Newsletter sign-up' : 'Inscription newsletter');
+    var body = encodeURIComponent((en ? 'Please add me to the list: ' : 'Ajoutez-moi à la liste : ') + email);
+    window.location.href = 'mailto:cosyprints.shop@gmail.com?subject=' + subject + '&body=' + body;
+    if (note) note.textContent = en ? 'Opening your email app…' : 'Ouverture de ta messagerie…';
+  });
+})();
