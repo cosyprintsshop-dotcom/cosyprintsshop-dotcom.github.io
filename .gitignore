@@ -4,15 +4,11 @@ node_modules/
 # OS / editor noise
 .DS_Store
 
-# Local env — the Sanity project id lives in studio/.env (gitignored there too);
-# set SANITY_PROJECT_ID / SANITY_DATASET in the host (Cloudflare Pages) dashboard.
+# Local env — the Sanity project id lives in studio/.env (gitignored there too).
+# In CI it's the public SANITY_PROJECT_ID in .github/workflows/rebuild.yml (no secret).
 .env
 .env.local
 
 # Sanity Studio build artifacts
 studio/dist/
 studio/.sanity/
-
-# Stray duplicate Studio from an accidental `sanity init` — real one is studio/.
-# Safe to delete the studioy/ folder entirely.
-studioy/
