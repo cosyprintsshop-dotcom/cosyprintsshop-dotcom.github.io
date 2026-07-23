@@ -1,0 +1,5 @@
+# Cosy Prints — security contact (RFC 9116)
+Contact: mailto:cosyprints.shop@gmail.com
+Expires: 2027-07-22T23:59:59.000Z
+Preferred-Languages: fr, en
+Canonical: https://cosyprints.com/.well-known/security.txt
