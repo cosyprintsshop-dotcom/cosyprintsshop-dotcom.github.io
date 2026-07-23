@@ -106,7 +106,18 @@ async function main() {
   console.log(`fetch-sanity: ${items.length} product(s) → data/sanity.json; content.json written.`);
 }
 
+/* Sanity being unreachable is NOT a build failure: the site is designed to fall
+   back to the committed manual sources (see header). A missing/private dataset —
+   e.g. the CMS isn't set up yet — is the expected "skip" case; any other fetch
+   error (network blip, GROQ change) is also non-fatal so a 15-min cron can't spam
+   failures or block a deploy. We DON'T write sanity.json on error, so the last
+   good copy stays in place and sync-catalog uses it. */
 main().catch((e) => {
-  console.error(`fetch-sanity failed: ${e.message}`);
-  process.exit(1);
+  const missing = /not found/i.test(e.message);
+  console.warn(
+    missing
+      ? `fetch-sanity: dataset "${dataset}" not found for project "${projectId}" — CMS not reachable, building from existing sources. (${e.message})`
+      : `fetch-sanity: fetch failed — building from existing sources instead. (${e.message})`,
+  );
+  process.exit(0);
 });
