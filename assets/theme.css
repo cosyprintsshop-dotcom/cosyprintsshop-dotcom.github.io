@@ -84,6 +84,7 @@ ul { list-style: none; }
   margin-bottom: clamp(40px, 5vw, 52px); }
 .section-head .eyebrow { display: block; margin-bottom: 12px; }
 .section-head h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(2.1rem, 4.6vw, 3rem); line-height: 1.08; }
+.section-head h2 em { font-style: italic; color: var(--sage-deep); }
 .section-head--center { display: block; text-align: center; }
 
 /* Underlined editorial link */
@@ -197,6 +198,18 @@ ul { list-style: none; }
   background: color-mix(in oklab, var(--page) 95%, transparent); color: var(--ink);
   padding: 7px 13px; border-radius: 999px; }
 
+/* Hero collection spotlight — two stacked panels reusing the bento crop/hover treatment */
+.hero-spotlight { display: flex; flex-direction: column; gap: 12px; aspect-ratio: 4 / 5; }
+.hero-spotlight .bento__item { flex: 1; min-height: 210px; }
+.hero-spotlight .bento__item img { aspect-ratio: auto; height: 100%; }
+.hero-spotlight__scrim { position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(45, 49, 42, 0.55) 0%, rgba(45, 49, 42, 0) 55%); pointer-events: none; }
+.hero-spotlight__cap { position: absolute; left: 20px; right: 20px; bottom: 18px; color: var(--page); }
+.hero-spotlight__eyebrow { font-size: 0.625rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; opacity: 0.85; }
+.hero-spotlight__name { font-family: var(--serif); font-size: clamp(1.3rem, 2.4vw, 1.7rem); line-height: 1.1; margin-top: 4px; }
+.hero-spotlight__go { display: inline-block; margin-top: 8px; font-size: 0.625rem; font-weight: 500;
+  letter-spacing: 0.14em; text-transform: uppercase; border-bottom: 1px solid rgba(250, 249, 246, 0.5); padding-bottom: 2px; }
+
 /* ============================ Values / démarche ============================ */
 .values { display: grid; grid-template-columns: 1fr; gap: clamp(40px, 5vw, 48px); }
 @media (min-width: 640px) { .values { grid-template-columns: 1fr 1fr; } }
@@ -212,8 +225,9 @@ ul { list-style: none; }
 .mission-head h2 em { font-style: italic; color: var(--sage-deep); }
 .mission-figure { font-family: var(--serif); font-size: clamp(3.4rem, 8vw, 5.5rem); line-height: 1;
   color: var(--sage-deep); letter-spacing: -0.01em; }
-.mission-grid { display: grid; grid-template-columns: 1fr; gap: clamp(36px, 5vw, 48px); margin-top: clamp(36px, 5vw, 52px); }
+.mission-grid { display: grid; grid-template-columns: 1fr; gap: clamp(20px, 3vw, 24px); margin-top: clamp(36px, 5vw, 52px); }
 @media (min-width: 768px) { .mission-grid { grid-template-columns: 1fr 1fr; } }
+.mission-card { border: 1px solid var(--line-2); border-radius: var(--r-sm); padding: clamp(22px, 3vw, 28px); }
 .mission-stats { display: flex; flex-wrap: wrap; gap: 12px 40px; align-items: baseline;
   margin-top: clamp(32px, 4vw, 44px); padding-top: 24px; border-top: 1px solid var(--line-2);
   font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); }
@@ -261,6 +275,15 @@ ul { list-style: none; }
 .split { display: grid; grid-template-columns: 1fr; gap: clamp(48px, 6vw, 80px); align-items: center; }
 @media (min-width: 768px) { .split { grid-template-columns: 1fr 1fr; } }
 .split__media img, .split__media svg { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--r-sm); }
+.split__media--overlap { position: relative; margin-bottom: clamp(20px, 3vw, 32px); }
+.split__media-sub { position: absolute; right: -14px; bottom: -26px; width: 52%;
+  aspect-ratio: 4 / 5; object-fit: cover; border-radius: var(--r-sm);
+  box-shadow: 0 14px 32px rgba(45, 49, 42, 0.18); outline: 1px solid rgba(255, 255, 255, 0.5); outline-offset: -1px; }
+@media (max-width: 767px) { .split__media-sub { display: none; } }
+.atelier-stats { display: flex; gap: clamp(24px, 4vw, 48px); margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--line-2); }
+.atelier-stats .stat b { display: block; font-family: var(--serif); font-weight: 400; font-size: clamp(1.8rem, 3vw, 2.4rem); line-height: 1; }
+.atelier-stats .stat span { display: block; font-size: 0.625rem; font-weight: 500; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--ink-soft); margin-top: 6px; }
 .split__body .eyebrow { display: block; margin-bottom: 20px; }
 .split__body h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(2.1rem, 4.6vw, 3rem); line-height: 1.15; margin-bottom: 22px; }
 .split__body p { color: color-mix(in oklab, var(--ink) 75%, transparent); line-height: 1.7; max-width: 56ch; }

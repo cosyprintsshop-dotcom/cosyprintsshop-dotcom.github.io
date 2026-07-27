@@ -112,7 +112,26 @@
         </div>
       </div>
       <div class="hero-media">
-        <img src="assets/img/hero-vase.jpg" alt="Vase sculptural CosyPrints en PLA végétal, posé dans une lumière douce." width="800" height="1000" fetchpriority="high" data-i18n-attr="alt:hero.img_alt" />
+        <div class="hero-spotlight">
+          <a class="bento__item" href="boutique.html?cat=lampes">
+            <img src="assets/img/cat-luminaires.jpg" alt="" width="600" height="420" fetchpriority="high" />
+            <span class="hero-spotlight__scrim" aria-hidden="true"></span>
+            <span class="hero-spotlight__cap">
+              <span class="hero-spotlight__eyebrow" data-i18n="hero.spot.eyebrow">Collection</span>
+              <span class="hero-spotlight__name" data-i18n="card.lampes.title">Lumière &amp; Lampes</span>
+              <span class="hero-spotlight__go" data-i18n="hero.spot1.go">Découvrir la lumière →</span>
+            </span>
+          </a>
+          <a class="bento__item" href="boutique.html?cat=homie-vibe">
+            <img src="assets/img/hero-vase.jpg" alt="" width="600" height="420" loading="lazy" />
+            <span class="hero-spotlight__scrim" aria-hidden="true"></span>
+            <span class="hero-spotlight__cap">
+              <span class="hero-spotlight__eyebrow" data-i18n="hero.spot.eyebrow">Collection</span>
+              <span class="hero-spotlight__name" data-i18n="card.homie.title">Homie Vibe</span>
+              <span class="hero-spotlight__go" data-i18n="hero.spot2.go">Parcourir les pièces →</span>
+            </span>
+          </a>
+        </div>
       </div>
     </div>
   </section>
@@ -150,6 +169,14 @@
 
   <!-- ============ Values / démarche ============ -->
   <section class="section section--hairline" id="demarche" aria-label="Notre démarche">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div>
+          <p class="eyebrow" data-i18n="manifesto.eyebrow">Notre manifeste</p>
+          <h2 data-i18n="manifesto.title">Peu de règles, <em>tenues sérieusement.</em></h2>
+        </div>
+      </div>
+    </div>
     <div class="wrap values reveal">
       <div class="value">
         <h3 data-i18n="val.1.t">01. Imprimé à la demande</h3>
@@ -231,8 +258,9 @@
   <!-- ============ Atelier / process ============ -->
   <section class="section section--band" id="atelier" aria-labelledby="atelier-title">
     <div class="wrap split reveal">
-      <div class="split__media">
+      <div class="split__media split__media--overlap">
         <img src="assets/img/cat-cuisine.jpg" alt="Détail d'objets CosyPrints dans une lumière naturelle douce." width="800" height="600" loading="lazy" data-i18n-attr="alt:atelier.img_alt" />
+        <img class="split__media-sub" src="assets/img/prod-lampe.jpg" alt="" width="300" height="375" loading="lazy" />
       </div>
       <div class="split__body">
         <p class="eyebrow" data-i18n="atelier.eyebrow">L'atelier</p>
@@ -243,6 +271,11 @@
           <li><span class="dot" aria-hidden="true"></span><span data-i18n="atelier.li2">Design exclusif maison</span></li>
           <li><span class="dot" aria-hidden="true"></span><span data-i18n="atelier.li3">Fabriqué à la demande près de Grenoble</span></li>
         </ul>
+        <div class="atelier-stats">
+          <div class="stat"><b>04</b><span data-i18n="atelier.stat1">Machines</span></div>
+          <div class="stat"><b>3–5j</b><span data-i18n="atelier.stat2">Fabrication</span></div>
+          <div class="stat"><b>24h</b><span data-i18n="atelier.stat3">Réponse</span></div>
+        </div>
       </div>
     </div>
   </section>
@@ -256,11 +289,11 @@
         <h2 id="mission-title" style="margin-top:18px;" data-i18n="mission.title">de chaque vente, <em>reversés</em> à deux causes qui nous tiennent à cœur.</h2>
       </div>
       <div class="mission-grid">
-        <div class="value">
+        <div class="value mission-card">
           <h3 data-i18n="mission.p1.t">01. Recherche contre le cancer</h3>
           <p data-i18n="mission.p1.b">5 % de chaque vente finance la recherche contre le cancer, en mémoire de ceux qu'on a perdus.</p>
         </div>
-        <div class="value">
+        <div class="value mission-card">
           <h3 data-i18n="mission.p2.t">02. Dépollution des océans</h3>
           <p data-i18n="mission.p2.b">5 % finance des initiatives certifiées de collecte du plastique en mer — parce que notre matière vient de la terre.</p>
         </div>

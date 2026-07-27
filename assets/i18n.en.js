@@ -38,6 +38,9 @@ window.CP_EN = {
   'hero.cta_primary': 'Discover the collection',
   'hero.cta_secondary': 'Our approach',
   'hero.img_alt': 'Sculptural CosyPrints vase in plant-based PLA, set in soft light.',
+  'hero.spot.eyebrow': 'Collection',
+  'hero.spot1.go': 'Discover the light range →',
+  'hero.spot2.go': 'Browse the pieces →',
 
   /* ---- Categories (bento) ---- */
   'cat.eyebrow': 'Collections',
@@ -49,7 +52,9 @@ window.CP_EN = {
   'card.bureau.title': 'Desk &amp; Storage',
   'card.gadgets.title': 'Useful Gadgets',
 
-  /* ---- Values / approach ---- */
+  /* ---- Values / approach (manifesto intro) ---- */
+  'manifesto.eyebrow': 'Our manifesto',
+  'manifesto.title': 'Few rules, <em>taken seriously.</em>',
   'val.1.t': '01. Printed to order',
   'val.1.b': 'We only make what is ordered. No sleeping stock, no needless waste.',
   'val.2.t': '02. Plant-based origin',
@@ -81,6 +86,9 @@ window.CP_EN = {
   'atelier.li2': 'Exclusive in-house design',
   'atelier.li3': 'Made to order near Grenoble',
   'atelier.img_alt': 'Detail of CosyPrints objects in soft natural light.',
+  'atelier.stat1': 'Machines',
+  'atelier.stat2': 'Making time',
+  'atelier.stat3': 'Reply time',
 
   /* ---- Mission (homepage) ---- */
   'mission.eyebrow': 'Our pledge',
