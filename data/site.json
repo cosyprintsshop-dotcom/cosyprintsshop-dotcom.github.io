@@ -1,0 +1,112 @@
+{
+  "_README": "Edit this file, then run `python build.py` to regenerate the HTML. Anything marked PLACEHOLDER must be replaced before going live.",
+
+  "brand": {
+    "name": "Cosy Prints",
+    "domain": "cosyprints.com",
+    "tagline": "Lamps and objects for the corners of a home you actually sit in.",
+    "email": "hello@cosyprints.com",
+    "country": "France",
+    "currency": "EUR",
+    "currencySymbol": "€"
+  },
+
+  "PLACEHOLDERS_TO_REPLACE": {
+    "prices": "Every `price` in products.json is a placeholder. Set your real prices before publishing.",
+    "hospital": "The donation section names a hospital. Fill in the real one below — do not publish a charity claim you cannot evidence.",
+    "email": "hello@cosyprints.com is assumed, not verified.",
+    "legalEntity": "Mentions légales need your real SIREN, legal form, address and hosting details.",
+    "shipping": "Delivery times and shipping prices are assumptions. Confirm them.",
+    "checkout": "There is no payment processor connected. Product pages fall back to an 'Order by email' mailto. Add a Stripe Payment Link as `checkoutUrl` on any product to turn it into a real buy button, and only then add a payment claim back into `trust`."
+  },
+
+  "donation": {
+    "share": 10,
+    "recipientName": "PLACEHOLDER — name of your local hospital",
+    "recipientCity": "PLACEHOLDER — city",
+    "basis": "revenue",
+    "note": "Stated as 10% of revenue, not profit. Keep the receipts — this is an advertised claim and you have to be able to evidence it."
+  },
+
+  "howItWorks": [
+    {
+      "step": "You order",
+      "body": "Pick a piece and a finish. Nothing is sitting in a warehouse, so we start yours once the order lands."
+    },
+    {
+      "step": "We print it",
+      "body": "One machine, one piece at a time, in our workshop. A lamp takes most of a day; smaller objects a few hours."
+    },
+    {
+      "step": "We finish it by hand",
+      "body": "Supports removed, seams cleaned, base checked flat. If it does not look right, it does not get boxed."
+    },
+    {
+      "step": "It ships",
+      "body": "Packed in recycled card and posted within 3–5 working days. You get a tracking number the day it leaves."
+    }
+  ],
+
+  "benefits": [
+    {
+      "title": "Light you can sit next to",
+      "body": "The shades are printed in fine ridges, so the bulb reads as a soft even glow instead of a hard point. It is the difference between a room being lit and a room feeling warm."
+    },
+    {
+      "title": "Made once you ask",
+      "body": "Nothing is mass-produced ahead of time. That means no dead stock, no landfill, and a finish choice made for your room rather than for a shipping container."
+    },
+    {
+      "title": "Plant-based plastic",
+      "body": "Everything is printed in PLA, made from corn starch rather than crude oil. It is rigid, matte, and does not yellow the way cheap ABS does."
+    },
+    {
+      "title": "Repairable, not disposable",
+      "body": "If a foot snaps or a base cracks, message us. We keep the files, so we can reprint the part instead of replacing the object."
+    }
+  ],
+
+  "trust": [
+    { "label": "Made in", "value": "Our own workshop, France" },
+    { "label": "Ships in", "value": "3–5 working days" },
+    { "label": "Returns", "value": "14 days, no reason needed" },
+    { "label": "Material", "value": "Plant-based PLA, never oil-based plastic" }
+  ],
+
+  "faq": [
+    {
+      "q": "How long does an order take to arrive?",
+      "a": "We print your order after it comes in, so allow 3–5 working days in the workshop plus normal postal time. France is usually 2 days after dispatch, the rest of Europe 4 to 6. You get tracking when it ships."
+    },
+    {
+      "q": "What is PLA, and is it any good?",
+      "a": "PLA is a rigid plastic made from corn starch instead of oil. It holds fine detail, has a matte finish, and does not smell. It softens above roughly 55°C, so keep pieces out of direct summer sun on a windowsill and out of the dishwasher."
+    },
+    {
+      "q": "Can I get a piece in a different colour?",
+      "a": "Usually, yes. The colours listed are what we stock, but if you want a lamp base to match something in your room, email us before ordering and we will tell you honestly whether we can get the filament."
+    },
+    {
+      "q": "Are the lamps safe to leave on?",
+      "a": "They are built for LED bulbs, which run cool. Do not fit a halogen or incandescent bulb — the shade is plastic and is not rated for that heat. The bulb is not included unless the listing says so."
+    },
+    {
+      "q": "Can I return something?",
+      "a": "Yes. You have 14 days from delivery to change your mind, no explanation needed, and we refund the item. The exception is anything we made to your own specification — a custom colour or a name printed on it — which we cannot resell."
+    },
+    {
+      "q": "What exactly happens with the 10%?",
+      "a": "Ten percent of revenue — not profit, so it is paid whether or not we make money that month — goes to our local hospital. We publish what we sent and when, once a quarter."
+    },
+    {
+      "q": "Do you take custom commissions?",
+      "a": "Small ones. If you want an existing piece resized or a simple object made, email us with rough dimensions. We will say no if it is not something we can print well."
+    }
+  ],
+
+  "legal": {
+    "returnsDays": 14,
+    "customExemptionNote": "Made-to-measure and personalised items are exempt from the 14-day right of withdrawal under the EU Consumer Rights Directive.",
+    "vatNote": "PLACEHOLDER — state whether you charge TVA or are under the franchise en base."
+  }
+}
