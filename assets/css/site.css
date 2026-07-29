@@ -25,9 +25,8 @@
   --chalk:      #EFE9DE;
   --chalk-2:    #A99E8D;
 
-  /* emitted light — only ever used AS light, never as a text colour on day */
+  /* the one accent. Passes AA on the night ground only — never text on day. */
   --ember:      #E08A3C;
-  --ember-soft: #FFC98A;
 
   /* type */
   --ff-display: "Archivo", ui-sans-serif, system-ui, sans-serif;
@@ -93,10 +92,7 @@ body {
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
-img, picture, svg, video { display: block; max-width: 100%; }
-/* every <img> carries width/height attributes to reserve space and avoid CLS —
-   without height:auto the attribute wins and the image stretches vertically */
-img { height: auto; }
+img, svg, video { display: block; max-width: 100%; height: auto; }
 button, input, select, textarea { font: inherit; color: inherit; }
 h1, h2, h3, h4 { margin: 0; font-weight: 400; }
 p { margin: 0; }
@@ -292,20 +288,41 @@ html.nav-dark.nav-solid .nav {
   .hero__media { grid-column: 8 / -1; }
 }
 
-.figure { position: relative; overflow: hidden; background: var(--lift); }
-.figure img { width: 100%; height: 100%; object-fit: cover; }
-
-/* the glow behind a lit lamp */
-.glow { position: relative; }
-.glow::before {
-  content: ""; position: absolute; z-index: 0;
-  left: 50%; top: 42%; translate: -50% -50%;
-  width: 78%; aspect-ratio: 1;
-  background: radial-gradient(circle, color-mix(in srgb, var(--ember-soft) 55%, transparent) 0%, transparent 68%);
-  filter: blur(38px);
-  opacity: .8; pointer-events: none;
+/* ---------------------------------------------------------------- the slot */
+/* Where photography will go. There are no product photos yet, so this is the
+   site's primary visual element and it has to hold its own: a hairline frame on
+   a raised ground, the ridge motif standing on a floor line where the object
+   will be, and one small label. Nothing else. */
+.slot {
+  position: relative;
+  overflow: hidden;
+  background: var(--lift);
+  border: 1px solid var(--rule);
+  display: flex;
+  align-items: flex-end;
+  padding: clamp(.8rem, 1.7vw, 1.3rem);
+  transition: border-color var(--d-quick) var(--e-sine);
 }
-.glow > * { position: relative; z-index: 1; }
+/* the ridge sits on the floor of the frame, the way the object will */
+.slot::before {
+  content: "";
+  position: absolute;
+  left: 50%; bottom: 19%; translate: -50% 0;
+  width: 33%; height: 42%;
+  background-image: repeating-linear-gradient(90deg, currentColor 0 1px, transparent 1px 7px);
+  opacity: .1;
+  pointer-events: none;
+}
+.slot__label {
+  position: relative;
+  font-family: var(--ff-ui);
+  font-variation-settings: "wdth" 100, "wght" 600;
+  font-size: .6875rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--faint);
+  transition: color var(--d-quick) var(--e-sine);
+}
 
 /* ---------------------------------------------------------------- section head */
 .shead { margin-bottom: clamp(2.5rem, 6vw, 5rem); }
@@ -327,15 +344,9 @@ html.nav-dark.nav-solid .nav {
   .cat--b { grid-column: 9 / -1; margin-top: clamp(4rem, 10vw, 9rem); }
 }
 .cat__media { aspect-ratio: 4 / 5; margin-bottom: 1.4rem; }
-.cat--a .cat__media { aspect-ratio: 5 / 4; }
 .cat__row { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
 .cat__count { font-family: var(--ff-ui); font-size: var(--fs-sm); color: var(--muted); }
 .cat__lead { margin-top: .7rem; max-width: 38ch; color: var(--muted); }
-@media (hover: hover) {
-  .cat:hover .cat__media img { transform: scale(1.025); }
-}
-.cat__media img { transition: transform var(--d-quick) var(--e-sine); }
-.cat:focus-within .cat__media img { transform: scale(1.025); }
 
 /* ---------------------------------------------------------------- benefits */
 .bens { row-gap: clamp(2.5rem, 5vw, 3.5rem); }
@@ -499,23 +510,18 @@ summary.qa__q::marker { content: ""; }
 /* the first card of a listing runs double width — the grid is never uniform */
 @media (min-width: 62em) { .pgrid--lead .pcard:first-child { grid-column: span 6; } }
 
-.pcard__media {
-  position: relative; overflow: hidden; background: var(--lift);
-  aspect-ratio: 1; margin-bottom: 1rem;
-}
-/* the lead card gets its emphasis from the column span, not from a different
-   crop — the product shots are square, so re-framing them cuts the object */
-.pcard__media img {
-  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
-  transition: transform var(--d-quick) var(--e-sine), opacity 450ms var(--e-sine);
-}
-.pcard__media .alt { opacity: 0; }
+.pcard__media { aspect-ratio: 1; margin-bottom: 1rem; }
+/* the lead card gets its emphasis from the column span, not a different crop */
+
+/* With no photograph to scale, hover strengthens the frame and brings the label
+   up to full colour. Same 250ms, mirrored on :focus-within. */
 @media (hover: hover) {
-  .pcard:hover .pcard__media img { transform: scale(1.025); }
-  .pcard:hover .pcard__media .alt { opacity: 1; }
-  .pcard:hover .pcard__media .primary { opacity: 0; }
+  .pcard:hover .slot, .cat:hover .slot { border-color: color-mix(in srgb, var(--fg) 34%, transparent); }
+  .pcard:hover .slot__label, .cat:hover .slot__label { color: var(--fg); }
 }
-.pcard:focus-within .pcard__media img { transform: scale(1.025); }
+.pcard:focus-within .slot, .cat:focus-within .slot { border-color: color-mix(in srgb, var(--fg) 34%, transparent); }
+.pcard:focus-within .slot__label, .cat:focus-within .slot__label { color: var(--fg); }
+
 .pcard__top { display: flex; align-items: baseline; justify-content: space-between; gap: .8rem; }
 .pcard__name { font-family: var(--ff-display); font-variation-settings: "wdth" 104, "wght" 500; font-size: 1.02rem; letter-spacing: -.005em; }
 .pcard__price { font-family: var(--ff-ui); font-size: var(--fs-sm); white-space: nowrap; }
@@ -536,7 +542,8 @@ summary.qa__q::marker { content: ""; }
   .pdp__info  { grid-column: 9 / -1; position: sticky; top: clamp(6rem, 14vh, 9rem); align-self: start; }
 }
 .pdp__shots { display: grid; gap: var(--gap); }
-.pdp__shot { background: var(--lift); overflow: hidden; }
+.pdp__shot { aspect-ratio: 4 / 5; }
+.pdp__shot + .pdp__shot { aspect-ratio: 1; }
 .pdp__name { margin-bottom: .4rem; }
 .pdp__variant { color: var(--muted); margin-bottom: 1.4rem; }
 .pdp__price { font-family: var(--ff-ui); font-size: 1.25rem; font-variation-settings: "wdth" 100, "wght" 600; margin-bottom: 1.6rem; }
@@ -571,37 +578,34 @@ summary.qa__q::marker { content: ""; }
    `.js-motion` is set on <html> by site.js at boot.
    ======================================================================== */
 
-/* image / block: bottom-up layer wipe + a scale that outlives the mask */
-.js-motion .lay { overflow: hidden; }
-.js-motion .lay > img,
-.js-motion .lay > picture > img {
+/* The signature reveal: a bottom-up layer wipe, the way a print is laid down.
+   Applied to the block itself, so the frame draws itself from the floor up.
+   (The counter-scale that normally pairs with this is for photographs — there is
+   nothing to Ken Burns here, and scaling an empty frame scales its border.) */
+.js-motion .lay {
   clip-path: inset(100% 0 0 0);
-  transform: scale(1.15);
-  transition:
-    clip-path var(--d-reveal) var(--e-quart),
-    transform var(--d-settle) var(--e-expo);
+  transition: clip-path var(--d-reveal) var(--e-quart);
 }
-.js-motion .lay.is-in > img,
-.js-motion .lay.is-in > picture > img {
-  clip-path: inset(0 0 0 0);
-  transform: scale(1);
-}
+.js-motion .lay.is-in { clip-path: inset(0 0 0 0); }
 
-/* text lines, hand-wrapped (GSAP SplitText replaces this when it loads) */
+/* Text lines, hand-wrapped. 105% not 100% — at exactly 100% descenders (g, y, p)
+   poke below the mask. */
 .js-motion .lines .l { display: block; overflow: hidden; }
 .js-motion .lines .l > span {
   display: block;
   transform: translateY(105%);
   transition: transform 900ms var(--e-quart);
 }
-.js-motion .lines.is-in .l > span { transform: translateY(0); }
-.js-motion .lines.is-in .l:nth-child(2) > span { transition-delay: 80ms; }
-.js-motion .lines.is-in .l:nth-child(3) > span { transition-delay: 160ms; }
-.js-motion .lines.is-in .l:nth-child(4) > span { transition-delay: 240ms; }
+.js-motion .lines.is-in .l > span { transform: translateY(0); transition-delay: var(--rd, 0ms); }
+.js-motion .lines.is-in .l:nth-child(2) > span { transition-delay: calc(var(--rd, 0ms) + 80ms); }
+.js-motion .lines.is-in .l:nth-child(3) > span { transition-delay: calc(var(--rd, 0ms) + 160ms); }
+.js-motion .lines.is-in .l:nth-child(4) > span { transition-delay: calc(var(--rd, 0ms) + 240ms); }
 
 /* the quiet one, for small supporting items only */
 .js-motion .rise { opacity: 0; transform: translateY(14px); transition: opacity var(--d-standard) var(--e-sine), transform var(--d-standard) var(--e-quart); }
-.js-motion .rise.is-in { opacity: 1; transform: none; }
+.js-motion .rise.is-in { opacity: 1; transform: none; transition-delay: var(--rd, 0ms); }
+
+/* `--rd` staggers a group without needing a JS timeline. Set it inline. */
 
 /* ---------------------------------------------------------------- view transitions */
 @media (prefers-reduced-motion: no-preference) {
@@ -616,27 +620,24 @@ summary.qa__q::marker { content: ""; }
 ::view-transition-old(site-nav),
 ::view-transition-new(site-nav) { animation: none; mix-blend-mode: normal; }
 
-/* thumbnail -> hero morph. `hero-media` is put on the clicked card by site.js
-   and on the product hero at author time. */
-::view-transition-group(hero-media) { animation-duration: 520ms; animation-timing-function: var(--e-quart); overflow: hidden; }
-::view-transition-old(hero-media),
-::view-transition-new(hero-media) { height: 100%; object-fit: cover; }
+/* Card frame -> product-page frame morph. `hero-media` is put on the clicked
+   card by site.js and on the product page's first slot at author time, so the
+   browser moves one box into the other instead of cross-fading the page. */
+::view-transition-group(hero-media) {
+  animation-duration: 520ms;
+  animation-timing-function: var(--e-quart);
+}
 
 /* ---------------------------------------------------------------- reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .js-motion .lay > img,
-  .js-motion .lay > picture > img { clip-path: none; transform: none; transition: none; }
+  .js-motion .lay { clip-path: none; transition: none; }
   .js-motion .lines .l > span { transform: none; transition: none; }
   .js-motion .rise { opacity: 1; transform: none; transition: opacity 200ms linear; }
-  .glow::before { filter: blur(38px); }
   *, *::before, *::after {
     animation-duration: .01ms !important;
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
   }
-  /* keep colour/opacity feedback, kill travel */
-  .pcard__media img, .cat__media img { transition: opacity 200ms linear !important; }
-  @media (hover: hover) {
-    .pcard:hover .pcard__media img, .cat:hover .cat__media img { transform: none; }
-  }
+  /* colour feedback on hover survives; it is the travel that goes */
+  .tlink__arrow { transition: none; }
 }

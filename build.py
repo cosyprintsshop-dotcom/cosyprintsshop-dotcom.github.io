@@ -12,7 +12,6 @@ import json, os, re, shutil, html
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 DATA = os.path.join(ROOT, "data")
-PROD_DIR = os.path.join(ROOT, "assets", "products")
 
 SITE = json.load(open(os.path.join(DATA, "site.json"), encoding="utf8"))
 CAT = json.load(open(os.path.join(DATA, "products.json"), encoding="utf8"))
@@ -21,46 +20,21 @@ BRAND = SITE["brand"]
 PRODUCTS = [p for p in CAT["products"]]
 CATEGORIES = CAT["categories"]
 
-DIMS = {"square": (1600, 1600), "portrait": (1440, 1800), "wide": (2400, 1600)}
-SMALL = {"square": 800, "portrait": 720, "wide": 1200}
-
-try:
-    MANIFEST = json.load(open(os.path.join(PROD_DIR, "_manifest.json"), encoding="utf8"))
-except Exception:
-    MANIFEST = {}
-
 e = html.escape
 
-
-def has(slug, aspect):
-    return os.path.exists(os.path.join(PROD_DIR, f"{slug}-{aspect}.webp"))
+SLOT_LABEL = "Photo coming soon"
 
 
-def pick(slug, want):
-    """Fall back to whatever aspect actually got rendered for this slug."""
-    for a in [want, "square", "portrait", "wide"]:
-        if has(slug, a):
-            return a
-    return None
+def slot(cls="", label=SLOT_LABEL, style=""):
+    """A reserved frame where product photography will go.
 
-
-def img(slug, aspect="square", alt="", sizes="100vw", eager=False, cls=""):
-    a = pick(slug, aspect)
-    if a is None:
-        return f'<div class="ph" role="img" aria-label="{e(alt)}"></div>'
-    w, h = DIMS[a]
-    sw = SMALL[a]
-    base = f"/assets/products/{slug}-{a}"
-    loading = "" if eager else ' loading="lazy"'
-    prio = ' fetchpriority="high"' if eager else ""
-    c = f' class="{cls}"' if cls else ""
-    return (
-        "<picture>"
-        f'<source type="image/webp" srcset="{base}-{sw}.webp {sw}w, {base}.webp {w}w" sizes="{sizes}">'
-        f'<img{c} src="{base}-{sw}.jpg" srcset="{base}-{sw}.jpg {sw}w, {base}.jpg {w}w" sizes="{sizes}" '
-        f'width="{w}" height="{h}" alt="{e(alt)}" decoding="async"{loading}{prio}>'
-        "</picture>"
-    )
+    There is no product photography yet. Rather than ship placeholder images or
+    stock, every shot is a labelled frame — so the layout is final and the photos
+    can be dropped in without touching it.
+    """
+    c = (" " + cls) if cls else ""
+    s = f' style="{style}"' if style else ""
+    return f'<div class="slot{c}"{s}><span class="slot__label">{e(label)}</span></div>'
 
 
 def money(v):
@@ -68,11 +42,6 @@ def money(v):
         return ""
     s = f"{v:.2f}".rstrip("0").rstrip(".")
     return f"{BRAND['currencySymbol']}{s}"
-
-
-def prod_alt(p, i=0):
-    base = f"{p['name']}, {p['variant']}" if p.get("variant") else p["name"]
-    return base if i == 0 else f"{base} — alternative view"
 
 
 def by_cat(slug, status="live"):
@@ -171,27 +140,13 @@ def shell(title, desc, body, page="", extra_head="", tone_start="day"):
 
 # ------------------------------------------------------------------- pieces
 def product_card(p, lead=False, morph=True):
-    imgs = p.get("images", [])
-    first = imgs[0] if imgs else ""
-    second = imgs[1] if len(imgs) > 1 else ""
-    sizes = "(min-width:62em) 22vw, (min-width:48em) 30vw, 46vw"
-    if lead:
-        sizes = "(min-width:62em) 46vw, 92vw"
-    alt_img = ""
-    if second and pick(second, "square"):
-        a2 = pick(second, "square")
-        b2 = f"/assets/products/{second}-{a2}"
-        alt_img = (
-            f'<img class="alt" src="{b2}-{SMALL[a2]}.jpg" width="{DIMS[a2][0]}" height="{DIMS[a2][1]}" '
-            f'alt="" aria-hidden="true" loading="lazy" decoding="async">'
-        )
     price = money(p.get("price"))
     tag = ""
     if p.get("status") == "concept":
-        tag = '<span class="pcard__tag">Design render — in development</span>'
+        tag = '<span class="pcard__tag">In development</span>'
     rooms = "|".join(p.get("rooms", []))
     return f"""<a class="pcard" href="/shop/{p['slug']}/" data-rooms="{e(rooms)}"{' data-morph' if morph else ''}>
-  <div class="pcard__media lay">{img(first, 'square', prod_alt(p), sizes, cls='primary')}{alt_img}</div>
+  {slot('pcard__media lay')}
   <div class="pcard__top">
     <span class="pcard__name">{e(p['name'])}</span>
     <span class="pcard__price">{price or '—'}</span>
@@ -240,23 +195,21 @@ def build_home():
   <div class="wrap">
     <div class="grid hero__grid">
       <div class="hero__copy">
-        <p class="label hero__eyebrow" data-hero-eyebrow>3D-printed lighting &amp; objects — made in {e(BRAND['country'])}</p>
-        <h1 class="display h1 hero__title lines">
+        <p class="label hero__eyebrow rise" style="--rd:350ms">3D-printed lighting &amp; objects — made in {e(BRAND['country'])}</p>
+        <h1 class="display h1 hero__title lines" style="--rd:450ms">
           <span class="l"><span>Warm light and</span></span>
           <span class="l"><span>small things</span></span>
           <span class="l"><span>for the rooms</span></span>
           <span class="l"><span>you sit in.</span></span>
         </h1>
-        <p class="lead hero__lead">We print lighting and small home pieces to order in our own workshop, one at a time. Pick a shape, pick a finish, and we make yours.</p>
-        <div class="hero__actions" data-hero-cta>
+        <p class="lead hero__lead rise" style="--rd:700ms">We print lighting and small home pieces to order in our own workshop, one at a time. Pick a shape, pick a finish, and we make yours.</p>
+        <div class="hero__actions rise" style="--rd:950ms">
           <a class="btn" href="/lamps/">Shop lamps</a>
           <a class="tlink" href="/decorations/">Shop decorations <span class="tlink__arrow">&rarr;</span></a>
         </div>
       </div>
       <div class="hero__media">
-        <div class="figure" style="aspect-ratio:4/5" data-hero-media>
-          {img('lamp-black', 'portrait', 'The Ridge Lamp in ink black, unlit', '(min-width:62em) 46vw, 92vw', eager=True)}
-        </div>
+        {slot('lay', SLOT_LABEL, 'aspect-ratio:4/5')}
       </div>
     </div>
   </div>
@@ -271,9 +224,7 @@ def build_home():
     </div>
     <div class="grid cats">
       <a class="cat cat--a" href="/lamps/" data-morph>
-        <div class="cat__media figure lay" style="aspect-ratio:4/5">
-          {img(lamp_cat['cover'], 'portrait', 'The Ridge Lamp on a rose gold base', '(min-width:62em) 56vw, 92vw')}
-        </div>
+        {slot('cat__media lay')}
         <div class="cat__row">
           <h3 class="display h3">Lamps</h3>
           <span class="cat__count">{len(lamps)} pieces</span>
@@ -281,9 +232,7 @@ def build_home():
         <p class="cat__lead">{e(lamp_cat['lead'])}</p>
       </a>
       <a class="cat cat--b" href="/decorations/" data-morph>
-        <div class="cat__media figure lay" style="aspect-ratio:4/5">
-          {img(deco_cat['cover'], 'portrait', 'A pair of ribbed Japandi cats', '(min-width:62em) 30vw, 92vw')}
-        </div>
+        {slot('cat__media lay')}
         <div class="cat__row">
           <h3 class="display h3">Decorations</h3>
           <span class="cat__count">{len(decos)} pieces</span>
@@ -321,9 +270,10 @@ def build_home():
 
 <div class="dusk" aria-hidden="true"></div>
 
-<section class="sec" data-tone="night" style="padding-block:0">
-  <div class="figure lay" style="aspect-ratio:3/2" data-glow>
-    {img('lamp-black-lit', 'wide', 'A Ridge Lamp glowing in a dark room', '100vw')}
+<section class="sec" data-tone="night">
+  <div class="wrap">
+    <p class="label" style="margin-bottom:1.4rem">After dark</p>
+    <p class="display h2" style="max-width:24ch" data-split>A lamp is the only thing in a room that changes what time it feels like.</p>
   </div>
 </section>
 
@@ -408,7 +358,7 @@ def build_category(cat):
     <div class="shead grid">
       <p class="label shead__eyebrow" style="grid-column:1/-1">Not yet for sale</p>
       <h2 class="display h2 shead__title" data-split>Six shapes we are still working on.</h2>
-      <p class="lead shead__note">These are design renders, not photographs, and none of them is in production yet. They are here so you can tell us which one to finish first.</p>
+      <p class="lead shead__note">None of these is in production yet. They are here so you can tell us which one to finish first.</p>
     </div>
     <div class="grid pgrid" data-batch>{cc}</div>
   </div>
@@ -441,12 +391,9 @@ def build_category(cat):
 
 # ------------------------------------------------------------------ product
 def build_product(p):
-    imgs = [s for s in p.get("images", []) if pick(s, "portrait")]
-    shots = ""
-    for i, s in enumerate(imgs):
-        a = pick(s, "portrait" if i == 0 else "square")
-        vt = ' style="view-transition-name:hero-media"' if i == 0 else ""
-        shots += f'<div class="pdp__shot lay"{vt}>{img(s, a, prod_alt(p, i), "(min-width:62em) 56vw, 92vw", eager=(i == 0))}</div>'
+    shots = slot("pdp__shot lay", SLOT_LABEL, "view-transition-name:hero-media")
+    if int(p.get("shots", 1)) > 1:
+        shots += slot("pdp__shot lay", "Second view coming soon")
 
     specs = ""
     if p.get("specs"):
@@ -455,7 +402,7 @@ def build_product(p):
 
     concept = p.get("status") == "concept"
     if concept:
-        buy = f"""<div class="notice"><strong>Not for sale yet.</strong> The image on this page is a design render, not a photograph of a finished piece. Email us if you want to be told when it is ready.</div>
+        buy = f"""<div class="notice"><strong>Not for sale yet.</strong> This shape is still in development, so there is nothing to photograph and nothing to buy. Email us and we will tell you when it is ready.</div>
         <div class="pdp__buy"><a class="btn" href="mailto:{e(BRAND['email'])}?subject={e(p['name'])}%20—%20tell%20me%20when%20it%20is%20ready">Tell me when it is ready</a></div>"""
         price_html = ""
     else:

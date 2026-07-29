@@ -1,30 +1,35 @@
 {
-  "_README": "Every `price` here is a PLACEHOLDER. Replace before publishing. `images` are slugs in /assets/products/. `status`: live | concept. Concept items are renders, not photographs, and are labelled as such on the page.",
-
+  "_README": "Every `price` here is a PLACEHOLDER — replace before publishing. `shots` is how many photography frames the product page reserves (1 or 2); there are no product photos yet, so each one renders as a labelled box. `status`: live | concept. Concept pieces are not in production and cannot be bought.",
   "categories": [
     {
       "slug": "lamps",
       "name": "Lamps",
-      "lead": "One shape, printed in fine ridges so the light lands soft. Three finishes, and a version that changes colour.",
-      "cover": "lamp-rosegold"
+      "lead": "One shape, printed in fine ridges so the light lands soft. Three finishes, and a version that changes colour."
     },
     {
       "slug": "decorations",
       "name": "Decorations",
-      "lead": "Small objects for the shelf, the sink, the hallway table. Sculptural where it suits, useful where it counts.",
-      "cover": "japandi-cats"
+      "lead": "Small objects for the shelf, the sink, the hallway table. Sculptural where it suits, useful where it counts."
     }
   ],
-
-  "rooms": ["Living room", "Bedroom", "Kitchen", "Bathroom", "Desk", "Entryway"],
-
+  "rooms": [
+    "Living room",
+    "Bedroom",
+    "Kitchen",
+    "Bathroom",
+    "Desk",
+    "Entryway"
+  ],
   "products": [
     {
       "slug": "ridge-lamp-black",
       "name": "Ridge Lamp",
       "variant": "Ink Black",
       "category": "lamps",
-      "rooms": ["Living room", "Bedroom"],
+      "rooms": [
+        "Living room",
+        "Bedroom"
+      ],
       "price": 59,
       "blurb": "A fluted column that turns a bare LED into an even wash of light.",
       "description": "The shade is printed in fine vertical ridges, and that is the whole point of it. Light leaving a flat surface glares; light leaving a ridged one breaks up and lands soft. Sat on a bedside table it reads as a warm column rather than a bulb you can see. The base is a solid matte black cylinder that gives it enough weight to stay put.",
@@ -35,16 +40,20 @@
         "Made": "To order, in our workshop"
       },
       "care": "Wipe with a dry cloth. Keep out of direct summer sun and away from heat — PLA softens above about 55°C.",
-      "images": ["lamp-black", "lamp-black-lit"],
       "status": "live",
-      "featured": true
+      "featured": true,
+      "shots": 2
     },
     {
       "slug": "ridge-lamp-silver",
       "name": "Ridge Lamp",
       "variant": "Brushed Silver",
       "category": "lamps",
-      "rooms": ["Living room", "Bedroom", "Desk"],
+      "rooms": [
+        "Living room",
+        "Bedroom",
+        "Desk"
+      ],
       "price": 59,
       "blurb": "The same soft column, on a base with a faint metallic sheen.",
       "description": "Identical shade, different footing. The silver base catches a little light of its own, which suits a room with metal in it already — a desk lamp, a picture frame, a door handle. Less absolute than the black; it disappears into a lighter room instead of anchoring a darker one.",
@@ -55,15 +64,18 @@
         "Made": "To order, in our workshop"
       },
       "care": "Wipe with a dry cloth. Keep out of direct summer sun and away from heat — PLA softens above about 55°C.",
-      "images": ["lamp-silver", "lamp-silver-lit"],
-      "status": "live"
+      "status": "live",
+      "shots": 2
     },
     {
       "slug": "ridge-lamp-rose-gold",
       "name": "Ridge Lamp",
       "variant": "Rose Gold",
       "category": "lamps",
-      "rooms": ["Living room", "Bedroom"],
+      "rooms": [
+        "Living room",
+        "Bedroom"
+      ],
       "price": 59,
       "blurb": "A warmer base, for rooms that already lean pink, clay or oak.",
       "description": "The rose gold base is the warmest of the three and the one people pick for a bedroom. Against oak or a linen shade it reads as copper rather than pink. Same fluted shade, same even light.",
@@ -74,15 +86,18 @@
         "Made": "To order, in our workshop"
       },
       "care": "Wipe with a dry cloth. Keep out of direct summer sun and away from heat — PLA softens above about 55°C.",
-      "images": ["lamp-rosegold", "lamp-rosegold-lit"],
-      "status": "live"
+      "status": "live",
+      "shots": 2
     },
     {
       "slug": "ridge-lamp-colour",
       "name": "Ridge Lamp",
       "variant": "Colour, with remote",
       "category": "lamps",
-      "rooms": ["Living room", "Bedroom"],
+      "rooms": [
+        "Living room",
+        "Bedroom"
+      ],
       "price": 69,
       "blurb": "The same lamp with a colour-changing LED and a remote in the box.",
       "description": "If you want the lamp to do more than one thing in an evening, this is the version. A colour LED sits inside the same fluted shade, so the colour arrives diffused rather than as a hard tint. The remote handles colour and brightness. Left on warm white it behaves exactly like the standard lamp.",
@@ -93,16 +108,18 @@
         "Made": "To order, in our workshop"
       },
       "care": "Wipe with a dry cloth. Keep out of direct summer sun and away from heat — PLA softens above about 55°C.",
-      "images": ["lamp-rgb-remote", "lamp-black-lit"],
-      "status": "live"
+      "status": "live",
+      "shots": 2
     },
-
     {
       "slug": "japandi-cats",
       "name": "Japandi Cats",
       "variant": "Pair",
       "category": "decorations",
-      "rooms": ["Living room", "Bedroom"],
+      "rooms": [
+        "Living room",
+        "Bedroom"
+      ],
       "price": 34,
       "blurb": "Two ribbed cats, one larger than the other. Sold as a pair.",
       "description": "Simple enough to sit on a shelf without shouting, odd enough that people pick them up. The ribbing runs the full height, so they catch a line of light down one side in the afternoon. They come as a pair because one on its own looks like it lost something.",
@@ -113,16 +130,18 @@
         "Made": "To order, in our workshop"
       },
       "care": "Dust with a soft brush — the ribbing holds dust more than a flat surface does.",
-      "images": ["japandi-cats"],
       "status": "live",
-      "featured": true
+      "featured": true,
+      "shots": 1
     },
     {
       "slug": "low-poly-vase",
       "name": "Low-Poly Vase",
       "variant": "Rose Gold",
       "category": "decorations",
-      "rooms": ["Living room"],
+      "rooms": [
+        "Living room"
+      ],
       "price": 29,
       "blurb": "A faceted vase, 15 cm, for dried stems.",
       "description": "Triangular facets that read as sculpture from across a room and as a vase up close. Each face catches light differently, so it changes as you move past it. It is not watertight — this one is for dried or artificial stems, and we would rather say so than have you find out.",
@@ -133,16 +152,20 @@
         "Water": "Not watertight — dried or artificial stems only"
       },
       "care": "Wipe with a dry cloth. Do not fill with water.",
-      "images": ["lowpoly-vase"],
       "status": "live",
-      "featured": true
+      "featured": true,
+      "shots": 1
     },
     {
       "slug": "bubble-tray",
       "name": "Bubble Tray",
       "variant": "Black",
       "category": "decorations",
-      "rooms": ["Entryway", "Living room", "Bedroom"],
+      "rooms": [
+        "Entryway",
+        "Living room",
+        "Bedroom"
+      ],
       "price": 24,
       "blurb": "A soft-edged dish for the things you empty out of your pockets.",
       "description": "A ring of rounded forms with a flat floor — deep enough that keys and a watch stay in it, shallow enough that you can see what is there. It lives by a front door or on a bedside table. The bubbles are the reason it does not look like office equipment.",
@@ -152,15 +175,17 @@
         "Made": "To order, in our workshop"
       },
       "care": "Wipe with a damp cloth.",
-      "images": ["bubble-tray", "bubble-tray-styled"],
-      "status": "live"
+      "status": "live",
+      "shots": 2
     },
     {
       "slug": "sheep-roll-holder",
       "name": "Sheep Roll Holder",
       "variant": "Black",
       "category": "decorations",
-      "rooms": ["Bathroom"],
+      "rooms": [
+        "Bathroom"
+      ],
       "price": 26,
       "blurb": "A spare roll becomes the body of a sheep. Purely decorative.",
       "description": "The head and legs are printed; the wool is a standard toilet roll you slide on. It is a joke that holds up, because it is well made — the legs are properly weighted so it does not tip. Be clear on one thing: the roll on it is decoration, not the one you use. Roll not included.",
@@ -171,15 +196,18 @@
         "Note": "Decorative only. Roll not included."
       },
       "care": "Wipe with a damp cloth.",
-      "images": ["sheep-roll-holder", "sheep-roll-holder-side"],
-      "status": "live"
+      "status": "live",
+      "shots": 2
     },
     {
       "slug": "rocket",
       "name": "Moon Rocket",
       "variant": "Red and white",
       "category": "decorations",
-      "rooms": ["Living room", "Desk"],
+      "rooms": [
+        "Living room",
+        "Desk"
+      ],
       "price": 45,
       "blurb": "The red-and-white chequered rocket, 37.5 cm, on three fins.",
       "description": "Big enough to be the thing on the shelf rather than a thing on the shelf. Printed in two colours and assembled, with the chequer running clean around the body. It stands on its three fins without a stand. A display piece, not a toy.",
@@ -190,16 +218,19 @@
         "Note": "Display piece, not a toy"
       },
       "care": "Dust with a soft brush.",
-      "images": ["rocket"],
       "status": "live",
-      "featured": true
+      "featured": true,
+      "shots": 1
     },
     {
       "slug": "crewmate-figure",
       "name": "Crewmate Figure",
       "variant": "Cyan",
       "category": "decorations",
-      "rooms": ["Desk", "Living room"],
+      "rooms": [
+        "Desk",
+        "Living room"
+      ],
       "price": 22,
       "blurb": "An 18 cm figure with a white visor. For a desk or a shelf.",
       "description": "Printed in two colours, cleaned up by hand, and heavy enough at the base to stay upright. Eighteen centimetres is the size where it stops being a trinket. Bought mostly as a gift.",
@@ -210,15 +241,18 @@
         "Made": "To order, in our workshop"
       },
       "care": "Wipe with a dry cloth.",
-      "images": ["among-us", "among-us-side"],
-      "status": "live"
+      "status": "live",
+      "shots": 2
     },
     {
       "slug": "wave-soap-dish",
       "name": "Wave Soap Dish",
       "variant": "Stone",
       "category": "decorations",
-      "rooms": ["Bathroom", "Kitchen"],
+      "rooms": [
+        "Bathroom",
+        "Kitchen"
+      ],
       "price": 14,
       "blurb": "Three arches that let a bar of soap drain and dry.",
       "description": "The problem with soap dishes is that soap sits in its own water and goes to mush. This is three arches with gaps between them, so the bar drains and air gets underneath. It happens to look good next to a basin, which is the other half of the job.",
@@ -229,15 +263,17 @@
         "Made": "To order, in our workshop"
       },
       "care": "Rinse under the tap and dry. Not dishwasher safe.",
-      "images": ["soap-dish", "soap-dish-alt"],
-      "status": "live"
+      "status": "live",
+      "shots": 2
     },
     {
       "slug": "toothbrush-holder",
       "name": "Toothbrush Holder",
       "variant": "Black",
       "category": "decorations",
-      "rooms": ["Bathroom"],
+      "rooms": [
+        "Bathroom"
+      ],
       "price": 24,
       "blurb": "A ribbed caddy on legs, with a lift-out inner cup.",
       "description": "Holds brushes upright and a tube beside them. The inner cup lifts out, which is the part that matters — that is where the water collects, and being able to take it out and rinse it is why this one stays clean. Raised on four small feet so the counter underneath dries.",
@@ -248,15 +284,17 @@
         "Made": "To order, in our workshop"
       },
       "care": "Lift out the inner cup and rinse. Not dishwasher safe.",
-      "images": ["toothbrush-holder", "toothbrush-holder-parts"],
-      "status": "live"
+      "status": "live",
+      "shots": 2
     },
     {
       "slug": "sink-caddy",
       "name": "Sink Caddy",
       "variant": "Black",
       "category": "decorations",
-      "rooms": ["Kitchen"],
+      "rooms": [
+        "Kitchen"
+      ],
       "price": 29,
       "blurb": "A drip tray with an arm over it, for the cloth and the sponge.",
       "description": "A ribbed tray catches the drips, and the arm above holds a cloth where it can actually dry instead of folded over a tap. It puts the two most awkward things by a sink in one place. The tray lifts off to empty.",
@@ -267,15 +305,18 @@
         "Made": "To order, in our workshop"
       },
       "care": "Empty and rinse the tray. Not dishwasher safe.",
-      "images": ["sink-caddy"],
-      "status": "live"
+      "status": "live",
+      "shots": 1
     },
     {
       "slug": "phone-stand",
       "name": "Phone Stand",
       "variant": "Black",
       "category": "decorations",
-      "rooms": ["Desk", "Kitchen"],
+      "rooms": [
+        "Desk",
+        "Kitchen"
+      ],
       "price": 12,
       "blurb": "A ribbed wedge that folds flat. Holds a phone at reading angle.",
       "description": "Two positions — upright for video, laid back for reading. It folds flat enough to go in a bag. Ribbed on the face so the phone does not slide, and cut away at the bottom so a charging cable still reaches.",
@@ -286,15 +327,18 @@
         "Cable": "Cut-out for charging"
       },
       "care": "Wipe with a dry cloth.",
-      "images": ["phone-stand", "phone-stand-folded"],
-      "status": "live"
+      "status": "live",
+      "shots": 2
     },
     {
       "slug": "watch-stand",
       "name": "Watch Stand",
       "variant": "Black",
       "category": "decorations",
-      "rooms": ["Desk", "Bedroom"],
+      "rooms": [
+        "Desk",
+        "Bedroom"
+      ],
       "price": 16,
       "blurb": "A textured dome that turns a watch charger into a bedside clock.",
       "description": "Your charging puck drops into the top and the cable runs out of the back, so the watch sits at an angle you can read from bed. The body is printed with a fine diamond texture, which is there so it does not look like a plastic lump on a nightstand.",
@@ -305,15 +349,17 @@
         "Cable": "Routed out of the back"
       },
       "care": "Wipe with a dry cloth.",
-      "images": ["watch-stand", "watch-stand-alt"],
-      "status": "live"
+      "status": "live",
+      "shots": 2
     },
     {
       "slug": "bag-dispenser",
       "name": "Bag Dispenser",
       "variant": "Black",
       "category": "decorations",
-      "rooms": ["Entryway"],
+      "rooms": [
+        "Entryway"
+      ],
       "price": 14,
       "blurb": "A clip-on canister for dog waste bags, with a lid that stays shut.",
       "description": "A roll drops in, the bags feed out of the slot, and the lid screws down so it does not open in a coat pocket. The clip takes a lead or a belt loop. It is a small thing done properly, which is the only reason to buy one rather than the free one at the vet.",
@@ -324,15 +370,17 @@
         "Clip": "Lead or belt loop"
       },
       "care": "Wipe with a damp cloth.",
-      "images": ["bag-dispenser", "bag-dispenser-parts"],
-      "status": "live"
+      "status": "live",
+      "shots": 2
     },
     {
       "slug": "bag-clips-black",
       "name": "Bag Clips",
       "variant": "Black, pack of 10",
       "category": "decorations",
-      "rooms": ["Kitchen"],
+      "rooms": [
+        "Kitchen"
+      ],
       "price": 9,
       "blurb": "Ten clips for coffee, pasta and everything half-open in the cupboard.",
       "description": "Printed flat, sprung by the geometry rather than a spring, so there is nothing in them to fail. They grip a folded bag hard enough to keep it closed and let go without a fight. Ten in a pack, because you always need more than you think.",
@@ -343,15 +391,17 @@
         "Fits": "Most bag thicknesses"
       },
       "care": "Wipe or rinse. Not dishwasher safe.",
-      "images": ["bag-clips-black"],
-      "status": "live"
+      "status": "live",
+      "shots": 1
     },
     {
       "slug": "bag-clips-white",
       "name": "Bag Clips",
       "variant": "White, pack of 10",
       "category": "decorations",
-      "rooms": ["Kitchen"],
+      "rooms": [
+        "Kitchen"
+      ],
       "price": 9,
       "blurb": "The same ten clips, in white.",
       "description": "Printed flat, sprung by the geometry rather than a spring, so there is nothing in them to fail. They grip a folded bag hard enough to keep it closed and let go without a fight. Ten in a pack, because you always need more than you think.",
@@ -362,87 +412,101 @@
         "Fits": "Most bag thicknesses"
       },
       "care": "Wipe or rinse. Not dishwasher safe.",
-      "images": ["bag-clips-white"],
-      "status": "live"
+      "status": "live",
+      "shots": 1
     },
-
     {
       "slug": "concept-bubble",
       "name": "Bubble",
       "variant": "Concept",
       "category": "lamps",
-      "rooms": ["Living room", "Bedroom"],
+      "rooms": [
+        "Living room",
+        "Bedroom"
+      ],
       "price": null,
       "blurb": "A rounded lantern with a wide ribbed body.",
       "description": "In development. Shorter and wider than the Ridge, meant for a low table where you want the light to spread sideways rather than up.",
       "specs": {},
-      "images": ["concept-bubble"],
-      "status": "concept"
+      "status": "concept",
+      "shots": 1
     },
     {
       "slug": "concept-buddy",
       "name": "Buddy",
       "variant": "Concept",
       "category": "lamps",
-      "rooms": ["Bedroom"],
+      "rooms": [
+        "Bedroom"
+      ],
       "price": null,
       "blurb": "A small lamp with legs. Deliberately silly.",
       "description": "In development. A classic shade on two stubby legs — the one piece in the range that is not trying to be serious.",
       "specs": {},
-      "images": ["concept-buddy"],
-      "status": "concept"
+      "status": "concept",
+      "shots": 1
     },
     {
       "slug": "concept-line",
       "name": "Line",
       "variant": "Concept",
       "category": "lamps",
-      "rooms": ["Living room", "Desk"],
+      "rooms": [
+        "Living room",
+        "Desk"
+      ],
       "price": null,
       "blurb": "An angular column, cut like a crystal.",
       "description": "In development. A faceted tower that throws light in flat planes rather than a soft wash — the sharpest shape we have drawn so far.",
       "specs": {},
-      "images": ["concept-line"],
-      "status": "concept"
+      "status": "concept",
+      "shots": 1
     },
     {
       "slug": "concept-mountain",
       "name": "Mountain",
       "variant": "Concept",
       "category": "lamps",
-      "rooms": ["Living room"],
+      "rooms": [
+        "Living room"
+      ],
       "price": null,
       "blurb": "A low ridge of peaks on a round base.",
       "description": "In development. Sits low and lights from within the peaks, so it reads more like a fire than a lamp.",
       "specs": {},
-      "images": ["concept-mountain"],
-      "status": "concept"
+      "status": "concept",
+      "shots": 1
     },
     {
       "slug": "concept-swirl",
       "name": "Swirl",
       "variant": "Concept",
       "category": "lamps",
-      "rooms": ["Living room", "Bedroom"],
+      "rooms": [
+        "Living room",
+        "Bedroom"
+      ],
       "price": null,
       "blurb": "A square shade with a wave running through it.",
       "description": "In development. The wave changes the wall thickness as it travels, so the light is brighter along the curve than either side of it.",
       "specs": {},
-      "images": ["concept-swirl"],
-      "status": "concept"
+      "status": "concept",
+      "shots": 1
     },
     {
       "slug": "concept-tornado",
       "name": "Tornado",
       "variant": "Concept",
       "category": "lamps",
-      "rooms": ["Living room"],
+      "rooms": [
+        "Living room"
+      ],
       "price": null,
       "blurb": "A twisted sculptural form on a disc base.",
       "description": "In development. The most difficult of the six to print — the twist has to be supported the whole way up, which is what we are still working on.",
       "specs": {},
-      "images": ["concept-tornado"],
-      "status": "concept"
+      "status": "concept",
+      "shots": 1
     }
   ]
 }

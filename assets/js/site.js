@@ -136,26 +136,48 @@
   })();
 
   /* ----------------------------------------------- tier 1 scroll reveals */
-  var io = null;
   (function reveals() {
-    if (!canMove || !("IntersectionObserver" in window)) return;
+    var targets = document.querySelectorAll(".lay, .rise, .lines");
+    if (!canMove || !targets.length) return;
 
-    io = new IntersectionObserver(function (entries) {
+    function show(el) { el.classList.add("is-in"); }
+
+    if (!("IntersectionObserver" in window)) {
+      targets.forEach(show);
+      return;
+    }
+
+    var fired = false;
+    var io = new IntersectionObserver(function (entries) {
+      fired = true;
       entries.forEach(function (en) {
         if (!en.isIntersecting) return;
-        en.target.classList.add("is-in");
+        show(en.target);
         io.unobserve(en.target);
       });
     }, { rootMargin: "0px 0px -12% 0px", threshold: 0.01 });
 
-    document.querySelectorAll(".lay, .rise, .lines").forEach(function (el) {
+    var above = [];
+    targets.forEach(function (el) {
       // anything already on screen at load reveals immediately, not on scroll
       if (el.getBoundingClientRect().top < innerHeight * 0.9) {
-        requestAnimationFrame(function () { el.classList.add("is-in"); });
+        above.push(el);
+        requestAnimationFrame(function () { show(el); });
       } else {
         io.observe(el);
       }
     });
+
+    /* Safety nets. These styles hide content, so JS must not be the only thing
+       that can bring it back: rAF and IntersectionObserver callbacks both need a
+       rendering opportunity, which a background or non-compositing tab never
+       gets. setTimeout still fires there. */
+    setTimeout(function () { above.forEach(show); }, 1200);
+    setTimeout(function () {
+      if (fired) return;          // the observer works — leave the scroll reveals alone
+      io.disconnect();
+      targets.forEach(show);      // it does not, so nothing stays invisible
+    }, 2500);
   })();
 
   /* --------------------------------------------- view transition naming */
@@ -257,37 +279,9 @@
     });
     gsap.set("[data-batch] > *", { opacity: 0, y: 22 });
 
-    /* ------------------------------------------------------- hero pair */
-    var heroMask = document.querySelector("[data-hero-media]");
-    if (heroMask) {
-      var img = heroMask.querySelector("img");
-      var tl = gsap.timeline({ defaults: { ease: "power4.out" } });
-      // the offsets are the craft — nothing starts together except mask + scale
-      tl.fromTo(heroMask, { clipPath: "inset(100% 0 0 0)" }, { clipPath: "inset(0% 0 0 0)", duration: 1.2 }, 0);
-      if (img) tl.fromTo(img, { scale: 1.14 }, { scale: 1, duration: 1.8, ease: "expo.out" }, 0);
-      tl.from("[data-hero-eyebrow]", { yPercent: 100, duration: 0.7 }, 0.35);
-      tl.from("[data-hero-cta]", { opacity: 0, y: 12, duration: 0.6 }, 0.95);
-    }
-
-    /* ------------------------------------------- one parallax, desktop only */
-    if (matchMedia("(min-width: 64em)").matches) {
-      document.querySelectorAll("[data-parallax]").forEach(function (el) {
-        gsap.to(el, {
-          yPercent: 10, ease: "none",
-          scrollTrigger: { trigger: el.parentElement, start: "top bottom", end: "bottom top", scrub: 0.8 }
-        });
-      });
-    }
-
-    /* the glow breathes very slightly as the night section passes */
-    document.querySelectorAll("[data-glow]").forEach(function (el) {
-      gsap.fromTo(el,
-        { "--glow-o": 0.45 },
-        {
-          "--glow-o": 1, ease: "none",
-          scrollTrigger: { trigger: el, start: "top bottom", end: "center center", scrub: 1 }
-        });
-    });
+    /* The hero is deliberately NOT animated here. It is above the fold, so a
+       GSAP timeline created after the libraries arrive would visibly re-hide
+       content that has already painted. Its stagger is CSS `--rd` delays. */
 
     addEventListener("load", function () { ScrollTrigger.refresh(); });
   }
