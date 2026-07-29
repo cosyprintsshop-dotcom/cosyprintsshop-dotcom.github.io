@@ -32,17 +32,21 @@ Reads `data/site.json` and `data/products.json`, writes `index.html`,
 `lamps/`, `decorations/`, `shop/<slug>/`, `legal/`, `sitemap.xml`, `robots.txt`.
 Never edit the generated HTML — it gets overwritten.
 
-## Product photography
+## Photography
 
-`assets/products/` is generated from the raw photos in `../products/` by a
-pipeline that cuts each object out, drops it on a consistent warm backdrop with
-a contact shadow, grades it warm and exports square/portrait/wide at two widths
-in WebP + JPEG. Lit lamps get a dark backdrop and a glow keyed to the colour
-the lamp is actually emitting.
+**There are no photos on this site.** Every shot is a reserved frame — a
+hairline box on a raised ground with the ridge motif and a "Photo coming soon"
+label (`.slot` in `site.css`, `slot()` in `build.py`). The layout is final, so
+real photography drops in without moving anything.
 
-Anything named `concept-*` is an AI-generated render, not a photograph, and is
-labelled as such on every page it appears on. Do not present those as product
-photos.
+`shots` on each product in `products.json` is how many frames its page reserves
+(1 or 2). Product cards, category cards and the hero each reserve one.
+
+To put photography back: render your images, then change `slot()` in `build.py`
+to emit a `<picture>` with `width`/`height` set. Keep the frame's aspect ratios
+(1:1 for cards, 4:5 for the hero and the first product shot) or the grid shifts.
+Note the CSS reset needs `img { height: auto }` — without it the `height`
+attribute wins and images stretch vertically.
 
 ## Motion
 
@@ -52,12 +56,18 @@ Three tiers, each degrading cleanly to the one below:
 - **`assets/js/site.js`** — nav states, FAQ accordion, room filters, and
   IntersectionObserver reveals driven by CSS transitions.
 - **GSAP 3.15.0 + Lenis 1.3.25** (self-hosted in `assets/vendor/`) — smooth
-  scroll, line-masked headings via SplitText, batched grid reveals, the hero
-  timeline, one parallax layer.
+  scroll, line-masked headings via SplitText, batched grid reveals.
 
 Tier 3 is only fetched when the visitor has *not* asked for reduced motion, so
 those users never download the ~55 KB. Nothing is hidden by CSS unless JS has
-already confirmed it can un-hide it (`html.js-motion`).
+already confirmed it can un-hide it (`html.js-motion`), and the reveal code
+carries two `setTimeout` safety nets — rAF and IntersectionObserver callbacks
+both need a rendering opportunity, which a background tab never gets, so without
+them a page opened in a background tab could stay blank.
+
+The hero is deliberately **not** animated by GSAP. It is above the fold, so a
+timeline created after the libraries arrive would re-hide content that had
+already painted. Its stagger is CSS `--rd` delays instead (350/450/700/950 ms).
 
 Page-to-page transitions are the native View Transitions API — pure CSS opt-in,
 no JS, no polyfill. Firefox does not support cross-document transitions yet and
