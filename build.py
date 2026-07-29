@@ -44,6 +44,21 @@ def money(v):
     return f"{BRAND['currencySymbol']}{s}"
 
 
+def is_placeholder(v):
+    return not v or str(v).strip().upper().startswith("PLACEHOLDER")
+
+
+def recipient():
+    """The donation copy names a hospital. Until a real one is filled in, say
+    'our local hospital' rather than printing the placeholder onto a live page.
+    Fill in `donation.recipientName` and the name appears everywhere by itself."""
+    d = SITE["donation"]
+    if is_placeholder(d.get("recipientName")):
+        return "our local hospital", ""
+    city = d.get("recipientCity", "")
+    return d["recipientName"], "" if is_placeholder(city) else city
+
+
 def by_cat(slug, status="live"):
     return [p for p in PRODUCTS if p["category"] == slug and p.get("status", "live") == status]
 
@@ -188,7 +203,7 @@ def build_home():
     </details>""" for q in SITE["faq"])
 
     d = SITE["donation"]
-    hosp = d["recipientName"]
+    hosp, hosp_city = recipient()
 
     body = f"""
 <section class="sec hero" data-tone="day">
@@ -286,14 +301,14 @@ def build_home():
         <h2 class="display h2" style="margin-bottom:1.4rem" data-split>of revenue goes to our local hospital.</h2>
         <div class="prose">
           <p>Not ten percent of profit — ten percent of revenue. It comes off the top, so it is paid in a bad month as well as a good one.</p>
-          <p>It goes to {e(hosp)}{(', ' + e(d['recipientCity'])) if d.get('recipientCity') else ''}. We publish what we sent and when, once a quarter, because a claim like this is worth nothing if you cannot check it.</p>
+          <p>It goes to {e(hosp)}{(', ' + e(hosp_city)) if hosp_city else ''}. We publish what we sent and when, once a quarter, because a claim like this is worth nothing if you cannot check it.</p>
         </div>
       </div>
       <div class="give__facts">
         <dl class="give__list">
           <div class="give__item"><dt>Share</dt><dd>{d['share']}% of revenue, before costs</dd></div>
           <div class="give__item"><dt>Paid</dt><dd>Quarterly, with the amount published</dd></div>
-          <div class="give__item"><dt>Recipient</dt><dd>{e(hosp)}</dd></div>
+          <div class="give__item"><dt>Recipient</dt><dd>{e(hosp[0].upper() + hosp[1:])}</dd></div>
         </dl>
       </div>
     </div>
@@ -483,7 +498,7 @@ def build_legal():
       <p>Every order is printed after it is placed. Allow 3–5 working days in the workshop, then normal postal time. You get a tracking number on the day it ships.</p>
 
       <h2 class="h3" style="margin-top:2.5rem">The 10% donation</h2>
-      <p>Ten percent of revenue — not profit — is paid to {e(SITE['donation']['recipientName'])}. We publish the amount and the date quarterly. If you want the receipts, ask.</p>
+      <p>Ten percent of revenue — not profit — is paid to {e(recipient()[0])}. We publish the amount and the date quarterly. If you want the receipts, ask.</p>
 
       <h2 class="h3" style="margin-top:2.5rem">Privacy</h2>
       <p>This site sets no cookies and runs no analytics or third-party trackers. Fonts and scripts are served from this domain, not from a CDN, so loading a page tells nobody but us that you were here. If you email us, we keep the email to answer it.</p>
