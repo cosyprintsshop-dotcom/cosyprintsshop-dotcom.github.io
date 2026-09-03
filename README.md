@@ -10,17 +10,13 @@ Everything below is a placeholder or an assumption I could not verify. Search
 
 1. **Prices.** Every `price` in `data/products.json` is invented. They are
    plausible for small French 3D-printed homeware but they are not yours.
-2. **The hospital.** `data/site.json → donation.recipientName` says
-   `PLACEHOLDER`. The site advertises "10% of revenue to our local hospital"
-   in three places. Do not publish a charity claim you cannot evidence.
-3. **Checkout.** Nothing is connected. Product pages fall back to an
+2. **Checkout.** Nothing is connected. Product pages fall back to an
    "Order by email" mailto. To turn any product into a real buy button, create a
    Stripe Payment Link and put the URL in that product's `checkoutUrl`. Only
    then put a payment claim back into `trust` in `site.json`.
-4. **Mentions légales.** `/legal/` is drafted but needs your legal form, SIREN,
+3. **Mentions légales.** `/legal/` is drafted but needs your legal form, SIREN,
    registered address, VAT status and publication director.
-5. **Email.** `hello@cosyprints.com` is assumed, not verified.
-6. **Delivery times.** "3–5 working days" is an assumption.
+4. **Delivery times.** "3–5 working days" is an assumption.
 
 ## Editing
 
