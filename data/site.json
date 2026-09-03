@@ -5,7 +5,7 @@
     "name": "Cosy Prints",
     "domain": "cosyprints.com",
     "tagline": "Lamps and objects for the corners of a home you actually sit in.",
-    "email": "hello@cosyprints.com",
+    "email": "cosyprints.shop@gmail.com",
     "country": "France",
     "currency": "EUR",
     "currencySymbol": "€"
@@ -13,19 +13,9 @@
 
   "PLACEHOLDERS_TO_REPLACE": {
     "prices": "Every `price` in products.json is a placeholder. Set your real prices before publishing.",
-    "hospital": "The donation section names a hospital. Fill in the real one below — do not publish a charity claim you cannot evidence.",
-    "email": "hello@cosyprints.com is assumed, not verified.",
     "legalEntity": "Mentions légales need your real SIREN, legal form, address and hosting details.",
     "shipping": "Delivery times and shipping prices are assumptions. Confirm them.",
     "checkout": "There is no payment processor connected. Product pages fall back to an 'Order by email' mailto. Add a Stripe Payment Link as `checkoutUrl` on any product to turn it into a real buy button, and only then add a payment claim back into `trust`."
-  },
-
-  "donation": {
-    "share": 10,
-    "recipientName": "PLACEHOLDER — name of your local hospital",
-    "recipientCity": "PLACEHOLDER — city",
-    "basis": "revenue",
-    "note": "Stated as 10% of revenue, not profit. Keep the receipts — this is an advertised claim and you have to be able to evidence it."
   },
 
   "howItWorks": [
@@ -93,10 +83,6 @@
     {
       "q": "Can I return something?",
       "a": "Yes. You have 14 days from delivery to change your mind, no explanation needed, and we refund the item. The exception is anything we made to your own specification — a custom colour or a name printed on it — which we cannot resell."
-    },
-    {
-      "q": "What exactly happens with the 10%?",
-      "a": "Ten percent of revenue — not profit, so it is paid whether or not we make money that month — goes to our local hospital. We publish what we sent and when, once a quarter."
     },
     {
       "q": "Do you take custom commissions?",

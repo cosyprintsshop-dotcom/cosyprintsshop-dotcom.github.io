@@ -48,17 +48,6 @@ def is_placeholder(v):
     return not v or str(v).strip().upper().startswith("PLACEHOLDER")
 
 
-def recipient():
-    """The donation copy names a hospital. Until a real one is filled in, say
-    'our local hospital' rather than printing the placeholder onto a live page.
-    Fill in `donation.recipientName` and the name appears everywhere by itself."""
-    d = SITE["donation"]
-    if is_placeholder(d.get("recipientName")):
-        return "our local hospital", ""
-    city = d.get("recipientCity", "")
-    return d["recipientName"], "" if is_placeholder(city) else city
-
-
 def by_cat(slug, status="live"):
     return [p for p in PRODUCTS if p["category"] == slug and p.get("status", "live") == status]
 
@@ -69,7 +58,6 @@ def shell(title, desc, body, page="", extra_head="", tone_start="day"):
         ("/lamps/", "Lamps", False),
         ("/decorations/", "Decorations", False),
         ("/#how", "How it works", True),
-        ("/#give", "Giving back", True),
     ]
     links = "".join(
         '<a class="nav__link{sec}" href="{h}"{cur}>{t}</a>'.format(
@@ -128,7 +116,6 @@ def shell(title, desc, body, page="", extra_head="", tone_start="day"):
         <p class="label foot__title">About</p>
         <ul class="foot__list">
           <li><a href="/#how">How it works</a></li>
-          <li><a href="/#give">Giving back</a></li>
           <li><a href="/#faq">Questions</a></li>
         </ul>
       </div>
@@ -142,7 +129,6 @@ def shell(title, desc, body, page="", extra_head="", tone_start="day"):
     </div>
     <div class="foot__base">
       <span>&copy; {year} {e(BRAND['name'])} — printed in {e(BRAND['country'])}</span>
-      <span>{SITE['donation']['share']}% of revenue goes to our local hospital</span>
     </div>
   </div>
 </footer>
@@ -201,9 +187,6 @@ def build_home():
       <summary class="qa__q">{e(q['q'])}<span class="qa__sign" aria-hidden="true"></span></summary>
       <div class="qa__a"><div>{e(q['a'])}</div></div>
     </details>""" for q in SITE["faq"])
-
-    d = SITE["donation"]
-    hosp, hosp_city = recipient()
 
     body = f"""
 <section class="sec hero" data-tone="day">
@@ -292,29 +275,6 @@ def build_home():
   </div>
 </section>
 
-<section class="sec" data-tone="night" id="give">
-  <div class="wrap">
-    <div class="grid give__grid">
-      <div class="give__copy">
-        <p class="label" style="margin-bottom:1rem">Giving back</p>
-        <p class="give__share">{d['share']}%</p>
-        <h2 class="display h2" style="margin-bottom:1.4rem" data-split>of revenue goes to our local hospital.</h2>
-        <div class="prose">
-          <p>Not ten percent of profit — ten percent of revenue. It comes off the top, so it is paid in a bad month as well as a good one.</p>
-          <p>It goes to {e(hosp)}{(', ' + e(hosp_city)) if hosp_city else ''}. We publish what we sent and when, once a quarter, because a claim like this is worth nothing if you cannot check it.</p>
-        </div>
-      </div>
-      <div class="give__facts">
-        <dl class="give__list">
-          <div class="give__item"><dt>Share</dt><dd>{d['share']}% of revenue, before costs</dd></div>
-          <div class="give__item"><dt>Paid</dt><dd>Quarterly, with the amount published</dd></div>
-          <div class="give__item"><dt>Recipient</dt><dd>{e(hosp[0].upper() + hosp[1:])}</dd></div>
-        </dl>
-      </div>
-    </div>
-  </div>
-</section>
-
 <section class="sec" data-tone="night" id="faq">
   <div class="wrap">
     <div class="grid faq__grid">
@@ -345,7 +305,7 @@ def build_home():
 """
     return shell(
         f"{BRAND['name']} — 3D-printed lamps and home decorations",
-        "Lamps and small home objects, 3D-printed to order in France. Warm light, plant-based PLA, and 10% of revenue to our local hospital.",
+        "Lamps and small home objects, 3D-printed to order in France. Warm light, plant-based PLA, made by hand in our workshop.",
         body,
     )
 
@@ -496,9 +456,6 @@ def build_legal():
 
       <h2 class="h3" style="margin-top:2.5rem">Delivery</h2>
       <p>Every order is printed after it is placed. Allow 3–5 working days in the workshop, then normal postal time. You get a tracking number on the day it ships.</p>
-
-      <h2 class="h3" style="margin-top:2.5rem">The 10% donation</h2>
-      <p>Ten percent of revenue — not profit — is paid to {e(recipient()[0])}. We publish the amount and the date quarterly. If you want the receipts, ask.</p>
 
       <h2 class="h3" style="margin-top:2.5rem">Privacy</h2>
       <p>This site sets no cookies and runs no analytics or third-party trackers. Fonts and scripts are served from this domain, not from a CDN, so loading a page tells nobody but us that you were here. If you email us, we keep the email to answer it.</p>
