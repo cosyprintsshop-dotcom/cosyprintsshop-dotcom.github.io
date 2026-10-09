@@ -30,17 +30,26 @@ Never edit the generated HTML — it gets overwritten.
 
 ## Photography
 
-**There are no photos on this site.** Every shot is a reserved frame — a
-hairline box on a raised ground with the ridge motif and a "Photo coming soon"
-label (`.slot` in `site.css`, `slot()` in `build.py`). The layout is final, so
-real photography drops in without moving anything.
+Frames hold a photo when one exists and a labelled "Photo coming soon" box when
+it doesn't (`.slot` in `site.css`, `slot()` in `build.py`). The layout is the
+same either way.
 
-`shots` on each product in `products.json` is how many frames its page reserves
-(1 or 2). Product cards, category cards and the hero each reserve one.
+To add a photo:
 
-To put photography back: render your images, then change `slot()` in `build.py`
-to emit a `<picture>` with `width`/`height` set. Keep the frame's aspect ratios
-(1:1 for cards, 4:5 for the hero and the first product shot) or the grid shifts.
+1. `pip install pillow` (once), then
+   `python tools/photos.py path/to/photo.jpg NAME --ratio 4:5`
+   — 4:5 for the hero and a product's first shot, 1:1 for cards. `--focus 0.3`
+   moves the crop up, `0.7` down. It writes `assets/img/NAME-<width>.webp/.jpg`
+   (metadata stripped) and records NAME in `data/photos.json`.
+2. Point something at it:
+   - hero: `"hero": {"photo": {"name": "NAME", "alt": "..."}}` in `site.json`
+   - product: `"photos": [{"name": "NAME", "alt": "..."}, ...]` in
+     `products.json` — the first fills the card and first shot, the second
+     fills the second frame if `shots` is 2.
+3. `python build.py`, commit everything.
+
+The build stops if a photo is missing or has no alt text. Use camera originals:
+WhatsApp shrinks photos to ~900px, which looks soft on phones and retina screens.
 Note the CSS reset needs `img { height: auto }` — without it the `height`
 attribute wins and images stretch vertically.
 

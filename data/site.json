@@ -11,6 +11,14 @@
     "currencySymbol": "€"
   },
 
+  "hero": {
+    "_README": "The homepage's big frame. `photo.name` must exist in data/photos.json (make it with tools/photos.py --ratio 4:5). Remove `photo` to go back to the labelled empty frame.",
+    "photo": {
+      "name": "hero-lamp",
+      "alt": "A sand-coloured lamp with a wavy, sculpted base and a pleated shade, lit on an oak side table beside an armchair."
+    }
+  },
+
   "PLACEHOLDERS_TO_REPLACE": {
     "prices": "Every `price` in products.json is a placeholder. Set your real prices before publishing.",
     "legalEntity": "Mentions légales need your real SIREN, legal form, address and hosting details.",
