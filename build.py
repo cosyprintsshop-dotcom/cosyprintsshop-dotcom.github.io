@@ -8,7 +8,7 @@ Reads data/site.json + data/products.json and writes real HTML files — one per
 page, no client-side routing. Real documents are what make cross-document view
 transitions and search indexing work.
 """
-import json, os, re, shutil, html
+import json, os, re, shutil, html, hashlib
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 DATA = os.path.join(ROOT, "data")
@@ -25,6 +25,19 @@ CATEGORIES = CAT["categories"]
 e = html.escape
 
 SLOT_LABEL = "Photo coming soon"
+
+
+def asset(path):
+    """URL for a file under the site root, versioned by its content.
+
+    The HTML changes on every deploy but the CSS/JS URLs did not, so browsers and
+    the CDN kept serving stale styles against new markup. A content hash in the
+    query string makes a changed file a new URL. Line endings are normalised so a
+    Windows checkout and CI produce the same hash.
+    """
+    with open(os.path.join(ROOT, path.lstrip("/")), "rb") as f:
+        body = f.read().replace(b"\r\n", b"\n")
+    return f"{path}?v={hashlib.sha256(body).hexdigest()[:10]}"
 
 
 # `sizes` hints for the frames that can hold a photo: how wide the frame is drawn.
@@ -113,7 +126,7 @@ def shell(title, desc, body, page="", extra_head="", tone_start="day"):
 <link rel="preload" href="/assets/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/vendor/lenis.css">
-<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="stylesheet" href="{asset('/assets/css/site.css')}">
 <meta name="theme-color" content="#EDE7DB">
 <meta property="og:title" content="{e(title)}">
 <meta property="og:description" content="{e(desc)}">
@@ -168,7 +181,7 @@ def shell(title, desc, body, page="", extra_head="", tone_start="day"):
   </div>
 </footer>
 
-<script src="/assets/js/site.js" defer></script>
+<script src="{asset('/assets/js/site.js')}" defer></script>
 </body>
 </html>
 """
