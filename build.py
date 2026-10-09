@@ -15,6 +15,8 @@ DATA = os.path.join(ROOT, "data")
 
 SITE = json.load(open(os.path.join(DATA, "site.json"), encoding="utf8"))
 CAT = json.load(open(os.path.join(DATA, "products.json"), encoding="utf8"))
+_PHOTOS_JSON = os.path.join(DATA, "photos.json")
+PHOTOS = json.load(open(_PHOTOS_JSON, encoding="utf8")) if os.path.exists(_PHOTOS_JSON) else {}
 
 BRAND = SITE["brand"]
 PRODUCTS = [p for p in CAT["products"]]
@@ -25,15 +27,48 @@ e = html.escape
 SLOT_LABEL = "Photo coming soon"
 
 
-def slot(cls="", label=SLOT_LABEL, style=""):
-    """A reserved frame where product photography will go.
+# `sizes` hints for the frames that can hold a photo: how wide the frame is drawn.
+SIZES_HERO = "(min-width: 62em) min(38vw, 560px), 92vw"
+SIZES_SHOT = "(min-width: 62em) min(50vw, 760px), 92vw"
+SIZES_CARD = "(min-width: 62em) min(25vw, 380px), (min-width: 40em) 46vw, 92vw"
 
-    There is no product photography yet. Rather than ship placeholder images or
-    stock, every shot is a labelled frame — so the layout is final and the photos
-    can be dropped in without touching it.
+
+def picture(photo, sizes, eager=False):
+    """<picture> for a photo made by tools/photos.py: WebP with a JPEG fallback.
+
+    `photo` is {"name": ..., "alt": ...}. The build fails loudly if the photo is
+    not in data/photos.json or a file is missing, rather than ship a broken image.
+    """
+    name, alt = photo.get("name"), (photo.get("alt") or "").strip()
+    if name not in PHOTOS:
+        raise SystemExit(f"photo '{name}' is not in data/photos.json — run tools/photos.py first")
+    if not alt or is_placeholder(alt):
+        raise SystemExit(f"photo '{name}' needs real alt text")
+    meta = PHOTOS[name]
+    widths = meta["widths"]
+    for w in widths:
+        for ext in ("webp", "jpg"):
+            if not os.path.exists(os.path.join(ROOT, "assets", "img", f"{name}-{w}.{ext}")):
+                raise SystemExit(f"missing assets/img/{name}-{w}.{ext}")
+    rw, rh = (int(x) for x in meta["ratio"].split(":"))
+    big = widths[-1]
+    srcset = lambda ext: ", ".join(f"/assets/img/{name}-{w}.{ext} {w}w" for w in widths)
+    load = 'loading="eager" fetchpriority="high"' if eager else 'loading="lazy" decoding="async"'
+    return (f'<picture><source type="image/webp" srcset="{srcset("webp")}" sizes="{sizes}">'
+            f'<img src="/assets/img/{name}-{big}.jpg" srcset="{srcset("jpg")}" sizes="{sizes}" '
+            f'width="{big}" height="{round(big * rh / rw)}" alt="{e(alt)}" {load}></picture>')
+
+
+def slot(cls="", label=SLOT_LABEL, style="", photo=None, sizes=SIZES_CARD, eager=False):
+    """A frame for product photography.
+
+    With `photo`, it holds the picture. Without, it is a labelled reserved frame —
+    the layout is final either way, so photos drop in without moving anything.
     """
     c = (" " + cls) if cls else ""
     s = f' style="{style}"' if style else ""
+    if photo:
+        return f'<div class="slot slot--photo{c}"{s}>{picture(photo, sizes, eager)}</div>'
     return f'<div class="slot{c}"{s}><span class="slot__label">{e(label)}</span></div>'
 
 
@@ -147,7 +182,7 @@ def product_card(p, lead=False, morph=True):
         tag = '<span class="pcard__tag">In development</span>'
     rooms = "|".join(p.get("rooms", []))
     return f"""<a class="pcard" href="/shop/{p['slug']}/" data-rooms="{e(rooms)}"{' data-morph' if morph else ''}>
-  {slot('pcard__media lay')}
+  {slot('pcard__media lay', photo=(p.get('photos') or [None])[0])}
   <div class="pcard__top">
     <span class="pcard__name">{e(p['name'])}</span>
     <span class="pcard__price">{price or '—'}</span>
@@ -207,7 +242,7 @@ def build_home():
         </div>
       </div>
       <div class="hero__media">
-        {slot('lay', SLOT_LABEL, 'aspect-ratio:4/5')}
+        {slot('lay', SLOT_LABEL, 'aspect-ratio:4/5', photo=SITE.get('hero', {}).get('photo'), sizes=SIZES_HERO, eager=True)}
       </div>
     </div>
   </div>
@@ -366,9 +401,13 @@ def build_category(cat):
 
 # ------------------------------------------------------------------ product
 def build_product(p):
-    shots = slot("pdp__shot lay", SLOT_LABEL, "view-transition-name:hero-media")
+    photos = p.get("photos") or []
+    first = photos[0] if photos else None
+    shots = slot("pdp__shot lay", SLOT_LABEL, "view-transition-name:hero-media",
+                 photo=first, sizes=SIZES_SHOT, eager=True)
     if int(p.get("shots", 1)) > 1:
-        shots += slot("pdp__shot lay", "Second view coming soon")
+        second = photos[1] if len(photos) > 1 else None
+        shots += slot("pdp__shot lay", "Second view coming soon", photo=second, sizes=SIZES_SHOT)
 
     specs = ""
     if p.get("specs"):

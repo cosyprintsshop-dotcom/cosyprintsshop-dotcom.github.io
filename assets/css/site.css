@@ -324,6 +324,14 @@ html.nav-dark.nav-solid .nav {
   transition: color var(--d-quick) var(--e-sine);
 }
 
+/* A frame that has its photograph. Same box, same ratio — the picture fills it
+   and the frame's chrome (hairline, ridge motif, label) steps aside. */
+.slot--photo { padding: 0; border-color: transparent; }
+.slot--photo::before { content: none; }
+.slot--photo picture,
+.slot--photo img { position: absolute; inset: 0; width: 100%; height: 100%; }
+.slot--photo img { object-fit: cover; }
+
 /* ---------------------------------------------------------------- section head */
 .shead { margin-bottom: clamp(2.5rem, 6vw, 5rem); }
 .shead__eyebrow { margin-bottom: clamp(1rem, 2vw, 1.6rem); }
