@@ -563,6 +563,10 @@ summary.qa__q::marker { content: ""; }
 .pdp__spec dd { margin: 0; text-align: right; }
 .pdp__care { font-size: var(--fs-sm); color: var(--muted); margin-top: 1.2rem; }
 .pdp__buy { display: flex; flex-wrap: wrap; gap: 1rem; margin-block: 1.6rem; }
+/* marketplace listings sit above the site's own route, with one line saying
+   whose checkout the visitor is about to use */
+.pdp__note { font-size: var(--fs-sm); color: var(--muted); max-width: 44ch; margin-top: -.6rem; }
+.pdp__note + .pdp__buy { margin-top: 1.2rem; }
 
 .notice {
   border: 1px solid var(--rule); padding: 1rem 1.1rem;

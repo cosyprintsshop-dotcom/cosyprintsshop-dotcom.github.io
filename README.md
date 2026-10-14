@@ -18,6 +18,25 @@ Everything below is a placeholder or an assumption I could not verify. Search
    registered address, VAT status and publication director.
 4. **Delivery times.** "3–5 working days" is an assumption.
 
+## Leboncoin and Vinted
+
+Most sales happen on Leboncoin. To send a product page's visitors to a listing,
+add either or both to that product in `data/products.json`:
+
+```json
+"leboncoinUrl": "https://www.leboncoin.fr/ad/...",
+"vintedUrl": "https://www.vinted.fr/items/...",
+"price": 42,
+"priceConfirmed": true
+```
+
+The page then shows plain "Buy on Leboncoin" / "Buy on Vinted" buttons (new tab,
+no logos) above "Order by email", which stays as the fallback, plus one line
+saying payment and delivery go through that site. The build stops if a link is
+not https on the right domain, or if `priceConfirmed` is missing — the price
+here has to be the listing's price, not one of the placeholders. When a listing
+ends, delete its URL.
+
 ## Editing
 
 ```bash

@@ -1,5 +1,5 @@
 {
-  "_README": "Every `price` here is a PLACEHOLDER — replace before publishing. `shots` is how many photography frames the product page reserves (1 or 2); there are no product photos yet, so each one renders as a labelled box. `status`: live | concept. Concept pieces are not in production and cannot be bought.",
+  "_README": "Every `price` here is a PLACEHOLDER — replace before publishing. `shots` is how many photography frames the product page reserves (1 or 2); there are no product photos yet, so each one renders as a labelled box. `status`: live | concept. Concept pieces are not in production and cannot be bought. Optional `leboncoinUrl` / `vintedUrl`: the product page shows 'Buy on …' buttons above 'Order by email'. A listing needs `price` set to the listing price and `priceConfirmed: true`, or the build stops.",
   "categories": [
     {
       "slug": "lamps",

@@ -9,6 +9,7 @@ page, no client-side routing. Real documents are what make cross-document view
 transitions and search indexing work.
 """
 import json, os, re, shutil, html, hashlib
+from urllib.parse import urlparse
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 DATA = os.path.join(ROOT, "data")
@@ -94,6 +95,36 @@ def money(v):
 
 def is_placeholder(v):
     return not v or str(v).strip().upper().startswith("PLACEHOLDER")
+
+
+# Where a piece can also be bought. Plain text buttons — the site names the
+# marketplace, it never carries its logo. (field, label, allowed host pattern)
+MARKETS = [
+    ("leboncoinUrl", "Leboncoin", r"(^|\.)leboncoin\.fr$"),
+    ("vintedUrl", "Vinted", r"(^|\.)vinted\.[a-z]{2,3}(\.[a-z]{2})?$"),
+]
+
+
+def market_links(p):
+    """[(label, url)] for the listings a product has, checked at build time.
+
+    A listing is a second public price for the same piece, so the build refuses
+    one until `priceConfirmed` says the price here was copied from it. Every
+    price in products.json started life as a placeholder.
+    """
+    links = []
+    for field, label, host in MARKETS:
+        url = (p.get(field) or "").strip()
+        if not url:
+            continue
+        u = urlparse(url)
+        if u.scheme != "https" or not re.search(host, (u.hostname or "").lower()):
+            raise SystemExit(f"{p['slug']}: {field} must be an https link to {label}, got {url!r}")
+        links.append((label, url))
+    if links and not (p.get("priceConfirmed") and p.get("price")):
+        raise SystemExit(f"{p['slug']}: has a marketplace listing, so its price must match it — "
+                         f"set `price` to the listing price and `priceConfirmed: true`")
+    return links
 
 
 def by_cat(slug, status="live"):
@@ -433,13 +464,25 @@ def build_product(p):
         <div class="pdp__buy"><a class="btn" href="mailto:{e(BRAND['email'])}?subject={e(p['name'])}%20—%20tell%20me%20when%20it%20is%20ready">Tell me when it is ready</a></div>"""
         price_html = ""
     else:
+        markets = market_links(p)
+        # with a listing to point at, the site's own route steps back to a fallback
+        btn = "btn btn--ghost" if markets else "btn"
         checkout = p.get("checkoutUrl")
         if checkout:
-            action = f'<a class="btn" href="{e(checkout)}">Add to basket — {money(p["price"])}</a>'
+            action = f'<a class="{btn}" href="{e(checkout)}">Add to basket — {money(p["price"])}</a>'
         else:
             subj = f"Order: {p['name']}" + (f" ({p['variant']})" if p.get("variant") else "")
-            action = f'<a class="btn" href="mailto:{e(BRAND["email"])}?subject={e(subj)}">Order by email</a>'
-        buy = f"""<div class="pdp__buy">{action}</div>
+            action = f'<a class="{btn}" href="mailto:{e(BRAND["email"])}?subject={e(subj)}">Order by email</a>'
+        market_html = ""
+        if markets:
+            mbtns = "".join(
+                f'<a class="btn" href="{e(url)}" target="_blank" rel="noopener noreferrer">'
+                f'Buy on {label}<span class="vh"> (opens in a new tab)</span></a>'
+                for label, url in markets)
+            where = " or ".join(f"{label}'s" for label, _ in markets)
+            market_html = f"""<div class="pdp__buy pdp__buy--market">{mbtns}</div>
+        <p class="pdp__note">Payment and delivery go through {where} own checkout, not this site.</p>"""
+        buy = f"""{market_html}<div class="pdp__buy">{action}</div>
         <p class="pdp__care">Printed after you order. In the workshop 3–5 working days, then posted with tracking.</p>"""
         price_html = f'<p class="pdp__price">{money(p.get("price"))}</p>'
 
