@@ -115,6 +115,7 @@
     if (!bar) return;
     var cards = document.querySelectorAll("[data-rooms]");
     var live = document.querySelector("[data-filter-count]");
+    var ed = document.querySelector("[data-ed]");
 
     bar.addEventListener("click", function (e) {
       var btn = e.target.closest(".filter");
@@ -132,6 +133,8 @@
         if (match) shown++;
       });
       if (live) live.textContent = shown + (shown === 1 ? " piece" : " pieces");
+      // the editorial spreads only hold together with every piece in them
+      if (ed) ed.toggleAttribute("data-filtered", !!room);
     });
   })();
 
@@ -317,7 +320,7 @@
     }
 
     /* --------------------------------------------- product grids: batch */
-    ScrollTrigger.batch("[data-batch] > *", {
+    ScrollTrigger.batch("[data-batch] .pcard", {
       start: "top 88%",
       once: true,
       interval: 0.1,
@@ -330,7 +333,7 @@
         });
       }
     });
-    gsap.set("[data-batch] > *", { opacity: 0, y: 22 });
+    gsap.set("[data-batch] .pcard", { opacity: 0, y: 22 });
 
     /* The hero is deliberately NOT animated here. It is above the fold, so a
        GSAP timeline created after the libraries arrive would visibly re-hide

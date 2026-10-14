@@ -45,6 +45,7 @@ def asset(path):
 SIZES_HERO = "(min-width: 62em) min(38vw, 560px), 92vw"
 SIZES_SHOT = "(min-width: 62em) min(50vw, 760px), 92vw"
 SIZES_CARD = "(min-width: 62em) min(25vw, 380px), (min-width: 40em) 46vw, 92vw"
+SIZES_FEATURE = "(min-width: 62em) min(48vw, 740px), (min-width: 48em) 56vw, 92vw"
 
 
 def picture(photo, sizes, eager=False):
@@ -292,14 +293,15 @@ def shell(title, desc, body, page="", extra_head="", tone_start="day"):
 
 
 # ------------------------------------------------------------------- pieces
-def product_card(p, lead=False, morph=True):
+def product_card(p, feature=False, morph=True):
     price = money(p.get("price"))
     tag = ""
     if p.get("status") == "concept":
         tag = '<span class="pcard__tag">In development</span>'
     rooms = "|".join(p.get("rooms", []))
-    return f"""<a class="pcard" href="/shop/{p['slug']}/" data-rooms="{e(rooms)}"{' data-morph' if morph else ''}>
-  {slot('pcard__media lay', photo=lead_photo(p))}
+    cls = "pcard pcard--feature" if feature else "pcard"
+    return f"""<a class="{cls}" href="/shop/{p['slug']}/" data-rooms="{e(rooms)}"{' data-morph' if morph else ''}>
+  {slot('pcard__media lay', photo=lead_photo(p), sizes=SIZES_FEATURE if feature else SIZES_CARD)}
   <div class="pcard__top">
     <span class="pcard__name">{e(p['name'])}</span>
     <span class="pcard__price">{price or '—'}</span>
@@ -463,6 +465,32 @@ def build_home():
 
 
 # ----------------------------------------------------------------- category
+def editorial_grid(items):
+    """The catalogue as a magazine spread rather than a uniform grid.
+
+    Each `featured` piece gets a wide 4:5 frame, with up to four of the
+    following pieces nested beside it in a tight 2-column grid of 1:1 frames.
+    Spreads alternate sides. Whatever is left runs on as plain rows. It is
+    built from frames, so it reads the same empty, half-photographed or full.
+    When a room filter is on, site.js flattens it back to an even grid
+    (`data-filtered`), because holes in a spread look like mistakes.
+    """
+    feats = [p for p in items if p.get("featured")]
+    rest = [p for p in items if not p.get("featured")]
+    blocks = []
+    for i, f in enumerate(feats):
+        nest, rest = rest[:4], rest[4:]
+        mods = f" ed__spread--n{len(nest)}" + (" ed__spread--flip" if i % 2 else "")
+        nested = "".join(product_card(q) for q in nest)
+        blocks.append(f"""<div class="ed__spread{mods}">
+      <div class="ed__feature">{product_card(f, feature=True)}</div>
+      {f'<div class="ed__nest">{nested}</div>' if nest else ''}
+    </div>""")
+    if rest:
+        blocks.append(f'<div class="ed__rows">{"".join(product_card(q) for q in rest)}</div>')
+    return f'<div class="ed" data-ed data-batch>{"".join(blocks)}</div>'
+
+
 def build_category(cat):
     live = by_cat(cat["slug"], "live")
     concepts = by_cat(cat["slug"], "concept")
@@ -474,7 +502,6 @@ def build_category(cat):
         btns += "".join(f'<button class="filter" data-room="{e(r)}" aria-pressed="false">{e(r)}</button>' for r in rooms)
         filters = f'<div class="filters" data-filters role="group" aria-label="Filter by room">{btns}</div>'
 
-    cards = "".join(product_card(p, lead=(i == 0)) for i, p in enumerate(live))
 
     concept_block = ""
     if concepts:
@@ -503,7 +530,7 @@ def build_category(cat):
     </div>
     {filters}
     <p class="vh" data-filter-count aria-live="polite">{len(live)} pieces</p>
-    <div class="grid pgrid pgrid--lead" data-batch>{cards}</div>
+    {editorial_grid(live)}
   </div>
 </section>
 {concept_block}

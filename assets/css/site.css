@@ -515,8 +515,9 @@ summary.qa__q::marker { content: ""; }
 .pcard { grid-column: span 6; text-decoration: none; display: block; }
 @media (min-width: 48em) { .pcard { grid-column: span 4; } }
 @media (min-width: 62em) { .pcard { grid-column: span 3; } }
-/* the first card of a listing runs double width — the grid is never uniform */
-@media (min-width: 62em) { .pgrid--lead .pcard:first-child { grid-column: span 6; } }
+/* a filtered-out card must actually go: `display: block` above outranks the
+   browser's own [hidden] rule */
+.pcard[hidden] { display: none; }
 
 .pcard__media { aspect-ratio: 1; margin-bottom: 1rem; }
 /* the lead card gets its emphasis from the column span, not a different crop */
@@ -539,6 +540,59 @@ summary.qa__q::marker { content: ""; }
   font-family: var(--ff-ui); font-size: .6875rem; letter-spacing: .12em; text-transform: uppercase;
   border: 1px solid var(--rule); padding: .22rem .5rem; color: var(--muted);
 }
+
+/* ---------------------------------------------------------------- editorial catalogue */
+/* A category page reads as spreads, not a uniform grid: a featured piece in a
+   wide 4:5 frame, the next few nested beside it in a tight 2-up grid of 1:1
+   frames, bottoms aligned like a magazine page. Spreads alternate sides, with
+   a column of air between the two halves. */
+.ed { display: grid; row-gap: clamp(3.5rem, 8vw, 7rem); }
+.ed__spread {
+  display: grid; grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: clamp(2.5rem, 5vw, 4rem) var(--gap); align-items: end;
+}
+.ed__feature, .ed__nest { grid-column: 1 / -1; }
+.ed__nest {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(2rem, 4vw, 3rem) var(--gap);
+}
+.ed__nest .pcard, .ed__feature .pcard { grid-column: auto; }
+.pcard--feature .pcard__media { aspect-ratio: 4 / 5; }
+.pcard--feature .pcard__name { font-size: var(--fs-h3); }
+/* three nested: the third steps across, so the gap reads as a choice */
+.ed__spread--n3 .ed__nest .pcard:nth-child(3) { grid-column: 2; }
+.ed__rows { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: clamp(2.5rem, 5vw, 4rem) var(--gap); }
+.ed__rows .pcard { grid-column: span 6; }
+@media (min-width: 48em) {
+  .ed__feature { grid-column: 1 / span 7; }
+  .ed__nest    { grid-column: 8 / -1; }
+  .ed__spread--flip .ed__feature { grid-column: 6 / -1; grid-row: 1; }
+  .ed__spread--flip .ed__nest    { grid-column: 1 / span 5; grid-row: 1; }
+  /* a featured piece with nothing beside it sits off-centre, not alone at the edge */
+  .ed__spread--n0 .ed__feature { grid-column: 3 / span 7; }
+  .ed__rows .pcard { grid-column: span 4; }
+}
+@media (min-width: 62em) {
+  .ed__feature { grid-column: 1 / span 6; }
+  .ed__nest    { grid-column: 8 / -1; }
+  .ed__spread--flip .ed__feature { grid-column: 7 / -1; }
+  .ed__spread--flip .ed__nest    { grid-column: 1 / span 5; }
+  .ed__spread--n0 .ed__feature { grid-column: 4 / span 6; }
+  .ed__rows .pcard { grid-column: span 3; }
+}
+/* While a room filter is on, the spreads would be full of holes, so the
+   catalogue flattens to an even grid and every frame goes 1:1. */
+.ed[data-filtered] {
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: clamp(2.5rem, 5vw, 4rem) var(--gap);
+}
+.ed[data-filtered] .ed__spread, .ed[data-filtered] .ed__feature,
+.ed[data-filtered] .ed__nest, .ed[data-filtered] .ed__rows { display: contents; }
+.ed[data-filtered] .pcard { grid-column: span 6; }
+@media (min-width: 48em) { .ed[data-filtered] .pcard { grid-column: span 4; } }
+@media (min-width: 62em) { .ed[data-filtered] .pcard { grid-column: span 3; } }
+.ed[data-filtered] .pcard--feature .pcard__media { aspect-ratio: 1; }
+.ed[data-filtered] .pcard--feature .pcard__name { font-size: 1.02rem; }
 
 /* ---------------------------------------------------------------- product page */
 .pdp { padding-top: clamp(6.5rem, 14vh, 10rem); }

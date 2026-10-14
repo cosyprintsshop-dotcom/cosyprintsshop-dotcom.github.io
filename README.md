@@ -67,6 +67,11 @@ To add a photo:
      fills the second frame if `shots` is 2.
 3. `python build.py`, commit everything.
 
+On category pages a `featured` product's card is a 4:5 frame (the rest are 1:1),
+so a 4:5 first photo suits a featured piece best — it is also the product
+page's first shot. Up to four pieces nest beside each featured one; set or
+clear `featured` to change the spreads.
+
 The build stops if a photo is missing or has no alt text. Use camera originals:
 WhatsApp shrinks photos to ~900px, which looks soft on phones and retina screens.
 Note the CSS reset needs `img { height: auto }` — without it the `height`
