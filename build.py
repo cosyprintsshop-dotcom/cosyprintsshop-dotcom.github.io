@@ -127,6 +127,19 @@ def market_links(p):
     return links
 
 
+# The spec table reads the same on every product: these rows first, in this
+# order, then anything product-specific (a "Water" warning, a "Fits" note) as
+# written. A row with no value is not rendered — no dashes, no "TBC".
+SPEC_ORDER = ["Dimensions", "Weight", "Material", "Layer height", "Light source", "Heat limit", "Made"]
+
+
+def spec_rows(p):
+    specs = {k: str(v).strip() for k, v in (p.get("specs") or {}).items()
+             if v is not None and not is_placeholder(v)}
+    known = [(k, specs[k]) for k in SPEC_ORDER if k in specs]
+    return known + [(k, v) for k, v in specs.items() if k not in SPEC_ORDER]
+
+
 def by_cat(slug, status="live"):
     return [p for p in PRODUCTS if p["category"] == slug and p.get("status", "live") == status]
 
@@ -454,8 +467,8 @@ def build_product(p):
         shots += slot("pdp__shot lay", "Second view coming soon", photo=second, sizes=SIZES_SHOT)
 
     specs = ""
-    if p.get("specs"):
-        rows = "".join(f'<div class="pdp__spec"><dt>{e(k)}</dt><dd>{e(v)}</dd></div>' for k, v in p["specs"].items())
+    rows = "".join(f'<div class="pdp__spec"><dt>{e(k)}</dt><dd>{e(v)}</dd></div>' for k, v in spec_rows(p))
+    if rows:
         specs = f'<dl class="pdp__specs">{rows}</dl>'
 
     concept = p.get("status") == "concept"

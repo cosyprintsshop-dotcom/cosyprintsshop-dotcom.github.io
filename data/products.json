@@ -1,5 +1,5 @@
 {
-  "_README": "Every `price` here is a PLACEHOLDER — replace before publishing. `shots` is how many photography frames the product page reserves (1 or 2); there are no product photos yet, so each one renders as a labelled box. `status`: live | concept. Concept pieces are not in production and cannot be bought. Optional `leboncoinUrl` / `vintedUrl`: the product page shows 'Buy on …' buttons above 'Order by email'. A listing needs `price` set to the listing price and `priceConfirmed: true`, or the build stops.",
+  "_README": "Every `price` here is a PLACEHOLDER — replace before publishing. `shots` is how many photography frames the product page reserves (1 or 2); there are no product photos yet, so each one renders as a labelled box. `status`: live | concept. Concept pieces are not in production and cannot be bought. Optional `leboncoinUrl` / `vintedUrl`: the product page shows 'Buy on …' buttons above 'Order by email'. A listing needs `price` set to the listing price and `priceConfirmed: true`, or the build stops. `specs` rows render in a fixed order — Dimensions, Weight, Material, Layer height, Light source, Heat limit, Made — then any other keys as written. Empty values are skipped, so leave a key out (or blank) until the real figure exists.",
   "categories": [
     {
       "slug": "lamps",
@@ -36,8 +36,9 @@
       "specs": {
         "Material": "PLA, plant-based",
         "Finish": "Matte, fine ridge texture",
-        "Bulb": "LED only, not included",
-        "Made": "To order, in our workshop"
+        "Light source": "LED only, not included",
+        "Made": "To order, in our workshop",
+        "Heat limit": "PLA softens above about 55 °C"
       },
       "care": "Wipe with a dry cloth. Keep out of direct summer sun and away from heat — PLA softens above about 55°C.",
       "status": "live",
@@ -60,8 +61,9 @@
       "specs": {
         "Material": "PLA, plant-based",
         "Finish": "Matte shade, brushed-metallic base",
-        "Bulb": "LED only, not included",
-        "Made": "To order, in our workshop"
+        "Light source": "LED only, not included",
+        "Made": "To order, in our workshop",
+        "Heat limit": "PLA softens above about 55 °C"
       },
       "care": "Wipe with a dry cloth. Keep out of direct summer sun and away from heat — PLA softens above about 55°C.",
       "status": "live",
@@ -82,8 +84,9 @@
       "specs": {
         "Material": "PLA, plant-based",
         "Finish": "Matte shade, rose-gold metallic base",
-        "Bulb": "LED only, not included",
-        "Made": "To order, in our workshop"
+        "Light source": "LED only, not included",
+        "Made": "To order, in our workshop",
+        "Heat limit": "PLA softens above about 55 °C"
       },
       "care": "Wipe with a dry cloth. Keep out of direct summer sun and away from heat — PLA softens above about 55°C.",
       "status": "live",
@@ -104,8 +107,9 @@
       "specs": {
         "Material": "PLA, plant-based",
         "Finish": "Matte, fine ridge texture",
-        "Bulb": "Colour LED and remote included",
-        "Made": "To order, in our workshop"
+        "Light source": "Colour LED and remote included",
+        "Made": "To order, in our workshop",
+        "Heat limit": "PLA softens above about 55 °C"
       },
       "care": "Wipe with a dry cloth. Keep out of direct summer sun and away from heat — PLA softens above about 55°C.",
       "status": "live",
@@ -147,7 +151,7 @@
       "description": "Triangular facets that read as sculpture from across a room and as a vase up close. Each face catches light differently, so it changes as you move past it. It is not watertight — this one is for dried or artificial stems, and we would rather say so than have you find out.",
       "specs": {
         "Material": "PLA, plant-based",
-        "Height": "15 cm",
+        "Dimensions": "15 cm tall",
         "Colour": "Rose gold",
         "Water": "Not watertight — dried or artificial stems only"
       },
@@ -213,7 +217,7 @@
       "description": "Big enough to be the thing on the shelf rather than a thing on the shelf. Printed in two colours and assembled, with the chequer running clean around the body. It stands on its three fins without a stand. A display piece, not a toy.",
       "specs": {
         "Material": "PLA, plant-based",
-        "Height": "37.5 cm",
+        "Dimensions": "37.5 cm tall",
         "Colours": "Red and white",
         "Note": "Display piece, not a toy"
       },
@@ -236,7 +240,7 @@
       "description": "Printed in two colours, cleaned up by hand, and heavy enough at the base to stay upright. Eighteen centimetres is the size where it stops being a trinket. Bought mostly as a gift.",
       "specs": {
         "Material": "PLA, plant-based",
-        "Height": "18 cm",
+        "Dimensions": "18 cm tall",
         "Colours": "Cyan body, white and black visor",
         "Made": "To order, in our workshop"
       },
