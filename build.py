@@ -140,6 +140,66 @@ def spec_rows(p):
     return known + [(k, v) for k, v in specs.items() if k not in SPEC_ORDER]
 
 
+HEX = re.compile(r"^#[0-9A-Fa-f]{6}$")
+
+
+def colours(p):
+    """The product's `colours`, checked: [{"name", "hex", "photo"}].
+
+    Nothing renders until the data exists. Swatches need at least two colours
+    that each have a hex and a photo — a swatch that changes nothing on screen is
+    worse than a sentence.
+    """
+    out = []
+    for c in p.get("colours") or []:
+        name = (c.get("name") or "").strip()
+        if not name or is_placeholder(name):
+            raise SystemExit(f"{p['slug']}: every colour needs a real name")
+        if c.get("hex") and not HEX.match(c["hex"]):
+            raise SystemExit(f"{p['slug']}: colour {name!r} hex must look like #A1B2C3, got {c['hex']!r}")
+        out.append({"name": name, "hex": c.get("hex"), "photo": c.get("photo")})
+    return out
+
+
+def can_swatch(cols):
+    return len(cols) >= 2 and all(c["hex"] and c["photo"] for c in cols)
+
+
+def lead_photo(p):
+    """The picture a product leads with. With working swatches it is the first
+    colour's, so the photo matches the colour shown as picked; otherwise the
+    first photo, else the first colour's if it has one."""
+    photos, cols = p.get("photos") or [], colours(p)
+    if can_swatch(cols) or (cols and not photos):
+        return cols[0]["photo"]
+    return photos[0] if photos else None
+
+
+def colour_picker(p, cols):
+    """A text list of the colours (no JS), and — when every colour has a photo —
+    real radio buttons that swap the first frame. site.js unhides the radios and
+    hides the list; without it the first colour's photo simply stays."""
+    if not cols:
+        return ""
+    names = ", ".join(c["name"] for c in cols)
+    text = (f'<p class="pdp__colours" data-colour-list><span class="label">'
+            f'{"Colours" if len(cols) > 1 else "Colour"}</span> {e(names)}</p>')
+    if not can_swatch(cols):
+        return text
+    radios = "".join(
+        f'<label class="swatch"><input class="swatch__input" type="radio" name="colour" value="{i}"'
+        f' data-name="{e(c["name"])}"{" checked" if i == 0 else ""}>'
+        f'<span class="swatch__chip" style="--sw:{c["hex"]}" aria-hidden="true"></span>'
+        f'<span class="vh">{e(c["name"])}</span></label>'
+        for i, c in enumerate(cols))
+    pics = "".join(f'<template data-colour-photo="{i}">{picture(c["photo"], SIZES_SHOT)}</template>'
+                   for i, c in enumerate(cols))
+    return text + f"""<fieldset class="swatches" data-swatches hidden>
+          <legend class="swatches__legend"><span class="label">Colour</span> <span class="swatches__name" data-colour-name>{e(cols[0]['name'])}</span></legend>
+          <div class="swatches__row">{radios}</div>{pics}
+        </fieldset>"""
+
+
 def by_cat(slug, status="live"):
     return [p for p in PRODUCTS if p["category"] == slug and p.get("status", "live") == status]
 
@@ -239,7 +299,7 @@ def product_card(p, lead=False, morph=True):
         tag = '<span class="pcard__tag">In development</span>'
     rooms = "|".join(p.get("rooms", []))
     return f"""<a class="pcard" href="/shop/{p['slug']}/" data-rooms="{e(rooms)}"{' data-morph' if morph else ''}>
-  {slot('pcard__media lay', photo=(p.get('photos') or [None])[0])}
+  {slot('pcard__media lay', photo=lead_photo(p))}
   <div class="pcard__top">
     <span class="pcard__name">{e(p['name'])}</span>
     <span class="pcard__price">{price or '—'}</span>
@@ -459,7 +519,8 @@ def build_category(cat):
 # ------------------------------------------------------------------ product
 def build_product(p):
     photos = p.get("photos") or []
-    first = photos[0] if photos else None
+    cols = colours(p)
+    first = lead_photo(p)
     shots = slot("pdp__shot lay", SLOT_LABEL, "view-transition-name:hero-media",
                  photo=first, sizes=SIZES_SHOT, eager=True)
     if int(p.get("shots", 1)) > 1:
@@ -484,8 +545,12 @@ def build_product(p):
         if checkout:
             action = f'<a class="{btn}" href="{e(checkout)}">Add to basket — {money(p["price"])}</a>'
         else:
-            subj = f"Order: {p['name']}" + (f" ({p['variant']})" if p.get("variant") else "")
-            action = f'<a class="{btn}" href="mailto:{e(BRAND["email"])}?subject={e(subj)}">Order by email</a>'
+            # with colours, the subject names the one picked (site.js fills it in);
+            # without JS it names none, rather than guess the first
+            base = f"Order: {p['name']}"
+            subj = base if cols else base + (f" ({p['variant']})" if p.get("variant") else "")
+            order = f' data-order="{e(base)}"' if can_swatch(cols) else ""
+            action = f'<a class="{btn}" href="mailto:{e(BRAND["email"])}?subject={e(subj)}"{order}>Order by email</a>'
         market_html = ""
         if markets:
             mbtns = "".join(
@@ -515,6 +580,7 @@ def build_product(p):
         <h1 class="display h2 pdp__name">{e(p['name'])}</h1>
         <p class="pdp__variant">{e(p.get('variant',''))}</p>
         {price_html}
+        {colour_picker(p, cols)}
         <div class="prose pdp__desc"><p>{e(p['description'])}</p></div>
         {buy}
         {specs}

@@ -72,6 +72,24 @@ WhatsApp shrinks photos to ~900px, which looks soft on phones and retina screens
 Note the CSS reset needs `img { height: auto }` — without it the `height`
 attribute wins and images stretch vertically.
 
+## Colours
+
+A product can list the colours it comes in:
+
+```json
+"colours": [
+  {"name": "Sand", "hex": "#C9B79C", "photo": {"name": "ridge-sand", "alt": "..."}},
+  {"name": "Ink",  "hex": "#1F1B16", "photo": {"name": "ridge-ink",  "alt": "..."}}
+]
+```
+
+With one colour, or any colour missing a photo or hex, the page lists the
+names as text. With two or more that each have both, it shows swatches —
+real radio buttons — and picking one crossfades the first frame to that
+colour's photo and names it in the "Order by email" subject. Without JS the
+first colour's photo shows and the colours are listed as text. Other colours'
+photos only download when chosen.
+
 ## Motion
 
 Three tiers, each degrading cleanly to the one below:

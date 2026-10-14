@@ -568,6 +568,31 @@ summary.qa__q::marker { content: ""; }
 .pdp__note { font-size: var(--fs-sm); color: var(--muted); max-width: 44ch; margin-top: -.6rem; }
 .pdp__note + .pdp__buy { margin-top: 1.2rem; }
 
+/* Colour choice. The chip is the only colour on the control — the object is the
+   colour, the UI is not. The radio stays a real, focusable radio laid over its
+   chip, so keyboard (arrow keys) and screen readers get the native behaviour. */
+.pdp__colours { font-size: var(--fs-sm); color: var(--muted); margin: -.6rem 0 1.6rem; }
+.pdp__colours .label { margin-right: .5rem; }
+.swatches { border: 0; padding: 0; margin: -.6rem 0 1.6rem; min-width: 0; }
+.swatches__legend { padding: 0; margin-bottom: .5rem; font-size: var(--fs-sm); }
+.swatches__legend .label { margin-right: .5rem; }
+.swatches__row { display: flex; flex-wrap: wrap; gap: .25rem; margin-left: -.5rem; }
+.swatch { position: relative; display: grid; place-items: center; width: 2.75rem; height: 2.75rem; cursor: pointer; }
+.swatch__input { position: absolute; inset: 0; margin: 0; opacity: 0; cursor: pointer; }
+.swatch__chip {
+  width: 1.5rem; height: 1.5rem; background: var(--sw);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 18%, transparent);
+  outline: 1px solid transparent; outline-offset: 3px;
+  transition: outline-color var(--d-quick) var(--e-sine);
+}
+.swatch:hover .swatch__chip { outline-color: var(--rule); }
+.swatch__input:checked + .swatch__chip { outline-color: var(--fg); }
+.swatch__input:focus-visible + .swatch__chip { outline: 2px solid var(--ember); }
+
+/* the photo swap: the new picture is laid over the old one and fades up */
+.slot--photo picture { transition: opacity 320ms var(--e-sine); }
+.slot--photo picture.is-entering { opacity: 0; }
+
 .notice {
   border: 1px solid var(--rule); padding: 1rem 1.1rem;
   font-size: var(--fs-sm); color: var(--muted); margin-block: 1.4rem;
