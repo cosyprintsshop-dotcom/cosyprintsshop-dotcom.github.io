@@ -19,6 +19,33 @@ CAT = json.load(open(os.path.join(DATA, "products.json"), encoding="utf8"))
 _PHOTOS_JSON = os.path.join(DATA, "photos.json")
 PHOTOS = json.load(open(_PHOTOS_JSON, encoding="utf8")) if os.path.exists(_PHOTOS_JSON) else {}
 
+# Figures that appear all over the copy are set once and written as {tokens} in
+# site.json, so changing the shipping time or the returns window can never
+# leave a stale copy behind. An unknown {token} stops the build.
+TOKENS = {
+    "workshopTime": SITE["shipping"]["workshopTime"],
+    "returnsDays": str(SITE["legal"]["returnsDays"]),
+}
+
+
+def _fill(v, where):
+    if isinstance(v, str):
+        out = re.sub(r"\{(\w+)\}", lambda m: TOKENS.get(m.group(1), m.group(0)), v)
+        left = re.findall(r"\{(\w+)\}", out)
+        if left:
+            raise SystemExit(f"{where}: unknown {{{left[0]}}} — use one of "
+                             + ", ".join("{" + k + "}" for k in TOKENS))
+        return out
+    if isinstance(v, list):
+        return [_fill(x, f"{where}[{i}]") for i, x in enumerate(v)]
+    if isinstance(v, dict):
+        return {k: _fill(x, f"{where}.{k}") for k, x in v.items()}
+    return v
+
+
+SITE = _fill(SITE, "site.json")
+WORKSHOP_TIME = TOKENS["workshopTime"]
+
 BRAND = SITE["brand"]
 CATEGORIES = CAT["categories"]
 
@@ -106,6 +133,20 @@ def money(v):
 
 def is_placeholder(v):
     return not v or str(v).strip().upper().startswith("PLACEHOLDER")
+
+
+_WORDS = "zero one two three four five six seven eight nine ten eleven twelve".split()
+
+
+def count(n, noun, cap=False):
+    """'Six shapes', 'one step' — counts written out in copy, worked out from the
+    data instead of typed in, so they cannot go stale."""
+    w = _WORDS[n] if n < len(_WORDS) else str(n)
+    return f"{w[:1].upper() + w[1:] if cap else w} {noun if n == 1 else noun + 's'}"
+
+
+def pieces(n):
+    return f"{n} {'piece' if n == 1 else 'pieces'}"
 
 
 # Where a piece can also be bought. Plain text buttons — the site names the
@@ -220,11 +261,7 @@ def shell(title, desc, body, page="", extra_head="", tone_start="day", current="
     """`page` is the category the page belongs to. On the category page itself the
     nav link is the current page; on a product page (`current="true"`) it only
     marks the section the visitor is in."""
-    nav_items = [
-        ("/lamps/", "Lamps", False),
-        ("/decorations/", "Decorations", False),
-        ("/#how", "How it works", True),
-    ]
+    nav_items = [(f"/{c['slug']}/", c["name"], False) for c in CATEGORIES] + [("/#how", "How it works", True)]
     links = "".join(
         '<a class="nav__link{sec}" href="{h}"{cur}>{t}</a>'.format(
             sec=" nav__link--sec" if secondary else "",
@@ -233,7 +270,9 @@ def shell(title, desc, body, page="", extra_head="", tone_start="day", current="
         )
         for h, t, secondary in nav_items
     )
-    year = 2026
+    shop_links = "".join(f'<li><a href="/{c["slug"]}/">{e(c["name"])}</a></li>' for c in CATEGORIES)
+    # the year of first publication — a copyright line does not need bumping each January
+    year = BRAND["copyrightYear"]
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -273,10 +312,7 @@ def shell(title, desc, body, page="", extra_head="", tone_start="day", current="
       </div>
       <div class="foot__col">
         <p class="label foot__title">Shop</p>
-        <ul class="foot__list">
-          <li><a href="/lamps/">Lamps</a></li>
-          <li><a href="/decorations/">Decorations</a></li>
-        </ul>
+        <ul class="foot__list">{shop_links}</ul>
       </div>
       <div class="foot__col">
         <p class="label foot__title">About</p>
@@ -391,16 +427,16 @@ def build_home():
       <a class="cat cat--a" href="/lamps/" data-morph>
         {slot('cat__media lay')}
         <div class="cat__row">
-          <h3 class="display h3">Lamps</h3>
-          <span class="cat__count">{len(lamps)} pieces</span>
+          <h3 class="display h3">{e(lamp_cat['name'])}</h3>
+          <span class="cat__count">{pieces(len(lamps))}</span>
         </div>
         <p class="cat__lead">{e(lamp_cat['lead'])}</p>
       </a>
       <a class="cat cat--b" href="/decorations/" data-morph>
         {slot('cat__media lay')}
         <div class="cat__row">
-          <h3 class="display h3">Decorations</h3>
-          <span class="cat__count">{len(decos)} pieces</span>
+          <h3 class="display h3">{e(deco_cat['name'])}</h3>
+          <span class="cat__count">{pieces(len(decos))}</span>
         </div>
         <p class="cat__lead">{e(deco_cat['lead'])}</p>
       </a>
@@ -422,7 +458,7 @@ def build_home():
   <div class="wrap">
     <div class="shead grid">
       <p class="label shead__eyebrow" style="grid-column:1/-1">How it works</p>
-      <h2 class="display h2 shead__title" data-split>Four steps, about a week.</h2>
+      <h2 class="display h2 shead__title" data-split>{count(len(SITE['howItWorks']), 'step', cap=True)}, about a week.</h2>
       <p class="lead shead__note">Nothing is stocked. That is slower than a warehouse and it is the reason nothing gets thrown away.</p>
     </div>
     <ol class="grid steps">{steps}</ol>
@@ -524,7 +560,7 @@ def build_category(cat):
   <div class="wrap">
     <div class="shead grid">
       <p class="label shead__eyebrow" style="grid-column:1/-1">Not yet for sale</p>
-      <h2 class="display h2 shead__title" data-split>Six shapes we are still working on.</h2>
+      <h2 class="display h2 shead__title" data-split>{count(len(concepts), 'shape', cap=True)} we are still working on.</h2>
       <p class="lead shead__note">None of these is in production yet. They are here so you can tell us which one to finish first.</p>
     </div>
     <div class="grid pgrid" data-batch>{cc}</div>
@@ -535,14 +571,14 @@ def build_category(cat):
 <section class="sec pdp" data-tone="day" style="padding-bottom:clamp(2rem,5vw,4rem)">
   <div class="wrap">
     <div class="shead grid" style="margin-bottom:clamp(2rem,4vw,3rem)">
-      <p class="label shead__eyebrow" style="grid-column:1/-1">{len(live)} pieces</p>
+      <p class="label shead__eyebrow" style="grid-column:1/-1">{pieces(len(live))}</p>
       <h1 class="display h2 shead__title lines">
         <span class="l"><span>{e(cat['name'])}</span></span>
       </h1>
       <p class="lead shead__note">{e(cat['lead'])}</p>
     </div>
     {filters}
-    <p class="vh" data-filter-count aria-live="polite">{len(live)} pieces</p>
+    <p class="vh" data-filter-count aria-live="polite">{pieces(len(live))}</p>
     {editorial_grid(live)}
   </div>
 </section>
@@ -601,7 +637,7 @@ def build_product(p):
             market_html = f"""<div class="pdp__buy pdp__buy--market">{mbtns}</div>
         <p class="pdp__note">Payment and delivery go through {where} own checkout, not this site.</p>"""
         buy = f"""{market_html}<div class="pdp__buy">{action}</div>
-        <p class="pdp__care">Printed after you order. In the workshop 3–5 working days, then posted with tracking.</p>"""
+        <p class="pdp__care">Printed after you order. In the workshop {e(WORKSHOP_TIME)}, then posted with tracking.</p>"""
         price_html = f'<p class="pdp__price">{money(p.get("price"))}</p>'
 
     care = f'<p class="pdp__care">{e(p["care"])}</p>' if p.get("care") else ""
@@ -668,7 +704,7 @@ def build_legal():
       <p>{e(SITE['legal']['customExemptionNote'])} In plain terms: a piece printed in a colour you chose specially, or with a name on it, cannot be returned.</p>
 
       <h2 class="h3" style="margin-top:2.5rem">Delivery</h2>
-      <p>Every order is printed after it is placed. Allow 3–5 working days in the workshop, then normal postal time. You get a tracking number on the day it ships.</p>
+      <p>Every order is printed after it is placed. Allow {e(WORKSHOP_TIME)} in the workshop, then normal postal time. You get a tracking number on the day it ships.</p>
 
       <h2 class="h3" style="margin-top:2.5rem">Privacy</h2>
       <p>We set no cookies of our own and run no analytics, advertising or tracking scripts. Our fonts and scripts are served from this site, not loaded from Google or other third parties.</p>
@@ -730,7 +766,8 @@ def main():
     written.append(write("legal/index.html", build_legal()))
 
     # sitemap
-    urls = ["/", "/lamps/", "/decorations/", "/legal/"] + [f"/shop/{p['slug']}/" for p in PRODUCTS]
+    urls = (["/"] + [f"/{c['slug']}/" for c in CATEGORIES] + ["/legal/"]
+            + [f"/shop/{p['slug']}/" for p in PRODUCTS])
     sm = ('<?xml version="1.0" encoding="UTF-8"?>\n'
           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
           + "".join(f"  <url><loc>https://{BRAND['domain']}{u}</loc></url>\n" for u in urls)

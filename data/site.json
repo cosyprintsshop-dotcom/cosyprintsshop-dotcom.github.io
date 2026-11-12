@@ -1,5 +1,5 @@
 {
-  "_README": "Edit this file, then run `python build.py` to regenerate the HTML. Anything marked PLACEHOLDER must be replaced before going live.",
+  "_README": "Edit this file, then run `python build.py` to regenerate the HTML. Anything marked PLACEHOLDER must be replaced before going live. Write {workshopTime} and {returnsDays} wherever those figures appear in the copy: the build fills them in from `shipping.workshopTime` and `legal.returnsDays`, so each is set in one place.",
 
   "brand": {
     "name": "Cosy Prints",
@@ -8,7 +8,12 @@
     "email": "cosyprints.shop@gmail.com",
     "country": "France",
     "currency": "EUR",
-    "currencySymbol": "€"
+    "currencySymbol": "€",
+    "copyrightYear": 2026
+  },
+
+  "shipping": {
+    "workshopTime": "3–5 working days"
   },
 
   "hero": {
@@ -41,7 +46,7 @@
     },
     {
       "step": "It ships",
-      "body": "Packed in recycled card and posted within 3–5 working days. You get a tracking number the day it leaves."
+      "body": "Packed in recycled card and posted within {workshopTime}. You get a tracking number the day it leaves."
     }
   ],
 
@@ -66,15 +71,15 @@
 
   "trust": [
     { "label": "Made in", "value": "Our own workshop, France" },
-    { "label": "Ships in", "value": "3–5 working days" },
-    { "label": "Returns", "value": "14 days, no reason needed" },
+    { "label": "Ships in", "value": "{workshopTime}" },
+    { "label": "Returns", "value": "{returnsDays} days, no reason needed" },
     { "label": "Material", "value": "Plant-based PLA, never oil-based plastic" }
   ],
 
   "faq": [
     {
       "q": "How long does an order take to arrive?",
-      "a": "We print your order after it comes in, so allow 3–5 working days in the workshop plus normal postal time. France is usually 2 days after dispatch, the rest of Europe 4 to 6. You get tracking when it ships."
+      "a": "We print your order after it comes in, so allow {workshopTime} in the workshop plus normal postal time. France is usually 2 days after dispatch, the rest of Europe 4 to 6. You get tracking when it ships."
     },
     {
       "q": "What is PLA, and is it any good?",
@@ -90,7 +95,7 @@
     },
     {
       "q": "Can I return something?",
-      "a": "Yes. You have 14 days from delivery to change your mind, no explanation needed, and we refund the item. The exception is anything we made to your own specification — a custom colour or a name printed on it — which we cannot resell."
+      "a": "Yes. You have {returnsDays} days from delivery to change your mind, no explanation needed, and we refund the item. The exception is anything we made to your own specification — a custom colour or a name printed on it — which we cannot resell."
     },
     {
       "q": "Do you take custom commissions?",
@@ -100,7 +105,7 @@
 
   "legal": {
     "returnsDays": 14,
-    "customExemptionNote": "Made-to-measure and personalised items are exempt from the 14-day right of withdrawal under the EU Consumer Rights Directive.",
+    "customExemptionNote": "Made-to-measure and personalised items are exempt from the {returnsDays}-day right of withdrawal under the EU Consumer Rights Directive.",
     "vatNote": "PLACEHOLDER — state whether you charge TVA or are under the franchise en base."
   }
 }
