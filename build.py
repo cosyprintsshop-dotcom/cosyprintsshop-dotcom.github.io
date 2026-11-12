@@ -9,7 +9,7 @@ page, no client-side routing. Real documents are what make cross-document view
 transitions and search indexing work.
 """
 import json, os, re, shutil, html, hashlib
-from urllib.parse import urlparse
+from urllib.parse import urlparse, quote
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 DATA = os.path.join(ROOT, "data")
@@ -60,6 +60,52 @@ for _p in CAT["products"]:
         raise SystemExit(f"product '{_p.get('slug')}' has status '{_p.get('status')}' — use live, concept or draft")
 PRODUCTS = [p for p in CAT["products"] if p.get("status", "live") in PUBLISHED]
 
+SLUG = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+
+
+def validate():
+    """Check the catalogue before anything is written, and report every problem
+    at once. Before this, a misspelt category crashed with a bare StopIteration
+    and a duplicated slug silently overwrote the other product's page."""
+    errs = []
+    cat_slugs = [c.get("slug") for c in CATEGORIES]
+    for c in CATEGORIES:
+        for k in ("slug", "name", "lead"):
+            if not c.get(k):
+                errs.append(f"category {c.get('slug') or '?'}: missing `{k}`")
+    for s in sorted({s for s in cat_slugs if cat_slugs.count(s) > 1}):
+        errs.append(f"category {s!r}: slug used twice")
+    for need in ("lamps", "decorations"):
+        if need not in cat_slugs:
+            errs.append(f"the homepage needs a {need!r} category")
+    seen = set()
+    for p in CAT["products"]:
+        s = p.get("slug") or "?"
+        if not SLUG.match(s):
+            errs.append(f"product {s!r}: slug must be lowercase-with-dashes")
+        if s in seen:
+            errs.append(f"product {s!r}: slug used twice — one page would overwrite the other")
+        seen.add(s)
+        if p.get("status", "live") == "draft":
+            continue
+        for k in ("name", "category", "blurb", "description"):
+            if not p.get(k):
+                errs.append(f"product {s!r}: missing `{k}`")
+        if p.get("category") and p["category"] not in cat_slugs:
+            errs.append(f"product {s!r}: category {p['category']!r} does not exist")
+        if p.get("shots", 1) not in (1, 2):
+            errs.append(f"product {s!r}: `shots` must be 1 or 2")
+        price = p.get("price")
+        if price is not None and (isinstance(price, bool) or not isinstance(price, (int, float)) or price < 0):
+            errs.append(f"product {s!r}: `price` must be a number or null")
+        if p.get("checkoutUrl") and not price:
+            errs.append(f"product {s!r}: a `checkoutUrl` needs a `price` for the button")
+    if errs:
+        raise SystemExit("products.json has problems:\n  - " + "\n  - ".join(errs))
+
+
+validate()
+
 e = html.escape
 
 SLOT_LABEL = "Photo coming soon"
@@ -109,6 +155,18 @@ def picture(photo, sizes, eager=False):
     return (f'<picture><source type="image/webp" srcset="{srcset("webp")}" sizes="{sizes}">'
             f'<img src="/assets/img/{name}-{big}.jpg" srcset="{srcset("jpg")}" sizes="{sizes}" '
             f'width="{big}" height="{round(big * rh / rw)}" alt="{e(alt)}" {load}></picture>')
+
+
+def photo_url(photo):
+    """Absolute URL of a photo's largest JPEG, for search engines and link previews."""
+    name = photo["name"]
+    return f"https://{BRAND['domain']}/assets/img/{name}-{PHOTOS[name]['widths'][-1]}.jpg"
+
+
+def mailto(subject):
+    """A mailto link to the shop with the subject URL-encoded. HTML escaping alone
+    left a name containing & or # able to cut the subject short."""
+    return e(f"mailto:{BRAND['email']}?subject={quote(subject)}")
 
 
 def slot(cls="", label=SLOT_LABEL, style="", photo=None, sizes=SIZES_CARD, eager=False):
@@ -611,7 +669,7 @@ def build_product(p):
     concept = p.get("status") == "concept"
     if concept:
         buy = f"""<div class="notice"><strong>Not for sale yet.</strong> This shape is still in development, so there is nothing to photograph and nothing to buy. Email us and we will tell you when it is ready.</div>
-        <div class="pdp__buy"><a class="btn" href="mailto:{e(BRAND['email'])}?subject={e(p['name'])}%20—%20tell%20me%20when%20it%20is%20ready">Tell me when it is ready</a></div>"""
+        <div class="pdp__buy"><a class="btn" href="{mailto(p['name'] + ' — tell me when it is ready')}">Tell me when it is ready</a></div>"""
         price_html = ""
     else:
         markets = market_links(p)
@@ -626,7 +684,7 @@ def build_product(p):
             base = f"Order: {p['name']}"
             subj = base if cols else base + (f" ({p['variant']})" if p.get("variant") else "")
             order = f' data-order="{e(base)}"' if can_swatch(cols) else ""
-            action = f'<a class="{btn}" href="mailto:{e(BRAND["email"])}?subject={e(subj)}"{order}>Order by email</a>'
+            action = f'<a class="{btn}" href="{mailto(subj)}"{order}>Order by email</a>'
         market_html = ""
         if markets:
             mbtns = "".join(
@@ -675,15 +733,22 @@ def build_product(p):
   </div>
 </section>
 """
+    url = f"https://{BRAND['domain']}/shop/{p['slug']}/"
     ld = {
         "@context": "https://schema.org", "@type": "Product",
         "name": f"{p['name']} {p.get('variant','')}".strip(),
         "description": p["blurb"], "brand": {"@type": "Brand", "name": BRAND["name"]},
+        "url": url,
     }
-    if p.get("price") and not concept:
+    if first:
+        ld["image"] = photo_url(first)
+    # An Offer tells search engines "this is a price you can buy at", so it waits
+    # until the price is real: every price here started life as a placeholder.
+    if p.get("price") and p.get("priceConfirmed") and not concept:
         ld["offers"] = {"@type": "Offer", "price": p["price"], "priceCurrency": BRAND["currency"],
-                        "availability": "https://schema.org/MadeToOrder"}
-    head = f'<script type="application/ld+json">{json.dumps(ld)}</script>'
+                        "availability": "https://schema.org/MadeToOrder", "url": url}
+    # `<` escaped so no text in the data can close the script element early
+    head = '<script type="application/ld+json">' + json.dumps(ld).replace("<", "\\u003c") + "</script>"
 
     return shell(f"{p['name']} — {BRAND['name']}", p["blurb"], body, page=p["category"], extra_head=head,
                  current="true")
