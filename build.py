@@ -56,6 +56,9 @@ SIZES_HERO = "(min-width: 62em) min(38vw, 560px), 92vw"
 SIZES_SHOT = "(min-width: 62em) min(50vw, 760px), 92vw"
 SIZES_CARD = "(min-width: 62em) min(25vw, 380px), (min-width: 40em) 46vw, 92vw"
 SIZES_FEATURE = "(min-width: 62em) min(48vw, 740px), (min-width: 48em) 56vw, 92vw"
+SIZES_CAT_A = "(min-width: 62em) min(54vw, 860px), 92vw"
+SIZES_CAT_B = "(min-width: 62em) min(38vw, 600px), 92vw"
+SIZES_HALF = "(min-width: 62em) min(25vw, 380px), (min-width: 40em) 46vw, 92vw"
 
 
 def picture(photo, sizes, eager=False):
@@ -82,6 +85,34 @@ def picture(photo, sizes, eager=False):
     return (f'<picture><source type="image/webp" srcset="{srcset("webp")}" sizes="{sizes}">'
             f'<img src="/assets/img/{name}-{big}.jpg" srcset="{srcset("jpg")}" sizes="{sizes}" '
             f'width="{big}" height="{round(big * rh / rw)}" alt="{e(alt)}" {load}></picture>')
+
+
+def square(photo):
+    """The same photo as drawn in a 1:1 frame. A photo may name a `square`
+    crop (made with tools/photos.py --ratio 1:1) so a card is composed for its
+    frame rather than centre-cut from the 4:5; it keeps the parent's alt text."""
+    if photo and photo.get("square"):
+        return {"name": photo["square"], "alt": photo.get("alt")}
+    return photo
+
+
+def photo_url(photo):
+    """Absolute URL of a photo's largest JPEG, for og:image and JSON-LD."""
+    return f"https://{BRAND['domain']}/assets/img/{photo['name']}-{PHOTOS[photo['name']]['widths'][-1]}.jpg"
+
+
+def og_image(photo):
+    if not photo:
+        return ""
+    meta = PHOTOS[photo["name"]]
+    rw, rh = (int(x) for x in meta["ratio"].split(":"))
+    w = meta["widths"][-1]
+    return "\n".join([
+        f'<meta property="og:image" content="{photo_url(photo)}">',
+        f'<meta property="og:image:width" content="{w}">',
+        f'<meta property="og:image:height" content="{round(w * rh / rw)}">',
+        f'<meta property="og:image:alt" content="{e(photo.get("alt", ""))}">',
+    ])
 
 
 def slot(cls="", label=SLOT_LABEL, style="", photo=None, sizes=SIZES_CARD, eager=False):
@@ -211,6 +242,12 @@ def colour_picker(p, cols):
         </fieldset>"""
 
 
+def count_words(n, noun):
+    """'Six shapes', 'One shape' — headings that count, without going stale."""
+    words = ["No", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve"]
+    return f"{words[n] if n < len(words) else n} {noun}{'' if n == 1 else 's'}"
+
+
 def by_cat(slug, status="live"):
     return [p for p in PRODUCTS if p["category"] == slug and p.get("status", "live") == status]
 
@@ -311,7 +348,7 @@ def product_card(p, feature=False, morph=True):
     rooms = "|".join(p.get("rooms", []))
     cls = "pcard pcard--feature" if feature else "pcard"
     return f"""<a class="{cls}" href="/shop/{p['slug']}/" data-rooms="{e(rooms)}"{' data-morph' if morph else ''}>
-  {slot('pcard__media lay', photo=lead_photo(p), sizes=SIZES_FEATURE if feature else SIZES_CARD)}
+  {slot('pcard__media lay', photo=lead_photo(p) if feature else square(lead_photo(p)), sizes=SIZES_FEATURE if feature else SIZES_CARD)}
   <div class="pcard__top">
     <span class="pcard__name">{e(p['name'])}</span>
     <span class="pcard__price">{price or '—'}</span>
@@ -352,6 +389,26 @@ def build_home():
       <div class="qa__a"><div>{e(q['a'])}</div></div>
     </details>""" for q in SITE["faq"])
 
+    dark_line = """<p class="label" style="margin-bottom:1.4rem">After dark</p>
+    <p class="display h2" style="max-width:24ch" data-split>A lamp is the only thing in a room that changes what time it feels like.</p>"""
+    dark_photo = SITE.get("afterDark", {}).get("photo")
+    if dark_photo:
+        after_dark = f"""<section class="sec" data-tone="night">
+  <div class="wrap">
+    <div class="grid dark__grid">
+      <div class="dark__media">{slot('lay', SLOT_LABEL, 'aspect-ratio:4/5', photo=dark_photo, sizes=SIZES_HERO)}</div>
+      <div class="dark__copy">{dark_line}</div>
+    </div>
+  </div>
+</section>"""
+    else:
+        after_dark = f"""<section class="sec" data-tone="night">
+  <div class="wrap">
+    {dark_line}
+  </div>
+</section>"""
+    hero_photo = SITE.get("hero", {}).get("photo")
+
     body = f"""
 <section class="sec hero" data-tone="day">
   <div class="wrap">
@@ -371,7 +428,7 @@ def build_home():
         </div>
       </div>
       <div class="hero__media">
-        {slot('lay', SLOT_LABEL, 'aspect-ratio:4/5', photo=SITE.get('hero', {}).get('photo'), sizes=SIZES_HERO, eager=True)}
+        {slot('lay', SLOT_LABEL, 'aspect-ratio:4/5', photo=hero_photo, sizes=SIZES_HERO, eager=True)}
       </div>
     </div>
   </div>
@@ -386,7 +443,7 @@ def build_home():
     </div>
     <div class="grid cats">
       <a class="cat cat--a" href="/lamps/" data-morph>
-        {slot('cat__media lay')}
+        {slot('cat__media lay', photo=lamp_cat.get('photo'), sizes=SIZES_CAT_A)}
         <div class="cat__row">
           <h3 class="display h3">Lamps</h3>
           <span class="cat__count">{len(lamps)} pieces</span>
@@ -394,7 +451,7 @@ def build_home():
         <p class="cat__lead">{e(lamp_cat['lead'])}</p>
       </a>
       <a class="cat cat--b" href="/decorations/" data-morph>
-        {slot('cat__media lay')}
+        {slot('cat__media lay', photo=deco_cat.get('photo'), sizes=SIZES_CAT_B)}
         <div class="cat__row">
           <h3 class="display h3">Decorations</h3>
           <span class="cat__count">{len(decos)} pieces</span>
@@ -432,12 +489,7 @@ def build_home():
 
 <div class="dusk" aria-hidden="true"></div>
 
-<section class="sec" data-tone="night">
-  <div class="wrap">
-    <p class="label" style="margin-bottom:1.4rem">After dark</p>
-    <p class="display h2" style="max-width:24ch" data-split>A lamp is the only thing in a room that changes what time it feels like.</p>
-  </div>
-</section>
+{after_dark}
 
 <section class="sec" data-tone="night" id="faq">
   <div class="wrap">
@@ -471,6 +523,7 @@ def build_home():
         f"{BRAND['name']} — 3D-printed lamps and home decorations",
         "Lamps and small home objects, 3D-printed to order in France. Warm light, plant-based PLA, made by hand in our workshop.",
         body,
+        extra_head=og_image(hero_photo),
     )
 
 
@@ -521,7 +574,7 @@ def build_category(cat):
   <div class="wrap">
     <div class="shead grid">
       <p class="label shead__eyebrow" style="grid-column:1/-1">Not yet for sale</p>
-      <h2 class="display h2 shead__title" data-split>Six shapes we are still working on.</h2>
+      <h2 class="display h2 shead__title" data-split>{count_words(len(concepts), "shape")} we are still working on.</h2>
       <p class="lead shead__note">None of these is in production yet. They are here so you can tell us which one to finish first.</p>
     </div>
     <div class="grid pgrid" data-batch>{cc}</div>
@@ -550,6 +603,7 @@ def build_category(cat):
         cat["lead"],
         body,
         page=cat["slug"],
+        extra_head=og_image(cat.get("photo") or (lead_photo(live[0]) if live else None)),
     )
 
 
@@ -558,11 +612,14 @@ def build_product(p):
     photos = p.get("photos") or []
     cols = colours(p)
     first = lead_photo(p)
+    n_shots = int(p.get("shots", 1))
+    if n_shots not in (1, 2, 3):
+        raise SystemExit(f"{p['slug']}: `shots` must be 1, 2 or 3, got {n_shots}")
     shots = slot("pdp__shot lay", SLOT_LABEL, "view-transition-name:hero-media",
                  photo=first, sizes=SIZES_SHOT, eager=True)
-    if int(p.get("shots", 1)) > 1:
-        second = photos[1] if len(photos) > 1 else None
-        shots += slot("pdp__shot lay", "Second view coming soon", photo=second, sizes=SIZES_SHOT)
+    for i, label in list(enumerate(["Second view coming soon", "Third view coming soon"], 1))[:n_shots - 1]:
+        shots += slot("pdp__shot lay", label, photo=photos[i] if len(photos) > i else None,
+                      sizes=SIZES_HALF if n_shots == 3 else SIZES_SHOT)
 
     specs = ""
     rows = "".join(f'<div class="pdp__spec"><dt>{e(k)}</dt><dd>{e(v)}</dd></div>' for k, v in spec_rows(p))
@@ -612,7 +669,7 @@ def build_product(p):
   <div class="wrap">
     <p class="label" style="margin-bottom:1.5rem"><a href="/{p['category']}/" style="text-decoration:none">{e(cat_name)}</a></p>
     <div class="grid pdp__grid">
-      <div class="pdp__media"><div class="pdp__shots">{shots}</div></div>
+      <div class="pdp__media"><div class="pdp__shots pdp__shots--{n_shots}">{shots}</div></div>
       <div class="pdp__info">
         <h1 class="display h2 pdp__name">{e(p['name'])}</h1>
         <p class="pdp__variant">{e(p.get('variant',''))}</p>
@@ -641,10 +698,15 @@ def build_product(p):
         "name": f"{p['name']} {p.get('variant','')}".strip(),
         "description": p["blurb"], "brand": {"@type": "Brand", "name": BRAND["name"]},
     }
+    pics = [q for q in [first] + photos[1:n_shots] if q]
+    if pics:
+        ld["image"] = [photo_url(q) for q in pics]
     if p.get("price") and not concept:
         ld["offers"] = {"@type": "Offer", "price": p["price"], "priceCurrency": BRAND["currency"],
                         "availability": "https://schema.org/MadeToOrder"}
     head = f'<script type="application/ld+json">{json.dumps(ld)}</script>'
+    if first:
+        head += "\n" + og_image(first)
 
     return shell(f"{p['name']} — {BRAND['name']}", p["blurb"], body, page=p["category"], extra_head=head)
 

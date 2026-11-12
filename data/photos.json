@@ -1,10 +1,110 @@
 {
-  "hero-lamp": {
+  "pleated-lit": {
     "ratio": "4:5",
     "widths": [
       480,
       800,
-      896
+      1200,
+      1600
+    ]
+  },
+  "pleated-night": {
+    "ratio": "4:5",
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ]
+  },
+  "pleated-off": {
+    "ratio": "1:1",
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ]
+  },
+  "pleated-sq": {
+    "ratio": "1:1",
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ]
+  },
+  "pleated-texture": {
+    "ratio": "1:1",
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ]
+  },
+  "puffed-detail": {
+    "ratio": "1:1",
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ]
+  },
+  "puffed-lit": {
+    "ratio": "4:5",
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ]
+  },
+  "puffed-sq": {
+    "ratio": "1:1",
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ]
+  },
+  "ribbed-base": {
+    "ratio": "1:1",
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ]
+  },
+  "ribbed-lit": {
+    "ratio": "4:5",
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ]
+  },
+  "ribbed-pleats": {
+    "ratio": "1:1",
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ]
+  },
+  "ribbed-sq": {
+    "ratio": "1:1",
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
     ]
   }
 }

@@ -330,7 +330,9 @@ html.nav-dark.nav-solid .nav {
 
 /* A frame that has its photograph. Same box, same ratio — the picture fills it
    and the frame's chrome (hairline, ridge motif, label) steps aside. */
-.slot--photo { padding: 0; border-color: transparent; }
+/* border: 0, not transparent — a transparent border lets the frame's --lift
+   ground show through as a 1px light hairline round every photograph */
+.slot--photo { padding: 0; border: 0; }
 .slot--photo::before { content: none; }
 .slot--photo picture,
 .slot--photo img { position: absolute; inset: 0; width: 100%; height: 100%; }
@@ -359,6 +361,17 @@ html.nav-dark.nav-solid .nav {
 .cat__row { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
 .cat__count { font-family: var(--ff-ui); font-size: var(--fs-sm); color: var(--muted); }
 .cat__lead { margin-top: .7rem; max-width: 38ch; color: var(--muted); }
+
+/* ---------------------------------------------------------------- after dark */
+/* The hero's mirror: picture left, line right, the same column of air between.
+   On a phone the line comes first, so the section still opens on its label. */
+.dark__grid { align-items: end; row-gap: clamp(2.5rem, 6vw, 4rem); }
+.dark__media, .dark__copy { grid-column: 1 / -1; }
+.dark__copy { order: -1; }
+@media (min-width: 62em) {
+  .dark__media { grid-column: 1 / span 5; }
+  .dark__copy  { grid-column: 7 / -1; order: 0; padding-bottom: clamp(1rem, 4vw, 4rem); }
+}
 
 /* ---------------------------------------------------------------- benefits */
 .bens { row-gap: clamp(2.5rem, 5vw, 3.5rem); }
@@ -526,9 +539,11 @@ summary.qa__q::marker { content: ""; }
 .pcard__media { aspect-ratio: 1; margin-bottom: 1rem; }
 /* the lead card gets its emphasis from the column span, not a different crop */
 
-/* With no photograph to scale, hover strengthens the frame and brings the label
-   up to full colour. Same 250ms, mirrored on :focus-within. */
+/* An empty frame has nothing to scale, so hover strengthens the frame and brings
+   the label up to full colour. A photographed frame scales its picture 1.025 —
+   past ~1.06 it reads as a template. Same 250ms, mirrored on :focus-within. */
 @media (hover: hover) {
+  .pcard:hover .slot--photo picture, .cat:hover .slot--photo picture { transform: scale(1.025); }
   .pcard:hover .slot, .cat:hover .slot { border-color: color-mix(in srgb, var(--fg) 34%, transparent); }
   .pcard:hover .slot__label, .cat:hover .slot__label { color: var(--fg); }
 }
@@ -575,6 +590,9 @@ summary.qa__q::marker { content: ""; }
   /* a featured piece with nothing beside it sits off-centre, not alone at the edge */
   .ed__spread--n0 .ed__feature { grid-column: 3 / span 7; }
   .ed__rows .pcard { grid-column: span 4; }
+  /* two nested: they step down the diagonal, so the pair fills the height of
+     the feature instead of leaving a wall of air above one bottom row */
+  .ed__spread--n2 .ed__nest .pcard:nth-child(2) { grid-column: 2; grid-row: 2; }
 }
 @media (min-width: 62em) {
   .ed__feature { grid-column: 1 / span 6; }
@@ -610,6 +628,11 @@ summary.qa__q::marker { content: ""; }
 .pdp__shots { display: grid; gap: var(--gap); }
 .pdp__shot { aspect-ratio: 4 / 5; }
 .pdp__shot + .pdp__shot { aspect-ratio: 1; }
+/* three frames: the 4:5 lead across the top, the two 1:1 views side by side under it */
+@media (min-width: 40em) {
+  .pdp__shots--3 { grid-template-columns: 1fr 1fr; }
+  .pdp__shots--3 .pdp__shot:first-child { grid-column: 1 / -1; }
+}
 .pdp__name { margin-bottom: .4rem; }
 .pdp__variant { color: var(--muted); margin-bottom: 1.4rem; }
 .pdp__price { font-family: var(--ff-ui); font-size: 1.25rem; font-variation-settings: "wdth" 100, "wght" 600; margin-bottom: 1.6rem; }
@@ -617,7 +640,7 @@ summary.qa__q::marker { content: ""; }
 .pdp__specs { margin-block: 1.8rem; }
 .pdp__spec { display: flex; justify-content: space-between; gap: 1.5rem; padding-block: .7rem; border-top: 1px solid var(--rule); font-size: var(--fs-sm); }
 .pdp__spec:last-child { border-bottom: 1px solid var(--rule); }
-.pdp__spec dt { color: var(--muted); }
+.pdp__spec dt { color: var(--muted); flex: none; }
 .pdp__spec dd { margin: 0; text-align: right; }
 .pdp__care { font-size: var(--fs-sm); color: var(--muted); margin-top: 1.2rem; }
 .pdp__buy { display: flex; flex-wrap: wrap; gap: 1rem; margin-block: 1.6rem; }
@@ -648,7 +671,7 @@ summary.qa__q::marker { content: ""; }
 .swatch__input:focus-visible + .swatch__chip { outline: 2px solid var(--ember); }
 
 /* the photo swap: the new picture is laid over the old one and fades up */
-.slot--photo picture { transition: opacity 320ms var(--e-sine); }
+.slot--photo picture { transition: opacity 320ms var(--e-sine), transform var(--d-quick) var(--e-quart); }
 .slot--photo picture.is-entering { opacity: 0; }
 
 .notice {
@@ -682,6 +705,10 @@ summary.qa__q::marker { content: ""; }
   transition: clip-path var(--d-reveal) var(--e-quart);
 }
 .js-motion .lay.is-in { clip-path: inset(0 0 0 0); }
+/* ...and a photograph gets the counter-scale: it settles from 1.06 while the
+   frame wipes up, so the picture arrives rather than being uncovered. */
+.js-motion .lay.slot--photo img { transform: scale(1.06); transition: transform var(--d-settle) var(--e-quart); }
+.js-motion .lay.slot--photo.is-in img { transform: none; }
 
 /* Text lines, hand-wrapped. 105% not 100% — at exactly 100% descenders (g, y, p)
    poke below the mask. */
@@ -726,6 +753,7 @@ summary.qa__q::marker { content: ""; }
 /* ---------------------------------------------------------------- reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .js-motion .lay { clip-path: none; transition: none; }
+  .js-motion .lay.slot--photo img, .slot--photo picture { transform: none !important; transition: opacity 200ms linear; }
   .js-motion .lines .l > span { transform: none; transition: none; }
   .js-motion .rise { opacity: 1; transform: none; transition: opacity 200ms linear; }
   *, *::before, *::after {

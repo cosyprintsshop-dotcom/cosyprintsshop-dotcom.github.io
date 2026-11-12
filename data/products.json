@@ -1,10 +1,14 @@
 {
-  "_README": "Every `price` here is a PLACEHOLDER — replace before publishing. `shots` is how many photography frames the product page reserves (1 or 2); there are no product photos yet, so each one renders as a labelled box. `status`: live | concept. Concept pieces are not in production and cannot be bought. Optional `leboncoinUrl` / `vintedUrl`: the product page shows 'Buy on …' buttons above 'Order by email'. A listing needs `price` set to the listing price and `priceConfirmed: true`, or the build stops. `specs` rows render in a fixed order — Dimensions, Weight, Material, Layer height, Light source, Heat limit, Made — then any other keys as written. Empty values are skipped, so leave a key out (or blank) until the real figure exists.",
+  "_README": "Every `price` here is a PLACEHOLDER — replace before publishing. `shots` is how many photography frames the product page reserves (1, 2 or 3): a 4:5 lead, then 1:1 views. `photos: [{name, alt, square?}]` fills them in order; `square` names a 1:1 crop of the lead for cards. A frame with no photo renders as a labelled box. `status`: live | concept | draft (draft = not published at all). Concept pieces are not in production and cannot be bought. Optional `leboncoinUrl` / `vintedUrl`: the product page shows 'Buy on …' buttons above 'Order by email'. A listing needs `price` set to the listing price and `priceConfirmed: true`, or the build stops. `specs` rows render in a fixed order — Dimensions, Weight, Material, Layer height, Light source, Heat limit, Made — then any other keys as written. Empty values are skipped, so leave a key out (or blank) until the real figure exists.",
   "categories": [
     {
       "slug": "lamps",
       "name": "Lamps",
-      "lead": "One shape, printed in fine ridges so the light lands soft. Three finishes, and a version that changes colour."
+      "lead": "Three shapes, each printed thin enough for the light to come through soft. Sage bases and white shades for now; more colours once we have tested them.",
+      "photo": {
+        "name": "puffed-lit",
+        "alt": "The Puffed Lamp switched on: a white shade of three rounded lobes glowing on a slim, fluted sage base, on an oak side table."
+      }
     },
     {
       "slug": "decorations",
@@ -21,6 +25,117 @@
     "Entryway"
   ],
   "products": [
+    {
+      "slug": "pleated-lamp",
+      "name": "Pleated Lamp",
+      "variant": "Sage & white",
+      "category": "lamps",
+      "rooms": [
+        "Living room",
+        "Bedroom"
+      ],
+      "price": 59,
+      "blurb": "Four soft, quilted tiers that glow in bands when the light is on.",
+      "description": "The shade is four stacked cushions, each printed with a fine diamond texture. Switched off, it looks like stitched fabric. Switched on, the light leaks out brightest where the tiers meet, so the lamp glows in four bands rather than as one bright block. It sits on a rounded sage base with small feet. It is a mood lamp more than a reading lamp, and we would rather say so.",
+      "specs": {
+        "Material": "PLA, plant-based",
+        "Finish": "Matte. Diamond-textured white shade, sage base",
+        "Light source": "Warm-white LED, fitting being finalised",
+        "Heat limit": "PLA softens above about 55 °C",
+        "Made": "To order, in our workshop"
+      },
+      "care": "Wipe with a dry cloth. Keep out of direct summer sun and away from heat — PLA softens above about 55°C. The texture holds dust, so a soft brush works better than a cloth on the shade.",
+      "status": "live",
+      "featured": true,
+      "shots": 3,
+      "photos": [
+        {
+          "name": "pleated-lit",
+          "square": "pleated-sq",
+          "alt": "The Pleated Lamp switched on: four stacked, quilted white tiers glowing brightest where they meet, on a rounded sage base."
+        },
+        {
+          "name": "pleated-off",
+          "alt": "The Pleated Lamp switched off, seen from above at an angle: four square, cushion-like tiers with a fine diamond texture on a sage base with small feet."
+        },
+        {
+          "name": "pleated-texture",
+          "alt": "Close-up of the Pleated Lamp lit, showing the fine diamond lattice printed into each tier."
+        }
+      ]
+    },
+    {
+      "slug": "ribbed-lamp",
+      "name": "Ribbed Lamp",
+      "variant": "Sage & white",
+      "category": "lamps",
+      "rooms": [
+        "Living room",
+        "Bedroom"
+      ],
+      "price": 59,
+      "blurb": "A pleated shade over a sculpted sage base wrapped in broad ribs.",
+      "description": "The classic shape of the three. The shade is printed in deep folds, thin enough that the light comes through soft and even, with faint lines running down every pleat. The base is a sage column wrapped in broad ribs that close around it like leaves. Most people assume the shade is fabric until they touch it.",
+      "specs": {
+        "Material": "PLA, plant-based",
+        "Finish": "Matte. Pleated white shade, ribbed sage base",
+        "Light source": "Warm-white LED, fitting being finalised",
+        "Heat limit": "PLA softens above about 55 °C",
+        "Made": "To order, in our workshop"
+      },
+      "care": "Wipe with a dry cloth. Keep out of direct summer sun and away from heat — PLA softens above about 55°C.",
+      "status": "live",
+      "shots": 3,
+      "photos": [
+        {
+          "name": "ribbed-lit",
+          "square": "ribbed-sq",
+          "alt": "The Ribbed Lamp switched on: a pleated white shade glowing above a sage base wrapped in broad, leaf-like ribs, on an oak side table."
+        },
+        {
+          "name": "ribbed-base",
+          "alt": "Close-up of the Ribbed Lamp's sage base, its ribs folding around the column like leaves, under the rim of the lit shade."
+        },
+        {
+          "name": "ribbed-pleats",
+          "alt": "Close-up of the Ribbed Lamp's shade, light coming through the printed pleats."
+        }
+      ]
+    },
+    {
+      "slug": "puffed-lamp",
+      "name": "Puffed Lamp",
+      "variant": "Sage & white",
+      "category": "lamps",
+      "rooms": [
+        "Bedroom",
+        "Desk"
+      ],
+      "price": 59,
+      "blurb": "Three rounded lobes on a slim fluted base. The softest light of the three.",
+      "description": "Three puffed lobes stacked on a narrow sage cylinder. The walls are printed thin enough that the whole shade glows, and with no edges or corners anywhere on it the light has nothing to catch on, so it lands evenly. The base is finely fluted, which you notice up close and not from across the room.",
+      "specs": {
+        "Material": "PLA, plant-based",
+        "Finish": "Matte. Smooth white shade, fluted sage base",
+        "Light source": "Warm-white LED, fitting being finalised",
+        "Heat limit": "PLA softens above about 55 °C",
+        "Made": "To order, in our workshop"
+      },
+      "care": "Wipe with a dry cloth. Keep out of direct summer sun and away from heat — PLA softens above about 55°C.",
+      "status": "live",
+      "shots": 2,
+      "photos": [
+        {
+          "name": "puffed-lit",
+          "square": "puffed-sq",
+          "alt": "The Puffed Lamp switched on: a white shade of three rounded lobes glowing on a slim, fluted sage base, on an oak side table."
+        },
+        {
+          "name": "puffed-detail",
+          "alt": "Close-up of the Puffed Lamp's two lower lobes glowing, above the fine vertical fluting of its sage base."
+        }
+      ]
+    },
     {
       "slug": "ridge-lamp-black",
       "name": "Ridge Lamp",
@@ -41,8 +156,7 @@
         "Heat limit": "PLA softens above about 55 °C"
       },
       "care": "Wipe with a dry cloth. Keep out of direct summer sun and away from heat — PLA softens above about 55°C.",
-      "status": "live",
-      "featured": true,
+      "status": "draft",
       "shots": 2
     },
     {
@@ -66,7 +180,7 @@
         "Heat limit": "PLA softens above about 55 °C"
       },
       "care": "Wipe with a dry cloth. Keep out of direct summer sun and away from heat — PLA softens above about 55°C.",
-      "status": "live",
+      "status": "draft",
       "shots": 2
     },
     {
@@ -89,7 +203,7 @@
         "Heat limit": "PLA softens above about 55 °C"
       },
       "care": "Wipe with a dry cloth. Keep out of direct summer sun and away from heat — PLA softens above about 55°C.",
-      "status": "live",
+      "status": "draft",
       "shots": 2
     },
     {
@@ -112,7 +226,7 @@
         "Heat limit": "PLA softens above about 55 °C"
       },
       "care": "Wipe with a dry cloth. Keep out of direct summer sun and away from heat — PLA softens above about 55°C.",
-      "status": "live",
+      "status": "draft",
       "shots": 2
     },
     {
@@ -430,7 +544,7 @@
       ],
       "price": null,
       "blurb": "A rounded lantern with a wide ribbed body.",
-      "description": "In development. Shorter and wider than the Ridge, meant for a low table where you want the light to spread sideways rather than up.",
+      "description": "In development. Short and wide, meant for a low table where you want the light to spread sideways rather than up.",
       "specs": {},
       "status": "concept",
       "shots": 1

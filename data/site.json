@@ -14,8 +14,16 @@
   "hero": {
     "_README": "The homepage's big frame. `photo.name` must exist in data/photos.json (make it with tools/photos.py --ratio 4:5). Remove `photo` to go back to the labelled empty frame.",
     "photo": {
-      "name": "hero-lamp",
-      "alt": "A sand-coloured lamp with a wavy, sculpted base and a pleated shade, lit on an oak side table beside an armchair."
+      "name": "ribbed-lit",
+      "alt": "The Ribbed Lamp switched on: a pleated white shade glowing above a sage base wrapped in broad, leaf-like ribs, on an oak side table beside a rubber plant."
+    }
+  },
+
+  "afterDark": {
+    "_README": "The lit photograph beside the 'After dark' line on the homepage. Remove `photo` to go back to the line on its own.",
+    "photo": {
+      "name": "pleated-night",
+      "alt": "The Pleated Lamp lit in a dark room, its four quilted tiers glowing in bands on an oak side table."
     }
   },
 
