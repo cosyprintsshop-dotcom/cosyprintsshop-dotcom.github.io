@@ -219,10 +219,18 @@
       });
     }, { rootMargin: "0px 0px -12% 0px", threshold: 0.01 });
 
+    /* On a slow connection the page can paint before this deferred script runs.
+       Then what is on screen is already visible, and hiding it to animate it in
+       makes it blink out and back. Show it in this same task instead — the one
+       that added .js-motion — so no frame ever renders it hidden. */
+    var painted = !!(window.performance && performance.getEntriesByType &&
+                     performance.getEntriesByType("paint").length);
+
     var above = [];
     targets.forEach(function (el) {
       // anything already on screen at load reveals immediately, not on scroll
       if (el.getBoundingClientRect().top < innerHeight * 0.9) {
+        if (painted) { show(el); return; }
         above.push(el);
         requestAnimationFrame(function () { show(el); });
       } else {
@@ -247,22 +255,36 @@
      going to, so the browser morphs one into the other instead of cross-fading. */
   (function morph() {
     if (!canMove || !document.startViewTransition) return;
+    // A product page's first frame is named `hero-media` by the build, so a card
+    // on the page before can morph into it.
+    var own = document.querySelector('.pdp__shot[style*="hero-media"]');
+
+    function clearCards() {
+      document.querySelectorAll("[data-morph] .pcard__media, [data-morph] .cat__media").forEach(function (m) {
+        m.style.viewTransitionName = "";
+      });
+    }
+
     document.addEventListener("click", function (e) {
       var card = e.target.closest("[data-morph]");
-      if (!card) return;
-      document.querySelectorAll("[data-morph]").forEach(function (c) {
-        var m = c.querySelector(".pcard__media, .cat__media");
-        if (m) m.style.viewTransitionName = "";
-      });
+      // a new-tab or new-window click does not navigate this page: leave the names alone
+      if (!card || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      clearCards();
+      // Two elements with one name and the browser skips the whole transition. On
+      // a product page that was this page's own frame plus the "More" card clicked.
+      if (own) own.style.viewTransitionName = "none";
       var media = card.querySelector(".pcard__media, .cat__media");
       if (media) media.style.viewTransitionName = "hero-media";
     }, true);
 
-    // clear it again if the visitor comes back, or the name leaks into the next transition
-    addEventListener("pageswap", function () {
-      document.querySelectorAll('[style*="hero-media"]').forEach(function (el) {
-        el.style.viewTransitionName = "";
-      });
+    /* Put the names back when the visitor returns from the back/forward cache, or
+       the old card's name leaks into the next transition. Not on `pageswap`: that
+       fires just before the old page is captured, so clearing there removed the
+       very name the morph needed. */
+    addEventListener("pageshow", function (e) {
+      if (!e.persisted) return;
+      clearCards();
+      if (own) own.style.viewTransitionName = "hero-media";
     });
   })();
 
@@ -326,20 +348,29 @@
     }
 
     /* --------------------------------------------- product grids: batch */
-    ScrollTrigger.batch("[data-batch] .pcard", {
-      start: "top 88%",
-      once: true,
-      interval: 0.1,
-      batchMax: 4,          // stops 20 cards rippling down the page
-      onEnter: function (els) {
-        gsap.to(els, {
-          opacity: 1, y: 0,
-          duration: 0.8, stagger: 0.09,
-          ease: "power3.out", overwrite: true
-        });
-      }
+    /* Only cards still below the screen are hidden for the batch reveal. These
+       libraries arrive after the page has painted, so hiding the cards already
+       showing would blank them and fade them back in — the same re-hide the hero
+       is built to avoid. */
+    var later = gsap.utils.toArray("[data-batch] .pcard").filter(function (c) {
+      return c.getBoundingClientRect().top > innerHeight;
     });
-    gsap.set("[data-batch] .pcard", { opacity: 0, y: 22 });
+    if (later.length) {
+      ScrollTrigger.batch(later, {
+        start: "top 88%",
+        once: true,
+        interval: 0.1,
+        batchMax: 4,          // stops 20 cards rippling down the page
+        onEnter: function (els) {
+          gsap.to(els, {
+            opacity: 1, y: 0,
+            duration: 0.8, stagger: 0.09,
+            ease: "power3.out", overwrite: true
+          });
+        }
+      });
+      gsap.set(later, { opacity: 0, y: 22 });
+    }
 
     /* The hero is deliberately NOT animated here. It is above the fold, so a
        GSAP timeline created after the libraries arrive would visibly re-hide
