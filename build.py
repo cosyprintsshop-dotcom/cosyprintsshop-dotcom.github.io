@@ -321,10 +321,23 @@ def by_cat(slug, status="live"):
 
 
 # --------------------------------------------------------------------- shell
-def shell(title, desc, body, page="", extra_head="", tone_start="day", current="page"):
+def shell(title, desc, body, page="", extra_head="", tone_start="day", current="page", path=None, image=None):
     """`page` is the category the page belongs to. On the category page itself the
     nav link is the current page; on a product page (`current="true"`) it only
-    marks the section the visitor is in."""
+    marks the section the visitor is in.
+
+    `path` gives the page its canonical URL; `image` (a photo, else the hero
+    photo) is what a shared link shows in WhatsApp, Messenger and the like."""
+    img = image or SITE.get("hero", {}).get("photo")
+    meta = []
+    if path:
+        url = f"https://{BRAND['domain']}{path}"
+        meta += [f'<link rel="canonical" href="{e(url)}">', f'<meta property="og:url" content="{e(url)}">']
+    if img:
+        meta += [f'<meta property="og:image" content="{e(photo_url(img))}">',
+                 f'<meta property="og:image:alt" content="{e(img["alt"])}">',
+                 '<meta name="twitter:card" content="summary_large_image">']
+    meta_html = "\n".join(meta)
     nav_items = [(f"/{c['slug']}/", c["name"], False) for c in CATEGORIES] + [("/#how", "How it works", True)]
     links = "".join(
         '<a class="nav__link{sec}" href="{h}"{cur}>{t}</a>'.format(
@@ -348,10 +361,14 @@ def shell(title, desc, body, page="", extra_head="", tone_start="day", current="
 <link rel="preload" href="/assets/fonts/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{asset('/assets/css/fonts.css')}">
 <link rel="stylesheet" href="{asset('/assets/css/site.css')}">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta name="theme-color" content="#EDE7DB">
+<meta property="og:site_name" content="{e(BRAND['name'])}">
 <meta property="og:title" content="{e(title)}">
 <meta property="og:description" content="{e(desc)}">
 <meta property="og:type" content="website">
+{meta_html}
 {extra_head}
 </head>
 <body>
@@ -574,6 +591,7 @@ def build_home():
         f"{BRAND['name']} — 3D-printed lamps and home decorations",
         "Lamps and small home objects, 3D-printed to order in France. Warm light, plant-based PLA, made by hand in our workshop.",
         body,
+        path="/",
     )
 
 
@@ -653,6 +671,7 @@ def build_category(cat):
         cat["lead"],
         body,
         page=cat["slug"],
+        path=f"/{cat['slug']}/",
     )
 
 
@@ -757,7 +776,7 @@ def build_product(p):
     head = '<script type="application/ld+json">' + json.dumps(ld).replace("<", "\\u003c") + "</script>"
 
     return shell(f"{p['name']} — {BRAND['name']}", p["blurb"], body, page=p["category"], extra_head=head,
-                 current="true")
+                 current="true", path=f"/shop/{p['slug']}/", image=first)
 
 
 # -------------------------------------------------------------------- legal
@@ -790,7 +809,8 @@ def build_legal():
   </div>
 </section>
 """
-    return shell(f"Legal — {BRAND['name']}", "Returns, delivery, privacy and legal information.", body)
+    return shell(f"Legal — {BRAND['name']}", "Returns, delivery, privacy and legal information.", body,
+                 path="/legal/")
 
 
 # ---------------------------------------------------------------------- 404
