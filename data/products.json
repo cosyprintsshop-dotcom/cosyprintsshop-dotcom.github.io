@@ -218,7 +218,7 @@
         "Note": "Display piece, not a toy"
       },
       "care": "Dust with a soft brush.",
-      "status": "live",
+      "status": "draft",
       "featured": true,
       "shots": 1
     },
@@ -241,7 +241,7 @@
         "Made": "To order, in our workshop"
       },
       "care": "Wipe with a dry cloth.",
-      "status": "live",
+      "status": "draft",
       "shots": 2
     },
     {

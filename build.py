@@ -20,8 +20,18 @@ _PHOTOS_JSON = os.path.join(DATA, "photos.json")
 PHOTOS = json.load(open(_PHOTOS_JSON, encoding="utf8")) if os.path.exists(_PHOTOS_JSON) else {}
 
 BRAND = SITE["brand"]
-PRODUCTS = [p for p in CAT["products"]]
 CATEGORIES = CAT["categories"]
+
+# A product's `status` decides whether it is published at all:
+#   live     — listed, has a page, can be ordered
+#   concept  — listed in "Not yet for sale", has a page, cannot be ordered
+#   draft    — not published: no page, no listing, not in the sitemap
+# Anything else stops the build, so a typo can never quietly publish a page.
+PUBLISHED = ("live", "concept")
+for _p in CAT["products"]:
+    if _p.get("status", "live") not in PUBLISHED + ("draft",):
+        raise SystemExit(f"product '{_p.get('slug')}' has status '{_p.get('status')}' — use live, concept or draft")
+PRODUCTS = [p for p in CAT["products"] if p.get("status", "live") in PUBLISHED]
 
 e = html.escape
 
@@ -543,9 +553,7 @@ def build_legal():
       <h1 class="display h2 shead__title lines"><span class="l"><span>Terms, returns and privacy</span></span></h1>
     </div>
     <div class="prose" style="max-width:66ch">
-      <div class="notice"><strong>Incomplete.</strong> The sections below are drafted but need your real company details before this site goes live. A French online shop must publish mentions légales (legal form, SIREN, registered address, publication director and host), CGV, and a cookie/privacy notice.</div>
-
-      <h2 class="h3" style="margin-top:2.5rem">Returns and the right to change your mind</h2>
+      <h2 class="h3">Returns and the right to change your mind</h2>
       <p>You have {SITE['legal']['returnsDays']} days from the day you receive an order to withdraw from it, without giving a reason. Tell us by email and send the item back in a condition we can resell. We refund the item once it arrives.</p>
       <p>{e(SITE['legal']['customExemptionNote'])} In plain terms: a piece printed in a colour you chose specially, or with a name on it, cannot be returned.</p>
 
@@ -553,10 +561,14 @@ def build_legal():
       <p>Every order is printed after it is placed. Allow 3–5 working days in the workshop, then normal postal time. You get a tracking number on the day it ships.</p>
 
       <h2 class="h3" style="margin-top:2.5rem">Privacy</h2>
-      <p>This site sets no cookies and runs no analytics or third-party trackers. Fonts and scripts are served from this domain, not from a CDN, so loading a page tells nobody but us that you were here. If you email us, we keep the email to answer it.</p>
+      <p>We set no cookies of our own and run no analytics, advertising or tracking scripts. Our fonts and scripts are served from this site, not loaded from Google or other third parties.</p>
+      <p>Like any website, pages reach you through service providers who handle technical data, such as your IP address, in order to deliver them. This site is hosted by GitHub Pages and delivered through Cloudflare, which also protects it from abuse. Cloudflare may set a strictly necessary security cookie to tell visitors from bots.</p>
+      <p>If you email us, we keep your message to answer it.</p>
 
       <h2 class="h3" style="margin-top:2.5rem">Mentions légales</h2>
-      <p><em>To be completed: legal form, share capital, SIREN/SIRET, registered address, VAT status, publication director, and hosting provider (GitHub Pages, GitHub Inc., 88 Colin P. Kelly Jr. St, San Francisco, CA 94107, USA).</em></p>
+      <p><strong>Publisher:</strong> {e(BRAND['name'])}, {e(BRAND['country'])}. Contact: <a href="mailto:{e(BRAND['email'])}">{e(BRAND['email'])}</a>. Company registration details will be added to this page.</p>
+      <p><strong>Host:</strong> GitHub Pages, GitHub, Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, USA.</p>
+      <p><strong>Content delivery and security:</strong> Cloudflare, Inc., 101 Townsend Street, San Francisco, CA 94107, USA.</p>
     </div>
   </div>
 </section>
@@ -572,7 +584,33 @@ def write(rel, content):
     return rel
 
 
+def prune_product_pages():
+    """Delete shop/<slug>/ pages whose product was removed, renamed or set to draft.
+
+    The build only ever wrote pages, so a product taken out of products.json kept
+    its old page online for good — gone from the listings and the sitemap, still
+    served at its URL with its old price. Only the generated index.html is
+    deleted (and the folder, if that leaves it empty); anything else survives.
+    """
+    shop = os.path.join(ROOT, "shop")
+    if not os.path.isdir(shop):
+        return []
+    keep = {p["slug"] for p in PRODUCTS}
+    removed = []
+    for slug in sorted(os.listdir(shop)):
+        folder = os.path.join(shop, slug)
+        page = os.path.join(folder, "index.html")
+        if slug in keep or not os.path.isfile(page):
+            continue
+        os.remove(page)
+        if not os.listdir(folder):
+            os.rmdir(folder)
+        removed.append(f"shop/{slug}/index.html")
+    return removed
+
+
 def main():
+    removed = prune_product_pages()
     written = []
     written.append(write("index.html", build_home()))
     for c in CATEGORIES:
@@ -593,6 +631,10 @@ def main():
     print(f"wrote {len(written)} files")
     for w in written:
         print("  ", w)
+    if removed:
+        print(f"removed {len(removed)} page(s) for products no longer published")
+        for r in removed:
+            print("  ", r)
 
 
 if __name__ == "__main__":
