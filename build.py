@@ -19,8 +19,18 @@ _PHOTOS_JSON = os.path.join(DATA, "photos.json")
 PHOTOS = json.load(open(_PHOTOS_JSON, encoding="utf8")) if os.path.exists(_PHOTOS_JSON) else {}
 
 BRAND = SITE["brand"]
-PRODUCTS = [p for p in CAT["products"]]
 CATEGORIES = CAT["categories"]
+
+# A product's `status` decides whether it is published at all:
+#   live     — listed, has a page, can be ordered
+#   concept  — listed in "Not yet for sale", has a page, cannot be ordered
+#   draft    — not published: no page, no listing, not in the sitemap
+# Anything else stops the build, so a typo can never quietly publish a page.
+PUBLISHED = ("live", "concept")
+for _p in CAT["products"]:
+    if _p.get("status", "live") not in PUBLISHED + ("draft",):
+        raise SystemExit(f"product '{_p.get('slug')}' has status '{_p.get('status')}' — use live, concept or draft")
+PRODUCTS = [p for p in CAT["products"] if p.get("status", "live") in PUBLISHED]
 
 e = html.escape
 
@@ -529,7 +539,33 @@ def write(rel, content):
     return rel
 
 
+def prune_product_pages():
+    """Delete shop/<slug>/ pages whose product was removed, renamed or set to draft.
+
+    The build only ever wrote pages, so a product taken out of products.json kept
+    its old page online for good — gone from the listings and the sitemap, still
+    served at its URL with its old price. Only the generated index.html is
+    deleted (and the folder, if that leaves it empty); anything else survives.
+    """
+    shop = os.path.join(ROOT, "shop")
+    if not os.path.isdir(shop):
+        return []
+    keep = {p["slug"] for p in PRODUCTS}
+    removed = []
+    for slug in sorted(os.listdir(shop)):
+        folder = os.path.join(shop, slug)
+        page = os.path.join(folder, "index.html")
+        if slug in keep or not os.path.isfile(page):
+            continue
+        os.remove(page)
+        if not os.listdir(folder):
+            os.rmdir(folder)
+        removed.append(f"shop/{slug}/index.html")
+    return removed
+
+
 def main():
+    removed = prune_product_pages()
     written = []
     written.append(write("index.html", build_home()))
     for c in CATEGORIES:
@@ -550,6 +586,10 @@ def main():
     print(f"wrote {len(written)} files")
     for w in written:
         print("  ", w)
+    if removed:
+        print(f"removed {len(removed)} page(s) for products no longer published")
+        for r in removed:
+            print("  ", r)
 
 
 if __name__ == "__main__":
