@@ -18,6 +18,25 @@ Everything below is a placeholder or an assumption I could not verify. Search
    registered address, VAT status and publication director.
 4. **Delivery times.** "3–5 working days" is an assumption.
 
+## Leboncoin and Vinted
+
+Most sales happen on Leboncoin. To send a product page's visitors to a listing,
+add either or both to that product in `data/products.json`:
+
+```json
+"leboncoinUrl": "https://www.leboncoin.fr/ad/...",
+"vintedUrl": "https://www.vinted.fr/items/...",
+"price": 42,
+"priceConfirmed": true
+```
+
+The page then shows plain "Buy on Leboncoin" / "Buy on Vinted" buttons (new tab,
+no logos) above "Order by email", which stays as the fallback, plus one line
+saying payment and delivery go through that site. The build stops if a link is
+not https on the right domain, or if `priceConfirmed` is missing — the price
+here has to be the listing's price, not one of the placeholders. When a listing
+ends, delete its URL.
+
 ## Editing
 
 ```bash
@@ -48,10 +67,33 @@ To add a photo:
      fills the second frame if `shots` is 2.
 3. `python build.py`, commit everything.
 
+On category pages a `featured` product's card is a 4:5 frame (the rest are 1:1),
+so a 4:5 first photo suits a featured piece best — it is also the product
+page's first shot. Up to four pieces nest beside each featured one; set or
+clear `featured` to change the spreads.
+
 The build stops if a photo is missing or has no alt text. Use camera originals:
 WhatsApp shrinks photos to ~900px, which looks soft on phones and retina screens.
 Note the CSS reset needs `img { height: auto }` — without it the `height`
 attribute wins and images stretch vertically.
+
+## Colours
+
+A product can list the colours it comes in:
+
+```json
+"colours": [
+  {"name": "Sand", "hex": "#C9B79C", "photo": {"name": "ridge-sand", "alt": "..."}},
+  {"name": "Ink",  "hex": "#1F1B16", "photo": {"name": "ridge-ink",  "alt": "..."}}
+]
+```
+
+With one colour, or any colour missing a photo or hex, the page lists the
+names as text. With two or more that each have both, it shows swatches —
+real radio buttons — and picking one crossfades the first frame to that
+colour's photo and names it in the "Order by email" subject. Without JS the
+first colour's photo shows and the colours are listed as text. Other colours'
+photos only download when chosen.
 
 ## Motion
 

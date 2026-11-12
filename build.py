@@ -9,6 +9,7 @@ page, no client-side routing. Real documents are what make cross-document view
 transitions and search indexing work.
 """
 import json, os, re, shutil, html, hashlib
+from urllib.parse import urlparse
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 DATA = os.path.join(ROOT, "data")
@@ -54,6 +55,7 @@ def asset(path):
 SIZES_HERO = "(min-width: 62em) min(38vw, 560px), 92vw"
 SIZES_SHOT = "(min-width: 62em) min(50vw, 760px), 92vw"
 SIZES_CARD = "(min-width: 62em) min(25vw, 380px), (min-width: 40em) 46vw, 92vw"
+SIZES_FEATURE = "(min-width: 62em) min(48vw, 740px), (min-width: 48em) 56vw, 92vw"
 
 
 def picture(photo, sizes, eager=False):
@@ -104,6 +106,109 @@ def money(v):
 
 def is_placeholder(v):
     return not v or str(v).strip().upper().startswith("PLACEHOLDER")
+
+
+# Where a piece can also be bought. Plain text buttons — the site names the
+# marketplace, it never carries its logo. (field, label, allowed host pattern)
+MARKETS = [
+    ("leboncoinUrl", "Leboncoin", r"(^|\.)leboncoin\.fr$"),
+    ("vintedUrl", "Vinted", r"(^|\.)vinted\.[a-z]{2,3}(\.[a-z]{2})?$"),
+]
+
+
+def market_links(p):
+    """[(label, url)] for the listings a product has, checked at build time.
+
+    A listing is a second public price for the same piece, so the build refuses
+    one until `priceConfirmed` says the price here was copied from it. Every
+    price in products.json started life as a placeholder.
+    """
+    links = []
+    for field, label, host in MARKETS:
+        url = (p.get(field) or "").strip()
+        if not url:
+            continue
+        u = urlparse(url)
+        if u.scheme != "https" or not re.search(host, (u.hostname or "").lower()):
+            raise SystemExit(f"{p['slug']}: {field} must be an https link to {label}, got {url!r}")
+        links.append((label, url))
+    if links and not (p.get("priceConfirmed") and p.get("price")):
+        raise SystemExit(f"{p['slug']}: has a marketplace listing, so its price must match it — "
+                         f"set `price` to the listing price and `priceConfirmed: true`")
+    return links
+
+
+# The spec table reads the same on every product: these rows first, in this
+# order, then anything product-specific (a "Water" warning, a "Fits" note) as
+# written. A row with no value is not rendered — no dashes, no "TBC".
+SPEC_ORDER = ["Dimensions", "Weight", "Material", "Layer height", "Light source", "Heat limit", "Made"]
+
+
+def spec_rows(p):
+    specs = {k: str(v).strip() for k, v in (p.get("specs") or {}).items()
+             if v is not None and not is_placeholder(v)}
+    known = [(k, specs[k]) for k in SPEC_ORDER if k in specs]
+    return known + [(k, v) for k, v in specs.items() if k not in SPEC_ORDER]
+
+
+HEX = re.compile(r"^#[0-9A-Fa-f]{6}$")
+
+
+def colours(p):
+    """The product's `colours`, checked: [{"name", "hex", "photo"}].
+
+    Nothing renders until the data exists. Swatches need at least two colours
+    that each have a hex and a photo — a swatch that changes nothing on screen is
+    worse than a sentence.
+    """
+    out = []
+    for c in p.get("colours") or []:
+        name = (c.get("name") or "").strip()
+        if not name or is_placeholder(name):
+            raise SystemExit(f"{p['slug']}: every colour needs a real name")
+        if c.get("hex") and not HEX.match(c["hex"]):
+            raise SystemExit(f"{p['slug']}: colour {name!r} hex must look like #A1B2C3, got {c['hex']!r}")
+        out.append({"name": name, "hex": c.get("hex"), "photo": c.get("photo")})
+    return out
+
+
+def can_swatch(cols):
+    return len(cols) >= 2 and all(c["hex"] and c["photo"] for c in cols)
+
+
+def lead_photo(p):
+    """The picture a product leads with. With working swatches it is the first
+    colour's, so the photo matches the colour shown as picked; otherwise the
+    first photo, else the first colour's if it has one."""
+    photos, cols = p.get("photos") or [], colours(p)
+    if can_swatch(cols) or (cols and not photos):
+        return cols[0]["photo"]
+    return photos[0] if photos else None
+
+
+def colour_picker(p, cols):
+    """A text list of the colours (no JS), and — when every colour has a photo —
+    real radio buttons that swap the first frame. site.js unhides the radios and
+    hides the list; without it the first colour's photo simply stays."""
+    if not cols:
+        return ""
+    names = ", ".join(c["name"] for c in cols)
+    text = (f'<p class="pdp__colours" data-colour-list><span class="label">'
+            f'{"Colours" if len(cols) > 1 else "Colour"}</span> {e(names)}</p>')
+    if not can_swatch(cols):
+        return text
+    radios = "".join(
+        f'<label class="swatch"><input class="swatch__input" type="radio" name="colour" value="{i}"'
+        f' data-name="{e(c["name"])}"{" checked" if i == 0 else ""}>'
+        f'<span class="swatch__chip" style="--sw:{c["hex"]}" aria-hidden="true"></span>'
+        f'<span class="vh">{e(c["name"])}</span></label>'
+        for i, c in enumerate(cols))
+    pics = "".join(f'<template data-colour-photo="{i}">{picture(c["photo"], SIZES_SHOT)}</template>'
+                   for i, c in enumerate(cols))
+    return text + f"""<fieldset class="swatches" data-swatches hidden>
+          <legend class="swatches__legend"><span class="label">Colour</span> <span class="swatches__name" data-colour-name>{e(cols[0]['name'])}</span></legend>
+          <div class="swatches__row">{radios}</div>{pics}
+        </fieldset>"""
 
 
 def by_cat(slug, status="live"):
@@ -198,14 +303,15 @@ def shell(title, desc, body, page="", extra_head="", tone_start="day"):
 
 
 # ------------------------------------------------------------------- pieces
-def product_card(p, lead=False, morph=True):
+def product_card(p, feature=False, morph=True):
     price = money(p.get("price"))
     tag = ""
     if p.get("status") == "concept":
         tag = '<span class="pcard__tag">In development</span>'
     rooms = "|".join(p.get("rooms", []))
-    return f"""<a class="pcard" href="/shop/{p['slug']}/" data-rooms="{e(rooms)}"{' data-morph' if morph else ''}>
-  {slot('pcard__media lay', photo=(p.get('photos') or [None])[0])}
+    cls = "pcard pcard--feature" if feature else "pcard"
+    return f"""<a class="{cls}" href="/shop/{p['slug']}/" data-rooms="{e(rooms)}"{' data-morph' if morph else ''}>
+  {slot('pcard__media lay', photo=lead_photo(p), sizes=SIZES_FEATURE if feature else SIZES_CARD)}
   <div class="pcard__top">
     <span class="pcard__name">{e(p['name'])}</span>
     <span class="pcard__price">{price or '—'}</span>
@@ -369,6 +475,32 @@ def build_home():
 
 
 # ----------------------------------------------------------------- category
+def editorial_grid(items):
+    """The catalogue as a magazine spread rather than a uniform grid.
+
+    Each `featured` piece gets a wide 4:5 frame, with up to four of the
+    following pieces nested beside it in a tight 2-column grid of 1:1 frames.
+    Spreads alternate sides. Whatever is left runs on as plain rows. It is
+    built from frames, so it reads the same empty, half-photographed or full.
+    When a room filter is on, site.js flattens it back to an even grid
+    (`data-filtered`), because holes in a spread look like mistakes.
+    """
+    feats = [p for p in items if p.get("featured")]
+    rest = [p for p in items if not p.get("featured")]
+    blocks = []
+    for i, f in enumerate(feats):
+        nest, rest = rest[:4], rest[4:]
+        mods = f" ed__spread--n{len(nest)}" + (" ed__spread--flip" if i % 2 else "")
+        nested = "".join(product_card(q) for q in nest)
+        blocks.append(f"""<div class="ed__spread{mods}">
+      <div class="ed__feature">{product_card(f, feature=True)}</div>
+      {f'<div class="ed__nest">{nested}</div>' if nest else ''}
+    </div>""")
+    if rest:
+        blocks.append(f'<div class="ed__rows">{"".join(product_card(q) for q in rest)}</div>')
+    return f'<div class="ed" data-ed data-batch>{"".join(blocks)}</div>'
+
+
 def build_category(cat):
     live = by_cat(cat["slug"], "live")
     concepts = by_cat(cat["slug"], "concept")
@@ -380,7 +512,6 @@ def build_category(cat):
         btns += "".join(f'<button class="filter" data-room="{e(r)}" aria-pressed="false">{e(r)}</button>' for r in rooms)
         filters = f'<div class="filters" data-filters role="group" aria-label="Filter by room">{btns}</div>'
 
-    cards = "".join(product_card(p, lead=(i == 0)) for i, p in enumerate(live))
 
     concept_block = ""
     if concepts:
@@ -409,7 +540,7 @@ def build_category(cat):
     </div>
     {filters}
     <p class="vh" data-filter-count aria-live="polite">{len(live)} pieces</p>
-    <div class="grid pgrid pgrid--lead" data-batch>{cards}</div>
+    {editorial_grid(live)}
   </div>
 </section>
 {concept_block}
@@ -425,7 +556,8 @@ def build_category(cat):
 # ------------------------------------------------------------------ product
 def build_product(p):
     photos = p.get("photos") or []
-    first = photos[0] if photos else None
+    cols = colours(p)
+    first = lead_photo(p)
     shots = slot("pdp__shot lay", SLOT_LABEL, "view-transition-name:hero-media",
                  photo=first, sizes=SIZES_SHOT, eager=True)
     if int(p.get("shots", 1)) > 1:
@@ -433,8 +565,8 @@ def build_product(p):
         shots += slot("pdp__shot lay", "Second view coming soon", photo=second, sizes=SIZES_SHOT)
 
     specs = ""
-    if p.get("specs"):
-        rows = "".join(f'<div class="pdp__spec"><dt>{e(k)}</dt><dd>{e(v)}</dd></div>' for k, v in p["specs"].items())
+    rows = "".join(f'<div class="pdp__spec"><dt>{e(k)}</dt><dd>{e(v)}</dd></div>' for k, v in spec_rows(p))
+    if rows:
         specs = f'<dl class="pdp__specs">{rows}</dl>'
 
     concept = p.get("status") == "concept"
@@ -443,13 +575,29 @@ def build_product(p):
         <div class="pdp__buy"><a class="btn" href="mailto:{e(BRAND['email'])}?subject={e(p['name'])}%20—%20tell%20me%20when%20it%20is%20ready">Tell me when it is ready</a></div>"""
         price_html = ""
     else:
+        markets = market_links(p)
+        # with a listing to point at, the site's own route steps back to a fallback
+        btn = "btn btn--ghost" if markets else "btn"
         checkout = p.get("checkoutUrl")
         if checkout:
-            action = f'<a class="btn" href="{e(checkout)}">Add to basket — {money(p["price"])}</a>'
+            action = f'<a class="{btn}" href="{e(checkout)}">Add to basket — {money(p["price"])}</a>'
         else:
-            subj = f"Order: {p['name']}" + (f" ({p['variant']})" if p.get("variant") else "")
-            action = f'<a class="btn" href="mailto:{e(BRAND["email"])}?subject={e(subj)}">Order by email</a>'
-        buy = f"""<div class="pdp__buy">{action}</div>
+            # with colours, the subject names the one picked (site.js fills it in);
+            # without JS it names none, rather than guess the first
+            base = f"Order: {p['name']}"
+            subj = base if cols else base + (f" ({p['variant']})" if p.get("variant") else "")
+            order = f' data-order="{e(base)}"' if can_swatch(cols) else ""
+            action = f'<a class="{btn}" href="mailto:{e(BRAND["email"])}?subject={e(subj)}"{order}>Order by email</a>'
+        market_html = ""
+        if markets:
+            mbtns = "".join(
+                f'<a class="btn" href="{e(url)}" target="_blank" rel="noopener noreferrer">'
+                f'Buy on {label}<span class="vh"> (opens in a new tab)</span></a>'
+                for label, url in markets)
+            where = " or ".join(f"{label}'s" for label, _ in markets)
+            market_html = f"""<div class="pdp__buy pdp__buy--market">{mbtns}</div>
+        <p class="pdp__note">Payment and delivery go through {where} own checkout, not this site.</p>"""
+        buy = f"""{market_html}<div class="pdp__buy">{action}</div>
         <p class="pdp__care">Printed after you order. In the workshop 3–5 working days, then posted with tracking.</p>"""
         price_html = f'<p class="pdp__price">{money(p.get("price"))}</p>'
 
@@ -469,6 +617,7 @@ def build_product(p):
         <h1 class="display h2 pdp__name">{e(p['name'])}</h1>
         <p class="pdp__variant">{e(p.get('variant',''))}</p>
         {price_html}
+        {colour_picker(p, cols)}
         <div class="prose pdp__desc"><p>{e(p['description'])}</p></div>
         {buy}
         {specs}

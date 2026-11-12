@@ -121,6 +121,7 @@
     // only the pieces for sale in this section — not the concepts further down
     var cards = (bar.closest("section") || document).querySelectorAll("[data-rooms]");
     var live = document.querySelector("[data-filter-count]");
+    var ed = document.querySelector("[data-ed]");
 
     bar.addEventListener("click", function (e) {
       var btn = e.target.closest(".filter");
@@ -138,6 +139,61 @@
         if (match) shown++;
       });
       if (live) live.textContent = shown + (shown === 1 ? " piece" : " pieces");
+      // the editorial spreads only hold together with every piece in them
+      if (ed) ed.toggleAttribute("data-filtered", !!room);
+    });
+  })();
+
+  /* ------------------------------------------------------ colour swatches */
+  /* The page ships a text list of colours and the first colour's photo. With JS
+     the real radio buttons appear instead, and picking one crossfades the first
+     frame to that colour's photo (held in a <template> so it never downloads
+     unless chosen) and names it in the email subject. */
+  (function swatches() {
+    var set = document.querySelector("[data-swatches]");
+    var frame = document.querySelector(".pdp__shot");
+    if (!set || !frame) return;
+    var list = document.querySelector("[data-colour-list]");
+    var nameEl = set.querySelector("[data-colour-name]");
+    var order = document.querySelector("[data-order]");
+    set.hidden = false;
+    if (list) list.hidden = true;
+
+    set.addEventListener("change", function (e) {
+      var r = e.target;
+      if (r.name !== "colour") return;
+      nameEl.textContent = r.dataset.name;
+      if (order) {
+        order.href = order.href.split("?")[0] + "?subject=" +
+          encodeURIComponent(order.dataset.order + " (" + r.dataset.name + ")");
+      }
+      var tpl = set.querySelector('template[data-colour-photo="' + r.value + '"]');
+      if (!tpl) return;
+      var pic = tpl.content.firstElementChild.cloneNode(true);
+      var img = pic.querySelector("img");
+      img.loading = "eager";
+      if (canMove) pic.classList.add("is-entering");
+      frame.classList.add("slot--photo");
+      frame.appendChild(pic);
+      var label = frame.querySelector(".slot__label");
+      if (label) label.remove();
+
+      function settle() {
+        // drop everything under the newest picture once it is fully up
+        Array.prototype.forEach.call(frame.querySelectorAll("picture"), function (p) {
+          if (p !== pic && p.compareDocumentPosition(pic) & Node.DOCUMENT_POSITION_FOLLOWING) p.remove();
+        });
+      }
+      if (!canMove) { settle(); return; }
+      var shown = false;
+      function fadeIn() {
+        if (shown) return;
+        shown = true;
+        requestAnimationFrame(function () { pic.classList.remove("is-entering"); });
+        setTimeout(settle, 400);
+      }
+      (img.decode ? img.decode() : Promise.resolve()).then(fadeIn, fadeIn);
+      setTimeout(fadeIn, 1500);   // a slow network still gets the photo, just without waiting
     });
   })();
 
@@ -270,7 +326,7 @@
     }
 
     /* --------------------------------------------- product grids: batch */
-    ScrollTrigger.batch("[data-batch] > *", {
+    ScrollTrigger.batch("[data-batch] .pcard", {
       start: "top 88%",
       once: true,
       interval: 0.1,
@@ -283,7 +339,7 @@
         });
       }
     });
-    gsap.set("[data-batch] > *", { opacity: 0, y: 22 });
+    gsap.set("[data-batch] .pcard", { opacity: 0, y: 22 });
 
     /* The hero is deliberately NOT animated here. It is above the fold, so a
        GSAP timeline created after the libraries arrive would visibly re-hide
