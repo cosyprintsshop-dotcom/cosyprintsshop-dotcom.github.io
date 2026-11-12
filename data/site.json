@@ -72,7 +72,7 @@
   "trust": [
     { "label": "Made in", "value": "Our own workshop, France" },
     { "label": "Ships in", "value": "{workshopTime}" },
-    { "label": "Returns", "value": "{returnsDays} days, no reason needed" },
+    { "label": "Returns", "value": "{returnsDays} days, free returns" },
     { "label": "Material", "value": "Plant-based PLA, never oil-based plastic" }
   ],
 
@@ -95,7 +95,7 @@
     },
     {
       "q": "Can I return something?",
-      "a": "Yes. You have {returnsDays} days from delivery to change your mind, no explanation needed, and we refund the item. The exception is anything we made to your own specification — a custom colour or a name printed on it — which we cannot resell."
+      "a": "Yes. You have {returnsDays} days from delivery to change your mind, no explanation needed. Returns are free: we pay the return postage and refund what you paid, standard delivery included. The exception is anything we made to your own specification — a colour outside our usual range, or a name printed on it."
     },
     {
       "q": "Do you take custom commissions?",
@@ -105,7 +105,7 @@
 
   "legal": {
     "returnsDays": 14,
-    "customExemptionNote": "Made-to-measure and personalised items are exempt from the {returnsDays}-day right of withdrawal under the EU Consumer Rights Directive.",
+    "customExemptionNote": "Items made to your own specification or clearly personalised are exempt from the {returnsDays}-day right of withdrawal under the EU Consumer Rights Directive.",
     "vatNote": "PLACEHOLDER — state whether you charge TVA or are under the franchise en base."
   }
 }

@@ -781,6 +781,7 @@ def build_product(p):
 
 # -------------------------------------------------------------------- legal
 def build_legal():
+    days = SITE["legal"]["returnsDays"]
     body = f"""
 <section class="sec pdp" data-tone="day">
   <div class="wrap">
@@ -790,8 +791,11 @@ def build_legal():
     </div>
     <div class="prose" style="max-width:66ch">
       <h2 class="h3">Returns and the right to change your mind</h2>
-      <p>You have {SITE['legal']['returnsDays']} days from the day you receive an order to withdraw from it, without giving a reason. Tell us by email and send the item back in a condition we can resell. We refund the item once it arrives.</p>
-      <p>{e(SITE['legal']['customExemptionNote'])} In plain terms: a piece printed in a colour you chose specially, or with a name on it, cannot be returned.</p>
+      <p>You have {days} days from the day you receive an order to change your mind, without giving a reason. Email us within that time, then send the piece back within {days} days of telling us.</p>
+      <p><strong>Returns are free: we pay the return postage.</strong> Email us and we will tell you how to send the piece back.</p>
+      <p>We refund everything you paid, including the standard delivery cost, within {days} days of hearing from you. We may wait until the piece is back with us, or until you send proof that it is on its way, whichever comes first. The refund goes back the same way you paid.</p>
+      <p>Please pack it so it travels safely. If it comes back worn or damaged beyond what looking it over would cause, we may take that loss in value off the refund.</p>
+      <p>{e(SITE['legal']['customExemptionNote'])} In plain terms: a piece made at your request in a colour outside our usual range, or with a name printed on it, cannot be returned because you changed your mind. That exception never covers a piece that arrives damaged or faulty — tell us and we will put it right.</p>
 
       <h2 class="h3" style="margin-top:2.5rem">Delivery</h2>
       <p>Every order is printed after it is placed. Allow {e(WORKSHOP_TIME)} in the workshop, then normal postal time. You get a tracking number on the day it ships.</p>
