@@ -1,4 +1,5 @@
-@import url("fonts.css");
+/* fonts.css is a separate <link> in the page head, not an @import here: an
+   import can only start downloading once this file has arrived. */
 
 /* ============================================================================
    Cosy Prints

@@ -16,6 +16,11 @@
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
   var canMove = !reduced.matches;
 
+  // Versioned library URLs, written by build.py onto this script tag. Read now:
+  // document.currentScript is only set while this file is first running.
+  var vendor = {};
+  try { vendor = JSON.parse((document.currentScript && document.currentScript.dataset.vendor) || "{}"); } catch (err) {}
+
   /* Only opt into the hiding styles once we know we can un-hide them. */
   if (canMove) root.classList.add("js-motion");
 
@@ -300,11 +305,20 @@
     });
   }
 
-  var V = "/assets/vendor/";
-  load(V + "lenis.min.js")
-    .then(function () { return load(V + "gsap.min.js"); })
-    .then(function () { return load(V + "ScrollTrigger.min.js"); })
-    .then(function () { return load(V + "SplitText.min.js"); })
+  function url(name) { return vendor[name] || "/assets/vendor/" + name; }
+
+  // Lenis's stylesheet only matters once Lenis runs, so it no longer blocks the
+  // first paint of every page — including for visitors who never get Lenis.
+  var lenisCss = document.createElement("link");
+  lenisCss.rel = "stylesheet";
+  lenisCss.href = url("lenis.css");
+  document.head.appendChild(lenisCss);
+
+  /* All four download in parallel; `async = false` still runs them in this
+     order. They used to be fetched one after another, four round trips deep. */
+  Promise.all(["lenis.min.js", "gsap.min.js", "ScrollTrigger.min.js", "SplitText.min.js"].map(function (n) {
+    return load(url(n));
+  }))
     .then(upgrade)
     .catch(function () { /* tier 1 already looks fine — nothing to do */ });
 

@@ -124,6 +124,12 @@ def asset(path):
     return f"{path}?v={hashlib.sha256(body).hexdigest()[:10]}"
 
 
+# The motion libraries site.js fetches, versioned like everything else. They
+# reach site.js as `data-vendor` on its script tag, so an updated library can
+# never be served stale from a cache.
+VENDOR = {n: asset(f"/assets/vendor/{n}")
+          for n in ("lenis.min.js", "gsap.min.js", "ScrollTrigger.min.js", "SplitText.min.js", "lenis.css")}
+
 # `sizes` hints for the frames that can hold a photo: how wide the frame is drawn.
 SIZES_HERO = "(min-width: 62em) min(38vw, 560px), 92vw"
 SIZES_SHOT = "(min-width: 62em) min(50vw, 760px), 92vw"
@@ -340,7 +346,7 @@ def shell(title, desc, body, page="", extra_head="", tone_start="day", current="
 <meta name="description" content="{e(desc)}">
 <link rel="preload" href="/assets/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/vendor/lenis.css">
+<link rel="stylesheet" href="{asset('/assets/css/fonts.css')}">
 <link rel="stylesheet" href="{asset('/assets/css/site.css')}">
 <meta name="theme-color" content="#EDE7DB">
 <meta property="og:title" content="{e(title)}">
@@ -393,7 +399,7 @@ def shell(title, desc, body, page="", extra_head="", tone_start="day", current="
   </div>
 </footer>
 
-<script src="{asset('/assets/js/site.js')}" defer></script>
+<script src="{asset('/assets/js/site.js')}" defer data-vendor="{e(json.dumps(VENDOR))}"></script>
 </body>
 </html>
 """
