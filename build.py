@@ -216,7 +216,10 @@ def by_cat(slug, status="live"):
 
 
 # --------------------------------------------------------------------- shell
-def shell(title, desc, body, page="", extra_head="", tone_start="day"):
+def shell(title, desc, body, page="", extra_head="", tone_start="day", current="page"):
+    """`page` is the category the page belongs to. On the category page itself the
+    nav link is the current page; on a product page (`current="true"`) it only
+    marks the section the visitor is in."""
     nav_items = [
         ("/lamps/", "Lamps", False),
         ("/decorations/", "Decorations", False),
@@ -226,7 +229,7 @@ def shell(title, desc, body, page="", extra_head="", tone_start="day"):
         '<a class="nav__link{sec}" href="{h}"{cur}>{t}</a>'.format(
             sec=" nav__link--sec" if secondary else "",
             h=h, t=t,
-            cur=' aria-current="page"' if page and h.startswith("/" + page) else "",
+            cur=f' aria-current="{current}"' if page and h.startswith("/" + page) else "",
         )
         for h, t, secondary in nav_items
     )
@@ -646,7 +649,8 @@ def build_product(p):
                         "availability": "https://schema.org/MadeToOrder"}
     head = f'<script type="application/ld+json">{json.dumps(ld)}</script>'
 
-    return shell(f"{p['name']} — {BRAND['name']}", p["blurb"], body, page=p["category"], extra_head=head)
+    return shell(f"{p['name']} — {BRAND['name']}", p["blurb"], body, page=p["category"], extra_head=head,
+                 current="true")
 
 
 # -------------------------------------------------------------------- legal
