@@ -36,11 +36,14 @@ jobs:
       - name: Rebuild the site
         run: python build.py
 
+      # `git status --porcelain`, not `git diff`: the diff never sees untracked
+      # files, so a page the build creates (a new product) or one it should have
+      # deleted but is still committed (a removed product) has to show up here.
       - name: Committed HTML must match the generated output
         run: |
-          if ! git diff --quiet; then
+          if [ -n "$(git status --porcelain)" ]; then
             echo '::error::build.py output differs from what is committed. Run `python build.py` and commit the result.'
-            git diff --stat
+            git status --short
             exit 1
           fi
 
