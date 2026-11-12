@@ -787,6 +787,34 @@ def build_legal():
     return shell(f"Legal — {BRAND['name']}", "Returns, delivery, privacy and legal information.", body)
 
 
+# ---------------------------------------------------------------------- 404
+def build_404():
+    """GitHub Pages serves /404.html for any missing URL — an old product link, a
+    typo — instead of its own grey "Page not found · GitHub Pages". Every URL in
+    the shell is root-absolute, so it renders the same at any depth."""
+    first, rest = CATEGORIES[0], CATEGORIES[1:]
+    others = "".join(f'<a class="tlink" href="/{c["slug"]}/">{e(c["name"])} <span class="tlink__arrow">&rarr;</span></a>'
+                     for c in rest)
+    body = f"""
+<section class="sec pdp" data-tone="day">
+  <div class="wrap">
+    <div class="shead grid">
+      <p class="label shead__eyebrow" style="grid-column:1/-1">Page not found</p>
+      <h1 class="display h2 shead__title lines"><span class="l"><span>Nothing on this shelf.</span></span></h1>
+      <p class="lead shead__note">The link may be out of date, or the piece may no longer be made. Everything we make is in here:</p>
+    </div>
+    <div class="hero__actions">
+      <a class="btn" href="/{first['slug']}/">{e(first['name'])}</a>
+      {others}
+      <a class="tlink" href="/">Home <span class="tlink__arrow">&rarr;</span></a>
+    </div>
+  </div>
+</section>
+"""
+    return shell(f"Page not found — {BRAND['name']}", "This page is not here.", body,
+                 extra_head='<meta name="robots" content="noindex">')
+
+
 # --------------------------------------------------------------------- main
 def write(rel, content):
     path = os.path.join(ROOT, rel)
@@ -829,6 +857,7 @@ def main():
     for p in PRODUCTS:
         written.append(write(f"shop/{p['slug']}/index.html", build_product(p)))
     written.append(write("legal/index.html", build_legal()))
+    written.append(write("404.html", build_404()))
 
     # sitemap
     urls = (["/"] + [f"/{c['slug']}/" for c in CATEGORIES] + ["/legal/"]
