@@ -53,12 +53,12 @@ def asset(path):
 
 # `sizes` hints for the frames that can hold a photo: how wide the frame is drawn.
 SIZES_HERO = "(min-width: 62em) min(38vw, 560px), 92vw"
-SIZES_SHOT = "(min-width: 62em) min(50vw, 760px), 92vw"
+SIZES_SHOT = "(min-width: 62em) min(50vw, 760px), (min-width: 48em) 46vw, 92vw"
 SIZES_CARD = "(min-width: 62em) min(25vw, 380px), (min-width: 40em) 46vw, 92vw"
 SIZES_FEATURE = "(min-width: 62em) min(48vw, 740px), (min-width: 48em) 56vw, 92vw"
 SIZES_CAT_A = "(min-width: 62em) min(54vw, 860px), 92vw"
 SIZES_CAT_B = "(min-width: 62em) min(38vw, 600px), 92vw"
-SIZES_HALF = "(min-width: 62em) min(25vw, 380px), (min-width: 40em) 46vw, 92vw"
+SIZES_HALF = "(min-width: 62em) min(25vw, 380px), (min-width: 48em) 23vw, 46vw"
 
 
 def picture(photo, sizes, eager=False):

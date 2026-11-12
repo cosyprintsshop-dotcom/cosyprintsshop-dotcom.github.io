@@ -44,7 +44,7 @@
         "Heat limit": "PLA softens above about 55 °C",
         "Made": "To order, in our workshop"
       },
-      "care": "Wipe with a dry cloth. Keep out of direct summer sun and away from heat — PLA softens above about 55°C. The texture holds dust, so a soft brush works better than a cloth on the shade.",
+      "care": "Wipe with a dry cloth. Keep out of direct summer sun and away from heat — PLA softens above about 55 °C. The texture holds dust, so a soft brush works better than a cloth on the shade.",
       "status": "live",
       "featured": true,
       "shots": 3,
@@ -83,7 +83,7 @@
         "Heat limit": "PLA softens above about 55 °C",
         "Made": "To order, in our workshop"
       },
-      "care": "Wipe with a dry cloth. Keep out of direct summer sun and away from heat — PLA softens above about 55°C.",
+      "care": "Wipe with a dry cloth. Keep out of direct summer sun and away from heat — PLA softens above about 55 °C.",
       "status": "live",
       "shots": 3,
       "photos": [
@@ -121,14 +121,18 @@
         "Heat limit": "PLA softens above about 55 °C",
         "Made": "To order, in our workshop"
       },
-      "care": "Wipe with a dry cloth. Keep out of direct summer sun and away from heat — PLA softens above about 55°C.",
+      "care": "Wipe with a dry cloth. Keep out of direct summer sun and away from heat — PLA softens above about 55 °C.",
       "status": "live",
-      "shots": 2,
+      "shots": 3,
       "photos": [
         {
           "name": "puffed-lit",
           "square": "puffed-sq",
           "alt": "The Puffed Lamp switched on: a white shade of three rounded lobes glowing on a slim, fluted sage base, on an oak side table."
+        },
+        {
+          "name": "puffed-top",
+          "alt": "The Puffed Lamp seen from above: light spilling out of its open top, over the two upper lobes."
         },
         {
           "name": "puffed-detail",
@@ -155,7 +159,7 @@
         "Made": "To order, in our workshop",
         "Heat limit": "PLA softens above about 55 °C"
       },
-      "care": "Wipe with a dry cloth. Keep out of direct summer sun and away from heat — PLA softens above about 55°C.",
+      "care": "Wipe with a dry cloth. Keep out of direct summer sun and away from heat — PLA softens above about 55 °C.",
       "status": "draft",
       "shots": 2
     },
@@ -179,7 +183,7 @@
         "Made": "To order, in our workshop",
         "Heat limit": "PLA softens above about 55 °C"
       },
-      "care": "Wipe with a dry cloth. Keep out of direct summer sun and away from heat — PLA softens above about 55°C.",
+      "care": "Wipe with a dry cloth. Keep out of direct summer sun and away from heat — PLA softens above about 55 °C.",
       "status": "draft",
       "shots": 2
     },
@@ -202,7 +206,7 @@
         "Made": "To order, in our workshop",
         "Heat limit": "PLA softens above about 55 °C"
       },
-      "care": "Wipe with a dry cloth. Keep out of direct summer sun and away from heat — PLA softens above about 55°C.",
+      "care": "Wipe with a dry cloth. Keep out of direct summer sun and away from heat — PLA softens above about 55 °C.",
       "status": "draft",
       "shots": 2
     },
@@ -225,7 +229,7 @@
         "Made": "To order, in our workshop",
         "Heat limit": "PLA softens above about 55 °C"
       },
-      "care": "Wipe with a dry cloth. Keep out of direct summer sun and away from heat — PLA softens above about 55°C.",
+      "care": "Wipe with a dry cloth. Keep out of direct summer sun and away from heat — PLA softens above about 55 °C.",
       "status": "draft",
       "shots": 2
     },

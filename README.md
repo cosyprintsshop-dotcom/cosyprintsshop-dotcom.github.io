@@ -62,10 +62,21 @@ To add a photo:
    (metadata stripped) and records NAME in `data/photos.json`.
 2. Point something at it:
    - hero: `"hero": {"photo": {"name": "NAME", "alt": "..."}}` in `site.json`
+   - the homepage's "After dark" section: `"afterDark": {"photo": {...}}` in
+     `site.json` (a 4:5 photo; a dark, lit one suits it)
+   - a homepage category card: `"photo": {...}` on the category in
+     `products.json` (4:5)
    - product: `"photos": [{"name": "NAME", "alt": "..."}, ...]` in
-     `products.json` — the first fills the card and first shot, the second
-     fills the second frame if `shots` is 2.
+     `products.json` — the first fills the card and first shot (4:5), the
+     next ones fill the second and third frames (1:1) if `shots` is 2 or 3.
+     With three, the two 1:1 views sit side by side under the lead.
+   - a card composed for its square frame: add `"square": "NAME-SQ"` to the
+     first photo, naming a 1:1 crop of the same picture. Without it the card
+     centre-cuts the 4:5, which trims the top and bottom of a tall product.
 3. `python build.py`, commit everything.
+
+A page's first photo is also its `og:image` (the preview a shared link shows),
+and a product's photos are listed in its JSON-LD.
 
 On category pages a `featured` product's card is a 4:5 frame (the rest are 1:1),
 so a 4:5 first photo suits a featured piece best — it is also the product
