@@ -64,6 +64,11 @@
     addEventListener("scroll", request, { passive: true });
     addEventListener("resize", function () { measureDark(); request(); }, { passive: true });
     addEventListener("load", measureDark);
+    // Filtering the grid or opening an FAQ answer moves the night sections without
+    // resizing the window, so re-measure whenever the page itself changes size.
+    if ("ResizeObserver" in window) {
+      new ResizeObserver(function () { measureDark(); request(); }).observe(document.body);
+    }
   })();
 
   /* ------------------------------------------------- accordion (details) */
@@ -113,7 +118,8 @@
   (function filters() {
     var bar = document.querySelector("[data-filters]");
     if (!bar) return;
-    var cards = document.querySelectorAll("[data-rooms]");
+    // only the pieces for sale in this section — not the concepts further down
+    var cards = (bar.closest("section") || document).querySelectorAll("[data-rooms]");
     var live = document.querySelector("[data-filter-count]");
 
     bar.addEventListener("click", function (e) {
@@ -284,5 +290,11 @@
        content that has already painted. Its stagger is CSS `--rd` delays. */
 
     addEventListener("load", function () { ScrollTrigger.refresh(); });
+
+    /* Filtering hides and shows cards, which moves the rest of the grid. Without a
+       refresh, a card that slides up into view keeps waiting at opacity 0 for its
+       old trigger point. Added after the filter's own handler, so it runs after it. */
+    var filterBar = document.querySelector("[data-filters]");
+    if (filterBar) filterBar.addEventListener("click", function () { ScrollTrigger.refresh(); });
   }
 })();
