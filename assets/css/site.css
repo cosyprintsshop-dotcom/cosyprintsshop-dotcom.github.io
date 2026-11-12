@@ -98,6 +98,10 @@ h1, h2, h3, h4 { margin: 0; font-weight: 400; }
 p { margin: 0; }
 ul, ol { margin: 0; padding: 0; list-style: none; }
 a { color: inherit; }
+/* The browser's own `[hidden] { display: none }` loses to any class that sets
+   display — `.pcard { display: block }` did, so the room filters hid nothing.
+   The attribute has to win everywhere. */
+[hidden] { display: none !important; }
 
 :focus-visible {
   outline: 2px solid var(--ember);
