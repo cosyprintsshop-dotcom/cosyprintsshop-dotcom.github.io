@@ -9,7 +9,7 @@ page, no client-side routing. Real documents are what make cross-document view
 transitions and search indexing work.
 """
 import json, os, re, shutil, html, hashlib
-from urllib.parse import urlparse
+from urllib.parse import urlparse, quote
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 DATA = os.path.join(ROOT, "data")
@@ -18,6 +18,33 @@ SITE = json.load(open(os.path.join(DATA, "site.json"), encoding="utf8"))
 CAT = json.load(open(os.path.join(DATA, "products.json"), encoding="utf8"))
 _PHOTOS_JSON = os.path.join(DATA, "photos.json")
 PHOTOS = json.load(open(_PHOTOS_JSON, encoding="utf8")) if os.path.exists(_PHOTOS_JSON) else {}
+
+# Figures that appear all over the copy are set once and written as {tokens} in
+# site.json, so changing the shipping time or the returns window can never
+# leave a stale copy behind. An unknown {token} stops the build.
+TOKENS = {
+    "workshopTime": SITE["shipping"]["workshopTime"],
+    "returnsDays": str(SITE["legal"]["returnsDays"]),
+}
+
+
+def _fill(v, where):
+    if isinstance(v, str):
+        out = re.sub(r"\{(\w+)\}", lambda m: TOKENS.get(m.group(1), m.group(0)), v)
+        left = re.findall(r"\{(\w+)\}", out)
+        if left:
+            raise SystemExit(f"{where}: unknown {{{left[0]}}} — use one of "
+                             + ", ".join("{" + k + "}" for k in TOKENS))
+        return out
+    if isinstance(v, list):
+        return [_fill(x, f"{where}[{i}]") for i, x in enumerate(v)]
+    if isinstance(v, dict):
+        return {k: _fill(x, f"{where}.{k}") for k, x in v.items()}
+    return v
+
+
+SITE = _fill(SITE, "site.json")
+WORKSHOP_TIME = TOKENS["workshopTime"]
 
 BRAND = SITE["brand"]
 CATEGORIES = CAT["categories"]
@@ -32,6 +59,52 @@ for _p in CAT["products"]:
     if _p.get("status", "live") not in PUBLISHED + ("draft",):
         raise SystemExit(f"product '{_p.get('slug')}' has status '{_p.get('status')}' — use live, concept or draft")
 PRODUCTS = [p for p in CAT["products"] if p.get("status", "live") in PUBLISHED]
+
+SLUG = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+
+
+def validate():
+    """Check the catalogue before anything is written, and report every problem
+    at once. Before this, a misspelt category crashed with a bare StopIteration
+    and a duplicated slug silently overwrote the other product's page."""
+    errs = []
+    cat_slugs = [c.get("slug") for c in CATEGORIES]
+    for c in CATEGORIES:
+        for k in ("slug", "name", "lead"):
+            if not c.get(k):
+                errs.append(f"category {c.get('slug') or '?'}: missing `{k}`")
+    for s in sorted({s for s in cat_slugs if cat_slugs.count(s) > 1}):
+        errs.append(f"category {s!r}: slug used twice")
+    for need in ("lamps", "decorations"):
+        if need not in cat_slugs:
+            errs.append(f"the homepage needs a {need!r} category")
+    seen = set()
+    for p in CAT["products"]:
+        s = p.get("slug") or "?"
+        if not SLUG.match(s):
+            errs.append(f"product {s!r}: slug must be lowercase-with-dashes")
+        if s in seen:
+            errs.append(f"product {s!r}: slug used twice — one page would overwrite the other")
+        seen.add(s)
+        if p.get("status", "live") == "draft":
+            continue
+        for k in ("name", "category", "blurb", "description"):
+            if not p.get(k):
+                errs.append(f"product {s!r}: missing `{k}`")
+        if p.get("category") and p["category"] not in cat_slugs:
+            errs.append(f"product {s!r}: category {p['category']!r} does not exist")
+        if p.get("shots", 1) not in (1, 2):
+            errs.append(f"product {s!r}: `shots` must be 1 or 2")
+        price = p.get("price")
+        if price is not None and (isinstance(price, bool) or not isinstance(price, (int, float)) or price < 0):
+            errs.append(f"product {s!r}: `price` must be a number or null")
+        if p.get("checkoutUrl") and not price:
+            errs.append(f"product {s!r}: a `checkoutUrl` needs a `price` for the button")
+    if errs:
+        raise SystemExit("products.json has problems:\n  - " + "\n  - ".join(errs))
+
+
+validate()
 
 e = html.escape
 
@@ -50,6 +123,12 @@ def asset(path):
         body = f.read().replace(b"\r\n", b"\n")
     return f"{path}?v={hashlib.sha256(body).hexdigest()[:10]}"
 
+
+# The motion libraries site.js fetches, versioned like everything else. They
+# reach site.js as `data-vendor` on its script tag, so an updated library can
+# never be served stale from a cache.
+VENDOR = {n: asset(f"/assets/vendor/{n}")
+          for n in ("lenis.min.js", "gsap.min.js", "ScrollTrigger.min.js", "SplitText.min.js", "lenis.css")}
 
 # `sizes` hints for the frames that can hold a photo: how wide the frame is drawn.
 SIZES_HERO = "(min-width: 62em) min(38vw, 560px), 92vw"
@@ -84,6 +163,18 @@ def picture(photo, sizes, eager=False):
             f'width="{big}" height="{round(big * rh / rw)}" alt="{e(alt)}" {load}></picture>')
 
 
+def photo_url(photo):
+    """Absolute URL of a photo's largest JPEG, for search engines and link previews."""
+    name = photo["name"]
+    return f"https://{BRAND['domain']}/assets/img/{name}-{PHOTOS[name]['widths'][-1]}.jpg"
+
+
+def mailto(subject):
+    """A mailto link to the shop with the subject URL-encoded. HTML escaping alone
+    left a name containing & or # able to cut the subject short."""
+    return e(f"mailto:{BRAND['email']}?subject={quote(subject)}")
+
+
 def slot(cls="", label=SLOT_LABEL, style="", photo=None, sizes=SIZES_CARD, eager=False):
     """A frame for product photography.
 
@@ -106,6 +197,20 @@ def money(v):
 
 def is_placeholder(v):
     return not v or str(v).strip().upper().startswith("PLACEHOLDER")
+
+
+_WORDS = "zero one two three four five six seven eight nine ten eleven twelve".split()
+
+
+def count(n, noun, cap=False):
+    """'Six shapes', 'one step' — counts written out in copy, worked out from the
+    data instead of typed in, so they cannot go stale."""
+    w = _WORDS[n] if n < len(_WORDS) else str(n)
+    return f"{w[:1].upper() + w[1:] if cap else w} {noun if n == 1 else noun + 's'}"
+
+
+def pieces(n):
+    return f"{n} {'piece' if n == 1 else 'pieces'}"
 
 
 # Where a piece can also be bought. Plain text buttons — the site names the
@@ -216,21 +321,35 @@ def by_cat(slug, status="live"):
 
 
 # --------------------------------------------------------------------- shell
-def shell(title, desc, body, page="", extra_head="", tone_start="day"):
-    nav_items = [
-        ("/lamps/", "Lamps", False),
-        ("/decorations/", "Decorations", False),
-        ("/#how", "How it works", True),
-    ]
+def shell(title, desc, body, page="", extra_head="", tone_start="day", current="page", path=None, image=None):
+    """`page` is the category the page belongs to. On the category page itself the
+    nav link is the current page; on a product page (`current="true"`) it only
+    marks the section the visitor is in.
+
+    `path` gives the page its canonical URL; `image` (a photo, else the hero
+    photo) is what a shared link shows in WhatsApp, Messenger and the like."""
+    img = image or SITE.get("hero", {}).get("photo")
+    meta = []
+    if path:
+        url = f"https://{BRAND['domain']}{path}"
+        meta += [f'<link rel="canonical" href="{e(url)}">', f'<meta property="og:url" content="{e(url)}">']
+    if img:
+        meta += [f'<meta property="og:image" content="{e(photo_url(img))}">',
+                 f'<meta property="og:image:alt" content="{e(img["alt"])}">',
+                 '<meta name="twitter:card" content="summary_large_image">']
+    meta_html = "\n".join(meta)
+    nav_items = [(f"/{c['slug']}/", c["name"], False) for c in CATEGORIES] + [("/#how", "How it works", True)]
     links = "".join(
         '<a class="nav__link{sec}" href="{h}"{cur}>{t}</a>'.format(
             sec=" nav__link--sec" if secondary else "",
             h=h, t=t,
-            cur=' aria-current="page"' if page and h.startswith("/" + page) else "",
+            cur=f' aria-current="{current}"' if page and h.startswith("/" + page) else "",
         )
         for h, t, secondary in nav_items
     )
-    year = 2026
+    shop_links = "".join(f'<li><a href="/{c["slug"]}/">{e(c["name"])}</a></li>' for c in CATEGORIES)
+    # the year of first publication — a copyright line does not need bumping each January
+    year = BRAND["copyrightYear"]
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -240,12 +359,16 @@ def shell(title, desc, body, page="", extra_head="", tone_start="day"):
 <meta name="description" content="{e(desc)}">
 <link rel="preload" href="/assets/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/vendor/lenis.css">
+<link rel="stylesheet" href="{asset('/assets/css/fonts.css')}">
 <link rel="stylesheet" href="{asset('/assets/css/site.css')}">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta name="theme-color" content="#EDE7DB">
+<meta property="og:site_name" content="{e(BRAND['name'])}">
 <meta property="og:title" content="{e(title)}">
 <meta property="og:description" content="{e(desc)}">
 <meta property="og:type" content="website">
+{meta_html}
 {extra_head}
 </head>
 <body>
@@ -270,10 +393,7 @@ def shell(title, desc, body, page="", extra_head="", tone_start="day"):
       </div>
       <div class="foot__col">
         <p class="label foot__title">Shop</p>
-        <ul class="foot__list">
-          <li><a href="/lamps/">Lamps</a></li>
-          <li><a href="/decorations/">Decorations</a></li>
-        </ul>
+        <ul class="foot__list">{shop_links}</ul>
       </div>
       <div class="foot__col">
         <p class="label foot__title">About</p>
@@ -296,7 +416,7 @@ def shell(title, desc, body, page="", extra_head="", tone_start="day"):
   </div>
 </footer>
 
-<script src="{asset('/assets/js/site.js')}" defer></script>
+<script src="{asset('/assets/js/site.js')}" defer data-vendor="{e(json.dumps(VENDOR))}"></script>
 </body>
 </html>
 """
@@ -388,16 +508,16 @@ def build_home():
       <a class="cat cat--a" href="/lamps/" data-morph>
         {slot('cat__media lay')}
         <div class="cat__row">
-          <h3 class="display h3">Lamps</h3>
-          <span class="cat__count">{len(lamps)} pieces</span>
+          <h3 class="display h3">{e(lamp_cat['name'])}</h3>
+          <span class="cat__count">{pieces(len(lamps))}</span>
         </div>
         <p class="cat__lead">{e(lamp_cat['lead'])}</p>
       </a>
       <a class="cat cat--b" href="/decorations/" data-morph>
         {slot('cat__media lay')}
         <div class="cat__row">
-          <h3 class="display h3">Decorations</h3>
-          <span class="cat__count">{len(decos)} pieces</span>
+          <h3 class="display h3">{e(deco_cat['name'])}</h3>
+          <span class="cat__count">{pieces(len(decos))}</span>
         </div>
         <p class="cat__lead">{e(deco_cat['lead'])}</p>
       </a>
@@ -419,7 +539,7 @@ def build_home():
   <div class="wrap">
     <div class="shead grid">
       <p class="label shead__eyebrow" style="grid-column:1/-1">How it works</p>
-      <h2 class="display h2 shead__title" data-split>Four steps, about a week.</h2>
+      <h2 class="display h2 shead__title" data-split>{count(len(SITE['howItWorks']), 'step', cap=True)}, about a week.</h2>
       <p class="lead shead__note">Nothing is stocked. That is slower than a warehouse and it is the reason nothing gets thrown away.</p>
     </div>
     <ol class="grid steps">{steps}</ol>
@@ -471,6 +591,7 @@ def build_home():
         f"{BRAND['name']} — 3D-printed lamps and home decorations",
         "Lamps and small home objects, 3D-printed to order in France. Warm light, plant-based PLA, made by hand in our workshop.",
         body,
+        path="/",
     )
 
 
@@ -521,7 +642,7 @@ def build_category(cat):
   <div class="wrap">
     <div class="shead grid">
       <p class="label shead__eyebrow" style="grid-column:1/-1">Not yet for sale</p>
-      <h2 class="display h2 shead__title" data-split>Six shapes we are still working on.</h2>
+      <h2 class="display h2 shead__title" data-split>{count(len(concepts), 'shape', cap=True)} we are still working on.</h2>
       <p class="lead shead__note">None of these is in production yet. They are here so you can tell us which one to finish first.</p>
     </div>
     <div class="grid pgrid" data-batch>{cc}</div>
@@ -532,14 +653,14 @@ def build_category(cat):
 <section class="sec pdp" data-tone="day" style="padding-bottom:clamp(2rem,5vw,4rem)">
   <div class="wrap">
     <div class="shead grid" style="margin-bottom:clamp(2rem,4vw,3rem)">
-      <p class="label shead__eyebrow" style="grid-column:1/-1">{len(live)} pieces</p>
+      <p class="label shead__eyebrow" style="grid-column:1/-1">{pieces(len(live))}</p>
       <h1 class="display h2 shead__title lines">
         <span class="l"><span>{e(cat['name'])}</span></span>
       </h1>
       <p class="lead shead__note">{e(cat['lead'])}</p>
     </div>
     {filters}
-    <p class="vh" data-filter-count aria-live="polite">{len(live)} pieces</p>
+    <p class="vh" data-filter-count aria-live="polite">{pieces(len(live))}</p>
     {editorial_grid(live)}
   </div>
 </section>
@@ -550,6 +671,7 @@ def build_category(cat):
         cat["lead"],
         body,
         page=cat["slug"],
+        path=f"/{cat['slug']}/",
     )
 
 
@@ -572,7 +694,7 @@ def build_product(p):
     concept = p.get("status") == "concept"
     if concept:
         buy = f"""<div class="notice"><strong>Not for sale yet.</strong> This shape is still in development, so there is nothing to photograph and nothing to buy. Email us and we will tell you when it is ready.</div>
-        <div class="pdp__buy"><a class="btn" href="mailto:{e(BRAND['email'])}?subject={e(p['name'])}%20—%20tell%20me%20when%20it%20is%20ready">Tell me when it is ready</a></div>"""
+        <div class="pdp__buy"><a class="btn" href="{mailto(p['name'] + ' — tell me when it is ready')}">Tell me when it is ready</a></div>"""
         price_html = ""
     else:
         markets = market_links(p)
@@ -587,7 +709,7 @@ def build_product(p):
             base = f"Order: {p['name']}"
             subj = base if cols else base + (f" ({p['variant']})" if p.get("variant") else "")
             order = f' data-order="{e(base)}"' if can_swatch(cols) else ""
-            action = f'<a class="{btn}" href="mailto:{e(BRAND["email"])}?subject={e(subj)}"{order}>Order by email</a>'
+            action = f'<a class="{btn}" href="{mailto(subj)}"{order}>Order by email</a>'
         market_html = ""
         if markets:
             mbtns = "".join(
@@ -598,7 +720,7 @@ def build_product(p):
             market_html = f"""<div class="pdp__buy pdp__buy--market">{mbtns}</div>
         <p class="pdp__note">Payment and delivery go through {where} own checkout, not this site.</p>"""
         buy = f"""{market_html}<div class="pdp__buy">{action}</div>
-        <p class="pdp__care">Printed after you order. In the workshop 3–5 working days, then posted with tracking.</p>"""
+        <p class="pdp__care">Printed after you order. In the workshop {e(WORKSHOP_TIME)}, then posted with tracking.</p>"""
         price_html = f'<p class="pdp__price">{money(p.get("price"))}</p>'
 
     care = f'<p class="pdp__care">{e(p["care"])}</p>' if p.get("care") else ""
@@ -636,17 +758,25 @@ def build_product(p):
   </div>
 </section>
 """
+    url = f"https://{BRAND['domain']}/shop/{p['slug']}/"
     ld = {
         "@context": "https://schema.org", "@type": "Product",
         "name": f"{p['name']} {p.get('variant','')}".strip(),
         "description": p["blurb"], "brand": {"@type": "Brand", "name": BRAND["name"]},
+        "url": url,
     }
-    if p.get("price") and not concept:
+    if first:
+        ld["image"] = photo_url(first)
+    # An Offer tells search engines "this is a price you can buy at", so it waits
+    # until the price is real: every price here started life as a placeholder.
+    if p.get("price") and p.get("priceConfirmed") and not concept:
         ld["offers"] = {"@type": "Offer", "price": p["price"], "priceCurrency": BRAND["currency"],
-                        "availability": "https://schema.org/MadeToOrder"}
-    head = f'<script type="application/ld+json">{json.dumps(ld)}</script>'
+                        "availability": "https://schema.org/MadeToOrder", "url": url}
+    # `<` escaped so no text in the data can close the script element early
+    head = '<script type="application/ld+json">' + json.dumps(ld).replace("<", "\\u003c") + "</script>"
 
-    return shell(f"{p['name']} — {BRAND['name']}", p["blurb"], body, page=p["category"], extra_head=head)
+    return shell(f"{p['name']} — {BRAND['name']}", p["blurb"], body, page=p["category"], extra_head=head,
+                 current="true", path=f"/shop/{p['slug']}/", image=first)
 
 
 # -------------------------------------------------------------------- legal
@@ -664,7 +794,7 @@ def build_legal():
       <p>{e(SITE['legal']['customExemptionNote'])} In plain terms: a piece printed in a colour you chose specially, or with a name on it, cannot be returned.</p>
 
       <h2 class="h3" style="margin-top:2.5rem">Delivery</h2>
-      <p>Every order is printed after it is placed. Allow 3–5 working days in the workshop, then normal postal time. You get a tracking number on the day it ships.</p>
+      <p>Every order is printed after it is placed. Allow {e(WORKSHOP_TIME)} in the workshop, then normal postal time. You get a tracking number on the day it ships.</p>
 
       <h2 class="h3" style="margin-top:2.5rem">Privacy</h2>
       <p>We set no cookies of our own and run no analytics, advertising or tracking scripts. Our fonts and scripts are served from this site, not loaded from Google or other third parties.</p>
@@ -679,7 +809,36 @@ def build_legal():
   </div>
 </section>
 """
-    return shell(f"Legal — {BRAND['name']}", "Returns, delivery, privacy and legal information.", body)
+    return shell(f"Legal — {BRAND['name']}", "Returns, delivery, privacy and legal information.", body,
+                 path="/legal/")
+
+
+# ---------------------------------------------------------------------- 404
+def build_404():
+    """GitHub Pages serves /404.html for any missing URL — an old product link, a
+    typo — instead of its own grey "Page not found · GitHub Pages". Every URL in
+    the shell is root-absolute, so it renders the same at any depth."""
+    first, rest = CATEGORIES[0], CATEGORIES[1:]
+    others = "".join(f'<a class="tlink" href="/{c["slug"]}/">{e(c["name"])} <span class="tlink__arrow">&rarr;</span></a>'
+                     for c in rest)
+    body = f"""
+<section class="sec pdp" data-tone="day">
+  <div class="wrap">
+    <div class="shead grid">
+      <p class="label shead__eyebrow" style="grid-column:1/-1">Page not found</p>
+      <h1 class="display h2 shead__title lines"><span class="l"><span>Nothing on this shelf.</span></span></h1>
+      <p class="lead shead__note">The link may be out of date, or the piece may no longer be made. Everything we make is in here:</p>
+    </div>
+    <div class="hero__actions">
+      <a class="btn" href="/{first['slug']}/">{e(first['name'])}</a>
+      {others}
+      <a class="tlink" href="/">Home <span class="tlink__arrow">&rarr;</span></a>
+    </div>
+  </div>
+</section>
+"""
+    return shell(f"Page not found — {BRAND['name']}", "This page is not here.", body,
+                 extra_head='<meta name="robots" content="noindex">')
 
 
 # --------------------------------------------------------------------- main
@@ -724,9 +883,11 @@ def main():
     for p in PRODUCTS:
         written.append(write(f"shop/{p['slug']}/index.html", build_product(p)))
     written.append(write("legal/index.html", build_legal()))
+    written.append(write("404.html", build_404()))
 
     # sitemap
-    urls = ["/", "/lamps/", "/decorations/", "/legal/"] + [f"/shop/{p['slug']}/" for p in PRODUCTS]
+    urls = (["/"] + [f"/{c['slug']}/" for c in CATEGORIES] + ["/legal/"]
+            + [f"/shop/{p['slug']}/" for p in PRODUCTS])
     sm = ('<?xml version="1.0" encoding="UTF-8"?>\n'
           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
           + "".join(f"  <url><loc>https://{BRAND['domain']}{u}</loc></url>\n" for u in urls)

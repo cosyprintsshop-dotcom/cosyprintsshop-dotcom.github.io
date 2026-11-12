@@ -1,4 +1,5 @@
-@import url("fonts.css");
+/* fonts.css is a separate <link> in the page head, not an @import here: an
+   import can only start downloading once this file has arrived. */
 
 /* ============================================================================
    Cosy Prints
@@ -16,7 +17,9 @@
   --line:       #D3C9B7;
   --ink:        #1F1B16;
   --ink-2:      #5E564B;
-  --ink-3:      #8A8172;
+  /* labels are small, so they need 4.5:1 on bone and oat — the old #8A8172
+     measured 3.1:1 */
+  --ink-3:      #655D52;
 
   /* night */
   --night:      #17130F;
@@ -27,6 +30,9 @@
 
   /* the one accent. Passes AA on the night ground only — never text on day. */
   --ember:      #E08A3C;
+  /* focus ring: ember is 2.2:1 on bone, under the 3:1 a focus indicator needs,
+     so the day ring is a darker ember (3.6:1). Night keeps ember itself. */
+  --focus:      #A66931;
 
   /* type */
   --ff-display: "Archivo", ui-sans-serif, system-ui, sans-serif;
@@ -72,10 +78,12 @@
 [data-tone="day"] {
   --bg: var(--bone); --fg: var(--ink); --muted: var(--ink-2);
   --faint: var(--ink-3); --rule: var(--line); --lift: var(--bone-lift);
+  --focus: #A66931;
 }
 [data-tone="night"] {
   --bg: var(--night); --fg: var(--chalk); --muted: var(--chalk-2);
-  --faint: #7C7263; --rule: var(--night-line); --lift: var(--night-lift);
+  --faint: #8D8475; --rule: var(--night-line); --lift: var(--night-lift);
+  --focus: var(--ember);
 }
 
 /* ---------------------------------------------------------------- reset */
@@ -104,7 +112,7 @@ a { color: inherit; }
 [hidden] { display: none !important; }
 
 :focus-visible {
-  outline: 2px solid var(--ember);
+  outline: 2px solid var(--focus);
   outline-offset: 3px;
   border-radius: 2px;
 }
@@ -219,7 +227,7 @@ a { color: inherit; }
   width: 0; height: 1px; background: currentColor;
   transition: width var(--d-base) var(--e-quart);
 }
-.nav__link:hover::after, .nav__link[aria-current="page"]::after { width: 100%; }
+.nav__link:hover::after, .nav__link[aria-current]::after { width: 100%; }
 /* asymmetric: draws in 400ms, retracts in 200ms */
 .nav__link:not(:hover)::after { transition-duration: 200ms; }
 
@@ -230,8 +238,10 @@ html.nav-solid .nav {
   border-bottom-color: color-mix(in srgb, var(--ink) 12%, transparent);
 }
 html.nav-hidden .nav { transform: translate3d(0, -110%, 0); }
+/* never slide away while a keyboard user is inside it */
+html.nav-hidden .nav:focus-within { transform: none; }
 /* over the night half the nav inverts */
-html.nav-dark .nav { color: var(--chalk); }
+html.nav-dark .nav { color: var(--chalk); --focus: var(--ember); }
 html.nav-dark.nav-solid .nav {
   background: color-mix(in srgb, var(--night) 84%, transparent);
   border-bottom-color: color-mix(in srgb, var(--chalk) 14%, transparent);
@@ -501,7 +511,9 @@ summary.qa__q::marker { content: ""; }
 @media (min-width: 62em) {
   .foot__brand { grid-column: 1 / span 4; }
   .foot__col   { grid-column: span 2; }
-  .foot__col:first-of-type { grid-column: 7 / span 2; }
+  /* not :first-of-type — .foot__brand is the first div, so that never matched
+     and the columns sat in 5–10 with the right of the footer empty */
+  .foot__brand + .foot__col { grid-column: 7 / span 2; }
 }
 .foot__title { color: var(--chalk); margin-bottom: 1.1rem; }
 .foot__list li + li { margin-top: .55rem; }
@@ -645,7 +657,7 @@ summary.qa__q::marker { content: ""; }
 }
 .swatch:hover .swatch__chip { outline-color: var(--rule); }
 .swatch__input:checked + .swatch__chip { outline-color: var(--fg); }
-.swatch__input:focus-visible + .swatch__chip { outline: 2px solid var(--ember); }
+.swatch__input:focus-visible + .swatch__chip { outline: 2px solid var(--focus); }
 
 /* the photo swap: the new picture is laid over the old one and fades up */
 .slot--photo picture { transition: opacity 320ms var(--e-sine); }
