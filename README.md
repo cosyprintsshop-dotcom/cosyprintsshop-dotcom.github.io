@@ -37,13 +37,30 @@ not https on the right domain, or if `priceConfirmed` is missing — the price
 here has to be the listing's price, not one of the placeholders. When a listing
 ends, delete its URL.
 
+## Languages
+
+The site is in French and English. French is the main language and lives at the
+root (`/`, `/lamps/`, `/shop/<slug>/`); English is a full copy under `/en/`.
+A small switch beside the brand, after a hairline, names the other language in
+that language ("English" / "Français") and keeps you on the same page.
+
+- `data/site.json`, `data/products.json`: English, plus everything that is not
+  words (prices, rooms, photos, status).
+- `data/site.fr.json`, `data/products.fr.json`: the French for those, by key
+  and by product slug.
+- `data/ui.json`: every fixed piece of interface text, in both languages.
+
+Add a product or change a sentence in both places. If a published page is
+missing any French, the build stops and lists what is missing. To swap which
+language sits at the root, change `DEFAULT_LANG` in `build.py`.
+
 ## Editing
 
 ```bash
 python build.py
 ```
 
-Reads `data/site.json` and `data/products.json`, writes `index.html`,
+Reads everything in `data/`, writes `index.html`,
 `lamps/`, `decorations/`, `shop/<slug>/`, `legal/`, `sitemap.xml`, `robots.txt`.
 Never edit the generated HTML — it gets overwritten.
 

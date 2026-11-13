@@ -49,7 +49,8 @@ jobs:
 
       - name: Key pages exist and are not empty
         run: |
-          for f in index.html lamps/index.html decorations/index.html legal/index.html 404.html sitemap.xml CNAME; do
+          for f in index.html lamps/index.html decorations/index.html legal/index.html 404.html sitemap.xml CNAME \
+                   en/index.html en/lamps/index.html en/decorations/index.html en/legal/index.html; do
             test -s "$f" || { echo "::error::$f missing or empty"; exit 1; }
           done
 

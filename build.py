@@ -4,49 +4,151 @@ Cosy Prints static site generator.
 
     python build.py
 
-Reads data/site.json + data/products.json and writes real HTML files — one per
-page, no client-side routing. Real documents are what make cross-document view
+Reads the data in data/ and writes real HTML files — one per page and language,
+no client-side routing. Real documents are what make cross-document view
 transitions and search indexing work.
+
+Languages: French is the main language and lives at the site root (/, /lamps/,
+/shop/<slug>/ …); English is a full copy under /en/. The words come from:
+  data/site.json + data/products.json   English, and everything that is not words
+  data/site.fr.json + data/products.fr.json   the French for those
+  data/ui.json                          fixed interface text, both languages
+A published page with any French missing stops the build.
 """
-import json, os, re, shutil, html, hashlib
+import json, os, re, html, hashlib
 from urllib.parse import urlparse, quote
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 DATA = os.path.join(ROOT, "data")
 
-SITE = json.load(open(os.path.join(DATA, "site.json"), encoding="utf8"))
-CAT = json.load(open(os.path.join(DATA, "products.json"), encoding="utf8"))
-_PHOTOS_JSON = os.path.join(DATA, "photos.json")
-PHOTOS = json.load(open(_PHOTOS_JSON, encoding="utf8")) if os.path.exists(_PHOTOS_JSON) else {}
 
-# Figures that appear all over the copy are set once and written as {tokens} in
-# site.json, so changing the shipping time or the returns window can never
-# leave a stale copy behind. An unknown {token} stops the build.
-TOKENS = {
-    "workshopTime": SITE["shipping"]["workshopTime"],
-    "returnsDays": str(SITE["legal"]["returnsDays"]),
-}
+def load(name):
+    with open(os.path.join(DATA, name), encoding="utf8") as f:
+        return json.load(f)
 
 
-def _fill(v, where):
+SITE_EN = load("site.json")
+CAT = load("products.json")
+UI = load("ui.json")
+SITE_FR = load("site.fr.json")
+CAT_FR = load("products.fr.json")
+PHOTOS = load("photos.json") if os.path.exists(os.path.join(DATA, "photos.json")) else {}
+
+# ------------------------------------------------------------------ languages
+LANGS = ("fr", "en")
+DEFAULT_LANG = "fr"                  # served at the root; every other language under /<code>/
+LANG_NAME = {"fr": "Français", "en": "English"}   # each written in its own language
+LOCALE = {"fr": "fr_FR", "en": "en_GB"}
+L = DEFAULT_LANG                     # the language being built right now (see main)
+
+
+def _typo(v):
+    """French typography: a narrow no-break space before : ; ? ! so the mark never
+    wraps onto a line of its own."""
     if isinstance(v, str):
-        out = re.sub(r"\{(\w+)\}", lambda m: TOKENS.get(m.group(1), m.group(0)), v)
-        left = re.findall(r"\{(\w+)\}", out)
-        if left:
-            raise SystemExit(f"{where}: unknown {{{left[0]}}} — use one of "
-                             + ", ".join("{" + k + "}" for k in TOKENS))
-        return out
+        return re.sub(r" ([:;?!])", " \\1", v)
     if isinstance(v, list):
-        return [_fill(x, f"{where}[{i}]") for i, x in enumerate(v)]
+        return [_typo(x) for x in v]
     if isinstance(v, dict):
-        return {k: _fill(x, f"{where}.{k}") for k, x in v.items()}
+        return {k: _typo(x) for k, x in v.items()}
     return v
 
 
-SITE = _fill(SITE, "site.json")
-WORKSHOP_TIME = TOKENS["workshopTime"]
+for _k, _v in UI.items():
+    if _k.startswith("_"):
+        continue
+    missing = [lang for lang in LANGS if lang not in _v]
+    if missing:
+        raise SystemExit(f"ui.json: {_k!r} has no {', '.join(missing)} text")
+    _v["fr"] = _typo(_v["fr"])
+SITE_FR = _typo(SITE_FR)
+CAT_FR = _typo(CAT_FR)
 
-BRAND = SITE["brand"]
+
+def overlay(base, over, where):
+    """The English data with the French words laid over it. The French file may
+    only hold keys the English has, and lists must match item for item."""
+    if isinstance(over, dict):
+        if not isinstance(base, dict):
+            raise SystemExit(f"{where}: is a group in French but not in English")
+        out = dict(base)
+        for k, v in over.items():
+            if k.startswith("_"):
+                continue
+            if k not in base:
+                raise SystemExit(f"{where}.{k}: not in the English file — a typo?")
+            out[k] = overlay(base[k], v, f"{where}.{k}")
+        return out
+    if isinstance(over, list):
+        if not isinstance(base, list) or len(base) != len(over):
+            raise SystemExit(f"{where}: needs {len(base)} items to match the English, has {len(over)}")
+        for i, (b, o) in enumerate(zip(base, over)):
+            if isinstance(b, dict) and isinstance(o, dict) and set(b) - set(o):
+                raise SystemExit(f"{where}[{i}]: missing French for {', '.join(sorted(set(b) - set(o)))}")
+        return [overlay(b, o, f"{where}[{i}]") for i, (b, o) in enumerate(zip(base, over))]
+    return over
+
+
+# These parts of site.json are words, so each needs its French in site.fr.json.
+FR_REQUIRED = ["brand.tagline", "shipping.workshopTime", "howItWorks", "benefits", "trust", "faq",
+               "legal.customExemptionNote"]
+if (SITE_EN.get("hero") or {}).get("photo"):
+    FR_REQUIRED.append("hero.photo.alt")
+for _path in FR_REQUIRED:
+    _d = SITE_FR
+    for _part in _path.split("."):
+        if not isinstance(_d, dict) or _part not in _d:
+            raise SystemExit(f"site.fr.json: missing French for {_path}")
+        _d = _d[_part]
+
+
+def _fill(v, tokens, where):
+    """Figures that appear all over the copy are set once and written as {tokens}
+    (shipping time, returns window), so changing one can never leave a stale copy
+    behind. An unknown {token} stops the build."""
+    if isinstance(v, str):
+        out = re.sub(r"\{(\w+)\}", lambda m: tokens.get(m.group(1), m.group(0)), v)
+        left = re.findall(r"\{(\w+)\}", out)
+        if left:
+            raise SystemExit(f"{where}: unknown {{{left[0]}}} — use one of "
+                             + ", ".join("{" + k + "}" for k in tokens))
+        return out
+    if isinstance(v, list):
+        return [_fill(x, tokens, f"{where}[{i}]") for i, x in enumerate(v)]
+    if isinstance(v, dict):
+        return {k: _fill(x, tokens, f"{where}.{k}") for k, x in v.items()}
+    return v
+
+
+SITES = {}
+for _lang in LANGS:
+    _raw = SITE_EN if _lang == "en" else overlay(SITE_EN, SITE_FR, f"site.{_lang}.json")
+    _tokens = {"workshopTime": _raw["shipping"]["workshopTime"], "returnsDays": str(_raw["legal"]["returnsDays"])}
+    SITES[_lang] = _fill(_raw, _tokens, f"site.{_lang}.json" if _lang != "en" else "site.json")
+
+
+def S():
+    """site.json, in the language being built."""
+    return SITES[L]
+
+
+def T(key, **kw):
+    """Fixed interface text from ui.json, in the language being built."""
+    try:
+        s = UI[key][L]
+    except KeyError:
+        raise SystemExit(f"ui.json: no {L!r} text for {key!r}")
+    return s.format(**kw) if kw else s
+
+
+def U(path, lang=None):
+    """A site path in a language: /lamps/ stays /lamps/ in the main language and
+    becomes /en/lamps/ in English."""
+    lang = lang or L
+    return path if lang == DEFAULT_LANG else f"/{lang}{path}"
+
+
+BRAND = SITE_EN["brand"]
 CATEGORIES = CAT["categories"]
 
 # A product's `status` decides whether it is published at all:
@@ -104,11 +206,76 @@ def validate():
         raise SystemExit("products.json has problems:\n  - " + "\n  - ".join(errs))
 
 
-validate()
+def validate_french():
+    """Every published page must exist in French in full: a language switch that
+    lands on half-English pages is worse than no switch."""
+    errs = []
+    for c in CATEGORIES:
+        fc = CAT_FR.get("categories", {}).get(c["slug"], {})
+        for k in ("name", "lead"):
+            if not fc.get(k):
+                errs.append(f"category {c['slug']!r}: no French `{k}`")
+    rooms = CAT_FR.get("rooms", {})
+    for room in sorted({r for p in PRODUCTS for r in p.get("rooms", [])}):
+        if not rooms.get(room):
+            errs.append(f"room {room!r}: no French name in `rooms`")
+    values = CAT_FR.get("specValues", {})
+    for p in PRODUCTS:
+        s, fp = p["slug"], CAT_FR.get("products", {}).get(p["slug"], {})
+        for k in ("name", "blurb", "description") + tuple(k for k in ("variant", "care") if p.get(k)):
+            if not fp.get(k):
+                errs.append(f"product {s!r}: no French `{k}`")
+        for k, v in (p.get("specs") or {}).items():
+            if v is None or is_placeholder(v):
+                continue
+            if f"spec.{k}" not in UI:
+                errs.append(f"spec {k!r}: no label in ui.json (add \"spec.{k}\")")
+            if not ((fp.get("specs") or {}).get(k) or values.get(str(v).strip())):
+                errs.append(f"product {s!r}: no French for spec {k}: {v!r}")
+        if p.get("photos") and len(fp.get("photoAlts") or []) != len(p["photos"]):
+            errs.append(f"product {s!r}: needs one French alt text per photo in `photoAlts`")
+        if p.get("colours") and len(fp.get("colours") or []) != len(p["colours"]):
+            errs.append(f"product {s!r}: needs French `colours` (name and alt) for each colour")
+    if errs:
+        raise SystemExit("products.fr.json is missing French:\n  - " + "\n  - ".join(errs))
+
 
 e = html.escape
 
-SLOT_LABEL = "Photo coming soon"
+
+def is_placeholder(v):
+    return not v or str(v).strip().upper().startswith("PLACEHOLDER")
+
+
+validate()
+validate_french()
+
+
+# ------------------------------------------------- words for a product / category
+def _fr_product(p):
+    return CAT_FR.get("products", {}).get(p["slug"], {})
+
+
+def PT(p, field):
+    """A product's text field in the language being built."""
+    return (p.get(field) if L == "en" else _fr_product(p).get(field)) or ""
+
+
+def CT(c, field):
+    """A category's name or lead in the language being built."""
+    return c[field] if L == "en" else CAT_FR["categories"][c["slug"]][field]
+
+
+def room_name(r):
+    return r if L == "en" else CAT_FR["rooms"][r]
+
+
+def photos_of(p):
+    """The product's photos, with alt text in the language being built."""
+    ph = p.get("photos") or []
+    if L == "en" or not ph:
+        return ph
+    return [dict(x, alt=a) for x, a in zip(ph, _fr_product(p)["photoAlts"])]
 
 
 def asset(path):
@@ -175,7 +342,7 @@ def mailto(subject):
     return e(f"mailto:{BRAND['email']}?subject={quote(subject)}")
 
 
-def slot(cls="", label=SLOT_LABEL, style="", photo=None, sizes=SIZES_CARD, eager=False):
+def slot(cls="", label=None, style="", photo=None, sizes=SIZES_CARD, eager=False):
     """A frame for product photography.
 
     With `photo`, it holds the picture. Without, it is a labelled reserved frame —
@@ -185,32 +352,39 @@ def slot(cls="", label=SLOT_LABEL, style="", photo=None, sizes=SIZES_CARD, eager
     s = f' style="{style}"' if style else ""
     if photo:
         return f'<div class="slot slot--photo{c}"{s}>{picture(photo, sizes, eager)}</div>'
-    return f'<div class="slot{c}"{s}><span class="slot__label">{e(label)}</span></div>'
+    return f'<div class="slot{c}"{s}><span class="slot__label">{e(label or T("slot.photo"))}</span></div>'
 
 
 def money(v):
+    """€59 in English, 59 € in French."""
     if v is None:
         return ""
     s = f"{v:.2f}".rstrip("0").rstrip(".")
+    if L == "fr":
+        return s.replace(".", ",") + " " + BRAND["currencySymbol"]
     return f"{BRAND['currencySymbol']}{s}"
 
 
-def is_placeholder(v):
-    return not v or str(v).strip().upper().startswith("PLACEHOLDER")
-
-
-_WORDS = "zero one two three four five six seven eight nine ten eleven twelve".split()
+_WORDS = {
+    "en": "zero one two three four five six seven eight nine ten eleven twelve".split(),
+    "fr": "zéro un deux trois quatre cinq six sept huit neuf dix onze douze".split(),
+}
 
 
 def count(n, noun, cap=False):
-    """'Six shapes', 'one step' — counts written out in copy, worked out from the
-    data instead of typed in, so they cannot go stale."""
-    w = _WORDS[n] if n < len(_WORDS) else str(n)
-    return f"{w[:1].upper() + w[1:] if cap else w} {noun if n == 1 else noun + 's'}"
+    """'Six shapes', 'Une forme' — counts written out in copy, worked out from the
+    data instead of typed in, so they cannot go stale. `noun` is a ui.json key
+    holding [singular, plural] (+ "f" for a French feminine noun)."""
+    forms = T(noun)
+    words = _WORDS[L]
+    w = words[n] if n < len(words) else str(n)
+    if L == "fr" and n == 1 and len(forms) > 2 and forms[2] == "f":
+        w = "une"
+    return f"{w[:1].upper() + w[1:] if cap else w} {forms[0] if n == 1 else forms[1]}"
 
 
 def pieces(n):
-    return f"{n} {'piece' if n == 1 else 'pieces'}"
+    return T("pieces.one" if n == 1 else "pieces.many").replace("{n}", str(n))
 
 
 # Where a piece can also be bought. Plain text buttons — the site names the
@@ -250,30 +424,44 @@ SPEC_ORDER = ["Dimensions", "Weight", "Material", "Layer height", "Light source"
 
 
 def spec_rows(p):
+    """[(label, value)] in the language being built. The keys in products.json are
+    the English labels; ui.json holds their translations, products.fr.json the
+    values (per product, else from the shared `specValues`)."""
     specs = {k: str(v).strip() for k, v in (p.get("specs") or {}).items()
              if v is not None and not is_placeholder(v)}
-    known = [(k, specs[k]) for k in SPEC_ORDER if k in specs]
-    return known + [(k, v) for k, v in specs.items() if k not in SPEC_ORDER]
+    rows = [(k, specs[k]) for k in SPEC_ORDER if k in specs] + \
+           [(k, v) for k, v in specs.items() if k not in SPEC_ORDER]
+    if L == "en":
+        return rows
+    own = _fr_product(p).get("specs") or {}
+    return [(T(f"spec.{k}"), own.get(k) or CAT_FR["specValues"][v]) for k, v in rows]
 
 
 HEX = re.compile(r"^#[0-9A-Fa-f]{6}$")
 
 
 def colours(p):
-    """The product's `colours`, checked: [{"name", "hex", "photo"}].
+    """The product's `colours`, checked: [{"name", "hex", "photo"}], with names and
+    photo alt text in the language being built.
 
     Nothing renders until the data exists. Swatches need at least two colours
     that each have a hex and a photo — a swatch that changes nothing on screen is
     worse than a sentence.
     """
     out = []
-    for c in p.get("colours") or []:
+    fr = _fr_product(p).get("colours") or [] if L != "en" else []
+    for i, c in enumerate(p.get("colours") or []):
         name = (c.get("name") or "").strip()
         if not name or is_placeholder(name):
             raise SystemExit(f"{p['slug']}: every colour needs a real name")
         if c.get("hex") and not HEX.match(c["hex"]):
             raise SystemExit(f"{p['slug']}: colour {name!r} hex must look like #A1B2C3, got {c['hex']!r}")
-        out.append({"name": name, "hex": c.get("hex"), "photo": c.get("photo")})
+        photo = c.get("photo")
+        if fr:
+            name = fr[i].get("name") or name
+            if photo and fr[i].get("alt"):
+                photo = dict(photo, alt=fr[i]["alt"])
+        out.append({"name": name, "hex": c.get("hex"), "photo": photo})
     return out
 
 
@@ -285,7 +473,7 @@ def lead_photo(p):
     """The picture a product leads with. With working swatches it is the first
     colour's, so the photo matches the colour shown as picked; otherwise the
     first photo, else the first colour's if it has one."""
-    photos, cols = p.get("photos") or [], colours(p)
+    photos, cols = photos_of(p), colours(p)
     if can_swatch(cols) or (cols and not photos):
         return cols[0]["photo"]
     return photos[0] if photos else None
@@ -299,7 +487,7 @@ def colour_picker(p, cols):
         return ""
     names = ", ".join(c["name"] for c in cols)
     text = (f'<p class="pdp__colours" data-colour-list><span class="label">'
-            f'{"Colours" if len(cols) > 1 else "Colour"}</span> {e(names)}</p>')
+            f'{e(T("pdp.colours") if len(cols) > 1 else T("pdp.colour"))}</span> {e(names)}</p>')
     if not can_swatch(cols):
         return text
     radios = "".join(
@@ -311,7 +499,7 @@ def colour_picker(p, cols):
     pics = "".join(f'<template data-colour-photo="{i}">{picture(c["photo"], SIZES_SHOT)}</template>'
                    for i, c in enumerate(cols))
     return text + f"""<fieldset class="swatches" data-swatches hidden>
-          <legend class="swatches__legend"><span class="label">Colour</span> <span class="swatches__name" data-colour-name>{e(cols[0]['name'])}</span></legend>
+          <legend class="swatches__legend"><span class="label">{e(T("pdp.colour"))}</span> <span class="swatches__name" data-colour-name>{e(cols[0]['name'])}</span></legend>
           <div class="swatches__row">{radios}</div>{pics}
         </fieldset>"""
 
@@ -321,37 +509,58 @@ def by_cat(slug, status="live"):
 
 
 # --------------------------------------------------------------------- shell
+def lang_switch(path):
+    """The language toggle beside the brand. With two languages it is one link
+    that names the other language in that language ("English" on a French page,
+    "Français" on an English one) and keeps the visitor on the same page. Narrow
+    screens show the two-letter code; the full name stays the link's text."""
+    links = []
+    for x in LANGS:
+        if x == L:
+            continue
+        links.append(f'<a class="lang" href="{U(path or "/", x)}" hreflang="{x}" lang="{x}">'
+                     f'<span class="lang__long">{LANG_NAME[x]}</span>'
+                     f'<span class="lang__short" aria-hidden="true">{x.upper()}</span></a>')
+    return "".join(links)
+
+
 def shell(title, desc, body, page="", extra_head="", tone_start="day", current="page", path=None, image=None):
     """`page` is the category the page belongs to. On the category page itself the
     nav link is the current page; on a product page (`current="true"`) it only
     marks the section the visitor is in.
 
-    `path` gives the page its canonical URL; `image` (a photo, else the hero
-    photo) is what a shared link shows in WhatsApp, Messenger and the like."""
-    img = image or SITE.get("hero", {}).get("photo")
-    meta = []
+    `path` is the page's address without the language prefix (/lamps/). It gives
+    the canonical URL, the other-language alternates and the language switch's
+    target. `image` (a photo, else the hero photo) is what a shared link shows in
+    WhatsApp, Messenger and the like."""
+    img = image or S().get("hero", {}).get("photo")
+    domain = f"https://{BRAND['domain']}"
+    meta = [f'<meta property="og:locale" content="{LOCALE[L]}">']
+    meta += [f'<meta property="og:locale:alternate" content="{LOCALE[x]}">' for x in LANGS if x != L]
     if path:
-        url = f"https://{BRAND['domain']}{path}"
+        url = domain + U(path)
         meta += [f'<link rel="canonical" href="{e(url)}">', f'<meta property="og:url" content="{e(url)}">']
+        meta += [f'<link rel="alternate" hreflang="{x}" href="{e(domain + U(path, x))}">' for x in LANGS]
+        meta.append(f'<link rel="alternate" hreflang="x-default" href="{e(domain + U(path, DEFAULT_LANG))}">')
     if img:
         meta += [f'<meta property="og:image" content="{e(photo_url(img))}">',
                  f'<meta property="og:image:alt" content="{e(img["alt"])}">',
                  '<meta name="twitter:card" content="summary_large_image">']
     meta_html = "\n".join(meta)
-    nav_items = [(f"/{c['slug']}/", c["name"], False) for c in CATEGORIES] + [("/#how", "How it works", True)]
+    nav_items = [(f"/{c['slug']}/", CT(c, "name"), False) for c in CATEGORIES] + [("/#how", T("nav.how"), True)]
     links = "".join(
         '<a class="nav__link{sec}" href="{h}"{cur}>{t}</a>'.format(
             sec=" nav__link--sec" if secondary else "",
-            h=h, t=t,
+            h=U(h), t=e(t),
             cur=f' aria-current="{current}"' if page and h.startswith("/" + page) else "",
         )
         for h, t, secondary in nav_items
     )
-    shop_links = "".join(f'<li><a href="/{c["slug"]}/">{e(c["name"])}</a></li>' for c in CATEGORIES)
+    shop_links = "".join(f'<li><a href="{U("/" + c["slug"] + "/")}">{e(CT(c, "name"))}</a></li>' for c in CATEGORIES)
     # the year of first publication — a copyright line does not need bumping each January
     year = BRAND["copyrightYear"]
     return f"""<!doctype html>
-<html lang="en">
+<html lang="{L}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -372,12 +581,16 @@ def shell(title, desc, body, page="", extra_head="", tone_start="day", current="
 {extra_head}
 </head>
 <body>
-<a class="skip" href="#main">Skip to content</a>
+<a class="skip" href="#main">{e(T("nav.skip"))}</a>
 
 <header class="nav">
   <div class="wrap nav__in">
-    <a class="nav__brand" href="/">Cosy&nbsp;Prints</a>
-    <nav class="nav__links" aria-label="Main">{links}</nav>
+    <div class="nav__start">
+      <a class="nav__brand" href="{U('/')}">Cosy&nbsp;Prints</a>
+      <span class="nav__sep" aria-hidden="true"></span>
+      {lang_switch(path)}
+    </div>
+    <nav class="nav__links" aria-label="{e(T('nav.aria'))}">{links}</nav>
   </div>
 </header>
 
@@ -389,29 +602,29 @@ def shell(title, desc, body, page="", extra_head="", tone_start="day", current="
   <div class="wrap">
     <div class="grid foot__grid">
       <div class="foot__brand">
-        <p class="h3" style="color:var(--chalk);max-width:18ch">{e(BRAND['tagline'])}</p>
+        <p class="h3" style="color:var(--chalk);max-width:18ch">{e(S()['brand']['tagline'])}</p>
       </div>
       <div class="foot__col">
-        <p class="label foot__title">Shop</p>
+        <p class="label foot__title">{e(T("foot.shop"))}</p>
         <ul class="foot__list">{shop_links}</ul>
       </div>
       <div class="foot__col">
-        <p class="label foot__title">About</p>
+        <p class="label foot__title">{e(T("foot.about"))}</p>
         <ul class="foot__list">
-          <li><a href="/#how">How it works</a></li>
-          <li><a href="/#faq">Questions</a></li>
+          <li><a href="{U('/#how')}">{e(T("foot.how"))}</a></li>
+          <li><a href="{U('/#faq')}">{e(T("foot.questions"))}</a></li>
         </ul>
       </div>
       <div class="foot__col">
-        <p class="label foot__title">Contact</p>
+        <p class="label foot__title">{e(T("foot.contact"))}</p>
         <ul class="foot__list">
           <li><a href="mailto:{e(BRAND['email'])}">{e(BRAND['email'])}</a></li>
-          <li><a href="/legal/">Legal &amp; returns</a></li>
+          <li><a href="{U('/legal/')}">{e(T("foot.legal"))}</a></li>
         </ul>
       </div>
     </div>
     <div class="foot__base">
-      <span>&copy; {year} {e(BRAND['name'])} — printed in {e(BRAND['country'])}</span>
+      <span>&copy; {year} {e(BRAND['name'])} — {e(T("foot.printed", country=BRAND['country']))}</span>
     </div>
   </div>
 </footer>
@@ -427,16 +640,16 @@ def product_card(p, feature=False, morph=True):
     price = money(p.get("price"))
     tag = ""
     if p.get("status") == "concept":
-        tag = '<span class="pcard__tag">In development</span>'
+        tag = f'<span class="pcard__tag">{e(T("card.inDev"))}</span>'
     rooms = "|".join(p.get("rooms", []))
     cls = "pcard pcard--feature" if feature else "pcard"
-    return f"""<a class="{cls}" href="/shop/{p['slug']}/" data-rooms="{e(rooms)}"{' data-morph' if morph else ''}>
+    return f"""<a class="{cls}" href="{U('/shop/' + p['slug'] + '/')}" data-rooms="{e(rooms)}"{' data-morph' if morph else ''}>
   {slot('pcard__media lay', photo=lead_photo(p), sizes=SIZES_FEATURE if feature else SIZES_CARD)}
   <div class="pcard__top">
-    <span class="pcard__name">{e(p['name'])}</span>
+    <span class="pcard__name">{e(PT(p, 'name'))}</span>
     <span class="pcard__price">{price or '—'}</span>
   </div>
-  <p class="pcard__meta">{e(p.get('variant',''))}</p>
+  <p class="pcard__meta">{e(PT(p, 'variant'))}</p>
   {tag}
 </a>"""
 
@@ -447,12 +660,13 @@ def build_home():
     decos = by_cat("decorations")
     lamp_cat = next(c for c in CATEGORIES if c["slug"] == "lamps")
     deco_cat = next(c for c in CATEGORIES if c["slug"] == "decorations")
+    site = S()
 
     bens = "".join(f"""<div class="ben rise">
       <div class="ridge ridge--rule ben__rule"></div>
       <h3 class="h3 ben__title">{e(b['title'])}</h3>
       <p class="ben__body">{e(b['body'])}</p>
-    </div>""" for b in SITE["benefits"])
+    </div>""" for b in site["benefits"])
 
     steps = "".join(f"""<li class="step rise">
       <span class="step__n" aria-hidden="true"></span>
@@ -460,38 +674,39 @@ def build_home():
         <h3 class="h3 step__title">{e(s['step'])}</h3>
         <p class="step__text">{e(s['body'])}</p>
       </div>
-    </li>""" for s in SITE["howItWorks"])
+    </li>""" for s in site["howItWorks"])
 
     trust = "".join(f"""<div class="trust__cell">
       <p class="label trust__label">{e(t['label'])}</p>
       <p class="trust__value">{e(t['value'])}</p>
-    </div>""" for t in SITE["trust"])
+    </div>""" for t in site["trust"])
 
     faqs = "".join(f"""<details class="qa">
       <summary class="qa__q">{e(q['q'])}<span class="qa__sign" aria-hidden="true"></span></summary>
       <div class="qa__a"><div>{e(q['a'])}</div></div>
-    </details>""" for q in SITE["faq"])
+    </details>""" for q in site["faq"])
+
+    hero_lines = "\n".join(f'          <span class="l"><span>{e(line)}</span></span>' for line in T("home.heroLines"))
+    shop_lamps = e(T("home.shopLamps"))
+    shop_decos = e(T("home.shopDecos"))
 
     body = f"""
 <section class="sec hero" data-tone="day">
   <div class="wrap">
     <div class="grid hero__grid">
       <div class="hero__copy">
-        <p class="label hero__eyebrow rise" style="--rd:350ms">3D-printed lighting &amp; objects — made in {e(BRAND['country'])}</p>
+        <p class="label hero__eyebrow rise" style="--rd:350ms">{e(T("home.eyebrow", country=BRAND['country']))}</p>
         <h1 class="display h1 hero__title lines" style="--rd:450ms">
-          <span class="l"><span>Warm light and</span></span>
-          <span class="l"><span>small things</span></span>
-          <span class="l"><span>for the rooms</span></span>
-          <span class="l"><span>you sit in.</span></span>
+{hero_lines}
         </h1>
-        <p class="lead hero__lead rise" style="--rd:700ms">We print lighting and small home pieces to order in our own workshop, one at a time. Pick a shape, pick a finish, and we make yours.</p>
+        <p class="lead hero__lead rise" style="--rd:700ms">{e(T("home.lead"))}</p>
         <div class="hero__actions rise" style="--rd:950ms">
-          <a class="btn" href="/lamps/">Shop lamps</a>
-          <a class="tlink" href="/decorations/">Shop decorations <span class="tlink__arrow">&rarr;</span></a>
+          <a class="btn" href="{U('/lamps/')}">{shop_lamps}</a>
+          <a class="tlink" href="{U('/decorations/')}">{shop_decos} <span class="tlink__arrow">&rarr;</span></a>
         </div>
       </div>
       <div class="hero__media">
-        {slot('lay', SLOT_LABEL, 'aspect-ratio:4/5', photo=SITE.get('hero', {}).get('photo'), sizes=SIZES_HERO, eager=True)}
+        {slot('lay', None, 'aspect-ratio:4/5', photo=site.get('hero', {}).get('photo'), sizes=SIZES_HERO, eager=True)}
       </div>
     </div>
   </div>
@@ -500,26 +715,26 @@ def build_home():
 <section class="sec" data-tone="day" id="shop">
   <div class="wrap">
     <div class="shead grid">
-      <p class="label shead__eyebrow" style="grid-column:1/-1">Two ways in</p>
-      <h2 class="display h2 shead__title" data-split>Start with the light, or start with the shelf.</h2>
-      <p class="lead shead__note">Everything is printed to order, so the two paths work the same way — you are choosing a shape and a finish, not picking from what is left in a warehouse.</p>
+      <p class="label shead__eyebrow" style="grid-column:1/-1">{e(T("home.waysEyebrow"))}</p>
+      <h2 class="display h2 shead__title" data-split>{e(T("home.waysTitle"))}</h2>
+      <p class="lead shead__note">{e(T("home.waysNote"))}</p>
     </div>
     <div class="grid cats">
-      <a class="cat cat--a" href="/lamps/" data-morph>
+      <a class="cat cat--a" href="{U('/lamps/')}" data-morph>
         {slot('cat__media lay')}
         <div class="cat__row">
-          <h3 class="display h3">{e(lamp_cat['name'])}</h3>
+          <h3 class="display h3">{e(CT(lamp_cat, 'name'))}</h3>
           <span class="cat__count">{pieces(len(lamps))}</span>
         </div>
-        <p class="cat__lead">{e(lamp_cat['lead'])}</p>
+        <p class="cat__lead">{e(CT(lamp_cat, 'lead'))}</p>
       </a>
-      <a class="cat cat--b" href="/decorations/" data-morph>
+      <a class="cat cat--b" href="{U('/decorations/')}" data-morph>
         {slot('cat__media lay')}
         <div class="cat__row">
-          <h3 class="display h3">{e(deco_cat['name'])}</h3>
+          <h3 class="display h3">{e(CT(deco_cat, 'name'))}</h3>
           <span class="cat__count">{pieces(len(decos))}</span>
         </div>
-        <p class="cat__lead">{e(deco_cat['lead'])}</p>
+        <p class="cat__lead">{e(CT(deco_cat, 'lead'))}</p>
       </a>
     </div>
   </div>
@@ -528,8 +743,8 @@ def build_home():
 <section class="sec" data-tone="day">
   <div class="wrap">
     <div class="shead grid">
-      <p class="label shead__eyebrow" style="grid-column:1/-1">Why these</p>
-      <h2 class="display h2 shead__title" data-split>Made slowly, on purpose.</h2>
+      <p class="label shead__eyebrow" style="grid-column:1/-1">{e(T("home.whyEyebrow"))}</p>
+      <h2 class="display h2 shead__title" data-split>{e(T("home.whyTitle"))}</h2>
     </div>
     <div class="grid bens">{bens}</div>
   </div>
@@ -538,9 +753,9 @@ def build_home():
 <section class="sec" data-tone="day" id="how">
   <div class="wrap">
     <div class="shead grid">
-      <p class="label shead__eyebrow" style="grid-column:1/-1">How it works</p>
-      <h2 class="display h2 shead__title" data-split>{count(len(SITE['howItWorks']), 'step', cap=True)}, about a week.</h2>
-      <p class="lead shead__note">Nothing is stocked. That is slower than a warehouse and it is the reason nothing gets thrown away.</p>
+      <p class="label shead__eyebrow" style="grid-column:1/-1">{e(T("home.howEyebrow"))}</p>
+      <h2 class="display h2 shead__title" data-split>{e(T("home.howTitle", count=count(len(site['howItWorks']), 'noun.step', cap=True)))}</h2>
+      <p class="lead shead__note">{e(T("home.howNote"))}</p>
     </div>
     <ol class="grid steps">{steps}</ol>
   </div>
@@ -554,8 +769,8 @@ def build_home():
 
 <section class="sec" data-tone="night">
   <div class="wrap">
-    <p class="label" style="margin-bottom:1.4rem">After dark</p>
-    <p class="display h2" style="max-width:24ch" data-split>A lamp is the only thing in a room that changes what time it feels like.</p>
+    <p class="label" style="margin-bottom:1.4rem">{e(T("home.darkEyebrow"))}</p>
+    <p class="display h2" style="max-width:24ch" data-split>{e(T("home.darkLine"))}</p>
   </div>
 </section>
 
@@ -563,8 +778,8 @@ def build_home():
   <div class="wrap">
     <div class="grid faq__grid">
       <div class="faq__side">
-        <p class="label" style="margin-bottom:1rem">Questions</p>
-        <h2 class="display h3" data-split>The things people ask before ordering.</h2>
+        <p class="label" style="margin-bottom:1rem">{e(T("home.faqEyebrow"))}</p>
+        <h2 class="display h3" data-split>{e(T("home.faqTitle"))}</h2>
       </div>
       <div class="faq__list">{faqs}</div>
     </div>
@@ -575,24 +790,19 @@ def build_home():
   <div class="wrap">
     <div class="grid cta__grid">
       <div class="cta__copy">
-        <h2 class="display h2" data-split>Start with one piece. See how it sits in the room.</h2>
+        <h2 class="display h2" data-split>{e(T("home.ctaTitle"))}</h2>
       </div>
       <div class="cta__side">
         <div class="hero__actions">
-          <a class="btn btn--ghost" href="/lamps/">Shop lamps</a>
-          <a class="tlink" href="/decorations/">Shop decorations <span class="tlink__arrow">&rarr;</span></a>
+          <a class="btn btn--ghost" href="{U('/lamps/')}">{shop_lamps}</a>
+          <a class="tlink" href="{U('/decorations/')}">{shop_decos} <span class="tlink__arrow">&rarr;</span></a>
         </div>
       </div>
     </div>
   </div>
 </section>
 """
-    return shell(
-        f"{BRAND['name']} — 3D-printed lamps and home decorations",
-        "Lamps and small home objects, 3D-printed to order in France. Warm light, plant-based PLA, made by hand in our workshop.",
-        body,
-        path="/",
-    )
+    return shell(T("home.title", brand=BRAND['name']), T("home.desc"), body, path="/")
 
 
 # ----------------------------------------------------------------- category
@@ -625,14 +835,15 @@ def editorial_grid(items):
 def build_category(cat):
     live = by_cat(cat["slug"], "live")
     concepts = by_cat(cat["slug"], "concept")
-    rooms = sorted({r for p in live for r in p.get("rooms", [])})
+    rooms = sorted({r for p in live for r in p.get("rooms", [])}, key=room_name)
 
     filters = ""
     if len(rooms) > 1:
-        btns = '<button class="filter" data-room="" aria-pressed="true">Everything</button>'
-        btns += "".join(f'<button class="filter" data-room="{e(r)}" aria-pressed="false">{e(r)}</button>' for r in rooms)
-        filters = f'<div class="filters" data-filters role="group" aria-label="Filter by room">{btns}</div>'
-
+        # data-room keeps the English name: it is the id the cards carry, not text
+        btns = f'<button class="filter" data-room="" aria-pressed="true">{e(T("cat.everything"))}</button>'
+        btns += "".join(f'<button class="filter" data-room="{e(r)}" aria-pressed="false">{e(room_name(r))}</button>'
+                        for r in rooms)
+        filters = f'<div class="filters" data-filters role="group" aria-label="{e(T("cat.filterAria"))}">{btns}</div>'
 
     concept_block = ""
     if concepts:
@@ -641,34 +852,36 @@ def build_category(cat):
 <section class="sec" data-tone="night">
   <div class="wrap">
     <div class="shead grid">
-      <p class="label shead__eyebrow" style="grid-column:1/-1">Not yet for sale</p>
-      <h2 class="display h2 shead__title" data-split>{count(len(concepts), 'shape', cap=True)} we are still working on.</h2>
-      <p class="lead shead__note">None of these is in production yet. They are here so you can tell us which one to finish first.</p>
+      <p class="label shead__eyebrow" style="grid-column:1/-1">{e(T("cat.notYet"))}</p>
+      <h2 class="display h2 shead__title" data-split>{e(T("cat.conceptTitle", count=count(len(concepts), 'noun.shape', cap=True)))}</h2>
+      <p class="lead shead__note">{e(T("cat.conceptNote"))}</p>
     </div>
     <div class="grid pgrid" data-batch>{cc}</div>
   </div>
 </section>"""
 
+    # site.js rewrites the count after filtering, from these two patterns
+    count_attrs = f'data-one="{e(T("pieces.one"))}" data-many="{e(T("pieces.many"))}"'
     body = f"""
 <section class="sec pdp" data-tone="day" style="padding-bottom:clamp(2rem,5vw,4rem)">
   <div class="wrap">
     <div class="shead grid" style="margin-bottom:clamp(2rem,4vw,3rem)">
       <p class="label shead__eyebrow" style="grid-column:1/-1">{pieces(len(live))}</p>
       <h1 class="display h2 shead__title lines">
-        <span class="l"><span>{e(cat['name'])}</span></span>
+        <span class="l"><span>{e(CT(cat, 'name'))}</span></span>
       </h1>
-      <p class="lead shead__note">{e(cat['lead'])}</p>
+      <p class="lead shead__note">{e(CT(cat, 'lead'))}</p>
     </div>
     {filters}
-    <p class="vh" data-filter-count aria-live="polite">{pieces(len(live))}</p>
+    <p class="vh" data-filter-count {count_attrs} aria-live="polite">{pieces(len(live))}</p>
     {editorial_grid(live)}
   </div>
 </section>
 {concept_block}
 """
     return shell(
-        f"{cat['name']} — {BRAND['name']}",
-        cat["lead"],
+        T("cat.title", cat=CT(cat, "name"), brand=BRAND["name"]),
+        CT(cat, "lead"),
         body,
         page=cat["slug"],
         path=f"/{cat['slug']}/",
@@ -677,14 +890,15 @@ def build_category(cat):
 
 # ------------------------------------------------------------------ product
 def build_product(p):
-    photos = p.get("photos") or []
+    photos = photos_of(p)
     cols = colours(p)
     first = lead_photo(p)
-    shots = slot("pdp__shot lay", SLOT_LABEL, "view-transition-name:hero-media",
+    name, variant = PT(p, "name"), PT(p, "variant")
+    shots = slot("pdp__shot lay", None, "view-transition-name:hero-media",
                  photo=first, sizes=SIZES_SHOT, eager=True)
     if int(p.get("shots", 1)) > 1:
         second = photos[1] if len(photos) > 1 else None
-        shots += slot("pdp__shot lay", "Second view coming soon", photo=second, sizes=SIZES_SHOT)
+        shots += slot("pdp__shot lay", T("slot.second"), photo=second, sizes=SIZES_SHOT)
 
     specs = ""
     rows = "".join(f'<div class="pdp__spec"><dt>{e(k)}</dt><dd>{e(v)}</dd></div>' for k, v in spec_rows(p))
@@ -693,8 +907,8 @@ def build_product(p):
 
     concept = p.get("status") == "concept"
     if concept:
-        buy = f"""<div class="notice"><strong>Not for sale yet.</strong> This shape is still in development, so there is nothing to photograph and nothing to buy. Email us and we will tell you when it is ready.</div>
-        <div class="pdp__buy"><a class="btn" href="{mailto(p['name'] + ' — tell me when it is ready')}">Tell me when it is ready</a></div>"""
+        buy = f"""<div class="notice">{T("pdp.conceptNoticeHtml")}</div>
+        <div class="pdp__buy"><a class="btn" href="{mailto(T('pdp.conceptSubject', name=name))}">{e(T("pdp.conceptButton"))}</a></div>"""
         price_html = ""
     else:
         markets = market_links(p)
@@ -702,45 +916,46 @@ def build_product(p):
         btn = "btn btn--ghost" if markets else "btn"
         checkout = p.get("checkoutUrl")
         if checkout:
-            action = f'<a class="{btn}" href="{e(checkout)}">Add to basket — {money(p["price"])}</a>'
+            action = f'<a class="{btn}" href="{e(checkout)}">{e(T("pdp.addToBasket", price=money(p["price"])))}</a>'
         else:
             # with colours, the subject names the one picked (site.js fills it in);
             # without JS it names none, rather than guess the first
-            base = f"Order: {p['name']}"
-            subj = base if cols else base + (f" ({p['variant']})" if p.get("variant") else "")
+            base = T("pdp.orderSubject", name=name)
+            subj = base if cols else base + (f" ({variant})" if variant else "")
             order = f' data-order="{e(base)}"' if can_swatch(cols) else ""
-            action = f'<a class="{btn}" href="{mailto(subj)}"{order}>Order by email</a>'
+            action = f'<a class="{btn}" href="{mailto(subj)}"{order}>{e(T("pdp.orderByEmail"))}</a>'
         market_html = ""
         if markets:
             mbtns = "".join(
                 f'<a class="btn" href="{e(url)}" target="_blank" rel="noopener noreferrer">'
-                f'Buy on {label}<span class="vh"> (opens in a new tab)</span></a>'
+                f'{e(T("pdp.buyOn", market=label))}<span class="vh">{e(T("pdp.newTab"))}</span></a>'
                 for label, url in markets)
-            where = " or ".join(f"{label}'s" for label, _ in markets)
+            where = T("pdp.marketOr").join(T("pdp.marketWho", market=label) for label, _ in markets)
             market_html = f"""<div class="pdp__buy pdp__buy--market">{mbtns}</div>
-        <p class="pdp__note">Payment and delivery go through {where} own checkout, not this site.</p>"""
+        <p class="pdp__note">{e(T("pdp.marketNote", where=where))}</p>"""
         buy = f"""{market_html}<div class="pdp__buy">{action}</div>
-        <p class="pdp__care">Printed after you order. In the workshop {e(WORKSHOP_TIME)}, then posted with tracking.</p>"""
+        <p class="pdp__care">{e(T("pdp.shipping", time=S()["shipping"]["workshopTime"]))}</p>"""
         price_html = f'<p class="pdp__price">{money(p.get("price"))}</p>'
 
-    care = f'<p class="pdp__care">{e(p["care"])}</p>' if p.get("care") else ""
+    care = f'<p class="pdp__care">{e(PT(p, "care"))}</p>' if p.get("care") else ""
     other = [q for q in by_cat(p["category"]) if q["slug"] != p["slug"]][:4]
     more = "".join(product_card(q) for q in other)
 
-    cat_name = next(c["name"] for c in CATEGORIES if c["slug"] == p["category"])
+    cat = next(c for c in CATEGORIES if c["slug"] == p["category"])
+    cat_name = CT(cat, "name")
 
     body = f"""
 <section class="sec pdp" data-tone="day">
   <div class="wrap">
-    <p class="label" style="margin-bottom:1.5rem"><a href="/{p['category']}/" style="text-decoration:none">{e(cat_name)}</a></p>
+    <p class="label" style="margin-bottom:1.5rem"><a href="{U('/' + p['category'] + '/')}" style="text-decoration:none">{e(cat_name)}</a></p>
     <div class="grid pdp__grid">
       <div class="pdp__media"><div class="pdp__shots">{shots}</div></div>
       <div class="pdp__info">
-        <h1 class="display h2 pdp__name">{e(p['name'])}</h1>
-        <p class="pdp__variant">{e(p.get('variant',''))}</p>
+        <h1 class="display h2 pdp__name">{e(name)}</h1>
+        <p class="pdp__variant">{e(variant)}</p>
         {price_html}
         {colour_picker(p, cols)}
-        <div class="prose pdp__desc"><p>{e(p['description'])}</p></div>
+        <div class="prose pdp__desc"><p>{e(PT(p, 'description'))}</p></div>
         {buy}
         {specs}
         {care}
@@ -752,17 +967,18 @@ def build_product(p):
 <section class="sec" data-tone="day">
   <div class="wrap">
     <div class="shead grid">
-      <h2 class="display h3 shead__title" data-split>More {e(cat_name.lower())}</h2>
+      <h2 class="display h3 shead__title" data-split>{e(T("pdp.more", cat=cat_name.lower()))}</h2>
     </div>
     <div class="grid pgrid" data-batch>{more}</div>
   </div>
 </section>
 """
-    url = f"https://{BRAND['domain']}/shop/{p['slug']}/"
+    path = f"/shop/{p['slug']}/"
+    url = f"https://{BRAND['domain']}{U(path)}"
     ld = {
         "@context": "https://schema.org", "@type": "Product",
-        "name": f"{p['name']} {p.get('variant','')}".strip(),
-        "description": p["blurb"], "brand": {"@type": "Brand", "name": BRAND["name"]},
+        "name": f"{name} {variant}".strip(),
+        "description": PT(p, "blurb"), "brand": {"@type": "Brand", "name": BRAND["name"]},
         "url": url,
     }
     if first:
@@ -775,73 +991,92 @@ def build_product(p):
     # `<` escaped so no text in the data can close the script element early
     head = '<script type="application/ld+json">' + json.dumps(ld).replace("<", "\\u003c") + "</script>"
 
-    return shell(f"{p['name']} — {BRAND['name']}", p["blurb"], body, page=p["category"], extra_head=head,
-                 current="true", path=f"/shop/{p['slug']}/", image=first)
+    return shell(T("pdp.title", name=name, brand=BRAND["name"]), PT(p, "blurb"), body, page=p["category"],
+                 extra_head=head, current="true", path=path, image=first)
 
 
 # -------------------------------------------------------------------- legal
 def build_legal():
-    days = SITE["legal"]["returnsDays"]
+    site = S()
+    days = site["legal"]["returnsDays"]
+    paras = lambda items: "\n      ".join(f"<p>{x}</p>" for x in items)
+    email = f'<a href="mailto:{e(BRAND["email"])}">{e(BRAND["email"])}</a>'
+    returns = paras(T("legal.returnsHtml"))
+    returns = returns.replace("{days}", str(days))
     body = f"""
 <section class="sec pdp" data-tone="day">
   <div class="wrap">
     <div class="shead grid">
-      <p class="label shead__eyebrow" style="grid-column:1/-1">Legal</p>
-      <h1 class="display h2 shead__title lines"><span class="l"><span>Terms, returns and privacy</span></span></h1>
+      <p class="label shead__eyebrow" style="grid-column:1/-1">{e(T("legal.eyebrow"))}</p>
+      <h1 class="display h2 shead__title lines"><span class="l"><span>{e(T("legal.heading"))}</span></span></h1>
     </div>
     <div class="prose" style="max-width:66ch">
-      <h2 class="h3">Returns and the right to change your mind</h2>
-      <p>You have {days} days from the day you receive an order to change your mind, without giving a reason. Email us within that time, then send the piece back within {days} days of telling us.</p>
-      <p><strong>Returns are free: we pay the return postage.</strong> Email us and we will tell you how to send the piece back.</p>
-      <p>We refund everything you paid, including the standard delivery cost, within {days} days of hearing from you. We may wait until the piece is back with us, or until you send proof that it is on its way, whichever comes first. The refund goes back the same way you paid.</p>
-      <p>Please pack it so it travels safely. If it comes back worn or damaged beyond what looking it over would cause, we may take that loss in value off the refund.</p>
-      <p>{e(SITE['legal']['customExemptionNote'])} In plain terms: a piece made at your request in a colour outside our usual range, or with a name printed on it, cannot be returned because you changed your mind. That exception never covers a piece that arrives damaged or faulty — tell us and we will put it right.</p>
+      <h2 class="h3">{e(T("legal.returnsH"))}</h2>
+      {returns}
+      <p>{e(site['legal']['customExemptionNote'])} {e(T("legal.exemptionPlain"))}</p>
 
-      <h2 class="h3" style="margin-top:2.5rem">Delivery</h2>
-      <p>Every order is printed after it is placed. Allow {e(WORKSHOP_TIME)} in the workshop, then normal postal time. You get a tracking number on the day it ships.</p>
+      <h2 class="h3" style="margin-top:2.5rem">{e(T("legal.deliveryH"))}</h2>
+      <p>{e(T("legal.delivery", time=site["shipping"]["workshopTime"]))}</p>
 
-      <h2 class="h3" style="margin-top:2.5rem">Privacy</h2>
-      <p>We set no cookies of our own and run no analytics, advertising or tracking scripts. Our fonts and scripts are served from this site, not loaded from Google or other third parties.</p>
-      <p>Like any website, pages reach you through service providers who handle technical data, such as your IP address, in order to deliver them. This site is hosted by GitHub Pages and delivered through Cloudflare, which also protects it from abuse. Cloudflare may set a strictly necessary security cookie to tell visitors from bots.</p>
-      <p>If you email us, we keep your message to answer it.</p>
+      <h2 class="h3" style="margin-top:2.5rem">{e(T("legal.privacyH"))}</h2>
+      {paras(e(x) for x in T("legal.privacy"))}
 
-      <h2 class="h3" style="margin-top:2.5rem">Mentions légales</h2>
-      <p><strong>Publisher:</strong> {e(BRAND['name'])}, {e(BRAND['country'])}. Contact: <a href="mailto:{e(BRAND['email'])}">{e(BRAND['email'])}</a>. Company registration details will be added to this page.</p>
-      <p><strong>Host:</strong> GitHub Pages, GitHub, Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, USA.</p>
-      <p><strong>Content delivery and security:</strong> Cloudflare, Inc., 101 Townsend Street, San Francisco, CA 94107, USA.</p>
+      <h2 class="h3" style="margin-top:2.5rem">{e(T("legal.mentionsH"))}</h2>
+      <p>{T("legal.publisherHtml", brand=e(BRAND['name']), country=e(BRAND['country']), email=email)}</p>
+      <p>{T("legal.hostHtml")}</p>
+      <p>{T("legal.cdnHtml")}</p>
     </div>
   </div>
 </section>
 """
-    return shell(f"Legal — {BRAND['name']}", "Returns, delivery, privacy and legal information.", body,
-                 path="/legal/")
+    return shell(T("legal.title", brand=BRAND["name"]), T("legal.desc"), body, path="/legal/")
 
 
 # ---------------------------------------------------------------------- 404
 def build_404():
-    """GitHub Pages serves /404.html for any missing URL — an old product link, a
-    typo — instead of its own grey "Page not found · GitHub Pages". Every URL in
-    the shell is root-absolute, so it renders the same at any depth."""
-    first, rest = CATEGORIES[0], CATEGORIES[1:]
-    others = "".join(f'<a class="tlink" href="/{c["slug"]}/">{e(c["name"])} <span class="tlink__arrow">&rarr;</span></a>'
-                     for c in rest)
+    """GitHub Pages serves one /404.html for any missing URL in either language —
+    an old product link, a typo — instead of its own grey "Page not found · GitHub
+    Pages". So it speaks the main language and repeats the essentials in the
+    other one. Every URL in the shell is root-absolute, so it renders the same
+    at any depth. Built in the main language (see main)."""
+    global L
+
+    def actions():
+        first, rest = CATEGORIES[0], CATEGORIES[1:]
+        others = "".join(f'<a class="tlink" href="{U("/" + c["slug"] + "/")}">{e(CT(c, "name"))} <span class="tlink__arrow">&rarr;</span></a>'
+                         for c in rest)
+        return f"""<div class="hero__actions">
+      <a class="btn" href="{U('/' + first['slug'] + '/')}">{e(CT(first, 'name'))}</a>
+      {others}
+      <a class="tlink" href="{U('/')}">{e(T("404.home"))} <span class="tlink__arrow">&rarr;</span></a>
+    </div>"""
+
+    main_lang = L
+    blocks = []
+    for x in [main_lang] + [x for x in LANGS if x != main_lang]:
+        L = x
+        if x == main_lang:
+            blocks.append(f"""<div class="shead grid">
+      <p class="label shead__eyebrow" style="grid-column:1/-1">{e(T("404.eyebrow"))}</p>
+      <h1 class="display h2 shead__title lines"><span class="l"><span>{e(T("404.heading"))}</span></span></h1>
+      <p class="lead shead__note">{e(T("404.note"))}</p>
+    </div>
+    {actions()}""")
+        else:
+            blocks.append(f"""<div lang="{x}" style="margin-top:clamp(3rem,7vw,5rem)">
+      <p class="label" style="margin-bottom:1rem">{e(T("404.eyebrow"))}</p>
+      <p class="lead" style="margin-bottom:1.6rem">{e(T("404.note"))}</p>
+      {actions()}
+    </div>""")
+    L = main_lang
     body = f"""
 <section class="sec pdp" data-tone="day">
   <div class="wrap">
-    <div class="shead grid">
-      <p class="label shead__eyebrow" style="grid-column:1/-1">Page not found</p>
-      <h1 class="display h2 shead__title lines"><span class="l"><span>Nothing on this shelf.</span></span></h1>
-      <p class="lead shead__note">The link may be out of date, or the piece may no longer be made. Everything we make is in here:</p>
-    </div>
-    <div class="hero__actions">
-      <a class="btn" href="/{first['slug']}/">{e(first['name'])}</a>
-      {others}
-      <a class="tlink" href="/">Home <span class="tlink__arrow">&rarr;</span></a>
-    </div>
+    {"".join(blocks)}
   </div>
 </section>
 """
-    return shell(f"Page not found — {BRAND['name']}", "This page is not here.", body,
+    return shell(T("404.title", brand=BRAND["name"]), T("404.desc"), body,
                  extra_head='<meta name="robots" content="noindex">')
 
 
@@ -849,57 +1084,74 @@ def build_404():
 def write(rel, content):
     path = os.path.join(ROOT, rel)
     os.makedirs(os.path.dirname(path), exist_ok=True)
-    open(path, "w", encoding="utf8", newline="\n").write(content)
+    with open(path, "w", encoding="utf8", newline="\n") as f:
+        f.write(content)
     return rel
 
 
+def out_dir(lang):
+    """Where a language's pages are written: the root for the main language."""
+    return "" if lang == DEFAULT_LANG else f"{lang}/"
+
+
 def prune_product_pages():
-    """Delete shop/<slug>/ pages whose product was removed, renamed or set to draft.
+    """Delete shop/<slug>/ pages (in every language) whose product was removed,
+    renamed or set to draft.
 
     The build only ever wrote pages, so a product taken out of products.json kept
     its old page online for good — gone from the listings and the sitemap, still
     served at its URL with its old price. Only the generated index.html is
     deleted (and the folder, if that leaves it empty); anything else survives.
     """
-    shop = os.path.join(ROOT, "shop")
-    if not os.path.isdir(shop):
-        return []
     keep = {p["slug"] for p in PRODUCTS}
     removed = []
-    for slug in sorted(os.listdir(shop)):
-        folder = os.path.join(shop, slug)
-        page = os.path.join(folder, "index.html")
-        if slug in keep or not os.path.isfile(page):
+    for lang in LANGS:
+        shop = os.path.join(ROOT, out_dir(lang), "shop")
+        if not os.path.isdir(shop):
             continue
-        os.remove(page)
-        if not os.listdir(folder):
-            os.rmdir(folder)
-        removed.append(f"shop/{slug}/index.html")
+        for slug in sorted(os.listdir(shop)):
+            folder = os.path.join(shop, slug)
+            page = os.path.join(folder, "index.html")
+            if slug in keep or not os.path.isfile(page):
+                continue
+            os.remove(page)
+            if not os.listdir(folder):
+                os.rmdir(folder)
+            removed.append(f"{out_dir(lang)}shop/{slug}/index.html")
     return removed
 
 
 def main():
+    global L
     removed = prune_product_pages()
     written = []
-    written.append(write("index.html", build_home()))
-    for c in CATEGORIES:
-        written.append(write(f"{c['slug']}/index.html", build_category(c)))
-    for p in PRODUCTS:
-        written.append(write(f"shop/{p['slug']}/index.html", build_product(p)))
-    written.append(write("legal/index.html", build_legal()))
+    paths = ["/"] + [f"/{c['slug']}/" for c in CATEGORIES] + ["/legal/"] + [f"/shop/{p['slug']}/" for p in PRODUCTS]
+    for lang in LANGS:
+        L = lang
+        d = out_dir(lang)
+        written.append(write(f"{d}index.html", build_home()))
+        for c in CATEGORIES:
+            written.append(write(f"{d}{c['slug']}/index.html", build_category(c)))
+        for p in PRODUCTS:
+            written.append(write(f"{d}shop/{p['slug']}/index.html", build_product(p)))
+        written.append(write(f"{d}legal/index.html", build_legal()))
+    L = DEFAULT_LANG
     written.append(write("404.html", build_404()))
 
-    # sitemap
-    urls = (["/"] + [f"/{c['slug']}/" for c in CATEGORIES] + ["/legal/"]
-            + [f"/shop/{p['slug']}/" for p in PRODUCTS])
+    # sitemap: every page in every language, each listing its translations
+    domain = f"https://{BRAND['domain']}"
+    entries = []
+    for lang in LANGS:
+        for path in paths:
+            alts = "".join(f'<xhtml:link rel="alternate" hreflang="{x}" href="{domain}{U(path, x)}"/>' for x in LANGS)
+            entries.append(f"  <url><loc>{domain}{U(path, lang)}</loc>{alts}</url>\n")
     sm = ('<?xml version="1.0" encoding="UTF-8"?>\n'
-          '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-          + "".join(f"  <url><loc>https://{BRAND['domain']}{u}</loc></url>\n" for u in urls)
-          + "</urlset>\n")
+          '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n'
+          + "".join(entries) + "</urlset>\n")
     written.append(write("sitemap.xml", sm))
     written.append(write("robots.txt", f"User-agent: *\nAllow: /\nSitemap: https://{BRAND['domain']}/sitemap.xml\n"))
 
-    print(f"wrote {len(written)} files")
+    print(f"wrote {len(written)} files ({', '.join(LANGS)})")
     for w in written:
         print("  ", w)
     if removed:

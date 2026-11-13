@@ -1,29 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://cosyprints.com/</loc></url>
-  <url><loc>https://cosyprints.com/lamps/</loc></url>
-  <url><loc>https://cosyprints.com/decorations/</loc></url>
-  <url><loc>https://cosyprints.com/legal/</loc></url>
-  <url><loc>https://cosyprints.com/shop/ridge-lamp-black/</loc></url>
-  <url><loc>https://cosyprints.com/shop/ridge-lamp-silver/</loc></url>
-  <url><loc>https://cosyprints.com/shop/ridge-lamp-rose-gold/</loc></url>
-  <url><loc>https://cosyprints.com/shop/ridge-lamp-colour/</loc></url>
-  <url><loc>https://cosyprints.com/shop/japandi-cats/</loc></url>
-  <url><loc>https://cosyprints.com/shop/low-poly-vase/</loc></url>
-  <url><loc>https://cosyprints.com/shop/bubble-tray/</loc></url>
-  <url><loc>https://cosyprints.com/shop/sheep-roll-holder/</loc></url>
-  <url><loc>https://cosyprints.com/shop/wave-soap-dish/</loc></url>
-  <url><loc>https://cosyprints.com/shop/toothbrush-holder/</loc></url>
-  <url><loc>https://cosyprints.com/shop/sink-caddy/</loc></url>
-  <url><loc>https://cosyprints.com/shop/phone-stand/</loc></url>
-  <url><loc>https://cosyprints.com/shop/watch-stand/</loc></url>
-  <url><loc>https://cosyprints.com/shop/bag-dispenser/</loc></url>
-  <url><loc>https://cosyprints.com/shop/bag-clips-black/</loc></url>
-  <url><loc>https://cosyprints.com/shop/bag-clips-white/</loc></url>
-  <url><loc>https://cosyprints.com/shop/concept-bubble/</loc></url>
-  <url><loc>https://cosyprints.com/shop/concept-buddy/</loc></url>
-  <url><loc>https://cosyprints.com/shop/concept-line/</loc></url>
-  <url><loc>https://cosyprints.com/shop/concept-mountain/</loc></url>
-  <url><loc>https://cosyprints.com/shop/concept-swirl/</loc></url>
-  <url><loc>https://cosyprints.com/shop/concept-tornado/</loc></url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url><loc>https://cosyprints.com/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/"/></url>
+  <url><loc>https://cosyprints.com/lamps/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/lamps/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/lamps/"/></url>
+  <url><loc>https://cosyprints.com/decorations/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/decorations/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/decorations/"/></url>
+  <url><loc>https://cosyprints.com/legal/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/legal/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/legal/"/></url>
+  <url><loc>https://cosyprints.com/shop/ridge-lamp-black/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/ridge-lamp-black/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/ridge-lamp-black/"/></url>
+  <url><loc>https://cosyprints.com/shop/ridge-lamp-silver/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/ridge-lamp-silver/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/ridge-lamp-silver/"/></url>
+  <url><loc>https://cosyprints.com/shop/ridge-lamp-rose-gold/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/ridge-lamp-rose-gold/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/ridge-lamp-rose-gold/"/></url>
+  <url><loc>https://cosyprints.com/shop/ridge-lamp-colour/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/ridge-lamp-colour/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/ridge-lamp-colour/"/></url>
+  <url><loc>https://cosyprints.com/shop/japandi-cats/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/japandi-cats/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/japandi-cats/"/></url>
+  <url><loc>https://cosyprints.com/shop/low-poly-vase/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/low-poly-vase/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/low-poly-vase/"/></url>
+  <url><loc>https://cosyprints.com/shop/bubble-tray/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/bubble-tray/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/bubble-tray/"/></url>
+  <url><loc>https://cosyprints.com/shop/sheep-roll-holder/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/sheep-roll-holder/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/sheep-roll-holder/"/></url>
+  <url><loc>https://cosyprints.com/shop/wave-soap-dish/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/wave-soap-dish/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/wave-soap-dish/"/></url>
+  <url><loc>https://cosyprints.com/shop/toothbrush-holder/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/toothbrush-holder/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/toothbrush-holder/"/></url>
+  <url><loc>https://cosyprints.com/shop/sink-caddy/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/sink-caddy/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/sink-caddy/"/></url>
+  <url><loc>https://cosyprints.com/shop/phone-stand/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/phone-stand/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/phone-stand/"/></url>
+  <url><loc>https://cosyprints.com/shop/watch-stand/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/watch-stand/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/watch-stand/"/></url>
+  <url><loc>https://cosyprints.com/shop/bag-dispenser/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/bag-dispenser/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/bag-dispenser/"/></url>
+  <url><loc>https://cosyprints.com/shop/bag-clips-black/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/bag-clips-black/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/bag-clips-black/"/></url>
+  <url><loc>https://cosyprints.com/shop/bag-clips-white/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/bag-clips-white/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/bag-clips-white/"/></url>
+  <url><loc>https://cosyprints.com/shop/concept-bubble/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/concept-bubble/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/concept-bubble/"/></url>
+  <url><loc>https://cosyprints.com/shop/concept-buddy/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/concept-buddy/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/concept-buddy/"/></url>
+  <url><loc>https://cosyprints.com/shop/concept-line/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/concept-line/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/concept-line/"/></url>
+  <url><loc>https://cosyprints.com/shop/concept-mountain/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/concept-mountain/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/concept-mountain/"/></url>
+  <url><loc>https://cosyprints.com/shop/concept-swirl/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/concept-swirl/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/concept-swirl/"/></url>
+  <url><loc>https://cosyprints.com/shop/concept-tornado/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/concept-tornado/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/concept-tornado/"/></url>
+  <url><loc>https://cosyprints.com/en/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/"/></url>
+  <url><loc>https://cosyprints.com/en/lamps/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/lamps/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/lamps/"/></url>
+  <url><loc>https://cosyprints.com/en/decorations/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/decorations/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/decorations/"/></url>
+  <url><loc>https://cosyprints.com/en/legal/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/legal/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/legal/"/></url>
+  <url><loc>https://cosyprints.com/en/shop/ridge-lamp-black/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/ridge-lamp-black/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/ridge-lamp-black/"/></url>
+  <url><loc>https://cosyprints.com/en/shop/ridge-lamp-silver/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/ridge-lamp-silver/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/ridge-lamp-silver/"/></url>
+  <url><loc>https://cosyprints.com/en/shop/ridge-lamp-rose-gold/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/ridge-lamp-rose-gold/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/ridge-lamp-rose-gold/"/></url>
+  <url><loc>https://cosyprints.com/en/shop/ridge-lamp-colour/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/ridge-lamp-colour/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/ridge-lamp-colour/"/></url>
+  <url><loc>https://cosyprints.com/en/shop/japandi-cats/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/japandi-cats/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/japandi-cats/"/></url>
+  <url><loc>https://cosyprints.com/en/shop/low-poly-vase/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/low-poly-vase/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/low-poly-vase/"/></url>
+  <url><loc>https://cosyprints.com/en/shop/bubble-tray/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/bubble-tray/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/bubble-tray/"/></url>
+  <url><loc>https://cosyprints.com/en/shop/sheep-roll-holder/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/sheep-roll-holder/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/sheep-roll-holder/"/></url>
+  <url><loc>https://cosyprints.com/en/shop/wave-soap-dish/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/wave-soap-dish/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/wave-soap-dish/"/></url>
+  <url><loc>https://cosyprints.com/en/shop/toothbrush-holder/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/toothbrush-holder/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/toothbrush-holder/"/></url>
+  <url><loc>https://cosyprints.com/en/shop/sink-caddy/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/sink-caddy/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/sink-caddy/"/></url>
+  <url><loc>https://cosyprints.com/en/shop/phone-stand/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/phone-stand/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/phone-stand/"/></url>
+  <url><loc>https://cosyprints.com/en/shop/watch-stand/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/watch-stand/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/watch-stand/"/></url>
+  <url><loc>https://cosyprints.com/en/shop/bag-dispenser/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/bag-dispenser/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/bag-dispenser/"/></url>
+  <url><loc>https://cosyprints.com/en/shop/bag-clips-black/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/bag-clips-black/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/bag-clips-black/"/></url>
+  <url><loc>https://cosyprints.com/en/shop/bag-clips-white/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/bag-clips-white/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/bag-clips-white/"/></url>
+  <url><loc>https://cosyprints.com/en/shop/concept-bubble/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/concept-bubble/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/concept-bubble/"/></url>
+  <url><loc>https://cosyprints.com/en/shop/concept-buddy/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/concept-buddy/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/concept-buddy/"/></url>
+  <url><loc>https://cosyprints.com/en/shop/concept-line/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/concept-line/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/concept-line/"/></url>
+  <url><loc>https://cosyprints.com/en/shop/concept-mountain/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/concept-mountain/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/concept-mountain/"/></url>
+  <url><loc>https://cosyprints.com/en/shop/concept-swirl/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/concept-swirl/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/concept-swirl/"/></url>
+  <url><loc>https://cosyprints.com/en/shop/concept-tornado/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://cosyprints.com/shop/concept-tornado/"/><xhtml:link rel="alternate" hreflang="en" href="https://cosyprints.com/en/shop/concept-tornado/"/></url>
 </urlset>

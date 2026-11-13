@@ -1,0 +1,220 @@
+{
+  "_README": "French text for products.json, keyed by slug. products.json stays the English source and holds everything that is not words (prices, rooms, photos, status). Every published product needs `name`, `blurb` and `description` here, plus `variant` and `care` when the English has them, or the build stops. Spec values are looked up in the product's own `specs` first, then in `specValues` (shared phrases such as \"PLA, plant-based\"). Room names in filters come from `rooms`. When a product gets photos, add `photoAlts` (one French alt text per photo, same order); colours need `colours`: [{\"name\", \"alt\"}].",
+
+  "categories": {
+    "lamps": {
+      "name": "Lampes",
+      "lead": "Une forme, imprimée en fines rainures pour que la lumière arrive douce. Trois finitions, et une version qui change de couleur."
+    },
+    "decorations": {
+      "name": "Décorations",
+      "lead": "De petits objets pour l'étagère, l'évier, la console de l'entrée. Sculpturaux quand ça s'y prête, utiles quand ça compte."
+    }
+  },
+
+  "rooms": {
+    "Living room": "Salon",
+    "Bedroom": "Chambre",
+    "Kitchen": "Cuisine",
+    "Bathroom": "Salle de bain",
+    "Desk": "Bureau",
+    "Entryway": "Entrée"
+  },
+
+  "specValues": {
+    "PLA, plant-based": "PLA, d'origine végétale",
+    "To order, in our workshop": "À la commande, dans notre atelier",
+    "Matte black": "Noir mat",
+    "PLA softens above about 55 °C": "Le PLA ramollit au-delà d'environ 55 °C",
+    "LED only, not included": "LED uniquement, non fournie",
+    "Matte, fine ridge texture": "Mat, fines rainures",
+    "10": "10",
+    "Most bag thicknesses": "La plupart des épaisseurs de sachet"
+  },
+
+  "products": {
+    "ridge-lamp-black": {
+      "name": "Lampe Ridge",
+      "variant": "Noir encre",
+      "blurb": "Une colonne cannelée qui transforme une simple LED en un voile de lumière égal.",
+      "description": "L'abat-jour est imprimé en fines rainures verticales, et tout l'intérêt est là. La lumière qui sort d'une surface lisse éblouit ; celle qui traverse des rainures se brise et arrive douce. Posée sur une table de chevet, elle se lit comme une colonne chaude plutôt que comme une ampoule qu'on voit. Le socle est un cylindre noir mat et plein, assez lourd pour qu'elle reste en place.",
+      "care": "Essuyer avec un chiffon sec. Tenir à l'écart du plein soleil d'été et de la chaleur : le PLA ramollit au-delà d'environ 55 °C."
+    },
+    "ridge-lamp-silver": {
+      "name": "Lampe Ridge",
+      "variant": "Argent brossé",
+      "blurb": "La même colonne douce, sur un socle au léger reflet métallique.",
+      "description": "Même abat-jour, autre socle. La base argentée attrape un peu de lumière à elle seule, ce qui convient à une pièce où il y a déjà du métal : une lampe de bureau, un cadre, une poignée de porte. Moins tranchée que la noire, elle se fond dans une pièce claire au lieu d'ancrer une pièce sombre.",
+      "care": "Essuyer avec un chiffon sec. Tenir à l'écart du plein soleil d'été et de la chaleur : le PLA ramollit au-delà d'environ 55 °C.",
+      "specs": { "Finish": "Abat-jour mat, socle métallisé brossé" }
+    },
+    "ridge-lamp-rose-gold": {
+      "name": "Lampe Ridge",
+      "variant": "Or rose",
+      "blurb": "Un socle plus chaud, pour les pièces déjà tournées vers le rose, la terre cuite ou le chêne.",
+      "description": "Le socle or rose est le plus chaud des trois, et celui qu'on choisit pour une chambre. Contre du chêne ou un abat-jour en lin, il tire plus vers le cuivre que vers le rose. Même abat-jour cannelé, même lumière égale.",
+      "care": "Essuyer avec un chiffon sec. Tenir à l'écart du plein soleil d'été et de la chaleur : le PLA ramollit au-delà d'environ 55 °C.",
+      "specs": { "Finish": "Abat-jour mat, socle métallisé or rose" }
+    },
+    "ridge-lamp-colour": {
+      "name": "Lampe Ridge",
+      "variant": "Couleur, avec télécommande",
+      "blurb": "La même lampe, avec une LED qui change de couleur et une télécommande dans la boîte.",
+      "description": "Si vous voulez que la lampe fasse plus d'une chose dans la soirée, c'est cette version. Une LED couleur se loge dans le même abat-jour cannelé, si bien que la couleur arrive diffuse plutôt qu'en teinte dure. La télécommande règle la couleur et l'intensité. En blanc chaud, elle se comporte exactement comme la lampe standard.",
+      "care": "Essuyer avec un chiffon sec. Tenir à l'écart du plein soleil d'été et de la chaleur : le PLA ramollit au-delà d'environ 55 °C.",
+      "specs": { "Light source": "LED couleur et télécommande fournies" }
+    },
+    "japandi-cats": {
+      "name": "Chats Japandi",
+      "variant": "La paire",
+      "blurb": "Deux chats nervurés, l'un plus grand que l'autre. Vendus par deux.",
+      "description": "Assez simples pour tenir sur une étagère sans crier, assez étranges pour qu'on les prenne en main. Les nervures courent sur toute la hauteur, alors l'après-midi ils attrapent un trait de lumière sur un côté. Ils vont par deux, parce qu'un chat tout seul a l'air d'avoir perdu quelque chose.",
+      "care": "Dépoussiérer avec une brosse douce : les nervures retiennent plus la poussière qu'une surface lisse.",
+      "specs": { "Supplied as": "La paire, deux tailles" }
+    },
+    "low-poly-vase": {
+      "name": "Vase Low-Poly",
+      "variant": "Or rose",
+      "blurb": "Un vase à facettes de 15 cm, pour les fleurs séchées.",
+      "description": "Des facettes triangulaires qui se lisent comme une sculpture de loin et comme un vase de près. Chaque face prend la lumière différemment, il change donc quand on passe devant. Il n'est pas étanche : celui-ci est fait pour les fleurs séchées ou artificielles, et nous préférons le dire plutôt que vous le découvriez.",
+      "care": "Essuyer avec un chiffon sec. Ne pas remplir d'eau.",
+      "specs": {
+        "Dimensions": "15 cm de haut",
+        "Colour": "Or rose",
+        "Water": "Non étanche — fleurs séchées ou artificielles uniquement"
+      }
+    },
+    "bubble-tray": {
+      "name": "Vide-poche Bubble",
+      "variant": "Noir",
+      "blurb": "Un vide-poche aux bords doux, pour tout ce que vous sortez de vos poches.",
+      "description": "Un cercle de formes arrondies autour d'un fond plat : assez profond pour que les clés et une montre y restent, assez bas pour voir ce qu'il contient. Il vit près de la porte d'entrée ou sur une table de chevet. Les bulles, c'est ce qui l'empêche de ressembler à une fourniture de bureau.",
+      "care": "Essuyer avec un chiffon humide."
+    },
+    "sheep-roll-holder": {
+      "name": "Mouton porte-rouleau",
+      "variant": "Noir",
+      "blurb": "Un rouleau de réserve devient le corps d'un mouton. Purement décoratif.",
+      "description": "La tête et les pattes sont imprimées ; la laine, c'est un rouleau de papier toilette standard que vous glissez dessus. C'est une blague qui tient la route, parce qu'elle est bien faite : les pattes sont lestées comme il faut pour qu'il ne bascule pas. Soyons clairs sur un point : le rouleau sur le mouton est décoratif, ce n'est pas celui qu'on utilise. Rouleau non fourni.",
+      "care": "Essuyer avec un chiffon humide.",
+      "specs": {
+        "Fits": "Rouleau de papier toilette standard",
+        "Note": "Purement décoratif. Rouleau non fourni."
+      }
+    },
+    "wave-soap-dish": {
+      "name": "Porte-savon Vague",
+      "variant": "Pierre",
+      "blurb": "Trois arches qui laissent un savon s'égoutter et sécher.",
+      "description": "Le problème des porte-savons, c'est que le savon trempe dans sa propre eau et finit en bouillie. Celui-ci, ce sont trois arches avec des espaces entre elles : le savon s'égoutte et l'air passe dessous. Il se trouve qu'il est joli à côté d'un lavabo, ce qui est l'autre moitié du travail.",
+      "care": "Rincer sous le robinet et sécher. Ne passe pas au lave-vaisselle.",
+      "specs": {
+        "Colour": "Pierre",
+        "Drains": "Oui — dessous ouvert"
+      }
+    },
+    "toothbrush-holder": {
+      "name": "Porte-brosses à dents",
+      "variant": "Noir",
+      "blurb": "Un pot nervuré sur pieds, avec un godet intérieur amovible.",
+      "description": "Il tient les brosses debout et un tube à côté. Le godet intérieur se retire, et c'est ce qui compte : c'est là que l'eau s'accumule, et pouvoir le sortir pour le rincer, c'est pour ça que celui-ci reste propre. Surélevé sur quatre petits pieds pour que le plan de travail sèche dessous.",
+      "care": "Retirer le godet intérieur et le rincer. Ne passe pas au lave-vaisselle.",
+      "specs": {
+        "Colour": "Noir mat, intérieur gris",
+        "Inner cup": "Amovible"
+      }
+    },
+    "sink-caddy": {
+      "name": "Égouttoir d'évier",
+      "variant": "Noir",
+      "blurb": "Un bac d'égouttage surmonté d'un bras, pour la lavette et l'éponge.",
+      "description": "Un bac nervuré recueille les gouttes, et le bras au-dessus tient une lavette là où elle peut vraiment sécher, au lieu de rester pliée sur un robinet. Il réunit au même endroit les deux choses les plus encombrantes autour d'un évier. Le bac se retire pour être vidé.",
+      "care": "Vider et rincer le bac. Ne passe pas au lave-vaisselle.",
+      "specs": { "Tray": "Se retire pour être vidé" }
+    },
+    "phone-stand": {
+      "name": "Support téléphone",
+      "variant": "Noir",
+      "blurb": "Un support nervuré qui se replie à plat. Tient un téléphone à l'angle de lecture.",
+      "description": "Deux positions : debout pour la vidéo, incliné pour lire. Il se replie assez à plat pour aller dans un sac. Nervuré sur le dessus pour que le téléphone ne glisse pas, et ouvert en bas pour qu'un câble de charge passe toujours.",
+      "care": "Essuyer avec un chiffon sec.",
+      "specs": {
+        "Folds": "Oui, à plat",
+        "Cable": "Passage pour le câble de charge"
+      }
+    },
+    "watch-stand": {
+      "name": "Support de montre",
+      "variant": "Noir",
+      "blurb": "Un dôme texturé qui transforme le chargeur d'une montre en réveil de chevet.",
+      "description": "Le palet de charge se loge sur le dessus et le câble sort par l'arrière, si bien que la montre se tient à un angle lisible depuis le lit. Le corps est imprimé avec une fine texture en losanges, pour ne pas ressembler à un bloc de plastique sur une table de nuit.",
+      "care": "Essuyer avec un chiffon sec.",
+      "specs": {
+        "Fits": "Palet de charge Apple Watch",
+        "Cable": "Sort par l'arrière"
+      }
+    },
+    "bag-dispenser": {
+      "name": "Distributeur de sachets",
+      "variant": "Noir",
+      "blurb": "Un étui à clipser pour sachets à crottes, avec un couvercle qui reste fermé.",
+      "description": "Un rouleau se glisse dedans, les sachets sortent par la fente, et le couvercle se visse pour ne pas s'ouvrir dans une poche de manteau. Le clip s'accroche à une laisse ou à un passant de ceinture. C'est un petit objet bien fait, et c'est la seule raison d'en acheter un plutôt que de prendre celui offert chez le vétérinaire.",
+      "care": "Essuyer avec un chiffon humide.",
+      "specs": {
+        "Fits": "Rouleaux de sachets standard",
+        "Clip": "Laisse ou passant de ceinture"
+      }
+    },
+    "bag-clips-black": {
+      "name": "Pinces à sachets",
+      "variant": "Noir, lot de 10",
+      "blurb": "Dix pinces pour le café, les pâtes et tout ce qui reste entrouvert dans le placard.",
+      "description": "Imprimées à plat, elles tiennent par leur forme plutôt que par un ressort : il n'y a rien dedans qui puisse lâcher. Elles serrent un sachet replié assez fort pour le garder fermé, et le relâchent sans résistance. Dix par lot, parce qu'il en faut toujours plus qu'on ne croit.",
+      "care": "Essuyer ou rincer. Ne passe pas au lave-vaisselle."
+    },
+    "bag-clips-white": {
+      "name": "Pinces à sachets",
+      "variant": "Blanc, lot de 10",
+      "blurb": "Les mêmes dix pinces, en blanc.",
+      "description": "Imprimées à plat, elles tiennent par leur forme plutôt que par un ressort : il n'y a rien dedans qui puisse lâcher. Elles serrent un sachet replié assez fort pour le garder fermé, et le relâchent sans résistance. Dix par lot, parce qu'il en faut toujours plus qu'on ne croit.",
+      "care": "Essuyer ou rincer. Ne passe pas au lave-vaisselle.",
+      "specs": { "Colour": "Blanc" }
+    },
+    "concept-bubble": {
+      "name": "Bulle",
+      "variant": "Concept",
+      "blurb": "Une lanterne arrondie au large corps nervuré.",
+      "description": "En développement. Plus basse et plus large que la Ridge, pensée pour une table basse où l'on veut que la lumière s'étale sur les côtés plutôt que vers le haut."
+    },
+    "concept-buddy": {
+      "name": "Buddy",
+      "variant": "Concept",
+      "blurb": "Une petite lampe sur pattes. Volontairement farfelue.",
+      "description": "En développement. Un abat-jour classique sur deux petites pattes trapues : la seule pièce de la gamme qui n'essaie pas d'être sérieuse."
+    },
+    "concept-line": {
+      "name": "Ligne",
+      "variant": "Concept",
+      "blurb": "Une colonne anguleuse, taillée comme un cristal.",
+      "description": "En développement. Une tour à facettes qui projette la lumière en plans nets plutôt qu'en voile doux : la forme la plus tranchée que nous ayons dessinée."
+    },
+    "concept-mountain": {
+      "name": "Montagne",
+      "variant": "Concept",
+      "blurb": "Une crête basse de sommets sur un socle rond.",
+      "description": "En développement. Elle se tient bas et s'éclaire depuis l'intérieur des sommets, si bien qu'elle évoque plus un feu qu'une lampe."
+    },
+    "concept-swirl": {
+      "name": "Tourbillon",
+      "variant": "Concept",
+      "blurb": "Un abat-jour carré traversé par une vague.",
+      "description": "En développement. La vague fait varier l'épaisseur de la paroi sur son passage, donc la lumière est plus vive le long de la courbe que de part et d'autre."
+    },
+    "concept-tornado": {
+      "name": "Tornade",
+      "variant": "Concept",
+      "blurb": "Une forme sculpturale torsadée sur un socle en disque.",
+      "description": "En développement. La plus difficile de toutes à imprimer : la torsion doit être soutenue sur toute la hauteur, et c'est là-dessus que nous travaillons encore."
+    }
+  }
+}

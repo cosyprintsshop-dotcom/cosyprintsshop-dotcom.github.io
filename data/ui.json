@@ -1,0 +1,181 @@
+{
+  "_README": "Every piece of fixed interface text, in each language: {\"en\": ..., \"fr\": ...}. Keys ending in Html may contain markup (<strong>, links); everything else is plain text and gets escaped. {name}-style placeholders are filled by build.py. A key missing a language stops the build.",
+
+  "nav.skip": { "en": "Skip to content", "fr": "Aller au contenu" },
+  "nav.aria": { "en": "Main", "fr": "Principal" },
+  "nav.how": { "en": "How it works", "fr": "Comment ça marche" },
+
+  "foot.shop": { "en": "Shop", "fr": "Boutique" },
+  "foot.about": { "en": "About", "fr": "À propos" },
+  "foot.how": { "en": "How it works", "fr": "Comment ça marche" },
+  "foot.questions": { "en": "Questions", "fr": "Questions" },
+  "foot.contact": { "en": "Contact", "fr": "Contact" },
+  "foot.legal": { "en": "Legal & returns", "fr": "Mentions légales et retours" },
+  "foot.printed": { "en": "printed in {country}", "fr": "imprimé en {country}" },
+
+  "slot.photo": { "en": "Photo coming soon", "fr": "Photo à venir" },
+  "slot.second": { "en": "Second view coming soon", "fr": "Deuxième vue à venir" },
+  "card.inDev": { "en": "In development", "fr": "En développement" },
+
+  "noun.shape": { "en": ["shape", "shapes"], "fr": ["forme", "formes", "f"] },
+  "noun.step": { "en": ["step", "steps"], "fr": ["étape", "étapes", "f"] },
+  "pieces.one": { "en": "{n} piece", "fr": "{n} modèle" },
+  "pieces.many": { "en": "{n} pieces", "fr": "{n} modèles" },
+
+  "home.title": { "en": "{brand} — 3D-printed lamps and home decorations", "fr": "{brand} — Lampes et objets déco imprimés en 3D" },
+  "home.desc": {
+    "en": "Lamps and small home objects, 3D-printed to order in France. Warm light, plant-based PLA, made by hand in our workshop.",
+    "fr": "Lampes et petits objets pour la maison, imprimés en 3D à la commande en France. Lumière chaude, PLA d'origine végétale, finis à la main dans notre atelier."
+  },
+  "home.eyebrow": { "en": "3D-printed lighting & objects — made in {country}", "fr": "Luminaires et objets imprimés en 3D — fabriqués en {country}" },
+  "home.heroLines": {
+    "en": ["Warm light and", "small things", "for the rooms", "you sit in."],
+    "fr": ["Lumière chaude", "et petits objets", "pour les pièces", "où l'on vit."]
+  },
+  "home.lead": {
+    "en": "We print lighting and small home pieces to order in our own workshop, one at a time. Pick a shape, pick a finish, and we make yours.",
+    "fr": "Nous imprimons luminaires et petits objets à la commande, un par un, dans notre propre atelier. Choisissez une forme, une finition, et nous fabriquons la vôtre."
+  },
+  "home.shopLamps": { "en": "Shop lamps", "fr": "Voir les lampes" },
+  "home.shopDecos": { "en": "Shop decorations", "fr": "Voir les décorations" },
+  "home.waysEyebrow": { "en": "Two ways in", "fr": "Deux entrées" },
+  "home.waysTitle": { "en": "Start with the light, or start with the shelf.", "fr": "Commencez par la lumière, ou par l'étagère." },
+  "home.waysNote": {
+    "en": "Everything is printed to order, so the two paths work the same way — you are choosing a shape and a finish, not picking from what is left in a warehouse.",
+    "fr": "Tout est imprimé à la commande, les deux chemins fonctionnent donc de la même façon : vous choisissez une forme et une finition, pas ce qui reste dans un entrepôt."
+  },
+  "home.whyEyebrow": { "en": "Why these", "fr": "Pourquoi ces pièces" },
+  "home.whyTitle": { "en": "Made slowly, on purpose.", "fr": "Fait lentement, et exprès." },
+  "home.howEyebrow": { "en": "How it works", "fr": "Comment ça marche" },
+  "home.howTitle": { "en": "{count}, about a week.", "fr": "{count}, environ une semaine." },
+  "home.howNote": {
+    "en": "Nothing is stocked. That is slower than a warehouse and it is the reason nothing gets thrown away.",
+    "fr": "Rien n'est stocké. C'est plus lent qu'un entrepôt, et c'est pour ça que rien n'est jeté."
+  },
+  "home.darkEyebrow": { "en": "After dark", "fr": "À la nuit tombée" },
+  "home.darkLine": {
+    "en": "A lamp is the only thing in a room that changes what time it feels like.",
+    "fr": "Dans une pièce, seule une lampe change l'heure qu'il semble être."
+  },
+  "home.faqEyebrow": { "en": "Questions", "fr": "Questions" },
+  "home.faqTitle": { "en": "The things people ask before ordering.", "fr": "Ce qu'on nous demande avant de commander." },
+  "home.ctaTitle": { "en": "Start with one piece. See how it sits in the room.", "fr": "Commencez par une pièce. Voyez comment elle trouve sa place." },
+
+  "cat.title": { "en": "{cat} — {brand}", "fr": "{cat} — {brand}" },
+  "cat.everything": { "en": "Everything", "fr": "Tout" },
+  "cat.filterAria": { "en": "Filter by room", "fr": "Filtrer par pièce" },
+  "cat.notYet": { "en": "Not yet for sale", "fr": "Pas encore en vente" },
+  "cat.conceptTitle": { "en": "{count} we are still working on.", "fr": "{count} sur lesquelles nous travaillons encore." },
+  "cat.conceptNote": {
+    "en": "None of these is in production yet. They are here so you can tell us which one to finish first.",
+    "fr": "Aucune n'est encore en production. Elles sont là pour que vous nous disiez laquelle terminer en premier."
+  },
+
+  "pdp.title": { "en": "{name} — {brand}", "fr": "{name} — {brand}" },
+  "pdp.conceptNoticeHtml": {
+    "en": "<strong>Not for sale yet.</strong> This shape is still in development, so there is nothing to photograph and nothing to buy. Email us and we will tell you when it is ready.",
+    "fr": "<strong>Pas encore en vente.</strong> Cette forme est encore en développement : il n'y a donc rien à photographier ni à acheter. Écrivez-nous et nous vous préviendrons quand elle sera prête."
+  },
+  "pdp.conceptButton": { "en": "Tell me when it is ready", "fr": "Prévenez-moi quand elle sera prête" },
+  "pdp.conceptSubject": { "en": "{name} — tell me when it is ready", "fr": "{name} — prévenez-moi quand elle sera prête" },
+  "pdp.addToBasket": { "en": "Add to basket — {price}", "fr": "Ajouter au panier — {price}" },
+  "pdp.orderByEmail": { "en": "Order by email", "fr": "Commander par e-mail" },
+  "pdp.orderSubject": { "en": "Order: {name}", "fr": "Commande : {name}" },
+  "pdp.buyOn": { "en": "Buy on {market}", "fr": "Acheter sur {market}" },
+  "pdp.newTab": { "en": " (opens in a new tab)", "fr": " (s'ouvre dans un nouvel onglet)" },
+  "pdp.marketNote": { "en": "Payment and delivery go through {where} own checkout, not this site.", "fr": "Le paiement et la livraison passent par {where}, pas par ce site." },
+  "pdp.marketWho": { "en": "{market}'s", "fr": "{market}" },
+  "pdp.marketOr": { "en": " or ", "fr": " ou " },
+  "pdp.shipping": { "en": "Printed after you order. In the workshop {time}, then posted with tracking.", "fr": "Imprimé après votre commande : {time} à l'atelier, puis envoyé avec suivi." },
+  "pdp.more": { "en": "More {cat}", "fr": "Plus de {cat}" },
+  "pdp.colour": { "en": "Colour", "fr": "Coloris" },
+  "pdp.colours": { "en": "Colours", "fr": "Coloris" },
+
+  "legal.title": { "en": "Legal — {brand}", "fr": "Mentions légales — {brand}" },
+  "legal.desc": { "en": "Returns, delivery, privacy and legal information.", "fr": "Retours, livraison, confidentialité et mentions légales." },
+  "legal.eyebrow": { "en": "Legal", "fr": "Informations légales" },
+  "legal.heading": { "en": "Terms, returns and privacy", "fr": "Conditions, retours et confidentialité" },
+  "legal.returnsH": { "en": "Returns and the right to change your mind", "fr": "Retours et droit de rétractation" },
+  "legal.returnsHtml": {
+    "en": [
+      "You have {days} days from the day you receive an order to change your mind, without giving a reason. Email us within that time, then send the piece back within {days} days of telling us.",
+      "<strong>Returns are free: we pay the return postage.</strong> Email us and we will tell you how to send the piece back.",
+      "We refund everything you paid, including the standard delivery cost, within {days} days of hearing from you. We may wait until the piece is back with us, or until you send proof that it is on its way, whichever comes first. The refund goes back the same way you paid.",
+      "Please pack it so it travels safely. If it comes back worn or damaged beyond what looking it over would cause, we may take that loss in value off the refund."
+    ],
+    "fr": [
+      "Vous disposez de {days} jours à compter de la réception de votre commande pour changer d'avis, sans avoir à vous justifier. Écrivez-nous dans ce délai, puis renvoyez la pièce dans les {days} jours qui suivent.",
+      "<strong>Les retours sont gratuits : nous payons les frais de retour.</strong> Écrivez-nous et nous vous dirons comment renvoyer la pièce.",
+      "Nous remboursons la totalité de ce que vous avez payé, frais de livraison standard compris, dans les {days} jours suivant votre message. Nous pouvons attendre d'avoir récupéré la pièce, ou que vous nous envoyiez une preuve d'expédition, selon ce qui arrive en premier. Le remboursement se fait par le moyen de paiement que vous avez utilisé.",
+      "Merci de l'emballer pour qu'elle voyage sans risque. Si elle revient usée ou abîmée au-delà de ce qu'un simple examen causerait, nous pouvons déduire cette dépréciation du remboursement."
+    ]
+  },
+  "legal.exemptionPlain": {
+    "en": "In plain terms: a piece made at your request in a colour outside our usual range, or with a name printed on it, cannot be returned because you changed your mind. That exception never covers a piece that arrives damaged or faulty — tell us and we will put it right.",
+    "fr": "Concrètement : une pièce fabriquée à votre demande dans une couleur hors de notre gamme habituelle, ou avec un nom imprimé dessus, ne peut pas être retournée parce que vous avez changé d'avis. Cette exception ne couvre jamais une pièce qui arrive abîmée ou défectueuse : dites-le-nous et nous arrangerons les choses."
+  },
+  "legal.deliveryH": { "en": "Delivery", "fr": "Livraison" },
+  "legal.delivery": {
+    "en": "Every order is printed after it is placed. Allow {time} in the workshop, then normal postal time. You get a tracking number on the day it ships.",
+    "fr": "Chaque commande est imprimée après avoir été passée. Comptez {time} à l'atelier, puis le délai postal habituel. Vous recevez un numéro de suivi le jour de l'expédition."
+  },
+  "legal.privacyH": { "en": "Privacy", "fr": "Confidentialité" },
+  "legal.privacy": {
+    "en": [
+      "We set no cookies of our own and run no analytics, advertising or tracking scripts. Our fonts and scripts are served from this site, not loaded from Google or other third parties.",
+      "Like any website, pages reach you through service providers who handle technical data, such as your IP address, in order to deliver them. This site is hosted by GitHub Pages and delivered through Cloudflare, which also protects it from abuse. Cloudflare may set a strictly necessary security cookie to tell visitors from bots.",
+      "If you email us, we keep your message to answer it."
+    ],
+    "fr": [
+      "Nous ne déposons aucun cookie qui nous soit propre et n'utilisons aucun outil d'analyse, de publicité ou de suivi. Nos polices et nos scripts sont servis depuis ce site, pas chargés depuis Google ou d'autres tiers.",
+      "Comme tout site web, les pages vous parviennent par l'intermédiaire de prestataires qui traitent des données techniques, comme votre adresse IP, pour vous les afficher. Ce site est hébergé par GitHub Pages et distribué par Cloudflare, qui le protège aussi contre les abus. Cloudflare peut déposer un cookie de sécurité strictement nécessaire pour distinguer les visiteurs des robots.",
+      "Si vous nous écrivez, nous conservons votre message pour vous répondre."
+    ]
+  },
+  "legal.mentionsH": { "en": "Mentions légales", "fr": "Mentions légales" },
+  "legal.publisherHtml": {
+    "en": "<strong>Publisher:</strong> {brand}, {country}. Contact: {email}. Company registration details will be added to this page.",
+    "fr": "<strong>Éditeur :</strong> {brand}, {country}. Contact : {email}. Les informations d'immatriculation de l'entreprise seront ajoutées sur cette page."
+  },
+  "legal.hostHtml": {
+    "en": "<strong>Host:</strong> GitHub Pages, GitHub, Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, USA.",
+    "fr": "<strong>Hébergeur :</strong> GitHub Pages, GitHub, Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, États-Unis."
+  },
+  "legal.cdnHtml": {
+    "en": "<strong>Content delivery and security:</strong> Cloudflare, Inc., 101 Townsend Street, San Francisco, CA 94107, USA.",
+    "fr": "<strong>Diffusion et sécurité :</strong> Cloudflare, Inc., 101 Townsend Street, San Francisco, CA 94107, États-Unis."
+  },
+
+  "404.title": { "en": "Page not found — {brand}", "fr": "Page introuvable — {brand}" },
+  "404.desc": { "en": "This page is not here.", "fr": "Cette page n'existe pas." },
+  "404.eyebrow": { "en": "Page not found", "fr": "Page introuvable" },
+  "404.heading": { "en": "Nothing on this shelf.", "fr": "Rien sur cette étagère." },
+  "404.note": {
+    "en": "The link may be out of date, or the piece may no longer be made. Everything we make is in here:",
+    "fr": "Le lien est peut-être ancien, ou la pièce n'est plus fabriquée. Tout ce que nous faisons se trouve ici :"
+  },
+  "404.home": { "en": "Home", "fr": "Accueil" },
+
+  "spec.Dimensions": { "en": "Dimensions", "fr": "Dimensions" },
+  "spec.Weight": { "en": "Weight", "fr": "Poids" },
+  "spec.Material": { "en": "Material", "fr": "Matière" },
+  "spec.Layer height": { "en": "Layer height", "fr": "Hauteur de couche" },
+  "spec.Light source": { "en": "Light source", "fr": "Éclairage" },
+  "spec.Heat limit": { "en": "Heat limit", "fr": "Tenue à la chaleur" },
+  "spec.Made": { "en": "Made", "fr": "Fabrication" },
+  "spec.Finish": { "en": "Finish", "fr": "Finition" },
+  "spec.Colour": { "en": "Colour", "fr": "Coloris" },
+  "spec.Colours": { "en": "Colours", "fr": "Coloris" },
+  "spec.Height": { "en": "Height", "fr": "Hauteur" },
+  "spec.Supplied as": { "en": "Supplied as", "fr": "Conditionnement" },
+  "spec.Water": { "en": "Water", "fr": "Eau" },
+  "spec.Fits": { "en": "Fits", "fr": "Compatible avec" },
+  "spec.Note": { "en": "Note", "fr": "À savoir" },
+  "spec.Drains": { "en": "Drains", "fr": "Égouttage" },
+  "spec.Inner cup": { "en": "Inner cup", "fr": "Godet intérieur" },
+  "spec.Tray": { "en": "Tray", "fr": "Bac" },
+  "spec.Folds": { "en": "Folds", "fr": "Pliable" },
+  "spec.Cable": { "en": "Cable", "fr": "Câble" },
+  "spec.Quantity": { "en": "Quantity", "fr": "Quantité" },
+  "spec.Clip": { "en": "Clip", "fr": "Clip" }
+}

@@ -50,7 +50,7 @@
   --fs-label: 0.75rem;
 
   /* space + layout */
-  --page-x: clamp(1.25rem, 5vw, 5.5rem);
+  --page-x: clamp(1rem, 5vw, 5.5rem);   /* 16px on a 320px phone, 20px from 400px */
   --maxw:   1560px;
   --gap:    clamp(1rem, 2.2vw, 2rem);
   --sec-y:  clamp(5rem, 11vw, 11rem);
@@ -213,6 +213,56 @@ a { color: inherit; }
   text-decoration: none; white-space: nowrap;
 }
 .nav__links { display: flex; align-items: center; gap: clamp(1.1rem, 2.4vw, 2.4rem); }
+
+/* Brand, hairline, language. The switch sits with the brand rather than the
+   shopping links: it changes the whole site, not a section of it. It names the
+   other language in that language ("English" / "Français") — never a flag — and
+   is set like the site's small labels so it reads as quiet chrome, not a CTA. */
+/* flex: none — the group keeps its width; letting it shrink slid "EN" under
+   the shop links on a 320px phone */
+.nav__start { display: flex; align-items: center; flex: none; }
+.nav__sep {
+  flex: none; width: 1px; height: .95em;
+  background: currentColor; opacity: .3;
+  margin-inline: clamp(.6rem, 1.2vw, .9rem);
+}
+.lang {
+  position: relative; display: inline-block;
+  min-width: 1.5rem; padding-block: .55rem; text-align: center;   /* a 24px target, even as "EN" */
+  font-family: var(--ff-ui); font-size: .6875rem;
+  font-variation-settings: "wdth" 100, "wght" 600;
+  letter-spacing: .14em; text-transform: uppercase;
+  text-decoration: none; white-space: nowrap;
+  opacity: .72;
+  transition: opacity var(--d-fast) var(--e-sine);
+}
+.lang:hover, .lang:focus-visible { opacity: 1; }
+.lang::after {
+  content: ""; position: absolute; left: 0; bottom: .35rem;
+  width: 0; height: 1px; background: currentColor;
+  transition: width 200ms var(--e-quart);
+}
+.lang:hover::after { width: 100%; transition-duration: var(--d-base); }
+.lang__short { display: none; }
+/* On a small phone the brand, the switch and two shop links do not all fit, so
+   the switch shrinks to its code. The full name stays the link's accessible text. */
+@media (max-width: 23em) {
+  .lang__long {
+    position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip-path: inset(50%); white-space: nowrap;
+  }
+  .lang__short { display: inline; }
+}
+/* Up to 400px, brand, hairline, switch and both shop links (French "Décorations"
+   is the long one) are tight at full size: tighten type and gaps a touch so the
+   row fits a 320px phone, and a 375–390px one keeps the full language name. */
+@media (max-width: 25em) {
+  .nav__in { gap: .75rem; }
+  .nav__brand { font-size: .95rem; font-variation-settings: "wdth" 110, "wght" 600; }
+  .nav__sep { margin-inline: .45rem; }
+  .nav__links { gap: .8rem; }
+  .nav__link { font-size: .875rem; }
+}
 /* On a phone the nav carries the two shopping paths and nothing else — those are
    the only links that have to be obvious. The rest live in the footer. */
 .nav__link--sec { display: none; }

@@ -1,0 +1,93 @@
+{
+  "_README": "French text for site.json. Only words live here: same keys and the same number of items as site.json, in the same order. Everything else (email, prices, the returns window in days, the hero photo file) is read from site.json. {workshopTime} and {returnsDays} work here too.",
+
+  "brand": {
+    "tagline": "Des lampes et des objets pour les coins de la maison où l'on vit vraiment."
+  },
+
+  "hero": {
+    "photo": {
+      "alt": "Une lampe couleur sable au socle sculpté en vagues et à l'abat-jour plissé, allumée sur un guéridon en chêne à côté d'un fauteuil."
+    }
+  },
+
+  "shipping": {
+    "workshopTime": "3 à 5 jours ouvrés"
+  },
+
+  "howItWorks": [
+    {
+      "step": "Vous commandez",
+      "body": "Choisissez une pièce et une finition. Rien n'attend dans un entrepôt : nous lançons la vôtre dès que la commande arrive."
+    },
+    {
+      "step": "Nous l'imprimons",
+      "body": "Une machine, une pièce à la fois, dans notre atelier. Une lampe prend presque une journée ; les petits objets, quelques heures."
+    },
+    {
+      "step": "Nous la finissons à la main",
+      "body": "Supports retirés, jointures nettoyées, base vérifiée bien à plat. Si elle n'est pas comme il faut, elle ne part pas en carton."
+    },
+    {
+      "step": "Elle part",
+      "body": "Emballée dans du carton recyclé et expédiée sous {workshopTime}. Vous recevez un numéro de suivi le jour du départ."
+    }
+  ],
+
+  "benefits": [
+    {
+      "title": "Une lumière près de laquelle on s'assoit",
+      "body": "Les abat-jour sont imprimés en fines rainures, si bien que l'ampoule se lit comme une lueur douce et égale plutôt que comme un point dur. C'est la différence entre une pièce éclairée et une pièce chaleureuse."
+    },
+    {
+      "title": "Fabriqué quand vous le demandez",
+      "body": "Rien n'est produit en série à l'avance. Donc pas de stock mort, pas de décharge, et une finition choisie pour votre pièce plutôt que pour un conteneur."
+    },
+    {
+      "title": "Un plastique d'origine végétale",
+      "body": "Tout est imprimé en PLA, fabriqué à partir d'amidon de maïs plutôt que de pétrole. Il est rigide, mat, et ne jaunit pas comme l'ABS bon marché."
+    },
+    {
+      "title": "Réparable, pas jetable",
+      "body": "Si un pied casse ou qu'un socle se fend, écrivez-nous. Nous gardons les fichiers : nous pouvons réimprimer la pièce au lieu de remplacer l'objet."
+    }
+  ],
+
+  "trust": [
+    { "label": "Fabriqué dans", "value": "Notre propre atelier, en France" },
+    { "label": "Expédié sous", "value": "{workshopTime}" },
+    { "label": "Retours", "value": "{returnsDays} jours, retours gratuits" },
+    { "label": "Matière", "value": "PLA d'origine végétale, jamais de plastique issu du pétrole" }
+  ],
+
+  "faq": [
+    {
+      "q": "Combien de temps faut-il pour recevoir une commande ?",
+      "a": "Nous imprimons votre commande après l'avoir reçue : comptez {workshopTime} à l'atelier, plus le délai postal habituel. En France, c'est généralement 2 jours après l'expédition, 4 à 6 dans le reste de l'Europe. Vous recevez un numéro de suivi à l'envoi."
+    },
+    {
+      "q": "Le PLA, c'est quoi, et est-ce que c'est bien ?",
+      "a": "Le PLA est un plastique rigide fabriqué à partir d'amidon de maïs plutôt que de pétrole. Il garde les détails fins, a un fini mat et ne sent pas. Il ramollit au-delà d'environ 55 °C : gardez vos pièces à l'abri du plein soleil d'été sur un rebord de fenêtre, et loin du lave-vaisselle."
+    },
+    {
+      "q": "Puis-je avoir une pièce dans une autre couleur ?",
+      "a": "Souvent, oui. Les couleurs indiquées sont celles que nous avons en stock, mais si vous voulez un socle de lampe assorti à quelque chose chez vous, écrivez-nous avant de commander et nous vous dirons honnêtement si nous pouvons trouver le filament."
+    },
+    {
+      "q": "Les lampes peuvent-elles rester allumées ?",
+      "a": "Elles sont conçues pour des ampoules LED, qui chauffent peu. N'y mettez pas d'ampoule halogène ou à incandescence : l'abat-jour est en plastique et n'est pas prévu pour cette chaleur. L'ampoule n'est pas fournie, sauf mention contraire sur la fiche."
+    },
+    {
+      "q": "Puis-je retourner un article ?",
+      "a": "Oui. Vous avez {returnsDays} jours après la livraison pour changer d'avis, sans avoir à vous justifier. Les retours sont gratuits : nous payons le port du retour et remboursons ce que vous avez payé, livraison standard comprise. L'exception, c'est ce que nous avons fabriqué selon vos propres spécifications : une couleur hors de notre gamme habituelle, ou un nom imprimé dessus."
+    },
+    {
+      "q": "Faites-vous des commandes sur mesure ?",
+      "a": "Les petites, oui. Si vous voulez une pièce existante à une autre taille ou un objet simple, écrivez-nous avec des dimensions approximatives. Nous vous dirons non si ce n'est pas quelque chose que nous savons bien imprimer."
+    }
+  ],
+
+  "legal": {
+    "customExemptionNote": "Les articles fabriqués selon vos propres spécifications ou nettement personnalisés sont exclus du droit de rétractation de {returnsDays} jours (directive européenne relative aux droits des consommateurs, article L221-28 du Code de la consommation)."
+  }
+}

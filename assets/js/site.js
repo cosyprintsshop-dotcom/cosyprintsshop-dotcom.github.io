@@ -143,7 +143,12 @@
         c.hidden = !match;
         if (match) shown++;
       });
-      if (live) live.textContent = shown + (shown === 1 ? " piece" : " pieces");
+      if (live) {
+        // the wording comes from the page (data-one / data-many), so it follows its language
+        var pattern = (shown === 1 ? live.dataset.one : live.dataset.many) ||
+                      (shown === 1 ? "{n} piece" : "{n} pieces");
+        live.textContent = pattern.replace("{n}", shown);
+      }
       // the editorial spreads only hold together with every piece in them
       if (ed) ed.toggleAttribute("data-filtered", !!room);
     });
