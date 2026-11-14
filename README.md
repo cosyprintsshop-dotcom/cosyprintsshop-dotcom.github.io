@@ -70,6 +70,8 @@ To add a photo:
      `products.json` — the first fills the card and first shot (4:5), the
      next ones fill the second and third frames (1:1) if `shots` is 2 or 3.
      With three, the two 1:1 views sit side by side under the lead.
+     A frame after the first is only drawn when it has a photo, so a product
+     with no photos shows one labelled frame, not a column of empty boxes.
    - a card composed for its square frame: add `"square": "NAME-SQ"` to the
      first photo, naming a 1:1 crop of the same picture. Without it the card
      centre-cuts the 4:5, which trims the top and bottom of a tall product.

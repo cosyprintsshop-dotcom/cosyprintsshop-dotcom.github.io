@@ -37,7 +37,7 @@
   "howItWorks": [
     {
       "step": "You order",
-      "body": "Pick a piece and a finish. Nothing is sitting in a warehouse, so we start yours once the order lands."
+      "body": "Pick a piece. Nothing is sitting in a warehouse, so we start yours once the order lands."
     },
     {
       "step": "We print it",
@@ -82,15 +82,15 @@
   "faq": [
     {
       "q": "How long does an order take to arrive?",
-      "a": "We print your order after it comes in, so allow 3–5 working days in the workshop plus normal postal time. France is usually 2 days after dispatch, the rest of Europe 4 to 6. You get tracking when it ships."
+      "a": "We print your order after it comes in, so allow 3–5 working days in the workshop plus normal postal time. France is usually 2 days after dispatch, the rest of Europe 4–6. You get tracking when it ships."
     },
     {
       "q": "What is PLA, and is it any good?",
-      "a": "PLA is a rigid plastic made from corn starch instead of oil. It holds fine detail, has a matte finish, and does not smell. It softens above roughly 55°C, so keep pieces out of direct summer sun on a windowsill and out of the dishwasher."
+      "a": "PLA is a rigid plastic made from corn starch instead of oil. It holds fine detail, has a matte finish, and does not smell. It softens above about 55 °C, so keep pieces out of direct summer sun on a windowsill and out of the dishwasher."
     },
     {
       "q": "Can I get a piece in a different colour?",
-      "a": "Usually, yes. The colours listed are what we stock, but if you want a lamp base to match something in your room, email us before ordering and we will tell you honestly whether we can get the filament."
+      "a": "Sometimes. Each piece is listed in the colour we print it in. If you want one to match something in your room, email us before ordering and we will tell you honestly whether we can get the filament. A colour made specially for you cannot be returned, so we confirm it with you first."
     },
     {
       "q": "Are the lamps safe to leave on?",

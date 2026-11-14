@@ -209,6 +209,10 @@
       return;
     }
 
+    /* threshold 0, not 0.01. A .lay frame is clipped to nothing until it is
+       revealed, and a fully clipped box has an intersection ratio of 0: at any
+       threshold above 0 it never counts as intersecting, so it never revealed.
+       At 0 the observer reports isIntersecting from geometry alone. */
     var fired = false;
     var io = new IntersectionObserver(function (entries) {
       fired = true;
@@ -217,7 +221,7 @@
         show(en.target);
         io.unobserve(en.target);
       });
-    }, { rootMargin: "0px 0px -12% 0px", threshold: 0.01 });
+    }, { rootMargin: "0px 0px -12% 0px", threshold: 0 });
 
     var above = [];
     targets.forEach(function (el) {
@@ -258,8 +262,12 @@
       if (media) media.style.viewTransitionName = "hero-media";
     }, true);
 
-    // clear it again if the visitor comes back, or the name leaks into the next transition
-    addEventListener("pageswap", function () {
+    /* Clear it again if the visitor comes back (back/forward cache), or the name
+       leaks into the next transition. Not on pageswap: that fires before the
+       browser captures the outgoing page, so clearing there removed the name and
+       the morph never happened. */
+    addEventListener("pageshow", function (e) {
+      if (!e.persisted) return;
       document.querySelectorAll('[style*="hero-media"]').forEach(function (el) {
         el.style.viewTransitionName = "";
       });
@@ -309,11 +317,12 @@
       document.querySelectorAll("[data-split]").forEach(function (el) {
         SplitText.create(el, {
           type: "lines",
-          mask: "lines",     // makes its own overflow:clip wrappers
+          linesClass: "split-line",
+          mask: "lines",     // makes its own overflow:clip wrappers (.split-line-mask)
           autoSplit: true,   // re-splits on resize and after the webfont swaps
           onSplit: function (self) {
             return gsap.from(self.lines, {
-              yPercent: 100,
+              yPercent: 120,     // the mask reaches below the line for descenders
               duration: 0.9,
               stagger: 0.08,
               ease: "power4.out",   // === easeOutQuart
@@ -326,7 +335,14 @@
     }
 
     /* --------------------------------------------- product grids: batch */
-    ScrollTrigger.batch("[data-batch] .pcard", {
+    /* Only cards still below the screen take part. Cards already painted in view
+       were shown by tier 1 before these libraries arrived; hiding them now made
+       them blink out and fade back. */
+    var pending = Array.prototype.filter.call(
+      document.querySelectorAll("[data-batch] .pcard"),
+      function (c) { return c.getBoundingClientRect().top > innerHeight; }
+    );
+    if (pending.length) ScrollTrigger.batch(pending, {
       start: "top 88%",
       once: true,
       interval: 0.1,
@@ -339,7 +355,7 @@
         });
       }
     });
-    gsap.set("[data-batch] .pcard", { opacity: 0, y: 22 });
+    if (pending.length) gsap.set(pending, { opacity: 0, y: 22 });
 
     /* The hero is deliberately NOT animated here. It is above the fold, so a
        GSAP timeline created after the libraries arrive would visibly re-hide

@@ -8,6 +8,7 @@ Reads data/site.json + data/products.json and writes real HTML files — one per
 page, no client-side routing. Real documents are what make cross-document view
 transitions and search indexing work.
 """
+from urllib.parse import quote
 import json, os, re, shutil, html, hashlib
 from urllib.parse import urlparse
 
@@ -54,7 +55,7 @@ def asset(path):
 # `sizes` hints for the frames that can hold a photo: how wide the frame is drawn.
 SIZES_HERO = "(min-width: 62em) min(38vw, 560px), 92vw"
 SIZES_SHOT = "(min-width: 62em) min(50vw, 760px), (min-width: 48em) 46vw, 92vw"
-SIZES_CARD = "(min-width: 62em) min(25vw, 380px), (min-width: 40em) 46vw, 92vw"
+SIZES_CARD = "(min-width: 62em) min(25vw, 380px), (min-width: 48em) 31vw, 46vw"
 SIZES_FEATURE = "(min-width: 62em) min(48vw, 740px), (min-width: 48em) 56vw, 92vw"
 SIZES_CAT_A = "(min-width: 62em) min(54vw, 860px), 92vw"
 SIZES_CAT_B = "(min-width: 62em) min(38vw, 600px), 92vw"
@@ -101,9 +102,14 @@ def photo_url(photo):
     return f"https://{BRAND['domain']}/assets/img/{photo['name']}-{PHOTOS[photo['name']]['widths'][-1]}.jpg"
 
 
+# Every page shares a picture. Pages without a photo of their own use the three
+# lamps side by side — a landscape image, the shape link previews crop to.
+SHARE_DEFAULT = {"name": "share-lamps",
+                 "alt": "The Pleated, Ribbed and Puffed lamps, each lit on an oak side table."}
+
+
 def og_image(photo):
-    if not photo:
-        return ""
+    photo = photo or SHARE_DEFAULT
     meta = PHOTOS[photo["name"]]
     rw, rh = (int(x) for x in meta["ratio"].split(":"))
     w = meta["widths"][-1]
@@ -126,6 +132,16 @@ def slot(cls="", label=SLOT_LABEL, style="", photo=None, sizes=SIZES_CARD, eager
     if photo:
         return f'<div class="slot slot--photo{c}"{s}>{picture(photo, sizes, eager)}</div>'
     return f'<div class="slot{c}"{s}><span class="slot__label">{e(label)}</span></div>'
+
+
+def mailto(subject=None):
+    """mailto: link to the shop, with the subject URL-encoded. HTML-escaping alone
+    is not enough: an "&" (as in "Sage & white") ends the subject parameter and
+    the rest of it is lost."""
+    href = f"mailto:{BRAND['email']}"
+    if subject:
+        href += "?subject=" + quote(subject, safe="")
+    return e(href)
 
 
 def money(v):
@@ -248,12 +264,33 @@ def count_words(n, noun):
     return f"{words[n] if n < len(words) else n} {noun}{'' if n == 1 else 's'}"
 
 
+def related(p, n=4):
+    """Up to four pieces for the "More …" row: the rest of the category first,
+    closest by shared rooms, then pieces from elsewhere that share a room, so
+    the row is always full. Concepts are only used to fill a concept's row."""
+    rooms = set(p.get("rooms", []))
+    near = lambda q: -len(rooms & set(q.get("rooms", [])))
+    pool = [q for q in by_cat(p["category"]) if q["name"] != p["name"]]   # twins are linked up top
+    out = sorted(pool, key=near)[:n]
+    if len(out) < n and p.get("status") == "concept":
+        out += [q for q in by_cat(p["category"], "concept") if q["slug"] != p["slug"]][:n - len(out)]
+    if len(out) < n:
+        others = [q for q in PRODUCTS if q["category"] != p["category"]
+                  and q.get("status", "live") == "live" and rooms & set(q.get("rooms", []))]
+        out += sorted(others, key=near)[:n - len(out)]
+    return out
+
+
 def by_cat(slug, status="live"):
     return [p for p in PRODUCTS if p["category"] == slug and p.get("status", "live") == status]
 
 
 # --------------------------------------------------------------------- shell
-def shell(title, desc, body, page="", extra_head="", tone_start="day"):
+def shell(title, desc, body, page="", extra_head="", tone_start="day",
+          path="/", og_type="website", share=None):
+    """`path` is the page's own URL path (canonical + og:url); `share` the photo
+    a shared link previews (defaults to SHARE_DEFAULT)."""
+    url = f"https://{BRAND['domain']}{path}"
     nav_items = [
         ("/lamps/", "Lamps", False),
         ("/decorations/", "Decorations", False),
@@ -280,9 +317,14 @@ def shell(title, desc, body, page="", extra_head="", tone_start="day"):
 <link rel="stylesheet" href="/assets/vendor/lenis.css">
 <link rel="stylesheet" href="{asset('/assets/css/site.css')}">
 <meta name="theme-color" content="#EDE7DB">
+<link rel="canonical" href="{e(url)}">
+<meta property="og:site_name" content="{e(BRAND['name'])}">
 <meta property="og:title" content="{e(title)}">
 <meta property="og:description" content="{e(desc)}">
-<meta property="og:type" content="website">
+<meta property="og:type" content="{og_type}">
+<meta property="og:url" content="{e(url)}">
+<meta name="twitter:card" content="summary_large_image">
+{og_image(share)}
 {extra_head}
 </head>
 <body>
@@ -421,7 +463,7 @@ def build_home():
           <span class="l"><span>for the rooms</span></span>
           <span class="l"><span>you sit in.</span></span>
         </h1>
-        <p class="lead hero__lead rise" style="--rd:700ms">We print lighting and small home pieces to order in our own workshop, one at a time. Pick a shape, pick a finish, and we make yours.</p>
+        <p class="lead hero__lead rise" style="--rd:700ms">We print lighting and small home pieces to order in our own workshop, one at a time. Pick a shape and we make yours.</p>
         <div class="hero__actions rise" style="--rd:950ms">
           <a class="btn" href="/lamps/">Shop lamps</a>
           <a class="tlink" href="/decorations/">Shop decorations <span class="tlink__arrow">&rarr;</span></a>
@@ -439,7 +481,7 @@ def build_home():
     <div class="shead grid">
       <p class="label shead__eyebrow" style="grid-column:1/-1">Two ways in</p>
       <h2 class="display h2 shead__title" data-split>Start with the light, or start with the shelf.</h2>
-      <p class="lead shead__note">Everything is printed to order, so the two paths work the same way — you are choosing a shape and a finish, not picking from what is left in a warehouse.</p>
+      <p class="lead shead__note">Everything is printed to order, so the two paths work the same way — you are choosing a shape, not picking from what is left in a warehouse.</p>
     </div>
     <div class="grid cats">
       <a class="cat cat--a" href="/lamps/" data-morph>
@@ -476,7 +518,7 @@ def build_home():
   <div class="wrap">
     <div class="shead grid">
       <p class="label shead__eyebrow" style="grid-column:1/-1">How it works</p>
-      <h2 class="display h2 shead__title" data-split>Four steps, about a week.</h2>
+      <h2 class="display h2 shead__title" data-split>Four steps, about ten days.</h2>
       <p class="lead shead__note">Nothing is stocked. That is slower than a warehouse and it is the reason nothing gets thrown away.</p>
     </div>
     <ol class="grid steps">{steps}</ol>
@@ -523,7 +565,7 @@ def build_home():
         f"{BRAND['name']} — 3D-printed lamps and home decorations",
         "Lamps and small home objects, 3D-printed to order in France. Warm light, plant-based PLA, made by hand in our workshop.",
         body,
-        extra_head=og_image(hero_photo),
+        path="/",
     )
 
 
@@ -550,7 +592,8 @@ def editorial_grid(items):
       {f'<div class="ed__nest">{nested}</div>' if nest else ''}
     </div>""")
     if rest:
-        blocks.append(f'<div class="ed__rows">{"".join(product_card(q) for q in rest)}</div>')
+        n = len(rest) if len(rest) < 4 else 4
+        blocks.append(f'<div class="ed__rows ed__rows--n{n}">{"".join(product_card(q) for q in rest)}</div>')
     return f'<div class="ed" data-ed data-batch>{"".join(blocks)}</div>'
 
 
@@ -577,7 +620,7 @@ def build_category(cat):
       <h2 class="display h2 shead__title" data-split>{count_words(len(concepts), "shape")} we are still working on.</h2>
       <p class="lead shead__note">None of these is in production yet. They are here so you can tell us which one to finish first.</p>
     </div>
-    <div class="grid pgrid" data-batch>{cc}</div>
+    <div class="grid pgrid pgrid--3" data-batch>{cc}</div>
   </div>
 </section>"""
 
@@ -603,19 +646,29 @@ def build_category(cat):
         cat["lead"],
         body,
         page=cat["slug"],
-        extra_head=og_image(cat.get("photo") or (lead_photo(live[0]) if live else None)),
+        path=f"/{cat['slug']}/",
     )
 
 
 # ------------------------------------------------------------------ product
 def build_product(p):
     photos = p.get("photos") or []
+    # live products sharing this name (Bag Clips black/white): the title needs the
+    # variant to tell them apart, and each page links to the others
+    twins = [q for q in by_cat(p["category"]) if q["name"] == p["name"] and q["slug"] != p["slug"]]
+    twin_html = ""
+    if twins:
+        links = ", ".join(f'<a href="/shop/{q["slug"]}/">{e(q.get("variant") or q["name"])}</a>' for q in twins)
+        twin_html = f'<p class="pdp__colours"><span class="label">Also in</span> {links}</p>\n        '
+
     cols = colours(p)
     first = lead_photo(p)
     n_shots = int(p.get("shots", 1))
     if n_shots not in (1, 2, 3):
         raise SystemExit(f"{p['slug']}: `shots` must be 1, 2 or 3, got {n_shots}")
-    shots = slot("pdp__shot lay", SLOT_LABEL, "view-transition-name:hero-media",
+    n_shots = max(1, min(n_shots, len(photos)))
+    shots = slot("pdp__shot lay", "Shape in development" if p.get("status") == "concept" else SLOT_LABEL,
+                 "view-transition-name:hero-media",
                  photo=first, sizes=SIZES_SHOT, eager=True)
     for i, label in list(enumerate(["Second view coming soon", "Third view coming soon"], 1))[:n_shots - 1]:
         shots += slot("pdp__shot lay", label, photo=photos[i] if len(photos) > i else None,
@@ -628,8 +681,8 @@ def build_product(p):
 
     concept = p.get("status") == "concept"
     if concept:
-        buy = f"""<div class="notice"><strong>Not for sale yet.</strong> This shape is still in development, so there is nothing to photograph and nothing to buy. Email us and we will tell you when it is ready.</div>
-        <div class="pdp__buy"><a class="btn" href="mailto:{e(BRAND['email'])}?subject={e(p['name'])}%20—%20tell%20me%20when%20it%20is%20ready">Tell me when it is ready</a></div>"""
+        buy = f"""<div class="notice"><strong>Not for sale yet.</strong> This shape is still being worked on, so there is no photo of it yet and nothing to buy. Email us and we will tell you when it is ready.</div>
+        <div class="pdp__buy"><a class="btn" href="{mailto(p['name'] + ' — tell me when it is ready')}">Tell me when it is ready</a></div>"""
         price_html = ""
     else:
         markets = market_links(p)
@@ -644,7 +697,7 @@ def build_product(p):
             base = f"Order: {p['name']}"
             subj = base if cols else base + (f" ({p['variant']})" if p.get("variant") else "")
             order = f' data-order="{e(base)}"' if can_swatch(cols) else ""
-            action = f'<a class="{btn}" href="mailto:{e(BRAND["email"])}?subject={e(subj)}"{order}>Order by email</a>'
+            action = f'<a class="{btn}" href="{mailto(subj)}"{order}>Order by email</a>'
         market_html = ""
         if markets:
             mbtns = "".join(
@@ -659,8 +712,11 @@ def build_product(p):
         price_html = f'<p class="pdp__price">{money(p.get("price"))}</p>'
 
     care = f'<p class="pdp__care">{e(p["care"])}</p>' if p.get("care") else ""
-    other = [q for q in by_cat(p["category"]) if q["slug"] != p["slug"]][:4]
+    other = related(p)
     more = "".join(product_card(q) for q in other)
+    more_title = (f"More {next(c['name'] for c in CATEGORIES if c['slug'] == p['category']).lower()}"
+                  if all(q["category"] == p["category"] and q.get("status", "live") == "live" for q in other)
+                  else "You might also like")
 
     cat_name = next(c["name"] for c in CATEGORIES if c["slug"] == p["category"])
 
@@ -673,7 +729,7 @@ def build_product(p):
       <div class="pdp__info">
         <h1 class="display h2 pdp__name">{e(p['name'])}</h1>
         <p class="pdp__variant">{e(p.get('variant',''))}</p>
-        {price_html}
+        {twin_html}{price_html}
         {colour_picker(p, cols)}
         <div class="prose pdp__desc"><p>{e(p['description'])}</p></div>
         {buy}
@@ -687,28 +743,43 @@ def build_product(p):
 <section class="sec" data-tone="day">
   <div class="wrap">
     <div class="shead grid">
-      <h2 class="display h3 shead__title" data-split>More {e(cat_name.lower())}</h2>
+      <h2 class="display h3 shead__title" data-split>{e(more_title)}</h2>
     </div>
-    <div class="grid pgrid" data-batch>{more}</div>
+    <div class="grid pgrid pgrid--more" data-batch>{more}</div>
   </div>
 </section>
 """
-    ld = {
-        "@context": "https://schema.org", "@type": "Product",
-        "name": f"{p['name']} {p.get('variant','')}".strip(),
-        "description": p["blurb"], "brand": {"@type": "Brand", "name": BRAND["name"]},
-    }
-    pics = [q for q in [first] + photos[1:n_shots] if q]
-    if pics:
-        ld["image"] = [photo_url(q) for q in pics]
-    if p.get("price") and not concept:
-        ld["offers"] = {"@type": "Offer", "price": p["price"], "priceCurrency": BRAND["currency"],
-                        "availability": "https://schema.org/MadeToOrder"}
-    head = f'<script type="application/ld+json">{json.dumps(ld)}</script>'
-    if first:
-        head += "\n" + og_image(first)
+    path = f"/shop/{p['slug']}/"
+    head = ""
+    # Structured data only for things that are for sale. A concept is not a
+    # Product yet, and a price only becomes an Offer once it is confirmed —
+    # every price in products.json started life as a placeholder.
+    if not concept:
+        ld = {
+            "@context": "https://schema.org", "@type": "Product",
+            "name": p["name"], "sku": p["slug"], "url": f"https://{BRAND['domain']}{path}",
+            "description": p["blurb"], "brand": {"@type": "Brand", "name": BRAND["name"]},
+        }
+        pics = [q for q in [first] + photos[1:n_shots] if q]
+        if pics:
+            ld["image"] = [photo_url(q) for q in pics]
+        if p.get("price") and p.get("priceConfirmed"):
+            ld["offers"] = {"@type": "Offer", "price": p["price"], "priceCurrency": BRAND["currency"],
+                            "availability": "https://schema.org/MadeToOrder",
+                            "url": f"https://{BRAND['domain']}{path}"}
+        # "</" inside the JSON would end the script element early
+        head = ('<script type="application/ld+json">'
+                + json.dumps(ld).replace("</", "<\\/") + "</script>")
 
-    return shell(f"{p['name']} — {BRAND['name']}", p["blurb"], body, page=p["category"], extra_head=head)
+    if concept:
+        title = f"{p['name']} lamp (in development) — {BRAND['name']}"
+        desc = f"Not for sale yet. {p['blurb']}"
+    else:
+        variant = f" — {p['variant']}" if twins and p.get("variant") else ""
+        title = f"{p['name']}{variant} — {BRAND['name']}"
+        desc = f"{p['blurb']} 3D-printed to order in {BRAND['country']}."
+    return shell(title, desc, body, page=p["category"], extra_head=head,
+                 path=path, og_type="website" if concept else "product", share=first)
 
 
 # -------------------------------------------------------------------- legal
@@ -718,7 +789,7 @@ def build_legal():
   <div class="wrap">
     <div class="shead grid">
       <p class="label shead__eyebrow" style="grid-column:1/-1">Legal</p>
-      <h1 class="display h2 shead__title lines"><span class="l"><span>Terms, returns and privacy</span></span></h1>
+      <h1 class="display h2 shead__title lines"><span class="l"><span>Returns, delivery and privacy</span></span></h1>
     </div>
     <div class="prose" style="max-width:66ch">
       <h2 class="h3">Returns and the right to change your mind</h2>
@@ -741,7 +812,8 @@ def build_legal():
   </div>
 </section>
 """
-    return shell(f"Legal — {BRAND['name']}", "Returns, delivery, privacy and legal information.", body)
+    return shell(f"Legal — {BRAND['name']}", "Returns, delivery, privacy and legal information.", body,
+                 path="/legal/")
 
 
 # --------------------------------------------------------------------- main

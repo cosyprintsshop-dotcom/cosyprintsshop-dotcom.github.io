@@ -16,7 +16,7 @@
   --line:       #D3C9B7;
   --ink:        #1F1B16;
   --ink-2:      #5E564B;
-  --ink-3:      #8A8172;
+  --ink-3:      #6E6558;   /* 4.65:1 on bone, 5.08:1 on bone-lift (was #8A8172, 3.12:1) */
 
   /* night */
   --night:      #17130F;
@@ -75,7 +75,7 @@
 }
 [data-tone="night"] {
   --bg: var(--night); --fg: var(--chalk); --muted: var(--chalk-2);
-  --faint: #7C7263; --rule: var(--night-line); --lift: var(--night-lift);
+  --faint: #9A8F7E;   /* 5.81:1 on night, 5.36:1 on night-lift (was #7C7263, 3.91:1) */ --rule: var(--night-line); --lift: var(--night-lift);
 }
 
 /* ---------------------------------------------------------------- reset */
@@ -107,10 +107,11 @@ a { color: inherit; }
 [hidden] { display: none !important; }
 
 :focus-visible {
-  outline: 2px solid var(--ember);
+  outline: 2px solid var(--ink);   /* 13.9:1 on bone; ember is only 2.17:1 there */
   outline-offset: 3px;
   border-radius: 2px;
 }
+[data-tone="night"] :focus-visible { outline-color: var(--ember); }   /* 6.92:1 on night */
 
 .skip {
   position: absolute; left: var(--page-x); top: -4rem; z-index: 200;
@@ -174,6 +175,7 @@ a { color: inherit; }
 }
 .prose p + p { margin-top: 1.1em; }
 .prose { max-width: 62ch; color: var(--muted); }
+.prose h2, .prose h3 { color: var(--fg); margin-bottom: .6em; }
 
 /* The ridge — the site's one repeated graphic device. It is the fluting on the
    products, and the layer lines the printer leaves. */
@@ -355,7 +357,7 @@ html.nav-dark.nav-solid .nav {
 /* ---------------------------------------------------------------- split categories */
 .cats { row-gap: clamp(3rem, 7vw, 5rem); }
 .cat { grid-column: 1 / -1; text-decoration: none; display: block; }
-@media (min-width: 62em) {
+@media (min-width: 48em) {
   /* 7/5, not 6/6, and the second panel drops down the page */
   .cat--a { grid-column: 1 / span 7; }
   .cat--b { grid-column: 9 / -1; margin-top: clamp(4rem, 10vw, 9rem); }
@@ -472,8 +474,9 @@ html.nav-dark.nav-solid .nav {
 /* ---------------------------------------------------------------- faq */
 .faq__grid { row-gap: clamp(2rem, 4vw, 3rem); }
 .faq__list { grid-column: 1 / -1; }
-@media (min-width: 62em) { .faq__list { grid-column: 5 / -1; } .faq__side { grid-column: 1 / span 3; } }
 .faq__side { grid-column: 1 / -1; }
+/* after the base rule, or the base rule wins (same specificity, later line) */
+@media (min-width: 62em) { .faq__list { grid-column: 5 / -1; } .faq__side { grid-column: 1 / span 3; } }
 .qa { border-top: 1px solid var(--rule); }
 .qa:last-child { border-bottom: 1px solid var(--rule); }
 .qa__q {
@@ -539,6 +542,27 @@ summary.qa__q::marker { content: ""; }
 /* a filtered-out card must actually go: `display: block` above outranks the
    browser's own [hidden] rule */
 .pcard[hidden] { display: none; }
+@media (min-width: 48em) { .pgrid--more .pcard { grid-column: span 6; } }
+@media (min-width: 62em) { .pgrid--more .pcard { grid-column: span 3; } }
+/* six concepts: 3 + 3 on desktop, not 4 + 2 */
+@media (min-width: 62em) { .pgrid--3 .pcard { grid-column: span 4; } }
+
+/* M21: below desktop, names that wrap (Sheep Roll Holder…) pushed their variant
+   line lower than the card beside them. Every name reserves two lines there. */
+@media (max-width: 61.99em) {
+  .pgrid .pcard:not(.pcard--feature) .pcard__top,
+  .ed__rows .pcard__top, .ed__nest .pcard__top { align-items: flex-start; }
+  .pgrid .pcard:not(.pcard--feature) .pcard__name,
+  .ed__rows .pcard__name, .ed__nest .pcard__name { min-height: 2lh; }
+}
+
+/* M20: in a small frame the label wrapped onto two lines and the ridge motif
+   ran through it. One line, a size smaller, above the motif. */
+.slot { container-type: inline-size; }
+@container (max-width: 260px) {
+  .slot__label { white-space: nowrap; font-size: .5625rem; letter-spacing: .1em; }
+  .slot::before { bottom: 30%; height: 36%; }
+}
 
 .pcard__media { aspect-ratio: 1; margin-bottom: 1rem; }
 /* the lead card gets its emphasis from the column span, not a different crop */
@@ -606,6 +630,9 @@ summary.qa__q::marker { content: ""; }
   .ed__spread--flip .ed__nest    { grid-column: 1 / span 5; }
   .ed__spread--n0 .ed__feature { grid-column: 4 / span 6; }
   .ed__rows .pcard { grid-column: span 3; }
+  .ed__rows--n1 .pcard { grid-column: 4 / span 6; }
+  .ed__rows--n2 .pcard { grid-column: span 6; }
+  .ed__rows--n3 .pcard { grid-column: span 4; }
   /* two nested: still stacked, in a four-column strip at the far edge, so the
      pair stands about as tall as the feature with two columns of air between */
   .ed:not([data-filtered]) .ed__spread--n2 .ed__nest { grid-column: 9 / -1; }
@@ -683,7 +710,7 @@ summary.qa__q::marker { content: ""; }
 }
 .swatch:hover .swatch__chip { outline-color: var(--rule); }
 .swatch__input:checked + .swatch__chip { outline-color: var(--fg); }
-.swatch__input:focus-visible + .swatch__chip { outline: 2px solid var(--ember); }
+.swatch__input:focus-visible + .swatch__chip { outline: 2px solid var(--ink); }
 
 /* the photo swap: the new picture is laid over the old one and fades up */
 .slot--photo picture { transition: opacity 320ms var(--e-sine), transform var(--d-quick) var(--e-quart); }
@@ -725,18 +752,28 @@ summary.qa__q::marker { content: ""; }
 .js-motion .lay.slot--photo img { transform: scale(1.06); transition: transform var(--d-settle) var(--e-quart); }
 .js-motion .lay.slot--photo.is-in img { transform: none; }
 
-/* Text lines, hand-wrapped. 105% not 100% — at exactly 100% descenders (g, y, p)
-   poke below the mask. */
-.js-motion .lines .l { display: block; overflow: hidden; }
+/* Text lines, hand-wrapped. The display face sits at line-height .98, so a mask
+   exactly one line tall trims the descenders (g, y, p) flat for good. The mask
+   reaches .16em below the line (padding) without moving the next line (negative
+   margin), and the line starts 120% down so it is still fully hidden. */
+.js-motion .lines .l { display: block; overflow: hidden; padding-bottom: .16em; margin-bottom: -.16em; }
 .js-motion .lines .l > span {
   display: block;
-  transform: translateY(105%);
+  transform: translateY(120%);
   transition: transform 900ms var(--e-quart);
 }
 .js-motion .lines.is-in .l > span { transform: translateY(0); transition-delay: var(--rd, 0ms); }
 .js-motion .lines.is-in .l:nth-child(2) > span { transition-delay: calc(var(--rd, 0ms) + 80ms); }
 .js-motion .lines.is-in .l:nth-child(3) > span { transition-delay: calc(var(--rd, 0ms) + 160ms); }
 .js-motion .lines.is-in .l:nth-child(4) > span { transition-delay: calc(var(--rd, 0ms) + 240ms); }
+
+/* SplitText's own line masks (linesClass "split-line" -> "split-line-mask"):
+   same descender room as the hand-wrapped lines above */
+.split-line-mask { padding-bottom: .16em; margin-bottom: -.16em; }
+
+/* During a page transition the incoming frame must already be open, or the
+   morph lands on an empty clip and the photo wipes up afterwards. */
+html.js-motion:active-view-transition .lay { clip-path: none; transition: none; }
 
 /* the quiet one, for small supporting items only */
 .js-motion .rise { opacity: 0; transform: translateY(14px); transition: opacity var(--d-standard) var(--e-sine), transform var(--d-standard) var(--e-quart); }
