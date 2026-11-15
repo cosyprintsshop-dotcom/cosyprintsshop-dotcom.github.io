@@ -550,7 +550,7 @@
       "blurb": "A rounded lantern with a wide ribbed body.",
       "description": "In development. Short and wide, meant for a low table where you want the light to spread sideways rather than up.",
       "specs": {},
-      "status": "concept",
+      "status": "draft",
       "shots": 1
     },
     {
@@ -565,7 +565,7 @@
       "blurb": "A small lamp with legs. Deliberately silly.",
       "description": "In development. A classic shade on two stubby legs — the one piece in the range that is not trying to be serious.",
       "specs": {},
-      "status": "concept",
+      "status": "draft",
       "shots": 1
     },
     {
@@ -581,7 +581,7 @@
       "blurb": "An angular column, cut like a crystal.",
       "description": "In development. A faceted tower that throws light in flat planes rather than a soft wash — the sharpest shape we have drawn so far.",
       "specs": {},
-      "status": "concept",
+      "status": "draft",
       "shots": 1
     },
     {
@@ -596,7 +596,7 @@
       "blurb": "A low ridge of peaks on a round base.",
       "description": "In development. Sits low and lights from within the peaks, so it reads more like a fire than a lamp.",
       "specs": {},
-      "status": "concept",
+      "status": "draft",
       "shots": 1
     },
     {
@@ -612,7 +612,7 @@
       "blurb": "A square shade with a wave running through it.",
       "description": "In development. The wave changes the wall thickness as it travels, so the light is brighter along the curve than either side of it.",
       "specs": {},
-      "status": "concept",
+      "status": "draft",
       "shots": 1
     },
     {
@@ -627,7 +627,7 @@
       "blurb": "A twisted sculptural form on a disc base.",
       "description": "In development. The most difficult of these to print — the twist has to be supported the whole way up, which is what we are still working on.",
       "specs": {},
-      "status": "concept",
+      "status": "draft",
       "shots": 1
     }
   ]

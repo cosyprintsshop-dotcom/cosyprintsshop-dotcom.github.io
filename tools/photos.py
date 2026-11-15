@@ -15,12 +15,23 @@ build.py stays standard-library only and CI needs nothing installed.
 Needs Pillow: pip install pillow
 """
 import argparse, json, os, sys
-from PIL import Image, ImageOps
+from PIL import Image, ImageChops, ImageOps
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "assets", "img")
 MANIFEST = os.path.join(ROOT, "data", "photos.json")
 WIDTHS = [480, 800, 1200, 1600]
+WEBP_Q, JPEG_Q = 86, 84
+GRAIN = 0.6   # levels of grain added before encoding; see dither()
+
+
+def dither(im):
+    """Break up 8-bit steps before compression. A lit shade is a long, smooth
+    gradient: at WebP quality 80 it compressed to visible bands (a 1600px lamp
+    photo came out at 27 KB). Sub-level grain gives the encoder detail to keep
+    instead of flat steps, and is invisible at any viewing size."""
+    noise = Image.merge("RGB", [Image.effect_noise(im.size, GRAIN) for _ in range(3)])
+    return ImageChops.add(im, noise, scale=1.0, offset=-128)
 
 
 def crop_to(im, rw, rh, focus):
@@ -50,9 +61,9 @@ def main():
     widths = sorted({w for w in WIDTHS if w < im.width} | {min(im.width, WIDTHS[-1])})
     os.makedirs(OUT, exist_ok=True)
     for w in widths:
-        r = im.resize((w, round(w * rh / rw)), Image.LANCZOS)
-        r.save(os.path.join(OUT, f"{a.name}-{w}.webp"), "WEBP", quality=80, method=6)
-        r.save(os.path.join(OUT, f"{a.name}-{w}.jpg"), "JPEG", quality=82, optimize=True, progressive=True)
+        r = dither(im.resize((w, round(w * rh / rw)), Image.LANCZOS))
+        r.save(os.path.join(OUT, f"{a.name}-{w}.webp"), "WEBP", quality=WEBP_Q, method=6)
+        r.save(os.path.join(OUT, f"{a.name}-{w}.jpg"), "JPEG", quality=JPEG_Q, optimize=True, progressive=True)
 
     data = json.load(open(MANIFEST, encoding="utf8")) if os.path.exists(MANIFEST) else {}
     data[a.name] = {"ratio": a.ratio, "widths": widths}
